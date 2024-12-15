@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Search from "./pages/Search";
 import Lives from "./pages/Lives";
 import Favorites from "./pages/Favorites";
+import Notifications from "./pages/Notifications";
 
 const queryClient = new QueryClient();
 
@@ -17,12 +18,13 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="pb-16"> {/* Add padding to prevent content from being hidden behind the navigation */}
+        <div className="pb-16">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/search" element={<Search />} />
             <Route path="/lives" element={<Lives />} />
             <Route path="/favorites" element={<Favorites />} />
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/profile" element={<div>Page Profil</div>} />
           </Routes>
           <BottomNav />
