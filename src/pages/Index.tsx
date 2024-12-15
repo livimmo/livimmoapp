@@ -5,9 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Search, Bell, User, Camera, LayoutList, Map } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  const navigate = useNavigate();
 
   // Mock data for featured properties
   const featuredProperties = [
@@ -60,18 +62,31 @@ const Index = () => {
             <h1 className="text-xl font-bold text-primary">Livimmo</h1>
             <Camera className="h-5 w-5 text-red-500" />
           </div>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon">
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => navigate('/notifications')}
+              className="relative"
+            >
               <Bell className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
+                3
+              </span>
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => navigate('/profile')}
+              className="hover:bg-accent"
+            >
               <User className="h-5 w-5" />
             </Button>
           </div>
         </div>
       </header>
 
-      {/* Main Content with padding for header */}
+      {/* Main Content */}
       <main className="container mx-auto px-4 pt-20">
         {/* Search Bar */}
         <div className="relative mb-6">
@@ -93,7 +108,7 @@ const Index = () => {
           <PropertyList properties={liveProperties} viewMode="carousel" />
         </section>
 
-        {/* Featured Properties Section with View Toggle */}
+        {/* Featured Properties Section */}
         <section className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Biens en vedette</h2>
