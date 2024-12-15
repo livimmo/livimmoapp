@@ -23,7 +23,7 @@ const Index = () => {
       surface: 350,
       rooms: 5,
       hasLive: true,
-      tags: ["Coup de cœur", "Live"]
+      tags: ["Coup de fusil", "Live"]
     },
     {
       id: 2,
@@ -98,7 +98,7 @@ const Index = () => {
         {/* Featured Properties Section */}
         <section className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Biens en vedette</h2>
+            <h2 className="text-lg font-semibold">Notre sélection de la semaine</h2>
             <div className="flex gap-2">
               <Button
                 variant={viewMode === "list" ? "default" : "outline"}
