@@ -33,7 +33,7 @@ export const FavoriteButton = ({
       variant="ghost"
       size="icon"
       className={cn(
-        "h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white/90",
+        "h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white/90",
         isFavorite && "text-red-500 hover:text-red-600"
       )}
       onClick={handleClick}

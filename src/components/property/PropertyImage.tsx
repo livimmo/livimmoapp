@@ -33,7 +33,7 @@ export const PropertyImage = ({
         <FavoriteButton propertyId={id} title={title} />
         {hasLive && (
           <div className="p-2 bg-[#ea384c] rounded-full shadow-md">
-            <Video className="w-5 h-5 text-white" />
+            <Video className="h-5 w-5 text-white" />
           </div>
         )}
         <PropertyActions title={title} currentUrl={currentUrl} />
