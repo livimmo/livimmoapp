@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 // Mock data for live streams
 const liveStreams = [
@@ -26,7 +27,8 @@ const liveStreams = [
     status: "live",
     thumbnail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
     agent: "Sarah Martin",
-    price: "2,500,000 MAD"
+    price: "2,500,000 MAD",
+    tags: ["Coup de fusil"]
   },
   {
     id: 2,
@@ -38,13 +40,40 @@ const liveStreams = [
     status: "live",
     thumbnail: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
     agent: "Mohammed Alami",
-    price: "1,800,000 MAD"
+    price: "1,800,000 MAD",
+    tags: ["Nouveauté", "Exclusivité"]
+  },
+  {
+    id: 3,
+    title: "Penthouse Luxueux",
+    date: new Date(),
+    type: "Appartement",
+    location: "Casablanca",
+    viewers: 42,
+    status: "live",
+    thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+    agent: "Karim Hassan",
+    price: "3,200,000 MAD",
+    tags: ["Exclusivité"]
+  },
+  {
+    id: 4,
+    title: "Riad Traditionnel",
+    date: new Date(),
+    type: "Riad",
+    location: "Marrakech",
+    viewers: 56,
+    status: "live",
+    thumbnail: "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
+    agent: "Yasmine Benali",
+    price: "4,500,000 MAD",
+    tags: ["Coup de fusil", "Nouveauté"]
   },
 ];
 
 const scheduledStreams = [
   {
-    id: 3,
+    id: 5,
     title: "Bureau Centre-Ville",
     date: new Date(Date.now() + 86400000), // Tomorrow
     type: "Bureau",
@@ -52,10 +81,11 @@ const scheduledStreams = [
     status: "scheduled",
     thumbnail: "https://images.unsplash.com/photo-1497366216548-37526070297c",
     agent: "Karim Benani",
-    price: "3,500,000 MAD"
+    price: "3,500,000 MAD",
+    tags: ["Nouveauté"]
   },
   {
-    id: 4,
+    id: 6,
     title: "Villa avec Piscine",
     date: new Date(Date.now() + 172800000), // Day after tomorrow
     type: "Villa",
@@ -63,7 +93,32 @@ const scheduledStreams = [
     status: "scheduled",
     thumbnail: "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
     agent: "Leila Amrani",
-    price: "4,200,000 MAD"
+    price: "4,200,000 MAD",
+    tags: ["Exclusivité"]
+  },
+  {
+    id: 7,
+    title: "Duplex Moderne",
+    date: new Date(Date.now() + 259200000), // In 3 days
+    type: "Appartement",
+    location: "Fès",
+    status: "scheduled",
+    thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+    agent: "Omar Tazi",
+    price: "2,800,000 MAD",
+    tags: ["Coup de fusil", "Nouveauté"]
+  },
+  {
+    id: 8,
+    title: "Local Commercial",
+    date: new Date(Date.now() + 345600000), // In 4 days
+    type: "Commercial",
+    location: "Tanger",
+    status: "scheduled",
+    thumbnail: "https://images.unsplash.com/photo-1497366216548-37526070297c",
+    agent: "Sofia Alaoui",
+    price: "1,900,000 MAD",
+    tags: ["Exclusivité", "Nouveauté"]
   },
 ];
 
@@ -81,6 +136,21 @@ const LiveCard = ({ stream }: { stream: any }) => (
           {stream.viewers} spectateurs
         </div>
       )}
+      <div className="absolute top-2 left-2 flex gap-1 flex-wrap max-w-[70%]">
+        {stream.tags.map((tag: string) => (
+          <Badge 
+            key={tag} 
+            variant={
+              tag === "Coup de fusil" ? "destructive" : 
+              tag === "Nouveauté" ? "default" : 
+              "secondary"
+            }
+            className="text-xs"
+          >
+            {tag}
+          </Badge>
+        ))}
+      </div>
     </div>
     <CardHeader>
       <CardTitle className="text-lg">{stream.title}</CardTitle>
