@@ -2,14 +2,17 @@ export interface Property {
   id: number;
   title: string;
   type: string;
-  price: string | number;
+  price: number;
   location: string;
-  surface: string | number;
+  surface: number;
   rooms: number;
   bathrooms: number;
   description: string;
   features: string[];
   images: string[];
+  hasLive?: boolean;
+  liveDate?: Date;
+  tags?: string[];
   agent: {
     name: string;
     image: string;
