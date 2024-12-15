@@ -7,19 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-
-interface Property {
-  id: number;
-  image: string;
-  title: string;
-  price: number;
-  location: string;
-  type: string;
-  surface: number;
-  rooms: number;
-  hasLive?: boolean;
-  tags?: string[];
-}
+import { type Property } from "@/types/property";
 
 interface PropertyListProps {
   properties: Property[];

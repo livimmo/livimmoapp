@@ -1,21 +1,8 @@
 import { PropertyCard } from "@/components/PropertyCard";
-
-interface LiveProperty {
-  id: number;
-  image: string;
-  title: string;
-  price: number;
-  location: string;
-  type: string;
-  surface: number;
-  rooms: number;
-  hasLive?: boolean;
-  viewers?: number;
-  tags?: string[];
-}
+import { type Property } from "@/types/property";
 
 interface LiveSectionProps {
-  properties: LiveProperty[];
+  properties: Property[];
 }
 
 export const LiveSection = ({ properties }: LiveSectionProps) => {

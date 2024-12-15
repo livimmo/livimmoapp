@@ -90,7 +90,7 @@ const Index = () => {
     },
   ];
 
-  const allProperties = [
+  const allProperties: Property[] = [
     ...featuredProperties,
     {
       id: 4,
