@@ -1,16 +1,16 @@
 import { Toaster } from "@/components/ui/toaster";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BottomNav } from "@/components/BottomNav";
-import { Index } from "./pages/Index";
-import { Search } from "./pages/Search";
-import { Lives } from "./pages/Lives";
-import { Favorites } from "./pages/Favorites";
-import { Profile } from "./pages/Profile";
-import { Notifications } from "./pages/Notifications";
-import { Properties } from "./pages/Properties";
-import { PropertyDetail } from "./pages/PropertyDetail";
-import { JoinLive } from "./pages/JoinLive";
-import { Signup } from "./pages/Signup";
+import Index from "./pages/Index";
+import Search from "./pages/Search";
+import Lives from "./pages/Lives";
+import Favorites from "./pages/Favorites";
+import Profile from "./pages/Profile";
+import Notifications from "./pages/Notifications";
+import Properties from "./pages/Properties";
+import PropertyDetail from "./pages/PropertyDetail";
+import JoinLive from "./pages/JoinLive";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
