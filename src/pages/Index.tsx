@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -15,35 +15,55 @@ L.Icon.Default.mergeOptions({
 const Index = () => {
   // Position par défaut (Casablanca)
   const position: [number, number] = [33.5731, -7.5898];
+  const [isClient, setIsClient] = useState(false);
   
   useEffect(() => {
+    setIsClient(true);
     // Force a re-render of the map when the component mounts
     window.dispatchEvent(new Event('resize'));
+
+    return () => {
+      // Cleanup any map instances if needed
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('resize'));
+      }
+    };
   }, []);
+
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-background pb-16">
+        <main className="container mx-auto px-4 py-6">
+          <section className="space-y-6">
+            <div className="w-full h-[400px] rounded-lg overflow-hidden bg-gray-100" />
+          </section>
+        </main>
+        <BottomNav />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background pb-16">
       <main className="container mx-auto px-4 py-6">
         <section className="space-y-6">
           <div className="w-full h-[400px] rounded-lg overflow-hidden">
-            {typeof window !== 'undefined' && (
-              <MapContainer 
-                center={position} 
-                zoom={13} 
-                style={{ height: "100%", width: "100%" }}
-                scrollWheelZoom={false}
-              >
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                />
-                <Marker position={position}>
-                  <Popup>
-                    Casablanca, Maroc
-                  </Popup>
-                </Marker>
-              </MapContainer>
-            )}
+            <MapContainer 
+              center={position} 
+              zoom={13} 
+              style={{ height: "100%", width: "100%" }}
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <Marker position={position}>
+                <Popup>
+                  Casablanca, Maroc
+                </Popup>
+              </Marker>
+            </MapContainer>
           </div>
         </section>
       </main>
