@@ -12,6 +12,7 @@ export interface Property {
   images: string[];
   hasLive?: boolean;
   liveDate?: Date;
+  tags?: string[];
   agent: {
     name: string;
     image: string;

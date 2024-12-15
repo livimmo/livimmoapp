@@ -4,6 +4,7 @@ import { PropertyList } from "@/components/search/PropertyList";
 import { PropertyMap } from "@/components/search/PropertyMap";
 import { Button } from "@/components/ui/button";
 import { List, Grid, Map as MapIcon } from "lucide-react";
+import { type Property } from "@/types/property";
 
 const placeholderImages = [
   "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
@@ -18,66 +19,111 @@ const placeholderImages = [
   "https://images.unsplash.com/photo-1500375592092-40eb2168fd21"
 ];
 
-const mockProperties = [
+const mockProperties: Property[] = [
   {
     id: 1,
-    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
+    images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Villa moderne à Marrakech",
     price: 2500000,
     location: "Marrakech",
     type: "Villa",
     surface: 250,
     rooms: 5,
+    bathrooms: 3,
+    description: "Magnifique villa moderne avec vue imprenable",
+    features: ["Piscine", "Jardin", "Garage"],
     hasLive: true,
-    tags: ["Coup de fusil", "Nouveauté"]
+    tags: ["Coup de fusil", "Nouveauté"],
+    agent: {
+      name: "Sarah Martin",
+      image: "https://i.pravatar.cc/150?u=sarah",
+      phone: "+212 6 12 34 56 78",
+      email: "sarah.martin@example.com",
+    }
   },
   {
     id: 2,
-    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
+    images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Appartement vue mer à Tanger",
     price: 1800000,
     location: "Tanger",
     type: "Appartement",
     surface: 120,
     rooms: 3,
+    bathrooms: 2,
+    description: "Superbe appartement avec vue sur mer",
+    features: ["Vue mer", "Terrasse", "Parking"],
     hasLive: false,
-    tags: ["Exclusivité"]
+    tags: ["Exclusivité"],
+    agent: {
+      name: "Mohammed Alami",
+      image: "https://i.pravatar.cc/150?u=mohammed",
+      phone: "+212 6 23 45 67 89",
+      email: "mohammed.alami@example.com",
+    }
   },
   {
     id: 3,
-    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
+    images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Riad traditionnel",
     price: 3200000,
     location: "Marrakech",
     type: "Riad",
     surface: 180,
     rooms: 4,
+    bathrooms: 2,
+    description: "Magnifique riad traditionnel",
+    features: ["Piscine", "Terrasse", "Patio"],
     hasLive: true,
-    tags: ["Nouveauté"]
+    tags: ["Nouveauté"],
+    agent: {
+      name: "Fatima Zahra",
+      image: "https://i.pravatar.cc/150?u=fatima",
+      phone: "+212 6 34 56 78 90",
+      email: "fatima.zahra@example.com",
+    }
   },
   {
     id: 4,
-    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
+    images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Bureau moderne",
     price: 1500000,
     location: "Casablanca",
     type: "Bureau",
     surface: 90,
     rooms: 2,
+    bathrooms: 1,
+    description: "Bureau moderne en plein centre-ville",
+    features: ["Parking", "Sécurité", "Climatisation"],
     hasLive: true,
-    tags: ["Coup de fusil"]
+    tags: ["Coup de fusil"],
+    agent: {
+      name: "Karim Idrissi",
+      image: "https://i.pravatar.cc/150?u=karim",
+      phone: "+212 6 45 67 89 01",
+      email: "karim.idrissi@example.com",
+    }
   },
   {
     id: 5,
-    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
+    images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Villa avec piscine",
     price: 4500000,
     location: "Rabat",
     type: "Villa",
     surface: 350,
     rooms: 6,
+    bathrooms: 4,
+    description: "Superbe villa avec piscine et jardin",
+    features: ["Piscine", "Jardin", "Garage", "Sécurité"],
     hasLive: false,
-    tags: ["Exclusivité", "Nouveauté"]
+    tags: ["Exclusivité", "Nouveauté"],
+    agent: {
+      name: "Yasmine Benjelloun",
+      image: "https://i.pravatar.cc/150?u=yasmine",
+      phone: "+212 6 56 78 90 12",
+      email: "yasmine.benjelloun@example.com",
+    }
   }
 ];
 
