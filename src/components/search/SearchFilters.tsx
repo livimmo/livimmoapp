@@ -40,7 +40,6 @@ export const SearchFilters = ({
   showFilters,
   setShowFilters,
 }: SearchFiltersProps) => {
-  // Suggestions basées sur les villes principales et types de biens
   const suggestions = [
     "Casablanca",
     "Rabat",
@@ -55,7 +54,7 @@ export const SearchFilters = ({
   ];
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10 p-4 space-y-4">
+    <div className="fixed top-12 left-0 right-0 bg-white shadow-md z-10 p-3 space-y-3">
       <div className="flex gap-2">
         <div className="relative flex-1">
           <SmartSearchBar
@@ -74,7 +73,7 @@ export const SearchFilters = ({
       </div>
 
       {showFilters && (
-        <div className="space-y-4 pt-2">
+        <div className="space-y-3">
           <div className="flex items-center gap-4">
             <Select value={propertyType} onValueChange={setPropertyType}>
               <SelectTrigger className="w-[180px] bg-white">

@@ -167,8 +167,8 @@ const Search = () => {
         setShowFilters={setShowFilters}
       />
 
-      <div className="pt-[76px] px-4">
-        <div className="flex justify-end mb-4 gap-2">
+      <div className="pt-[60px] px-3">
+        <div className="flex justify-end mb-3 gap-2">
           <Button
             variant="outline"
             size="icon"
