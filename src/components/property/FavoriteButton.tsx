@@ -41,7 +41,7 @@ export const FavoriteButton = ({
       <Heart
         className={cn(
           "h-5 w-5 transition-all",
-          isFavorite && "fill-[#ea384c]"
+          isFavorite && "fill-[#ea384c] text-[#ea384c]"
         )}
       />
     </Button>
