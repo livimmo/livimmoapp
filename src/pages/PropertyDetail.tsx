@@ -11,7 +11,35 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Video, Heart } from "lucide-react";
-import { mockProperties } from "./Properties";
+
+// Données mockées pour le développement
+export const mockProperties = [
+  {
+    id: 1,
+    title: "Villa de luxe avec piscine à Casablanca",
+    price: 4500000,
+    description: "Cette villa moderne de 400 m² située à Anfa offre une vue imprenable sur la mer, une piscine privée, et un grand jardin.",
+    location: "Anfa, Casablanca",
+    type: "Villa",
+    surface: 400,
+    rooms: 6,
+    bathrooms: 3,
+    features: ["Piscine", "Jardin", "Parking", "Sécurité 24/7", "Vue mer"],
+    images: [
+      "/placeholder.svg",
+      "/placeholder.svg",
+      "/placeholder.svg",
+    ],
+    hasLive: true,
+    liveDate: new Date("2024-03-20T15:00:00"),
+    agent: {
+      name: "Sarah Alami",
+      phone: "+212 6 12 34 56 78",
+      email: "sarah.alami@example.com",
+      image: "/placeholder.svg"
+    }
+  },
+];
 
 export const PropertyDetail = () => {
   const { id } = useParams();

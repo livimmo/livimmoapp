@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { Link } from "react-router-dom";
 
 interface PropertyCardProps {
   id: number;
@@ -50,11 +51,13 @@ export const PropertyCard = ({
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="relative">
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-48 object-cover"
-        />
+        <Link to={`/property/${id}`}>
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-48 object-cover"
+          />
+        </Link>
         <div className="absolute top-2 right-2 flex gap-2">
           {hasLive && (
             <div className="p-2 bg-[#ea384c] rounded-full shadow-md">
@@ -67,7 +70,9 @@ export const PropertyCard = ({
         </div>
       </div>
       <div className="p-4">
-        <h3 className="font-semibold text-lg mb-1">{title}</h3>
+        <Link to={`/property/${id}`}>
+          <h3 className="font-semibold text-lg mb-1">{title}</h3>
+        </Link>
         <p className="text-primary font-bold text-xl mb-2">
           {price.toLocaleString()} DH
         </p>
