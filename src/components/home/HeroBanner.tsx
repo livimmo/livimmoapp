@@ -6,22 +6,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-
-interface FeaturedProperty {
-  id: number;
-  image: string;
-  title: string;
-  price: number;
-  location: string;
-  type: string;
-  surface: number;
-  rooms: number;
-  hasLive?: boolean;
-  tags?: string[];
-}
+import { Property } from "@/types/property";
 
 interface HeroBannerProps {
-  properties: FeaturedProperty[];
+  properties: Property[];
 }
 
 export const HeroBanner = ({ properties }: HeroBannerProps) => {
@@ -32,7 +20,10 @@ export const HeroBanner = ({ properties }: HeroBannerProps) => {
           {properties.map((property) => (
             <CarouselItem key={property.id}>
               <div className="p-1">
-                <PropertyCard {...property} />
+                <PropertyCard 
+                  {...property}
+                  image={property.images[0]}
+                />
               </div>
             </CarouselItem>
           ))}
