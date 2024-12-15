@@ -1,4 +1,4 @@
-import { Video, Calendar, Users } from "lucide-react";
+import { Video, Calendar, Users, CircleDot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -32,7 +32,7 @@ export const LiveButton = ({
     return (
       <Button 
         variant="outline" 
-        className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
+        className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90 animate-pulse"
         onClick={onJoinLive}
       >
         <Video className="mr-2 h-4 w-4" />
