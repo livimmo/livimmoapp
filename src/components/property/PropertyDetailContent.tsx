@@ -1,6 +1,5 @@
 import { MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { PropertyLocationMap } from "./PropertyLocationMap";
 
 interface PropertyDetailContentProps {
   property: any;
@@ -43,15 +42,6 @@ export const PropertyDetailContent = ({ property }: PropertyDetailContentProps) 
             </Badge>
           ))}
         </div>
-      </div>
-
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Localisation</h2>
-        <PropertyLocationMap
-          title={property.title}
-          location={property.location}
-          coordinates={property.coordinates}
-        />
       </div>
     </div>
   );
