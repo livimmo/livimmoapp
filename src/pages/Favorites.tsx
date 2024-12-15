@@ -12,6 +12,7 @@ const Favorites = () => {
   );
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filterType, setFilterType] = useState<string>("all");
+  const [filterCity, setFilterCity] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "carousel" | "map">("grid");
 
   const handleSort = () => {
@@ -26,10 +27,15 @@ const Favorites = () => {
     setFilterType(type);
   };
 
-  const filteredFavorites =
-    filterType === "all"
-      ? favorites
-      : favorites.filter((property) => property.type === filterType);
+  const handleCityFilter = (city: string) => {
+    setFilterCity(city);
+  };
+
+  const filteredFavorites = favorites.filter((property) => {
+    const matchesType = filterType === "all" || property.type === filterType;
+    const matchesCity = filterCity === "all" || property.location.includes(filterCity);
+    return matchesType && matchesCity;
+  });
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6">
@@ -37,7 +43,9 @@ const Favorites = () => {
 
       <FavoritesFilters
         filterType={filterType}
+        filterCity={filterCity}
         onFilterChange={handleFilter}
+        onCityChange={handleCityFilter}
         onSortChange={handleSort}
         sortOrder={sortOrder}
       />

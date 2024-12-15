@@ -10,14 +10,18 @@ import {
 
 interface FavoritesFiltersProps {
   filterType: string;
+  filterCity: string;
   onFilterChange: (value: string) => void;
+  onCityChange: (value: string) => void;
   onSortChange: () => void;
   sortOrder: "asc" | "desc";
 }
 
 export const FavoritesFilters = ({
   filterType,
+  filterCity,
   onFilterChange,
+  onCityChange,
   onSortChange,
   sortOrder,
 }: FavoritesFiltersProps) => {
@@ -36,6 +40,21 @@ export const FavoritesFilters = ({
           <SelectItem value="Commerce">Commerce</SelectItem>
           <SelectItem value="Studio">Studio</SelectItem>
           <SelectItem value="Loft">Loft</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Select value={filterCity} onValueChange={onCityChange}>
+        <SelectTrigger className="w-[180px] bg-white">
+          <SelectValue placeholder="Ville" />
+        </SelectTrigger>
+        <SelectContent className="bg-white border shadow-lg">
+          <SelectItem value="all">Toutes les villes</SelectItem>
+          <SelectItem value="Casablanca">Casablanca</SelectItem>
+          <SelectItem value="Rabat">Rabat</SelectItem>
+          <SelectItem value="Marrakech">Marrakech</SelectItem>
+          <SelectItem value="Tanger">Tanger</SelectItem>
+          <SelectItem value="Agadir">Agadir</SelectItem>
+          <SelectItem value="Fès">Fès</SelectItem>
         </SelectContent>
       </Select>
 
