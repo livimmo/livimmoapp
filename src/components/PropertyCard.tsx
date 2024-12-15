@@ -10,11 +10,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { type Property } from "@/types/property";
 import { ViewersCounter } from "./property/ViewersCounter";
 import { PropertyActions } from "./property/PropertyActions";
+import { ReservationForm } from "./home/ReservationForm";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -120,14 +121,44 @@ export const PropertyCard = ({
             </DialogContent>
           </Dialog>
           {hasLive && (
-            <Button 
-              variant="outline" 
-              className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
-              onClick={handleJoinLive}
-            >
-              <Video className="mr-2 h-4 w-4" />
-              Rejoindre le live
-            </Button>
+            <>
+              {liveDate && new Date(liveDate) > new Date() ? (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
+                      <Video className="mr-2 h-4 w-4" />
+                      S'inscrire au live
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>S'inscrire au live</DialogTitle>
+                      <DialogDescription>
+                        Live programmé le {new Date(liveDate).toLocaleDateString()} à{" "}
+                        {new Date(liveDate).toLocaleTimeString()}
+                      </DialogDescription>
+                    </DialogHeader>
+                    <ReservationForm
+                      live={{
+                        id,
+                        title,
+                        date: new Date(liveDate),
+                        availableSeats: 15, // À remplacer par la vraie valeur
+                      }}
+                    />
+                  </DialogContent>
+                </Dialog>
+              ) : (
+                <Button 
+                  variant="outline" 
+                  className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
+                  onClick={handleJoinLive}
+                >
+                  <Video className="mr-2 h-4 w-4" />
+                  Rejoindre le live
+                </Button>
+              )}
+            </>
           )}
         </div>
       </div>
