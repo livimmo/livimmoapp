@@ -12,6 +12,9 @@ export interface Property {
   images: string[];
   hasLive?: boolean;
   liveDate?: Date;
+  isLiveNow?: boolean;
+  viewers?: number;
+  remainingSeats?: number;
   tags?: string[];
   agent: {
     name: string;
