@@ -4,84 +4,128 @@ import { PropertyList } from "@/components/search/PropertyList";
 import { PropertyMap } from "@/components/search/PropertyMap";
 import { Button } from "@/components/ui/button";
 import { List, Grid, Map as MapIcon } from "lucide-react";
+import { Property } from "@/types/property";
 
-const placeholderImages = [
-  "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
-  "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
-  "https://images.unsplash.com/photo-1518770660439-4636190af475",
-  "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
-  "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
-  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-  "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
-  "https://images.unsplash.com/photo-1605810230434-7631ac76ec81",
-  "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
-  "https://images.unsplash.com/photo-1500375592092-40eb2168fd21"
-];
-
-const mockProperties = [
+const mockProperties: Property[] = [
   {
     id: 1,
-    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
     title: "Villa moderne à Marrakech",
+    type: "Villa",
     price: 2500000,
     location: "Marrakech",
-    type: "Villa",
     surface: 250,
     rooms: 5,
+    bathrooms: 3,
+    description: "Magnifique villa moderne avec piscine et jardin",
+    features: ["Piscine", "Jardin", "Garage", "Climatisation"],
+    images: [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+    ],
     hasLive: true,
-    tags: ["Coup de fusil", "Nouveauté"]
+    liveDate: new Date("2024-03-20"),
+    agent: {
+      name: "Sarah Alami",
+      phone: "+212 6 12 34 56 78",
+      email: "sarah.alami@example.com",
+      image: "https://i.pravatar.cc/150?u=sarah",
+    },
   },
   {
     id: 2,
-    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
     title: "Appartement vue mer à Tanger",
+    type: "Appartement",
     price: 1800000,
     location: "Tanger",
-    type: "Appartement",
     surface: 120,
     rooms: 3,
+    bathrooms: 2,
+    description: "Superbe appartement avec vue imprenable sur la mer",
+    features: ["Vue mer", "Terrasse", "Ascenseur", "Parking"],
+    images: [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
+    ],
     hasLive: false,
-    tags: ["Exclusivité"]
+    agent: {
+      name: "Mohammed Alami",
+      phone: "+212 6 23 45 67 89",
+      email: "mohammed.alami@example.com",
+      image: "https://i.pravatar.cc/150?u=mohammed",
+    },
   },
   {
     id: 3,
-    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
     title: "Riad traditionnel",
+    type: "Riad",
     price: 3200000,
     location: "Marrakech",
-    type: "Riad",
     surface: 180,
     rooms: 4,
+    bathrooms: 2,
+    description: "Charmant riad traditionnel au cœur de la médina",
+    features: ["Terrasse", "Jardin", "Climatisation"],
+    images: [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+    ],
     hasLive: true,
-    tags: ["Nouveauté"]
+    liveDate: new Date("2024-03-25"),
+    agent: {
+      name: "Fatima Zahra",
+      phone: "+212 6 34 56 78 90",
+      email: "fatima.zahra@example.com",
+      image: "https://i.pravatar.cc/150?u=fatima",
+    },
   },
   {
     id: 4,
-    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
     title: "Bureau moderne",
+    type: "Bureau",
     price: 1500000,
     location: "Casablanca",
-    type: "Bureau",
     surface: 90,
     rooms: 2,
-    hasLive: true,
-    tags: ["Coup de fusil"]
+    bathrooms: 1,
+    description: "Bureau moderne dans le centre d'affaires de Casablanca",
+    features: ["Ascenseur", "Climatisation", "Internet haut débit"],
+    images: [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+    ],
+    hasLive: false,
+    agent: {
+      name: "Omar El Amrani",
+      phone: "+212 6 45 67 89 01",
+      email: "omar.elamrani@example.com",
+      image: "https://i.pravatar.cc/150?u=omar",
+    },
   },
   {
     id: 5,
-    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
     title: "Villa avec piscine",
+    type: "Villa",
     price: 4500000,
     location: "Rabat",
-    type: "Villa",
     surface: 350,
     rooms: 6,
-    hasLive: false,
-    tags: ["Exclusivité", "Nouveauté"]
-  }
+    bathrooms: 4,
+    description: "Villa spacieuse avec piscine et jardin paysager",
+    features: ["Piscine", "Jardin", "Garage", "Climatisation"],
+    images: [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+    ],
+    hasLive: true,
+    liveDate: new Date("2024-04-01"),
+    agent: {
+      name: "Khalid Benali",
+      phone: "+212 6 56 78 90 12",
+      email: "khalid.benali@example.com",
+      image: "https://i.pravatar.cc/150?u=khalid",
+    },
+  },
 ];
-
-type ViewMode = "list" | "carousel" | "map";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -90,7 +134,7 @@ const Search = () => {
   const [surfaceRange, setSurfaceRange] = useState([0, 500]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const [viewMode, setViewMode] = useState<"list" | "carousel" | "map">("list");
 
   const filteredProperties = mockProperties.filter((property) => {
     const matchesSearch = property.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
