@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { type Property } from "@/types/property";
 import { PropertyImage } from "./property/PropertyImage";
-import { PropertyInfo } from "./property/PropertyInfo";
+import { PropertyInfo } from "./PropertyInfo";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -45,6 +45,7 @@ export const PropertyCard = ({
         currentUrl={currentUrl}
         isLiveNow={isLiveNow}
         isUserRegistered={isUserRegistered}
+        remainingSeats={remainingSeats}
       />
       <PropertyInfo
         id={id}

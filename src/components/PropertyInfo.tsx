@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { OfferDialog } from "./OfferDialog";
-import { LiveButton } from "./LiveButton";
+import { Button } from "@/components/ui/button";
+import { LiveButton } from "./property/LiveButton";
 
 interface PropertyInfoProps {
   id: number;
@@ -51,8 +51,7 @@ export const PropertyInfo = ({
         <span>{surface} m²</span>
         <span>{rooms} pièces</span>
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        <OfferDialog title={title} price={price} />
+      <div className="grid grid-cols-1 gap-2">
         {hasLive && onJoinLive && (
           <LiveButton
             id={id}

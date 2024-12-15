@@ -14,6 +14,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
     type: live.type,
     surface: 0,
     rooms: 0,
+    bathrooms: 0,
     description: live.description || "",
     features: [],
     images: [live.thumbnail],
@@ -32,6 +33,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
     viewers: live.viewers,
     isLiveNow: live.status === "live",
     remainingSeats: live.availableSeats,
+    isUserRegistered: false,
   };
 
   return <PropertyCard {...propertyData} />;

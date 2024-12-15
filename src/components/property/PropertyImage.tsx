@@ -14,6 +14,7 @@ interface PropertyImageProps {
   currentUrl: string;
   isLiveNow?: boolean;
   isUserRegistered?: boolean;
+  remainingSeats?: number;
 }
 
 export const PropertyImage = ({
@@ -26,6 +27,7 @@ export const PropertyImage = ({
   currentUrl,
   isLiveNow,
   isUserRegistered = false,
+  remainingSeats = 0,
 }: PropertyImageProps) => {
   return (
     <div className="relative aspect-[4/3]">
@@ -48,14 +50,23 @@ export const PropertyImage = ({
               {viewers > 0 && <ViewersCounter count={viewers} />}
             </>
           ) : (
-            <Badge className="bg-primary/90 backdrop-blur-sm text-white">
-              Live le {new Date(liveDate).toLocaleDateString("fr-FR", {
-                day: "numeric",
-                month: "long",
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </Badge>
+            <>
+              <Badge className="bg-primary/90 backdrop-blur-sm text-white">
+                {new Date(liveDate).toLocaleDateString("fr-FR", {
+                  weekday: 'long',
+                  day: "numeric",
+                  month: "long",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </Badge>
+              {remainingSeats > 0 && (
+                <Badge variant="secondary" className="backdrop-blur-sm">
+                  <Users className="w-4 h-4 mr-1" />
+                  {remainingSeats} places disponibles
+                </Badge>
+              )}
+            </>
           )}
         </div>
       )}
