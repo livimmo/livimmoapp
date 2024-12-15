@@ -21,6 +21,12 @@ export const ScheduledLivesList = ({ lives }: ScheduledLivesListProps) => {
     description: live.description || "",
     features: [],
     images: [live.thumbnail],
+    agent: {
+      name: live.agent,
+      image: "/placeholder.svg",
+      phone: "N/A",
+      email: "N/A"
+    },
     coordinates: {
       lat: 31.7917 + Math.random() * 2,
       lng: -7.0926 + Math.random() * 2

@@ -11,7 +11,10 @@ export const liveStreams: LiveEvent[] = [
     availableSeats: 35,
     thumbnail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
     price: "2,500,000 MAD",
-    description: "Magnifique villa moderne avec piscine"
+    description: "Magnifique villa moderne avec piscine",
+    viewers: 25,
+    status: "live",
+    tags: ["Nouveauté"]
   },
   {
     id: 2,
@@ -19,11 +22,12 @@ export const liveStreams: LiveEvent[] = [
     date: new Date(),
     type: "Appartement",
     location: "Tanger",
+    agent: "Mohammed Alami",
+    availableSeats: 30,
+    thumbnail: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+    price: "1,800,000 MAD",
     viewers: 28,
     status: "live",
-    thumbnail: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-    agent: "Mohammed Alami",
-    price: "1,800,000 MAD",
     tags: ["Nouveauté", "Exclusivité"]
   },
   {
@@ -32,11 +36,12 @@ export const liveStreams: LiveEvent[] = [
     date: new Date(),
     type: "Appartement",
     location: "Casablanca",
+    agent: "Karim Hassan",
+    availableSeats: 40,
+    thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+    price: "3,200,000 MAD",
     viewers: 42,
     status: "live",
-    thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-    agent: "Karim Hassan",
-    price: "3,200,000 MAD",
     tags: ["Exclusivité"]
   },
   {
@@ -45,11 +50,12 @@ export const liveStreams: LiveEvent[] = [
     date: new Date(),
     type: "Riad",
     location: "Marrakech",
+    agent: "Yasmine Benali",
+    availableSeats: 45,
+    thumbnail: "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
+    price: "4,500,000 MAD",
     viewers: 56,
     status: "live",
-    thumbnail: "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
-    agent: "Yasmine Benali",
-    price: "4,500,000 MAD",
     tags: ["Coup de fusil", "Nouveauté"]
   },
 ];
