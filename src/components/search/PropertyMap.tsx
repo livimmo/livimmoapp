@@ -10,9 +10,9 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 // Fix for default markers in React Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconUrl: markerIcon.src,
-  iconRetinaUrl: markerIcon2x.src,
-  shadowUrl: markerShadow.src,
+  iconUrl: markerIcon as unknown as string,
+  iconRetinaUrl: markerIcon2x as unknown as string,
+  shadowUrl: markerShadow as unknown as string,
 });
 
 interface PropertyMapProps {
