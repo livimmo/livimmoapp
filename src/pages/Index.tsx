@@ -21,12 +21,13 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-6">
         <section className="space-y-6">
-          <div style={{ height: "400px", width: "100%" }} className="rounded-lg overflow-hidden">
+          <div className="w-full h-[400px] rounded-lg overflow-hidden">
             <MapContainer 
               center={position} 
               zoom={13} 
               style={{ height: "100%", width: "100%" }}
               scrollWheelZoom={false}
+              key="map"
             >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
