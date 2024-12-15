@@ -11,7 +11,7 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
-  const [surfaceRange, setSurfaceRange] = useState([0, 500]);
+  const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
 
   const applyFilters = () => {

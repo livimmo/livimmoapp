@@ -118,7 +118,7 @@ export const SearchFilters = ({
             </label>
             <Slider
               min={0}
-              max={500}
+              max={100000}
               step={10}
               value={surfaceRange}
               onValueChange={setSurfaceRange}
