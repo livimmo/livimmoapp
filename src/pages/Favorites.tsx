@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { FavoritesFilters } from "@/components/favorites/FavoritesFilters";
-import { FavoritesGrid } from "@/components/favorites/FavoritesGrid";
-import { FavoritesCarousel } from "@/components/favorites/FavoritesCarousel";
-import { Button } from "@/components/ui/button";
+import { FavoritesHeader } from "@/components/favorites/FavoritesHeader";
+import { FavoritesContent } from "@/components/favorites/FavoritesContent";
 import { Property } from "@/types/property";
 
-// Données mockées pour l'exemple
 const mockFavorites: Property[] = [
   {
     id: 1,
@@ -253,7 +251,7 @@ const Favorites = () => {
   const [favorites, setFavorites] = useState(mockFavorites);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filterType, setFilterType] = useState<string>("all");
-  const [viewMode, setViewMode] = useState<"grid" | "carousel">("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "carousel" | "map">("grid");
 
   const handleSort = () => {
     const sorted = [...favorites].sort((a, b) => {
@@ -274,23 +272,7 @@ const Favorites = () => {
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Mes Favoris</h1>
-        <div className="space-x-2">
-          <Button
-            variant={viewMode === "grid" ? "default" : "outline"}
-            onClick={() => setViewMode("grid")}
-          >
-            Grille
-          </Button>
-          <Button
-            variant={viewMode === "carousel" ? "default" : "outline"}
-            onClick={() => setViewMode("carousel")}
-          >
-            Carrousel
-          </Button>
-        </div>
-      </div>
+      <FavoritesHeader viewMode={viewMode} onViewModeChange={setViewMode} />
 
       <FavoritesFilters
         filterType={filterType}
@@ -299,17 +281,7 @@ const Favorites = () => {
         sortOrder={sortOrder}
       />
 
-      {viewMode === "grid" ? (
-        <FavoritesGrid properties={filteredFavorites} />
-      ) : (
-        <FavoritesCarousel properties={filteredFavorites} />
-      )}
-
-      {filteredFavorites.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500">Aucun bien favori trouvé</p>
-        </div>
-      )}
+      <FavoritesContent viewMode={viewMode} properties={filteredFavorites} />
     </div>
   );
 };
