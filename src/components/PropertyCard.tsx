@@ -5,6 +5,8 @@ import { PropertyInfo } from "./property/PropertyInfo";
 
 type PropertyCardProps = Property & {
   viewers?: number;
+  isLiveNow?: boolean;
+  remainingSeats?: number;
 };
 
 export const PropertyCard = ({
@@ -19,6 +21,8 @@ export const PropertyCard = ({
   hasLive,
   liveDate,
   viewers = 0,
+  isLiveNow,
+  remainingSeats = 15,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
@@ -37,6 +41,7 @@ export const PropertyCard = ({
         liveDate={liveDate}
         viewers={viewers}
         currentUrl={currentUrl}
+        isLiveNow={isLiveNow}
       />
       <PropertyInfo
         id={id}
@@ -49,6 +54,8 @@ export const PropertyCard = ({
         hasLive={hasLive}
         liveDate={liveDate}
         onJoinLive={handleJoinLive}
+        isLiveNow={isLiveNow}
+        remainingSeats={remainingSeats}
       />
     </div>
   );

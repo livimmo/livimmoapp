@@ -13,6 +13,8 @@ interface PropertyInfoProps {
   hasLive?: boolean;
   liveDate?: Date;
   onJoinLive?: () => void;
+  isLiveNow?: boolean;
+  remainingSeats?: number;
 }
 
 export const PropertyInfo = ({
@@ -26,6 +28,8 @@ export const PropertyInfo = ({
   hasLive,
   liveDate,
   onJoinLive,
+  isLiveNow,
+  remainingSeats,
 }: PropertyInfoProps) => {
   return (
     <div className="p-4">
@@ -47,12 +51,14 @@ export const PropertyInfo = ({
       </div>
       <div className="grid grid-cols-2 gap-2">
         <OfferDialog title={title} price={price} />
-        {hasLive && (
+        {hasLive && onJoinLive && (
           <LiveButton
             id={id}
             title={title}
             liveDate={liveDate}
             onJoinLive={onJoinLive}
+            isLiveNow={isLiveNow}
+            remainingSeats={remainingSeats}
           />
         )}
       </div>

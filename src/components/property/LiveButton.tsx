@@ -16,18 +16,37 @@ interface LiveButtonProps {
   title: string;
   liveDate?: Date;
   onJoinLive: () => void;
+  isLiveNow?: boolean;
+  remainingSeats?: number;
 }
 
-export const LiveButton = ({ id, title, liveDate, onJoinLive }: LiveButtonProps) => {
-  const isUpcoming = liveDate && new Date(liveDate) > new Date();
-  const remainingSeats = 15; // This would come from your backend in a real app
+export const LiveButton = ({ 
+  id, 
+  title, 
+  liveDate, 
+  onJoinLive,
+  isLiveNow,
+  remainingSeats = 15
+}: LiveButtonProps) => {
+  if (isLiveNow) {
+    return (
+      <Button 
+        variant="outline" 
+        className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
+        onClick={onJoinLive}
+      >
+        <Video className="mr-2 h-4 w-4" />
+        Rejoindre le live
+      </Button>
+    );
+  }
 
-  if (isUpcoming) {
+  if (liveDate && new Date(liveDate) > new Date()) {
     return (
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline" className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
-            <Video className="mr-2 h-4 w-4" />
+          <Button variant="outline" className="w-full bg-primary text-white hover:bg-primary/90">
+            <Calendar className="mr-2 h-4 w-4" />
             S'inscrire au live
           </Button>
         </DialogTrigger>
@@ -63,14 +82,5 @@ export const LiveButton = ({ id, title, liveDate, onJoinLive }: LiveButtonProps)
     );
   }
 
-  return (
-    <Button 
-      variant="outline" 
-      className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
-      onClick={onJoinLive}
-    >
-      <Video className="mr-2 h-4 w-4" />
-      Rejoindre le live
-    </Button>
-  );
+  return null;
 };
