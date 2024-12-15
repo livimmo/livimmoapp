@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { type Property } from "@/types/property";
 
 type PropertyCardProps = Property;
@@ -30,12 +30,17 @@ export const PropertyCard = ({
 }: PropertyCardProps) => {
   const [offerAmount, setOfferAmount] = useState(price);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleOffer = () => {
     toast({
       title: "Offre envoyée !",
       description: `Votre offre de ${offerAmount.toLocaleString()} DH pour ${title} a été envoyée.`,
     });
+  };
+
+  const handleJoinLive = () => {
+    navigate(`/live/${id}`);
   };
 
   return (
@@ -106,7 +111,11 @@ export const PropertyCard = ({
             </DialogContent>
           </Dialog>
           {hasLive && (
-            <Button variant="outline" className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
+            <Button 
+              variant="outline" 
+              className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
+              onClick={handleJoinLive}
+            >
               <Video className="mr-2 h-4 w-4" />
               Rejoindre le live
             </Button>
