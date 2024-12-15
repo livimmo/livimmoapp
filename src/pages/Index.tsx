@@ -1,8 +1,19 @@
 import { PropertyCard } from "@/components/PropertyCard";
 import { BottomNav } from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
-import { Map, List } from "lucide-react";
+import { Map as MapIcon, List } from "lucide-react";
 import { useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Fix for default markers
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const properties = [
   {
@@ -16,6 +27,7 @@ const properties = [
     rooms: 5,
     hasLive: true,
     liveDate: new Date(2024, 3, 15, 14, 30),
+    coordinates: [33.5731, -7.6298], // Coordonnées pour Casablanca
   },
   {
     id: 2,
@@ -27,6 +39,7 @@ const properties = [
     surface: 120,
     rooms: 3,
     hasLive: false,
+    coordinates: [34.0209, -6.8416], // Coordonnées pour Rabat
   },
   {
     id: 3,
@@ -39,6 +52,7 @@ const properties = [
     rooms: 4,
     hasLive: true,
     liveDate: new Date(2024, 3, 18, 16, 0),
+    coordinates: [31.6295, -7.9811], // Coordonnées pour Marrakech
   },
 ];
 
@@ -64,7 +78,7 @@ const Index = () => {
               size="sm"
               onClick={() => setViewMode("map")}
             >
-              <Map className="w-4 h-4 mr-1" />
+              <MapIcon className="w-4 h-4 mr-1" />
               Carte
             </Button>
           </div>
@@ -83,10 +97,33 @@ const Index = () => {
           </section>
         ) : (
           <section className="mb-8">
-            <div className="bg-accent rounded-lg p-4">
-              <p className="text-center text-gray-500">
-                La vue carte sera bientôt disponible
-              </p>
+            <div className="h-[600px] rounded-lg overflow-hidden">
+              <MapContainer
+                center={[31.7917, -7.0926]} // Centre du Maroc
+                zoom={6}
+                style={{ height: '100%', width: '100%' }}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {properties.map((property) => (
+                  <Marker 
+                    key={property.id} 
+                    position={property.coordinates as [number, number]}
+                  >
+                    <Popup>
+                      <div className="p-2">
+                        <h3 className="font-semibold">{property.title}</h3>
+                        <p className="text-sm text-gray-600">{property.location}</p>
+                        <p className="text-sm font-medium">
+                          {property.price.toLocaleString('fr-FR')} MAD
+                        </p>
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))}
+              </MapContainer>
             </div>
           </section>
         )}
