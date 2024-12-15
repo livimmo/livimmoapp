@@ -65,10 +65,10 @@ export const SearchFilters = ({
         <div className="space-y-4 pt-2">
           <div className="flex items-center gap-4">
             <Select value={propertyType} onValueChange={setPropertyType}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[180px] bg-white">
                 <SelectValue placeholder="Type de bien" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white border shadow-lg">
                 <SelectItem value="all">Tous les types</SelectItem>
                 <SelectItem value="Villa">Villa</SelectItem>
                 <SelectItem value="Appartement">Appartement</SelectItem>

@@ -24,10 +24,10 @@ export const FavoritesFilters = ({
   return (
     <div className="flex gap-4 items-center mb-6">
       <Select value={filterType} onValueChange={onFilterChange}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[180px] bg-white">
           <SelectValue placeholder="Type de bien" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-white border shadow-lg">
           <SelectItem value="all">Tous les types</SelectItem>
           <SelectItem value="Villa">Villa</SelectItem>
           <SelectItem value="Appartement">Appartement</SelectItem>
