@@ -1,4 +1,4 @@
-import { Heart, Camera } from "lucide-react";
+import { Heart, Video } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -55,8 +55,8 @@ export const PropertyCard = ({
         />
         <div className="absolute top-2 right-2 flex gap-2">
           {hasLive && (
-            <div className="p-2 bg-primary rounded-full shadow-md">
-              <Camera className="w-5 h-5 text-white" />
+            <div className="p-2 bg-[#ea384c] rounded-full shadow-md">
+              <Video className="w-5 h-5 text-white" />
             </div>
           )}
           <button className="p-2 bg-white rounded-full shadow-md">
@@ -109,8 +109,8 @@ export const PropertyCard = ({
             </DialogContent>
           </Dialog>
           {hasLive && (
-            <Button variant="outline" className="w-full">
-              <Camera className="mr-2 h-4 w-4" />
+            <Button variant="outline" className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
+              <Video className="mr-2 h-4 w-4" />
               Rejoindre le live
             </Button>
           )}

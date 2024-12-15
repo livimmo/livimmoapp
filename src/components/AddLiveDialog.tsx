@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { Plus } from "lucide-react";
+import { Plus, Video } from "lucide-react";
 
 export const AddLiveDialog = () => {
   const [date, setDate] = useState<Date>();
@@ -32,7 +32,6 @@ export const AddLiveDialog = () => {
       return;
     }
 
-    // TODO: Implement live creation logic
     toast({
       title: "Live programmé !",
       description: `Votre live "${title}" a été programmé pour le ${date.toLocaleDateString()}`,
@@ -42,7 +41,7 @@ export const AddLiveDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="gap-2">
+        <Button className="gap-2 bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
           <Plus className="h-4 w-4" />
           Ajouter un Live
         </Button>
@@ -119,7 +118,8 @@ export const AddLiveDialog = () => {
               required
             />
           </div>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
+            <Video className="mr-2 h-4 w-4" />
             Programmer le Live
           </Button>
         </form>

@@ -1,5 +1,6 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Button } from "@/components/ui/button";
+import { Video } from "lucide-react";
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -61,7 +62,8 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
                   {property.price.toLocaleString()} DH
                 </p>
                 {property.hasLive && (
-                  <Button size="sm" className="w-full mt-2">
+                  <Button size="sm" className="w-full mt-2 bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
+                    <Video className="mr-2 h-4 w-4" />
                     Rejoindre le live
                   </Button>
                 )}
