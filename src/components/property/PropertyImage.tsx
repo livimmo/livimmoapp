@@ -60,25 +60,28 @@ export const PropertyImage = ({
                 <Users className="mr-1 h-4 w-4" />
                 {viewers} spectateurs
               </Badge>
-              {!isUserRegistered && remainingSeats && remainingSeats > 0 && (
-                <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
-                  {remainingSeats} places restantes
-                </Badge>
-              )}
             </>
           ) : (
             liveDate && (
-              <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
-                <Clock className="mr-1 h-4 w-4" />
-                {new Date(liveDate).toLocaleDateString("fr-FR", {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </Badge>
+              <>
+                <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                  <Clock className="mr-1 h-4 w-4" />
+                  {new Date(liveDate).toLocaleDateString("fr-FR", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Badge>
+              </>
             )
+          )}
+          {remainingSeats && remainingSeats > 0 && (
+            <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+              <Users className="mr-1 h-4 w-4" />
+              {remainingSeats} places restantes
+            </Badge>
           )}
         </div>
       )}
