@@ -4,12 +4,12 @@ import { Card } from "@/components/ui/card";
 import { LiveCard } from "../live/LiveCard";
 import type { LiveEvent } from "@/types/live";
 
-// Mock data for scheduled lives
+// Mock data for scheduled lives with multiple events per day
 const scheduledLives: LiveEvent[] = [
   {
     id: 1,
     title: "Villa Moderne avec Piscine",
-    date: new Date(Date.now() + 86400000),
+    date: new Date(Date.now() + 86400000), // Tomorrow
     type: "Villa",
     location: "Marrakech",
     agent: "Sarah Martin",
@@ -21,7 +21,7 @@ const scheduledLives: LiveEvent[] = [
   {
     id: 2,
     title: "Appartement Vue Mer",
-    date: new Date(Date.now() + 172800000),
+    date: new Date(Date.now() + 86400000), // Tomorrow (same day)
     type: "Appartement",
     location: "Tanger",
     agent: "Mohammed Alami",
@@ -33,7 +33,7 @@ const scheduledLives: LiveEvent[] = [
   {
     id: 3,
     title: "Penthouse Luxueux",
-    date: new Date(Date.now() + 259200000),
+    date: new Date(Date.now() + 172800000), // Day after tomorrow
     type: "Appartement",
     location: "Casablanca",
     agent: "Karim Hassan",
@@ -45,7 +45,7 @@ const scheduledLives: LiveEvent[] = [
   {
     id: 4,
     title: "Riad Traditionnel",
-    date: new Date(Date.now() + 345600000),
+    date: new Date(Date.now() + 172800000), // Day after tomorrow (same day)
     type: "Riad",
     location: "Marrakech",
     agent: "Yasmine Benali",
@@ -57,7 +57,7 @@ const scheduledLives: LiveEvent[] = [
   {
     id: 5,
     title: "Villa Contemporaine",
-    date: new Date(Date.now() + 432000000),
+    date: new Date(Date.now() + 259200000), // In 3 days
     type: "Villa",
     location: "Rabat",
     agent: "Adam Tazi",
@@ -65,6 +65,30 @@ const scheduledLives: LiveEvent[] = [
     thumbnail: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
     price: "5,900,000 MAD",
     description: "Villa contemporaine avec design unique"
+  },
+  {
+    id: 6,
+    title: "Duplex avec Terrasse",
+    date: new Date(Date.now() + 259200000), // In 3 days (same day)
+    type: "Appartement",
+    location: "Casablanca",
+    agent: "Leila Amrani",
+    availableSeats: 15,
+    thumbnail: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3",
+    price: "2,100,000 MAD",
+    description: "Magnifique duplex avec grande terrasse aménagée"
+  },
+  {
+    id: 7,
+    title: "Maison de Campagne",
+    date: new Date(Date.now() + 345600000), // In 4 days
+    type: "Villa",
+    location: "Ifrane",
+    agent: "Omar Bennis",
+    availableSeats: 10,
+    thumbnail: "https://images.unsplash.com/photo-1600585154526-990dced4db0d",
+    price: "3,800,000 MAD",
+    description: "Charmante maison de campagne avec vue sur la forêt"
   }
 ];
 
@@ -76,9 +100,16 @@ export const LiveCalendar = () => {
   );
 
   const hasLivesOnDate = (date: Date) => {
-    return scheduledLives.some(
+    const count = scheduledLives.filter(
       live => live.date.toDateString() === date.toDateString()
-    );
+    ).length;
+    return count > 0;
+  };
+
+  const getLiveCount = (date: Date) => {
+    return scheduledLives.filter(
+      live => live.date.toDateString() === date.toDateString()
+    ).length;
   };
 
   return (
@@ -99,14 +130,34 @@ export const LiveCalendar = () => {
               fontWeight: "bold"
             }
           }}
+          components={{
+            DayContent: ({ date }) => {
+              const count = getLiveCount(date);
+              return (
+                <div className="relative w-full h-full flex items-center justify-center">
+                  {date.getDate()}
+                  {count > 0 && (
+                    <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 text-[10px] font-bold text-[#ea384c]">
+                      {count}
+                    </span>
+                  )}
+                </div>
+              );
+            },
+          }}
         />
       </Card>
 
       <div className="space-y-4">
         {livesForSelectedDate.length > 0 ? (
-          livesForSelectedDate.map((live) => (
-            <LiveCard key={live.id} live={live} />
-          ))
+          <>
+            <h3 className="text-lg font-semibold text-gray-900">
+              {livesForSelectedDate.length} live{livesForSelectedDate.length > 1 ? 's' : ''} programmé{livesForSelectedDate.length > 1 ? 's' : ''} le {selectedDate?.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}
+            </h3>
+            {livesForSelectedDate.map((live) => (
+              <LiveCard key={live.id} live={live} />
+            ))}
+          </>
         ) : (
           <div className="text-center text-muted-foreground py-8">
             Aucun live programmé pour cette date
