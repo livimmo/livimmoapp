@@ -1,8 +1,9 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { type Property } from "@/types/property";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { Property } from "@/types/property";
 
+// Fix for default markers
 const icon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
   iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
@@ -30,20 +31,20 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
     : defaultCenter;
 
   return (
-    <div className="h-[500px] w-full">
+    <div className="h-[500px] w-full relative">
       <MapContainer
         center={center}
         zoom={12}
         style={{ height: "100%", width: "100%" }}
-        scrollWheelZoom={true}
+        scrollWheelZoom={false}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {properties.map((property) => (
-          <Marker 
-            key={property.id} 
+          <Marker
+            key={property.id}
             position={[property.coordinates.lat, property.coordinates.lng]}
             icon={icon}
           >

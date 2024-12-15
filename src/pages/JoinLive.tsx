@@ -30,12 +30,12 @@ export const JoinLive = () => {
   useEffect(() => {
     // Simulate loading property data
     const timer = setTimeout(() => {
-      // Mock property data fetch with coordinates
+      const location = "Marrakech"; // Location par défaut
       setProperty({
         id: 1,
         title: "Villa Moderne avec Piscine",
         price: 2500000,
-        location: "Marrakech",
+        location: location,
         type: "Villa",
         surface: 350,
         rooms: 5,
@@ -51,7 +51,7 @@ export const JoinLive = () => {
           phone: "+212 6 00 11 22 33",
           email: "karim.benjelloun@example.com",
         },
-        coordinates: generateMockCoordinates(),
+        coordinates: generateMockCoordinates(location),
       });
       setIsLoading(false);
     }, 1500);
