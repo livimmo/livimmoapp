@@ -6,6 +6,7 @@ import { PersonalInfo } from "@/components/profile/PersonalInfo";
 import { SocialConnect } from "@/components/profile/SocialConnect";
 import { Button } from "@/components/ui/button";
 import { LogOut, Lock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,6 +31,7 @@ interface UserProfile {
 
 const Profile = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile>({
     firstName: "John",
     lastName: "Doe",
@@ -66,6 +68,8 @@ const Profile = () => {
       title: "Déconnexion réussie",
       description: "À bientôt !",
     });
+    // Redirection vers la page d'accueil après déconnexion
+    navigate('/');
   };
 
   const handlePasswordChange = () => {
