@@ -1,17 +1,12 @@
 import { useState } from "react";
-import { PropertyCard } from "@/components/PropertyCard";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ArrowUpDown } from "lucide-react";
+import { FavoritesFilters } from "@/components/favorites/FavoritesFilters";
+import { FavoritesGrid } from "@/components/favorites/FavoritesGrid";
+import { FavoritesCarousel } from "@/components/favorites/FavoritesCarousel";
 import { Button } from "@/components/ui/button";
+import { Property } from "@/types/property";
 
 // Données mockées pour l'exemple
-const mockFavorites = [
+const mockFavorites: Property[] = [
   {
     id: 1,
     image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
@@ -258,6 +253,7 @@ const Favorites = () => {
   const [favorites, setFavorites] = useState(mockFavorites);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filterType, setFilterType] = useState<string>("all");
+  const [viewMode, setViewMode] = useState<"grid" | "carousel">("grid");
 
   const handleSort = () => {
     const sorted = [...favorites].sort((a, b) => {
@@ -271,48 +267,43 @@ const Favorites = () => {
     setFilterType(type);
   };
 
-  const filteredFavorites = filterType === "all" 
-    ? favorites
-    : favorites.filter(property => property.type === filterType);
+  const filteredFavorites =
+    filterType === "all"
+      ? favorites
+      : favorites.filter((property) => property.type === filterType);
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6">
-      <h1 className="text-2xl font-bold">Mes Favoris</h1>
-      
-      <div className="flex gap-4 items-center">
-        <Select value={filterType} onValueChange={handleFilter}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Type de bien" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous les types</SelectItem>
-            <SelectItem value="Villa">Villa</SelectItem>
-            <SelectItem value="Appartement">Appartement</SelectItem>
-            <SelectItem value="Bureau">Bureau</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <Button variant="outline" onClick={handleSort}>
-          <ArrowUpDown className="mr-2 h-4 w-4" />
-          Prix {sortOrder === "asc" ? "croissant" : "décroissant"}
-        </Button>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Mes Favoris</h1>
+        <div className="space-x-2">
+          <Button
+            variant={viewMode === "grid" ? "default" : "outline"}
+            onClick={() => setViewMode("grid")}
+          >
+            Grille
+          </Button>
+          <Button
+            variant={viewMode === "carousel" ? "default" : "outline"}
+            onClick={() => setViewMode("carousel")}
+          >
+            Carrousel
+          </Button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {filteredFavorites.map((property) => (
-          <PropertyCard
-            key={property.id}
-            image={property.image}
-            title={property.title}
-            price={property.price}
-            location={property.location}
-            type={property.type}
-            surface={property.surface}
-            rooms={property.rooms}
-            hasLive={property.hasLive}
-          />
-        ))}
-      </div>
+      <FavoritesFilters
+        filterType={filterType}
+        onFilterChange={handleFilter}
+        onSortChange={handleSort}
+        sortOrder={sortOrder}
+      />
+
+      {viewMode === "grid" ? (
+        <FavoritesGrid properties={filteredFavorites} />
+      ) : (
+        <FavoritesCarousel properties={filteredFavorites} />
+      )}
 
       {filteredFavorites.length === 0 && (
         <div className="text-center py-12">
