@@ -1,6 +1,5 @@
 import { Video, Bell, User, List, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { HeroBanner } from "@/components/home/HeroBanner";
 import { SearchBar } from "@/components/home/SearchBar";
 import { LiveSection } from "@/components/home/LiveSection";
 import { useNavigate } from "react-router-dom";
@@ -8,10 +7,14 @@ import { useState } from "react";
 import { PropertyMap } from "@/components/search/PropertyMap";
 import { PropertyList } from "@/components/search/PropertyList";
 import { type Property } from "@/types/property";
+import { FeaturedSection } from "@/components/home/FeaturedSection";
+import { HomeFilters } from "@/components/home/HomeFilters";
+import { CTASection } from "@/components/home/CTASection";
 
 const Index = () => {
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
 
   const featuredProperties: Property[] = [
     {
@@ -157,18 +160,26 @@ const Index = () => {
         <SearchBar />
         
         {/* Featured Properties Section */}
-        <section className="mb-8">
-          <h2 className="text-lg font-semibold mb-4">Notre sélection de la semaine</h2>
-          <HeroBanner properties={featuredProperties} />
-        </section>
+        <FeaturedSection properties={featuredProperties} />
 
         {/* Live Properties Section */}
         <LiveSection properties={liveProperties} />
 
+        {/* Filters Section */}
+        <HomeFilters 
+          properties={allProperties}
+          onFiltersChange={setFilteredProperties}
+        />
+
         {/* All Properties Section */}
         <section className="mb-8">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Tous nos biens</h2>
+            <h2 className="text-lg font-semibold">
+              {filteredProperties.length > 0 
+                ? `${filteredProperties.length} biens trouvés`
+                : "Tous nos biens"
+              }
+            </h2>
             <div className="flex gap-2">
               <Button
                 variant={viewMode === "list" ? "default" : "outline"}
@@ -190,24 +201,19 @@ const Index = () => {
           </div>
           
           {viewMode === "list" ? (
-            <PropertyList properties={allProperties} viewMode="list" />
+            <PropertyList 
+              properties={filteredProperties.length > 0 ? filteredProperties : allProperties} 
+              viewMode="list" 
+            />
           ) : (
-            <PropertyMap properties={allProperties} />
+            <PropertyMap 
+              properties={filteredProperties.length > 0 ? filteredProperties : allProperties} 
+            />
           )}
         </section>
 
         {/* CTA Section */}
-        <section className="mb-8">
-          <div className="bg-accent rounded-lg p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2">
-              Vous êtes agent immobilier ou promoteur ?
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              Rejoignez notre plateforme et commencez à diffuser vos biens en direct
-            </p>
-            <Button>Commencer maintenant</Button>
-          </div>
-        </section>
+        <CTASection />
       </main>
     </div>
   );
