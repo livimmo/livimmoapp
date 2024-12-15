@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, Home, MessageCircle, Settings } from "lucide-react";
+import { Bell, Home, MessageCircle, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -33,6 +33,24 @@ const mockNotifications: Notification[] = [
   },
   {
     id: "2",
+    type: "live",
+    title: "Nouveau live programmé",
+    message: "Un live pour la villa moderne à Marrakech est programmé pour demain à 15h",
+    date: new Date(Date.now() - 1800000), // 30 minutes ago
+    read: false,
+    actionUrl: "/lives",
+  },
+  {
+    id: "3",
+    type: "live",
+    title: "Rappel de live",
+    message: "N'oubliez pas votre live 'Appartement vue mer' dans 24h !",
+    date: new Date(Date.now() - 3600000), // 1 hour ago
+    read: false,
+    actionUrl: "/lives",
+  },
+  {
+    id: "4",
     type: "favorite",
     title: "Mise à jour du prix",
     message: "Le prix de la villa que vous suivez à Marrakech a baissé de 200,000 MAD",
@@ -41,7 +59,7 @@ const mockNotifications: Notification[] = [
     actionUrl: "/favorites",
   },
   {
-    id: "3",
+    id: "5",
     type: "offer",
     title: "Offre acceptée",
     message: "Votre offre pour l'appartement à Rabat a été acceptée !",
@@ -55,6 +73,8 @@ const Notifications = () => {
   const [activeTab, setActiveTab] = useState("all");
 
   const unreadCount = notifications.filter(n => !n.read).length;
+  const liveNotifications = notifications.filter(n => n.type === "live");
+  const unreadLiveCount = liveNotifications.filter(n => !n.read).length;
 
   const markAllAsRead = () => {
     setNotifications(notifications.map(n => ({ ...n, read: true })));
@@ -90,8 +110,22 @@ const Notifications = () => {
 
       <Tabs defaultValue="all" className="w-full" value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-5 mb-4">
-          <TabsTrigger value="all">Tout</TabsTrigger>
-          <TabsTrigger value="live">Lives</TabsTrigger>
+          <TabsTrigger value="all">
+            Tout
+            {unreadCount > 0 && (
+              <Badge variant="secondary" className="ml-2">
+                {unreadCount}
+              </Badge>
+            )}
+          </TabsTrigger>
+          <TabsTrigger value="live">
+            Lives
+            {unreadLiveCount > 0 && (
+              <Badge variant="secondary" className="ml-2">
+                {unreadLiveCount}
+              </Badge>
+            )}
+          </TabsTrigger>
           <TabsTrigger value="favorite">Favoris</TabsTrigger>
           <TabsTrigger value="offer">Offres</TabsTrigger>
           <TabsTrigger value="settings">Paramètres</TabsTrigger>

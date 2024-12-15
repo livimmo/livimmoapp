@@ -1,4 +1,4 @@
-import { Bell, Home, MessageCircle } from "lucide-react";
+import { Bell, Home, MessageCircle, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -26,7 +26,7 @@ export const NotificationItem = ({
   const getIcon = () => {
     switch (notification.type) {
       case "live":
-        return <MessageCircle className="h-5 w-5 text-primary" />;
+        return <Calendar className="h-5 w-5 text-primary" />;
       case "favorite":
         return <Home className="h-5 w-5 text-primary" />;
       default:
