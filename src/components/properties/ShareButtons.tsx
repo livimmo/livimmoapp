@@ -1,4 +1,4 @@
-import { WhatsApp, Facebook, Twitter, Linkedin, Mail } from "lucide-react";
+import { MessageCircle, Facebook, Twitter, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 
@@ -65,7 +65,7 @@ export const ShareButtons = ({ property, currentUrl }: ShareButtonsProps) => {
         className="bg-[#25D366] hover:bg-[#25D366]/90 text-white"
         onClick={() => handleShare("whatsapp")}
       >
-        <WhatsApp className="h-4 w-4" />
+        <MessageCircle className="h-4 w-4" />
       </Button>
       <Button
         variant="outline"
