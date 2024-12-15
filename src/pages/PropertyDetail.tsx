@@ -55,54 +55,55 @@ export const PropertyDetail = () => {
     <div className="min-h-screen bg-background pb-20">
       <div className="container px-4 py-8">
         <div className="mb-8">
-          <Carousel className="w-full max-w-5xl mx-auto">
-            <CarouselContent>
-              {property.images.map((image, index) => (
-                <CarouselItem key={index}>
-                  <div className="relative aspect-video">
-                    <img
-                      src={image}
-                      alt={`${property.title} - Image ${index + 1}`}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
-                <p className="text-2xl font-semibold text-primary">
-                  {property.price.toLocaleString()} DH
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setIsFavorite(!isFavorite)}
-                >
-                  <Heart
-                    className={`h-5 w-5 ${
-                      isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"
-                    }`}
-                  />
-                </Button>
-              </div>
+          <div className="relative">
+            <Carousel className="w-full max-w-5xl mx-auto">
+              <CarouselContent>
+                {property.images.map((image, index) => (
+                  <CarouselItem key={index}>
+                    <div className="relative aspect-video">
+                      <img
+                        src={image}
+                        alt={`${property.title} - Image ${index + 1}`}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+            <div className="absolute top-4 right-4 z-10 flex gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                className="bg-white/90 backdrop-blur-sm"
+                onClick={() => setIsFavorite(!isFavorite)}
+              >
+                <Heart
+                  className={`h-5 w-5 ${
+                    isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"
+                  }`}
+                />
+              </Button>
             </div>
-
+          </div>
+          <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
+              <p className="text-2xl font-semibold text-primary">
+                {property.price.toLocaleString()} DH
+              </p>
+            </div>
             <ShareButtons 
               property={property} 
               currentUrl={window.location.href} 
             />
+          </div>
+        </div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center text-muted-foreground">
               <MapPin className="h-4 w-4 mr-2" />
               {property.location}
