@@ -88,13 +88,11 @@ export const PropertyDetail = () => {
               </Button>
             </div>
           </div>
-          <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
-              <p className="text-2xl font-semibold text-primary">
-                {property.price.toLocaleString()} DH
-              </p>
-            </div>
+          <div className="mt-4">
+            <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
+            <p className="text-2xl font-semibold text-primary mb-4">
+              {property.price.toLocaleString()} DH
+            </p>
             <ShareButtons 
               property={property} 
               currentUrl={window.location.href} 
