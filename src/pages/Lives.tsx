@@ -1,135 +1,16 @@
 import { useState } from "react";
-import { BottomNav } from "@/components/BottomNav";
-import { LiveCalendar } from "@/components/home/LiveCalendar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter, Eye } from "lucide-react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { LiveCalendarView } from "@/components/live/LiveCalendarView";
+import { ScheduledLivesList } from "@/components/live/ScheduledLivesList";
 
-// Mock data for live streams
-const liveStreams = [
-  {
-    id: 1,
-    title: "Visite Villa Moderne",
-    date: new Date(),
-    type: "Villa",
-    location: "Marrakech",
-    viewers: 35,
-    status: "live",
-    thumbnail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-    agent: "Sarah Martin",
-    price: "2,500,000 MAD",
-    tags: ["Coup de fusil"]
-  },
-  {
-    id: 2,
-    title: "Appartement Vue Mer",
-    date: new Date(),
-    type: "Appartement",
-    location: "Tanger",
-    viewers: 28,
-    status: "live",
-    thumbnail: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-    agent: "Mohammed Alami",
-    price: "1,800,000 MAD",
-    tags: ["Nouveauté", "Exclusivité"]
-  },
-  {
-    id: 3,
-    title: "Penthouse Luxueux",
-    date: new Date(),
-    type: "Appartement",
-    location: "Casablanca",
-    viewers: 42,
-    status: "live",
-    thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-    agent: "Karim Hassan",
-    price: "3,200,000 MAD",
-    tags: ["Exclusivité"]
-  },
-  {
-    id: 4,
-    title: "Riad Traditionnel",
-    date: new Date(),
-    type: "Riad",
-    location: "Marrakech",
-    viewers: 56,
-    status: "live",
-    thumbnail: "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
-    agent: "Yasmine Benali",
-    price: "4,500,000 MAD",
-    tags: ["Coup de fusil", "Nouveauté"]
-  },
-];
-
-const LiveCard = ({ stream }: { stream: any }) => (
-  <Card className="overflow-hidden">
-    <div className="relative">
-      <img 
-        src={stream.thumbnail} 
-        alt={stream.title} 
-        className="w-full h-48 object-cover"
-      />
-      {stream.status === "live" && (
-        <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-sm flex items-center gap-1">
-          <Eye className="w-4 h-4" />
-          {stream.viewers} spectateurs
-        </div>
-      )}
-      <div className="absolute top-2 left-2 flex gap-1 flex-wrap max-w-[70%]">
-        {stream.tags.map((tag: string) => (
-          <Badge 
-            key={tag} 
-            variant={
-              tag === "Coup de fusil" ? "destructive" : 
-              tag === "Nouveauté" ? "default" : 
-              "secondary"
-            }
-            className="text-xs"
-          >
-            {tag}
-          </Badge>
-        ))}
-      </div>
-    </div>
-    <CardHeader>
-      <CardTitle className="text-lg">{stream.title}</CardTitle>
-      <div className="text-sm text-muted-foreground">
-        {stream.type} • {stream.location}
-      </div>
-    </CardHeader>
-    <CardContent>
-      <div className="text-sm space-y-2">
-        <div>Agent: {stream.agent}</div>
-        <div>Prix: {stream.price}</div>
-        <div>
-          {stream.status === "scheduled" 
-            ? `Date: ${stream.date.toLocaleDateString()}`
-            : "En direct"
-          }
-        </div>
-      </div>
-    </CardContent>
-    <CardFooter>
-      <Button className="w-full" variant={stream.status === "live" ? "default" : "secondary"}>
-        {stream.status === "live" ? "Rejoindre le live" : "S'inscrire au live"}
-      </Button>
-    </CardFooter>
-  </Card>
-);
+// Mock data moved to a separate file for better organization
+import { liveStreams, scheduledLives } from "@/data/mockLives";
 
 const Lives = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
-
   return (
     <div className="pb-20">
       <header className="bg-white shadow-sm p-4 sticky top-0 z-10">
@@ -181,20 +62,14 @@ const Lives = () => {
           </TabsList>
           
           <TabsContent value="live">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {liveStreams.map((stream) => (
-                <LiveCard key={stream.id} stream={stream} />
-              ))}
-            </div>
+            <ScheduledLivesList lives={liveStreams} />
           </TabsContent>
           
           <TabsContent value="scheduled">
-            <LiveCalendar />
+            <LiveCalendarView scheduledLives={scheduledLives} />
           </TabsContent>
         </Tabs>
       </main>
-
-      <BottomNav />
     </div>
   );
 };
