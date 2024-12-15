@@ -2,7 +2,7 @@ import { PropertyList } from "@/components/search/PropertyList";
 import { PropertyMap } from "@/components/search/PropertyMap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Bell, User, Camera, LayoutList, Map } from "lucide-react";
+import { Search, Bell, User, Video, LayoutList, Map } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -58,7 +58,7 @@ const Index = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-primary">Livimmo</h1>
-            <Camera className="h-5 w-5 text-[#ea384c]" />
+            <Video className="h-5 w-5 text-[#ea384c]" />
           </div>
           <div className="flex items-center gap-3">
             <Button 
