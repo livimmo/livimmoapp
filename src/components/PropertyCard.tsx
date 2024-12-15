@@ -28,12 +28,13 @@ export const PropertyCard = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <PropertyImage
         id={id}
         title={title}
         image={images[0]}
         hasLive={hasLive}
+        liveDate={liveDate}
         viewers={viewers}
         currentUrl={currentUrl}
       />
