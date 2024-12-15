@@ -12,14 +12,27 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { Search as SearchIcon, MapPin, List, SlidersHorizontal, X } from "lucide-react";
+import { Search as SearchIcon, MapPin, List, SlidersHorizontal } from "lucide-react";
 import "leaflet/dist/leaflet.css";
+
+const placeholderImages = [
+  "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
+  "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+  "https://images.unsplash.com/photo-1518770660439-4636190af475",
+  "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
+  "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+  "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
+  "https://images.unsplash.com/photo-1605810230434-7631ac76ec81",
+  "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
+  "https://images.unsplash.com/photo-1500375592092-40eb2168fd21"
+];
 
 // Données mockées pour l'exemple
 const mockProperties = [
   {
     id: 1,
-    image: "/placeholder.svg",
+    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
     title: "Villa moderne à Marrakech",
     price: 2500000,
     location: "Marrakech",
@@ -31,7 +44,7 @@ const mockProperties = [
   },
   {
     id: 2,
-    image: "/placeholder.svg",
+    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
     title: "Appartement vue mer à Tanger",
     price: 1800000,
     location: "Tanger",
@@ -43,7 +56,7 @@ const mockProperties = [
   },
   {
     id: 3,
-    image: "/placeholder.svg",
+    image: placeholderImages[Math.floor(Math.random() * placeholderImages.length)],
     title: "Bureau au centre de Casablanca",
     price: 3500000,
     location: "Casablanca",
