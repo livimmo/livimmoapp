@@ -1,17 +1,13 @@
-import { PropertyList } from "@/components/search/PropertyList";
-import { PropertyMap } from "@/components/search/PropertyMap";
+import { Video, Bell, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search, Bell, User, Video, LayoutList, Map } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { HeroBanner } from "@/components/home/HeroBanner";
+import { SearchBar } from "@/components/home/SearchBar";
+import { LiveSection } from "@/components/home/LiveSection";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
-  const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const navigate = useNavigate();
 
-  // Mock data for featured properties
   const featuredProperties = [
     {
       id: 1,
@@ -35,7 +31,7 @@ const Index = () => {
       surface: 120,
       rooms: 3,
       hasLive: false,
-      tags: ["Nouveauté"]
+      tags: ["Nouveauté", "Exclusivité"]
     },
     {
       id: 3,
@@ -47,6 +43,35 @@ const Index = () => {
       surface: 200,
       rooms: 4,
       hasLive: true,
+      tags: ["Exclusivité", "Live"]
+    }
+  ];
+
+  const liveProperties = [
+    {
+      id: 1,
+      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+      title: "Villa Moderne avec Piscine",
+      price: 2500000,
+      location: "Marrakech",
+      type: "Villa",
+      surface: 350,
+      rooms: 5,
+      hasLive: true,
+      viewers: 42,
+      tags: ["Coup de fusil", "Live"]
+    },
+    {
+      id: 2,
+      image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      title: "Penthouse Luxueux",
+      price: 3200000,
+      location: "Casablanca",
+      type: "Appartement",
+      surface: 200,
+      rooms: 4,
+      hasLive: true,
+      viewers: 28,
       tags: ["Exclusivité", "Live"]
     }
   ];
@@ -76,7 +101,6 @@ const Index = () => {
               variant="ghost" 
               size="icon"
               onClick={() => navigate('/profile')}
-              className="hover:bg-accent"
             >
               <User className="h-5 w-5" />
             </Button>
@@ -86,43 +110,16 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 pt-20">
-        {/* Search Bar */}
-        <div className="relative mb-6">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-          <Input
-            placeholder="Rechercher par ville ou région..."
-            className="pl-9"
-          />
-        </div>
-
+        <SearchBar />
+        
         {/* Featured Properties Section */}
         <section className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Notre sélection de la semaine</h2>
-            <div className="flex gap-2">
-              <Button
-                variant={viewMode === "list" ? "default" : "outline"}
-                size="icon"
-                onClick={() => setViewMode("list")}
-              >
-                <LayoutList className="h-4 w-4" />
-              </Button>
-              <Button
-                variant={viewMode === "map" ? "default" : "outline"}
-                size="icon"
-                onClick={() => setViewMode("map")}
-              >
-                <Map className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-          
-          {viewMode === "list" ? (
-            <PropertyList properties={featuredProperties} viewMode="carousel" />
-          ) : (
-            <PropertyMap properties={featuredProperties} />
-          )}
+          <h2 className="text-lg font-semibold mb-4">Notre sélection de la semaine</h2>
+          <HeroBanner properties={featuredProperties} />
         </section>
+
+        {/* Live Properties Section */}
+        <LiveSection properties={liveProperties} />
 
         {/* CTA Section */}
         <section className="mb-8">
