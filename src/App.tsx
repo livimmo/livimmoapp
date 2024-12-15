@@ -9,6 +9,7 @@ import Search from "./pages/Search";
 import Lives from "./pages/Lives";
 import Favorites from "./pages/Favorites";
 import Notifications from "./pages/Notifications";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +26,7 @@ const App = () => (
             <Route path="/lives" element={<Lives />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/notifications" element={<Notifications />} />
-            <Route path="/profile" element={<div>Page Profil</div>} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
           <BottomNav />
         </div>
