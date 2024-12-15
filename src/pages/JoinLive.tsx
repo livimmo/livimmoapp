@@ -125,10 +125,6 @@ export const JoinLive = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <div className="bg-black/50 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              {mockLiveData.viewerCount}
-            </div>
             <Button
               variant="ghost"
               size="icon"
@@ -142,7 +138,11 @@ export const JoinLive = () => {
 
         {/* Bottom controls */}
         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-          <LiveInfo property={property} onMakeOffer={handleMakeOffer} />
+          <LiveInfo 
+            property={property} 
+            onMakeOffer={handleMakeOffer} 
+            viewerCount={mockLiveData.viewerCount}
+          />
           <Button
             variant="ghost"
             size="icon"
