@@ -1,7 +1,7 @@
 import { PropertyList } from "@/components/search/PropertyList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Bell, User, Route } from "lucide-react";
+import { Search, Bell, User, Camera } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const Index = () => {
@@ -54,7 +54,7 @@ const Index = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-primary">Livimmo</h1>
-            <Route className="h-5 w-5 text-red-500" />
+            <Camera className="h-5 w-5 text-red-500" />
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon">
