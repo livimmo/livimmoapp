@@ -7,7 +7,19 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Property } from "@/types/property";
+
+interface Property {
+  id: number;
+  image: string;
+  title: string;
+  price: number;
+  location: string;
+  type: string;
+  surface: number;
+  rooms: number;
+  hasLive?: boolean;
+  tags?: string[];
+}
 
 interface PropertyListProps {
   properties: Property[];
@@ -22,10 +34,7 @@ export const PropertyList = ({ properties, viewMode }: PropertyListProps) => {
           {properties.map((property) => (
             <CarouselItem key={property.id}>
               <div className="p-1">
-                <PropertyCard 
-                  {...property}
-                  image={property.images[0]}
-                />
+                <PropertyCard {...property} />
               </div>
             </CarouselItem>
           ))}
@@ -40,10 +49,7 @@ export const PropertyList = ({ properties, viewMode }: PropertyListProps) => {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {properties.map((property) => (
         <div key={property.id} className="relative">
-          <PropertyCard 
-            {...property}
-            image={property.images[0]}
-          />
+          <PropertyCard {...property} />
           {property.tags && (
             <div className="absolute top-2 left-2 flex gap-1 flex-wrap max-w-[70%] z-10">
               {property.tags.map((tag) => (

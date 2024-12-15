@@ -12,13 +12,23 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
-import { Property } from "@/types/property";
 
-type PropertyCardProps = Pick<Property, "id" | "images" | "title" | "price" | "location" | "type" | "surface" | "rooms" | "hasLive" | "liveDate">;
+interface PropertyCardProps {
+  id: number;
+  image: string;
+  title: string;
+  price: number;
+  location: string;
+  type: string;
+  surface: number;
+  rooms: number;
+  hasLive?: boolean;
+  liveDate?: Date;
+}
 
 export const PropertyCard = ({
   id,
-  images,
+  image,
   title,
   price,
   location,
@@ -43,7 +53,7 @@ export const PropertyCard = ({
       <div className="relative">
         <Link to={`/property/${id}`}>
           <img
-            src={images[0]}
+            src={image}
             alt={title}
             className="w-full h-48 object-cover"
           />

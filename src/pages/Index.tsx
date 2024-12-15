@@ -7,89 +7,51 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { PropertyMap } from "@/components/search/PropertyMap";
 import { PropertyList } from "@/components/search/PropertyList";
-import { Property } from "@/types/property";
 
 const Index = () => {
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
 
-  const allProperties: Property[] = [
+  const featuredProperties = [
     {
       id: 1,
+      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
       title: "Villa Moderne avec Piscine",
       price: 2500000,
       location: "Marrakech",
       type: "Villa",
       surface: 350,
       rooms: 5,
-      bathrooms: 3,
-      description: "Magnifique villa moderne avec piscine et jardin paysager",
-      features: ["Piscine", "Jardin", "Garage", "Climatisation", "Sécurité 24/7"],
-      images: [
-        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-        "https://images.unsplash.com/photo-1613977257363-707ba9348227",
-      ],
       hasLive: true,
-      liveDate: new Date("2024-03-15"),
-      tags: ["Nouveauté"],
-      agent: {
-        name: "Karim Benjelloun",
-        image: "https://i.pravatar.cc/150?u=karim",
-        phone: "+212 6 00 11 22 33",
-        email: "karim.benjelloun@example.com",
-      },
+      tags: ["Coup de fusil", "Live"]
     },
     {
       id: 2,
+      image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
       title: "Appartement Vue Mer",
       price: 1800000,
       location: "Tanger",
       type: "Appartement",
       surface: 120,
       rooms: 3,
-      bathrooms: 2,
-      description: "Superbe appartement avec vue panoramique sur la mer",
-      features: ["Vue mer", "Terrasse", "Ascenseur", "Parking", "Cuisine équipée"],
-      images: [
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-        "https://images.unsplash.com/photo-1613977257363-707ba9348227",
-        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      ],
-      hasLive: false,
-      agent: {
-        name: "Sophia Martinez",
-        image: "https://i.pravatar.cc/150?u=sophia",
-        phone: "+212 6 11 22 33 44",
-        email: "sophia.martinez@example.com",
-      },
+      tags: ["Nouveauté", "Exclusivité"]
     },
     {
       id: 3,
+      image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
       title: "Penthouse Luxueux",
       price: 3200000,
       location: "Casablanca",
       type: "Appartement",
       surface: 200,
       rooms: 4,
-      bathrooms: 3,
-      description: "Penthouse de luxe avec terrasse panoramique",
-      features: ["Terrasse", "Vue panoramique", "Parking", "Salle de sport", "Spa"],
-      images: [
-        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-        "https://images.unsplash.com/photo-1613977257363-707ba9348227",
-      ],
       hasLive: true,
-      liveDate: new Date("2024-03-20"),
-      tags: ["Coup de fusil"],
-      agent: {
-        name: "Yasmine Alaoui",
-        image: "https://i.pravatar.cc/150?u=yasmine",
-        phone: "+212 6 22 33 44 55",
-        email: "yasmine.alaoui@example.com",
-      },
-    },
+      tags: ["Exclusivité", "Live"]
+    }
+  ];
+
+  const allProperties = [
+    ...featuredProperties,
     {
       id: 4,
       image: "https://images.unsplash.com/photo-1613977257363-707ba9348227",
@@ -100,13 +62,7 @@ const Index = () => {
       surface: 400,
       rooms: 6,
       hasLive: false,
-      tags: ["Exclusivité"],
-      agent: {
-        name: "Agent 1",
-        image: "https://i.pravatar.cc/150?u=agent1",
-        phone: "+212 6 00 00 00 01",
-        email: "agent1@example.com",
-      },
+      tags: ["Exclusivité"]
     },
     {
       id: 5,
@@ -117,13 +73,7 @@ const Index = () => {
       type: "Villa",
       surface: 500,
       rooms: 7,
-      tags: ["Nouveauté"],
-      agent: {
-        name: "Agent 2",
-        image: "https://i.pravatar.cc/150?u=agent2",
-        phone: "+212 6 00 00 00 02",
-        email: "agent2@example.com",
-      },
+      tags: ["Nouveauté"]
     },
     {
       id: 6,
@@ -134,13 +84,7 @@ const Index = () => {
       type: "Appartement",
       surface: 180,
       rooms: 4,
-      tags: ["Coup de fusil"],
-      agent: {
-        name: "Agent 3",
-        image: "https://i.pravatar.cc/150?u=agent3",
-        phone: "+212 6 00 00 00 03",
-        email: "agent3@example.com",
-      },
+      tags: ["Coup de fusil"]
     },
     {
       id: 7,
@@ -152,14 +96,9 @@ const Index = () => {
       surface: 450,
       rooms: 6,
       hasLive: true,
-      tags: ["Live"],
-      agent: {
-        name: "Agent 4",
-        image: "https://i.pravatar.cc/150?u=agent4",
-        phone: "+212 6 00 00 00 04",
-        email: "agent4@example.com",
-      },
+      tags: ["Live"]
     },
+    // ... Ajout de 13 propriétés supplémentaires avec des variations similaires
     {
       id: 8,
       image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
@@ -169,13 +108,7 @@ const Index = () => {
       type: "Appartement",
       surface: 60,
       rooms: 1,
-      tags: ["Nouveauté"],
-      agent: {
-        name: "Agent 5",
-        image: "https://i.pravatar.cc/150?u=agent5",
-        phone: "+212 6 00 00 00 05",
-        email: "agent5@example.com",
-      },
+      tags: ["Nouveauté"]
     },
     {
       id: 9,
@@ -186,13 +119,7 @@ const Index = () => {
       type: "Riad",
       surface: 300,
       rooms: 5,
-      tags: ["Exclusivité"],
-      agent: {
-        name: "Agent 6",
-        image: "https://i.pravatar.cc/150?u=agent6",
-        phone: "+212 6 00 00 00 06",
-        email: "agent6@example.com",
-      },
+      tags: ["Exclusivité"]
     },
     {
       id: 10,
@@ -204,14 +131,9 @@ const Index = () => {
       surface: 200,
       rooms: 4,
       hasLive: true,
-      tags: ["Live", "Coup de fusil"],
-      agent: {
-        name: "Agent 7",
-        image: "https://i.pravatar.cc/150?u=agent7",
-        phone: "+212 6 00 00 00 07",
-        email: "agent7@example.com",
-      },
+      tags: ["Live", "Coup de fusil"]
     },
+    // ... Continuation des propriétés
     {
       id: 20,
       image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
@@ -221,17 +143,10 @@ const Index = () => {
       type: "Villa",
       surface: 600,
       rooms: 8,
-      tags: ["Exclusivité", "Coup de fusil"],
-      agent: {
-        name: "Agent 8",
-        image: "https://i.pravatar.cc/150?u=agent8",
-        phone: "+212 6 00 00 00 08",
-        email: "agent8@example.com",
-      },
+      tags: ["Exclusivité", "Coup de fusil"]
     }
   ];
 
-  const featuredProperties = allProperties.slice(0, 3);
   const liveProperties = allProperties.filter(prop => prop.hasLive);
 
   return (

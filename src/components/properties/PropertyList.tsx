@@ -1,6 +1,6 @@
 import { PropertyCard } from "@/components/PropertyCard";
 import { PropertyMap } from "@/components/search/PropertyMap";
-import { Property } from "@/types/property";
+import { type Property } from "@/pages/Properties";
 
 interface PropertyListProps {
   properties: Property[];
@@ -23,8 +23,16 @@ export const PropertyList = ({ properties, viewMode }: PropertyListProps) => {
       {properties.map((property) => (
         <PropertyCard
           key={property.id}
-          {...property}
+          id={property.id}
           image={property.images[0]}
+          title={property.title}
+          price={property.price}
+          location={property.location}
+          type={property.type}
+          surface={property.surface}
+          rooms={property.rooms}
+          hasLive={property.hasLive}
+          liveDate={property.liveDate}
         />
       ))}
     </div>
