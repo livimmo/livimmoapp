@@ -32,7 +32,7 @@ export const LiveButton = ({
     return (
       <Button 
         variant="outline" 
-        className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90 animate-pulse h-9 px-3 text-sm"
+        className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90 animate-pulse"
         onClick={onJoinLive}
       >
         <Video className="mr-2 h-4 w-4" />
@@ -45,10 +45,7 @@ export const LiveButton = ({
     return (
       <Dialog>
         <DialogTrigger asChild>
-          <Button 
-            variant="outline" 
-            className="w-full bg-primary text-white hover:bg-primary/90 h-9 px-3 text-sm"
-          >
+          <Button variant="outline" className="w-full bg-primary text-white hover:bg-primary/90">
             <Calendar className="mr-2 h-4 w-4" />
             S'inscrire au live
           </Button>
@@ -66,8 +63,8 @@ export const LiveButton = ({
                   minute: "2-digit",
                 })}
               </p>
-              <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium">
-                <Users className="w-3.5 h-3.5" />
+              <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                <Users className="w-4 h-4 mr-1" />
                 {remainingSeats} places restantes
               </Badge>
             </DialogDescription>
