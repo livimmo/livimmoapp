@@ -2,7 +2,7 @@ import { Property } from "@/types/property";
 
 // Coordonnées des principales villes du Maroc
 const cityCoordinates = {
-  "Casablanca": { lat: 33.5731, lng: -7.5898 },
+  "Casablanca": { lat: 33.53563065721966, lng: -7.778285306636483 }, // Mise à jour des coordonnées de Casablanca
   "Rabat": { lat: 34.0209, lng: -6.8416 },
   "Marrakech": { lat: 31.6295, lng: -7.9811 },
   "Tanger": { lat: 35.7595, lng: -5.8340 },
@@ -18,7 +18,12 @@ export const generateMockCoordinates = (location: string) => {
 
   const baseCoordinates = cityCoordinates[cityName];
   
-  // Ajouter une petite variation aléatoire pour éviter que tous les points soient au même endroit
+  // Pour Casablanca, utiliser les coordonnées exactes sans variation
+  if (cityName === "Casablanca") {
+    return baseCoordinates;
+  }
+  
+  // Pour les autres villes, ajouter une petite variation aléatoire
   return {
     lat: baseCoordinates.lat + (Math.random() - 0.5) * 0.05,
     lng: baseCoordinates.lng + (Math.random() - 0.5) * 0.05
