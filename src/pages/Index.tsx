@@ -1,10 +1,14 @@
 import { PropertyList } from "@/components/search/PropertyList";
+import { PropertyMap } from "@/components/search/PropertyMap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Bell, User, Camera } from "lucide-react";
+import { Search, Bell, User, Camera, LayoutList, Map } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 
 const Index = () => {
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
+
   // Mock data for featured properties
   const featuredProperties = [
     {
@@ -89,15 +93,33 @@ const Index = () => {
           <PropertyList properties={liveProperties} viewMode="carousel" />
         </section>
 
-        {/* Featured Properties Section */}
+        {/* Featured Properties Section with View Toggle */}
         <section className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Biens en vedette</h2>
-            <Button variant="link" className="text-primary">
-              Voir tout
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant={viewMode === "list" ? "default" : "outline"}
+                size="icon"
+                onClick={() => setViewMode("list")}
+              >
+                <LayoutList className="h-4 w-4" />
+              </Button>
+              <Button
+                variant={viewMode === "map" ? "default" : "outline"}
+                size="icon"
+                onClick={() => setViewMode("map")}
+              >
+                <Map className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
-          <PropertyList properties={featuredProperties} viewMode="list" />
+          
+          {viewMode === "list" ? (
+            <PropertyList properties={featuredProperties} viewMode="list" />
+          ) : (
+            <PropertyMap properties={featuredProperties} />
+          )}
         </section>
 
         {/* CTA Section */}
