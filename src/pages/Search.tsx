@@ -2,7 +2,18 @@ import { useState } from "react";
 import { SearchFilters } from "@/components/search/SearchFilters";
 import { PropertyList } from "@/components/search/PropertyList";
 import { Button } from "@/components/ui/button";
-import { List, Grid } from "lucide-react";
+import { List, Grid, Map as MapIcon } from "lucide-react";
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Fix for default markers
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const placeholderImages = [
   "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
@@ -80,6 +91,8 @@ const mockProperties = [
   }
 ];
 
+type ViewMode = "list" | "carousel" | "map";
+
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("all");
@@ -87,7 +100,7 @@ const Search = () => {
   const [surfaceRange, setSurfaceRange] = useState([0, 500]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState<"list" | "carousel">("list");
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
 
   const filteredProperties = mockProperties.filter((property) => {
     const matchesSearch = property.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -99,6 +112,9 @@ const Search = () => {
 
     return matchesSearch && matchesType && matchesPrice && matchesSurface && matchesLive;
   });
+
+  // Coordonnées du centre du Maroc
+  const defaultCenter: [number, number] = [31.7917, -7.0926];
 
   return (
     <div className="min-h-screen bg-background pb-16">
@@ -118,17 +134,78 @@ const Search = () => {
       />
 
       <div className="pt-[76px] px-4">
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end mb-4 gap-2">
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setViewMode(viewMode === "list" ? "carousel" : "list")}
+            onClick={() => setViewMode("list")}
+            className={viewMode === "list" ? "bg-accent" : ""}
           >
-            {viewMode === "list" ? <Grid className="h-4 w-4" /> : <List className="h-4 w-4" />}
+            <List className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setViewMode("carousel")}
+            className={viewMode === "carousel" ? "bg-accent" : ""}
+          >
+            <Grid className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setViewMode("map")}
+            className={viewMode === "map" ? "bg-accent" : ""}
+          >
+            <MapIcon className="h-4 w-4" />
           </Button>
         </div>
 
-        <PropertyList properties={filteredProperties} viewMode={viewMode} />
+        {viewMode === "map" ? (
+          <div className="h-[calc(100vh-200px)] w-full rounded-lg overflow-hidden">
+            <MapContainer
+              center={defaultCenter}
+              zoom={6}
+              className="h-full w-full"
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {filteredProperties.map((property) => (
+                <Marker
+                  key={property.id}
+                  position={[
+                    31.7917 + Math.random() * 2 - 1, // Random position for demo
+                    -7.0926 + Math.random() * 2 - 1  // Random position for demo
+                  ]}
+                >
+                  <Popup>
+                    <div className="p-2">
+                      <img 
+                        src={property.image} 
+                        alt={property.title} 
+                        className="w-full h-32 object-cover rounded-lg mb-2"
+                      />
+                      <h3 className="font-semibold">{property.title}</h3>
+                      <p className="text-sm text-muted-foreground">{property.location}</p>
+                      <p className="text-primary font-semibold">
+                        {property.price.toLocaleString()} DH
+                      </p>
+                      {property.hasLive && (
+                        <Button size="sm" className="w-full mt-2">
+                          Rejoindre le live
+                        </Button>
+                      )}
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </div>
+        ) : (
+          <PropertyList properties={filteredProperties} viewMode={viewMode === "carousel" ? "carousel" : "list"} />
+        )}
 
         {filteredProperties.length === 0 && (
           <div className="text-center py-8 text-gray-500">
