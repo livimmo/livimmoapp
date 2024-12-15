@@ -9,4 +9,7 @@ export interface LiveEvent {
   thumbnail: string;
   price: string;
   description?: string;
+  viewers?: number;
+  status?: 'live' | 'scheduled';
+  tags?: string[];
 }

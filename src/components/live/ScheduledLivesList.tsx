@@ -2,18 +2,25 @@ import { LiveCard } from "./LiveCard";
 import { PropertyMap } from "../search/PropertyMap";
 import { LiveEvent } from "@/types/live";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Property } from "@/types/property";
 
 interface ScheduledLivesListProps {
   lives: LiveEvent[];
 }
 
 export const ScheduledLivesList = ({ lives }: ScheduledLivesListProps) => {
-  const locations = lives.map(live => ({
+  const locations: Property[] = lives.map(live => ({
     id: live.id,
     title: live.title,
     location: live.location,
     price: live.price,
-    // Simulating coordinates for demo purposes
+    type: live.type,
+    surface: "N/A",
+    rooms: 0,
+    bathrooms: 0,
+    description: live.description || "",
+    features: [],
+    images: [live.thumbnail],
     coordinates: {
       lat: 31.7917 + Math.random() * 2,
       lng: -7.0926 + Math.random() * 2
@@ -36,15 +43,7 @@ export const ScheduledLivesList = ({ lives }: ScheduledLivesListProps) => {
       </TabsContent>
       
       <TabsContent value="map">
-        <PropertyMap 
-          properties={locations.map(loc => ({
-            id: loc.id,
-            title: loc.title,
-            location: loc.location,
-            price: loc.price,
-            coordinates: loc.coordinates
-          }))} 
-        />
+        <PropertyMap properties={locations} />
       </TabsContent>
     </Tabs>
   );
