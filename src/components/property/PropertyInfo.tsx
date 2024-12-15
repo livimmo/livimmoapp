@@ -30,7 +30,9 @@ export const PropertyInfo = ({
   return (
     <div className="p-4">
       <Link to={`/property/${id}`}>
-        <h3 className="font-semibold text-lg mb-1">{title}</h3>
+        <h3 className="font-semibold text-lg mb-1 hover:text-primary transition-colors">
+          {title}
+        </h3>
       </Link>
       <p className="text-primary font-bold text-xl mb-2">
         {price.toLocaleString()} DH
@@ -43,7 +45,7 @@ export const PropertyInfo = ({
         <span>{surface} m²</span>
         <span>{rooms} pièces</span>
       </div>
-      <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-2">
         <OfferDialog title={title} price={price} />
         {hasLive && (
           <LiveButton

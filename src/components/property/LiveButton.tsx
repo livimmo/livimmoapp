@@ -1,4 +1,4 @@
-import { Video } from "lucide-react";
+import { Video, Calendar, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ReservationForm } from "../home/ReservationForm";
+import { Badge } from "@/components/ui/badge";
 
 interface LiveButtonProps {
   id: number;
@@ -19,6 +20,7 @@ interface LiveButtonProps {
 
 export const LiveButton = ({ id, title, liveDate, onJoinLive }: LiveButtonProps) => {
   const isUpcoming = liveDate && new Date(liveDate) > new Date();
+  const remainingSeats = 15; // This would come from your backend in a real app
 
   if (isUpcoming) {
     return (
@@ -29,12 +31,23 @@ export const LiveButton = ({ id, title, liveDate, onJoinLive }: LiveButtonProps)
             S'inscrire au live
           </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>S'inscrire au live</DialogTitle>
-            <DialogDescription>
-              Live programmé le {new Date(liveDate).toLocaleDateString()} à{" "}
-              {new Date(liveDate).toLocaleTimeString()}
+            <DialogDescription className="space-y-2">
+              <p>
+                Live programmé le{" "}
+                {new Date(liveDate).toLocaleDateString("fr-FR", {
+                  day: "numeric",
+                  month: "long",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
+              <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                <Users className="w-4 h-4 mr-1" />
+                {remainingSeats} places restantes
+              </Badge>
             </DialogDescription>
           </DialogHeader>
           <ReservationForm
@@ -42,7 +55,7 @@ export const LiveButton = ({ id, title, liveDate, onJoinLive }: LiveButtonProps)
               id,
               title,
               date: new Date(liveDate),
-              availableSeats: 15,
+              availableSeats: remainingSeats,
             }}
           />
         </DialogContent>
