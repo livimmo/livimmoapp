@@ -1,21 +1,10 @@
 import { Video } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { type Property } from "@/types/property";
 import { ViewersCounter } from "./property/ViewersCounter";
 import { PropertyActions } from "./property/PropertyActions";
-import { ReservationForm } from "./home/ReservationForm";
+import { OfferDialog } from "./property/OfferDialog";
+import { LiveButton } from "./property/LiveButton";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -34,17 +23,8 @@ export const PropertyCard = ({
   liveDate,
   viewers = 0,
 }: PropertyCardProps) => {
-  const [offerAmount, setOfferAmount] = useState(price);
-  const { toast } = useToast();
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
-
-  const handleOffer = () => {
-    toast({
-      title: "Offre envoyée !",
-      description: `Votre offre de ${offerAmount.toLocaleString()} DH pour ${title} a été envoyée.`,
-    });
-  };
 
   const handleJoinLive = () => {
     navigate(`/live/${id}`);
@@ -90,75 +70,14 @@ export const PropertyCard = ({
           <span>{rooms} pièces</span>
         </div>
         <div className="space-y-2">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="w-full">Faire une offre</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Faire une offre pour {title}</DialogTitle>
-                <DialogDescription>
-                  Prix demandé : {price.toLocaleString()} DH
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="amount" className="text-sm font-medium">
-                    Montant de votre offre (DH)
-                  </label>
-                  <Input
-                    id="amount"
-                    type="number"
-                    value={offerAmount}
-                    onChange={(e) => setOfferAmount(Number(e.target.value))}
-                    className="mt-1"
-                  />
-                </div>
-                <Button onClick={handleOffer} className="w-full">
-                  Envoyer l'offre
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <OfferDialog title={title} price={price} />
           {hasLive && (
-            <>
-              {liveDate && new Date(liveDate) > new Date() ? (
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
-                      <Video className="mr-2 h-4 w-4" />
-                      S'inscrire au live
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>S'inscrire au live</DialogTitle>
-                      <DialogDescription>
-                        Live programmé le {new Date(liveDate).toLocaleDateString()} à{" "}
-                        {new Date(liveDate).toLocaleTimeString()}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <ReservationForm
-                      live={{
-                        id,
-                        title,
-                        date: new Date(liveDate),
-                        availableSeats: 15, // À remplacer par la vraie valeur
-                      }}
-                    />
-                  </DialogContent>
-                </Dialog>
-              ) : (
-                <Button 
-                  variant="outline" 
-                  className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
-                  onClick={handleJoinLive}
-                >
-                  <Video className="mr-2 h-4 w-4" />
-                  Rejoindre le live
-                </Button>
-              )}
-            </>
+            <LiveButton
+              id={id}
+              title={title}
+              liveDate={liveDate}
+              onJoinLive={handleJoinLive}
+            />
           )}
         </div>
       </div>
