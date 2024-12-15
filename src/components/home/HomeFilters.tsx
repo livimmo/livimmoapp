@@ -14,6 +14,19 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
   const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
 
+  const suggestions = [
+    "Casablanca",
+    "Rabat",
+    "Marrakech",
+    "Tanger",
+    "Agadir",
+    "Fès",
+    "Villa",
+    "Appartement",
+    "Bureau",
+    "Riad",
+  ];
+
   const applyFilters = () => {
     let filtered = [...properties];
 
@@ -67,6 +80,7 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
         setSurfaceRange={setSurfaceRange}
         showLiveOnly={showLiveOnly}
         setShowLiveOnly={setShowLiveOnly}
+        suggestions={suggestions}
       />
     </div>
   );

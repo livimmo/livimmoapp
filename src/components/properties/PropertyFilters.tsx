@@ -1,4 +1,3 @@
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -9,8 +8,9 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search as SearchIcon, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
+import { SmartSearchBar } from "@/components/search/SmartSearchBar";
 
 interface PropertyFiltersProps {
   searchTerm: string;
@@ -23,6 +23,7 @@ interface PropertyFiltersProps {
   setSurfaceRange: (value: number[]) => void;
   showLiveOnly: boolean;
   setShowLiveOnly: (value: boolean) => void;
+  suggestions?: string[];
 }
 
 export const PropertyFilters = ({
@@ -36,6 +37,7 @@ export const PropertyFilters = ({
   setSurfaceRange,
   showLiveOnly,
   setShowLiveOnly,
+  suggestions = [],
 }: PropertyFiltersProps) => {
   const [showFilters, setShowFilters] = useState(false);
 
@@ -43,12 +45,10 @@ export const PropertyFilters = ({
     <div className="space-y-4 mb-6">
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <SearchIcon className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-          <Input
-            placeholder="Rechercher par ville ou région..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-9"
+          <SmartSearchBar
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            suggestions={suggestions}
           />
         </div>
         <Button
