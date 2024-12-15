@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
-import { Calendar } from "@/components/ui/calendar";
+import { LiveCalendar } from "@/components/home/LiveCalendar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Eye, Search, Filter } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, Filter } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -13,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 
 // Mock data for live streams
 const liveStreams = [
@@ -68,57 +66,6 @@ const liveStreams = [
     agent: "Yasmine Benali",
     price: "4,500,000 MAD",
     tags: ["Coup de fusil", "Nouveauté"]
-  },
-];
-
-const scheduledStreams = [
-  {
-    id: 5,
-    title: "Bureau Centre-Ville",
-    date: new Date(Date.now() + 86400000), // Tomorrow
-    type: "Bureau",
-    location: "Casablanca",
-    status: "scheduled",
-    thumbnail: "https://images.unsplash.com/photo-1497366216548-37526070297c",
-    agent: "Karim Benani",
-    price: "3,500,000 MAD",
-    tags: ["Nouveauté"]
-  },
-  {
-    id: 6,
-    title: "Villa avec Piscine",
-    date: new Date(Date.now() + 172800000), // Day after tomorrow
-    type: "Villa",
-    location: "Rabat",
-    status: "scheduled",
-    thumbnail: "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
-    agent: "Leila Amrani",
-    price: "4,200,000 MAD",
-    tags: ["Exclusivité"]
-  },
-  {
-    id: 7,
-    title: "Duplex Moderne",
-    date: new Date(Date.now() + 259200000), // In 3 days
-    type: "Appartement",
-    location: "Fès",
-    status: "scheduled",
-    thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-    agent: "Omar Tazi",
-    price: "2,800,000 MAD",
-    tags: ["Coup de fusil", "Nouveauté"]
-  },
-  {
-    id: 8,
-    title: "Local Commercial",
-    date: new Date(Date.now() + 345600000), // In 4 days
-    type: "Commercial",
-    location: "Tanger",
-    status: "scheduled",
-    thumbnail: "https://images.unsplash.com/photo-1497366216548-37526070297c",
-    agent: "Sofia Alaoui",
-    price: "1,900,000 MAD",
-    tags: ["Exclusivité", "Nouveauté"]
   },
 ];
 
@@ -240,17 +187,7 @@ const Lives = () => {
           </TabsContent>
           
           <TabsContent value="scheduled">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              className="rounded-lg border mb-4"
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {scheduledStreams.map((stream) => (
-                <LiveCard key={stream.id} stream={stream} />
-              ))}
-            </div>
+            <LiveCalendar />
           </TabsContent>
         </Tabs>
       </main>
