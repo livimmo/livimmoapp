@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { Heart, Camera } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +20,8 @@ interface PropertyCardProps {
   type: string;
   surface: number;
   rooms: number;
+  hasLive?: boolean;
+  liveDate?: Date;
 }
 
 export const PropertyCard = ({
@@ -30,6 +32,8 @@ export const PropertyCard = ({
   type,
   surface,
   rooms,
+  hasLive,
+  liveDate,
 }: PropertyCardProps) => {
   const [offerAmount, setOfferAmount] = useState(price);
   const { toast } = useToast();
@@ -49,9 +53,16 @@ export const PropertyCard = ({
           alt={title}
           className="w-full h-48 object-cover"
         />
-        <button className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md">
-          <Heart className="w-5 h-5 text-gray-500" />
-        </button>
+        <div className="absolute top-2 right-2 flex gap-2">
+          {hasLive && (
+            <div className="p-2 bg-primary rounded-full shadow-md">
+              <Camera className="w-5 h-5 text-white" />
+            </div>
+          )}
+          <button className="p-2 bg-white rounded-full shadow-md">
+            <Heart className="w-5 h-5 text-gray-500" />
+          </button>
+        </div>
       </div>
       <div className="p-4">
         <h3 className="font-semibold text-lg mb-1">{title}</h3>
@@ -66,36 +77,44 @@ export const PropertyCard = ({
           <span>{surface} m²</span>
           <span>{rooms} pièces</span>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="w-full">Faire une offre</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Faire une offre pour {title}</DialogTitle>
-              <DialogDescription>
-                Prix demandé : {price.toLocaleString()} DH
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="amount" className="text-sm font-medium">
-                  Montant de votre offre (DH)
-                </label>
-                <Input
-                  id="amount"
-                  type="number"
-                  value={offerAmount}
-                  onChange={(e) => setOfferAmount(Number(e.target.value))}
-                  className="mt-1"
-                />
+        <div className="space-y-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="w-full">Faire une offre</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Faire une offre pour {title}</DialogTitle>
+                <DialogDescription>
+                  Prix demandé : {price.toLocaleString()} DH
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="amount" className="text-sm font-medium">
+                    Montant de votre offre (DH)
+                  </label>
+                  <Input
+                    id="amount"
+                    type="number"
+                    value={offerAmount}
+                    onChange={(e) => setOfferAmount(Number(e.target.value))}
+                    className="mt-1"
+                  />
+                </div>
+                <Button onClick={handleOffer} className="w-full">
+                  Envoyer l'offre
+                </Button>
               </div>
-              <Button onClick={handleOffer} className="w-full">
-                Envoyer l'offre
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+          </Dialog>
+          {hasLive && (
+            <Button variant="outline" className="w-full">
+              <Camera className="mr-2 h-4 w-4" />
+              Rejoindre le live
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );
