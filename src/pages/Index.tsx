@@ -61,6 +61,7 @@ const Index = () => {
       type: "Riad",
       surface: 400,
       rooms: 6,
+      hasLive: false,
       tags: ["Exclusivité"]
     },
     {

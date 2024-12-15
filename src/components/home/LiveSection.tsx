@@ -1,5 +1,3 @@
-import { PropertyCard } from "@/components/PropertyCard";
-
 interface LiveProperty {
   id: number;
   image: string;
@@ -9,7 +7,7 @@ interface LiveProperty {
   type: string;
   surface: number;
   rooms: number;
-  hasLive: boolean;
+  hasLive?: boolean; // Rendu optionnel avec ?
   viewers?: number;
   tags?: string[];
 }
