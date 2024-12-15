@@ -5,6 +5,7 @@ import { PropertyMap } from "@/components/search/PropertyMap";
 import { Button } from "@/components/ui/button";
 import { List, Grid, Map as MapIcon } from "lucide-react";
 import { type Property } from "@/types/property";
+import { addCoordinatesToProperties } from "@/data/mockProperties";
 
 const placeholderImages = [
   "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
@@ -19,7 +20,7 @@ const placeholderImages = [
   "https://images.unsplash.com/photo-1500375592092-40eb2168fd21"
 ];
 
-const mockProperties: Property[] = [
+const mockProperties: Property[] = addCoordinatesToProperties([
   {
     id: 1,
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
@@ -125,7 +126,7 @@ const mockProperties: Property[] = [
       email: "yasmine.benjelloun@example.com",
     }
   }
-];
+]);
 
 type ViewMode = "list" | "carousel" | "map";
 

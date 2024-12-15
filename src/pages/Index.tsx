@@ -10,13 +10,14 @@ import { type Property } from "@/types/property";
 import { FeaturedSection } from "@/components/home/FeaturedSection";
 import { HomeFilters } from "@/components/home/HomeFilters";
 import { CTASection } from "@/components/home/CTASection";
+import { addCoordinatesToProperties } from "@/data/mockProperties";
 
 const Index = () => {
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
 
-  const featuredProperties: Property[] = [
+  const featuredProperties = addCoordinatesToProperties([
     {
       id: 1,
       title: "Villa Moderne avec Piscine",
@@ -91,9 +92,9 @@ const Index = () => {
         email: "yasmine.alaoui@example.com",
       },
     },
-  ];
+  ]);
 
-  const allProperties: Property[] = [
+  const allProperties = addCoordinatesToProperties([
     ...featuredProperties,
     {
       id: 4,
@@ -118,8 +119,7 @@ const Index = () => {
         email: "hassan.elfassi@example.com",
       },
     },
-    // ... Add more properties with the same structure
-  ];
+  ]);
 
   const liveProperties = allProperties.filter(prop => prop.hasLive);
 
@@ -218,5 +218,3 @@ const Index = () => {
     </div>
   );
 };
-
-export default Index;

@@ -3,8 +3,9 @@ import { FavoritesFilters } from "@/components/favorites/FavoritesFilters";
 import { FavoritesHeader } from "@/components/favorites/FavoritesHeader";
 import { FavoritesContent } from "@/components/favorites/FavoritesContent";
 import { type Property } from "@/types/property";
+import { addCoordinatesToProperties } from "@/data/mockProperties";
 
-const mockFavorites: Property[] = [
+const mockFavorites: Property[] = addCoordinatesToProperties([
   {
     id: 1,
     title: "Villa moderne avec piscine",
@@ -24,6 +25,10 @@ const mockFavorites: Property[] = [
       phone: "+212 6 00 00 00 00",
       email: "john.doe@example.com",
     },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2,
+      lng: -7.0926 + Math.random() * 2
+    }
   },
   {
     id: 2,
@@ -44,6 +49,10 @@ const mockFavorites: Property[] = [
       phone: "+212 6 11 22 33 44",
       email: "alice.smith@example.com",
     },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2,
+      lng: -7.0926 + Math.random() * 2
+    }
   },
   {
     id: 3,
@@ -64,6 +73,10 @@ const mockFavorites: Property[] = [
       phone: "+212 6 22 33 44 55",
       email: "mohammed.ali@example.com",
     },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2,
+      lng: -7.0926 + Math.random() * 2
+    }
   },
   {
     id: 4,
@@ -84,6 +97,10 @@ const mockFavorites: Property[] = [
       phone: "+212 6 33 44 55 66",
       email: "sara.benali@example.com",
     },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2,
+      lng: -7.0926 + Math.random() * 2
+    }
   },
   {
     id: 5,
@@ -104,6 +121,10 @@ const mockFavorites: Property[] = [
       phone: "+212 6 44 55 66 77",
       email: "fatima.zahra@example.com",
     },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2,
+      lng: -7.0926 + Math.random() * 2
+    }
   },
   {
     id: 6,
@@ -124,6 +145,10 @@ const mockFavorites: Property[] = [
       phone: "+212 6 55 66 77 88",
       email: "omar.elamrani@example.com",
     },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2,
+      lng: -7.0926 + Math.random() * 2
+    }
   },
   {
     id: 7,
@@ -144,6 +169,10 @@ const mockFavorites: Property[] = [
       phone: "+212 6 66 77 88 99",
       email: "youssef.khatib@example.com",
     },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2,
+      lng: -7.0926 + Math.random() * 2
+    }
   },
   {
     id: 8,
@@ -164,6 +193,10 @@ const mockFavorites: Property[] = [
       phone: "+212 6 77 88 99 00",
       email: "nadia.bouzid@example.com",
     },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2,
+      lng: -7.0926 + Math.random() * 2
+    }
   },
   {
     id: 9,
@@ -184,6 +217,10 @@ const mockFavorites: Property[] = [
       phone: "+212 6 88 99 00 11",
       email: "khalid.bakkali@example.com",
     },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2,
+      lng: -7.0926 + Math.random() * 2
+    }
   },
   {
     id: 10,
@@ -204,8 +241,12 @@ const mockFavorites: Property[] = [
       phone: "+212 6 99 00 11 22",
       email: "rachid.elidrissi@example.com",
     },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2,
+      lng: -7.0926 + Math.random() * 2
+    }
   },
-];
+]);
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState(mockFavorites);
