@@ -3,32 +3,11 @@ import { PropertyList } from "@/components/properties/PropertyList";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { Button } from "@/components/ui/button";
 import { Grid, List, MapIcon } from "lucide-react";
+import { type Property } from "@/types/property";
+import { addCoordinatesToProperties } from "@/data/mockProperties";
 
-// Types
-export interface Property {
-  id: number;
-  title: string;
-  type: string;
-  price: number;
-  location: string;
-  surface: number;
-  rooms: number;
-  bathrooms: number;
-  description: string;
-  features: string[];
-  images: string[];
-  hasLive?: boolean;
-  liveDate?: Date;
-  agent: {
-    name: string;
-    image: string;
-    phone: string;
-    email: string;
-  };
-}
-
-// Mock data
-export const mockProperties: Property[] = [
+// Mock data with coordinates
+export const mockProperties: Property[] = addCoordinatesToProperties([
   {
     id: 1,
     title: "Villa moderne à Marrakech",
@@ -76,7 +55,7 @@ export const mockProperties: Property[] = [
       email: "mohammed.alami@example.com",
     },
   },
-];
+]);
 
 type ViewMode = "grid" | "list" | "map";
 

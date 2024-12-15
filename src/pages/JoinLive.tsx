@@ -8,8 +8,8 @@ import { LiveChat } from "@/components/live/LiveChat";
 import { LiveInfo } from "@/components/live/LiveInfo";
 import { useToast } from "@/hooks/use-toast";
 import { type Property } from "@/types/property";
+import { generateMockCoordinates } from "@/data/mockProperties";
 
-// Mock data for development
 const mockLiveData = {
   viewerCount: 45,
   messages: [
@@ -30,7 +30,7 @@ export const JoinLive = () => {
   useEffect(() => {
     // Simulate loading property data
     const timer = setTimeout(() => {
-      // Mock property data fetch
+      // Mock property data fetch with coordinates
       setProperty({
         id: 1,
         title: "Villa Moderne avec Piscine",
@@ -51,6 +51,7 @@ export const JoinLive = () => {
           phone: "+212 6 00 11 22 33",
           email: "karim.benjelloun@example.com",
         },
+        coordinates: generateMockCoordinates(),
       });
       setIsLoading(false);
     }, 1500);

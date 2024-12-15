@@ -12,37 +12,32 @@ import { HomeFilters } from "@/components/home/HomeFilters";
 import { CTASection } from "@/components/home/CTASection";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
 
-const Index = () => {
-  const navigate = useNavigate();
-  const [viewMode, setViewMode] = useState<"list" | "map">("list");
-  const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
-
-  const featuredProperties = addCoordinatesToProperties([
-    {
-      id: 1,
-      title: "Villa Moderne avec Piscine",
-      price: 2500000,
-      location: "Marrakech",
-      type: "Villa",
-      surface: 350,
-      rooms: 5,
-      bathrooms: 3,
-      description: "Magnifique villa moderne avec piscine et jardin paysager",
-      features: ["Piscine", "Jardin", "Garage", "Climatisation", "Sécurité 24/7"],
-      images: [
-        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-        "https://images.unsplash.com/photo-1613977257363-707ba9348227",
-      ],
-      hasLive: true,
-      liveDate: new Date("2024-03-15"),
-      agent: {
-        name: "Karim Benjelloun",
-        image: "https://i.pravatar.cc/150?u=karim",
-        phone: "+212 6 00 11 22 33",
-        email: "karim.benjelloun@example.com",
-      },
+const featuredProperties = addCoordinatesToProperties([
+  {
+    id: 1,
+    title: "Villa Moderne avec Piscine",
+    price: 2500000,
+    location: "Marrakech",
+    type: "Villa",
+    surface: 350,
+    rooms: 5,
+    bathrooms: 3,
+    description: "Magnifique villa moderne avec piscine et jardin paysager",
+    features: ["Piscine", "Jardin", "Garage", "Climatisation", "Sécurité 24/7"],
+    images: [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+      "https://images.unsplash.com/photo-1613977257363-707ba9348227",
+    ],
+    hasLive: true,
+    liveDate: new Date("2024-03-15"),
+    agent: {
+      name: "Karim Benjelloun",
+      image: "https://i.pravatar.cc/150?u=karim",
+      phone: "+212 6 00 11 22 33",
+      email: "karim.benjelloun@example.com",
     },
+  },
     {
       id: 2,
       title: "Appartement Vue Mer",
@@ -92,36 +87,12 @@ const Index = () => {
         email: "yasmine.alaoui@example.com",
       },
     },
-  ]);
+]);
 
-  const allProperties = addCoordinatesToProperties([
-    ...featuredProperties,
-    {
-      id: 4,
-      title: "Riad Traditionnel",
-      price: 4200000,
-      location: "Fès",
-      type: "Riad",
-      surface: 400,
-      rooms: 6,
-      bathrooms: 4,
-      description: "Magnifique riad traditionnel au cœur de la médina",
-      features: ["Patio", "Fontaine", "Terrasse", "Hammam", "Salon marocain"],
-      images: [
-        "https://images.unsplash.com/photo-1613977257363-707ba9348227",
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-      ],
-      hasLive: false,
-      agent: {
-        name: "Hassan El Fassi",
-        image: "https://i.pravatar.cc/150?u=hassan",
-        phone: "+212 6 33 44 55 66",
-        email: "hassan.elfassi@example.com",
-      },
-    },
-  ]);
-
-  const liveProperties = allProperties.filter(prop => prop.hasLive);
+const Index = () => {
+  const navigate = useNavigate();
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -163,11 +134,11 @@ const Index = () => {
         <FeaturedSection properties={featuredProperties} />
 
         {/* Live Properties Section */}
-        <LiveSection properties={liveProperties} />
+        <LiveSection properties={featuredProperties.filter(prop => prop.hasLive)} />
 
         {/* Filters Section */}
         <HomeFilters 
-          properties={allProperties}
+          properties={featuredProperties}
           onFiltersChange={setFilteredProperties}
         />
 
@@ -202,12 +173,12 @@ const Index = () => {
           
           {viewMode === "list" ? (
             <PropertyList 
-              properties={filteredProperties.length > 0 ? filteredProperties : allProperties} 
+              properties={filteredProperties.length > 0 ? filteredProperties : featuredProperties} 
               viewMode="list" 
             />
           ) : (
             <PropertyMap 
-              properties={filteredProperties.length > 0 ? filteredProperties : allProperties} 
+              properties={filteredProperties.length > 0 ? filteredProperties : featuredProperties} 
             />
           )}
         </section>
@@ -218,3 +189,5 @@ const Index = () => {
     </div>
   );
 };
+
+export default Index;
