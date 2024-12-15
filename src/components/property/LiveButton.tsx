@@ -1,15 +1,6 @@
-import { Video, Calendar, Users, CircleDot } from "lucide-react";
+import { Video, Calendar, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { ReservationForm } from "../home/ReservationForm";
-import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 interface LiveButtonProps {
   id: number;
@@ -18,6 +9,7 @@ interface LiveButtonProps {
   onJoinLive: () => void;
   isLiveNow?: boolean;
   remainingSeats?: number;
+  isUserRegistered?: boolean;
 }
 
 export const LiveButton = ({ 
@@ -26,8 +18,20 @@ export const LiveButton = ({
   liveDate, 
   onJoinLive,
   isLiveNow,
-  remainingSeats = 15
+  remainingSeats = 15,
+  isUserRegistered = false
 }: LiveButtonProps) => {
+  const { toast } = useToast();
+
+  const handleRegistration = () => {
+    // Cette fonction serait connectée à Supabase dans une future implémentation
+    toast({
+      title: "Inscription confirmée !",
+      description: "Vous recevrez un rappel avant le début du live.",
+      duration: 5000,
+    });
+  };
+
   if (isLiveNow) {
     return (
       <Button 
@@ -42,43 +46,54 @@ export const LiveButton = ({
   }
 
   if (liveDate && new Date(liveDate) > new Date()) {
-    return (
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="outline" className="w-full bg-primary text-white hover:bg-primary/90">
-            <Calendar className="mr-2 h-4 w-4" />
-            S'inscrire au live
+    if (isUserRegistered) {
+      return (
+        <div className="space-y-2">
+          <Button 
+            variant="outline" 
+            className="w-full bg-green-500/20 text-green-700 hover:bg-green-500/30 cursor-default"
+            disabled
+          >
+            <Users className="mr-2 h-4 w-4" />
+            Vous êtes inscrit !
           </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>S'inscrire au live</DialogTitle>
-            <DialogDescription className="space-y-2">
-              <p>
-                Live programmé le{" "}
-                {new Date(liveDate).toLocaleDateString("fr-FR", {
-                  day: "numeric",
-                  month: "long",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </p>
-              <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
-                <Users className="w-4 h-4 mr-1" />
-                {remainingSeats} places restantes
-              </Badge>
-            </DialogDescription>
-          </DialogHeader>
-          <ReservationForm
-            live={{
-              id,
-              title,
-              date: new Date(liveDate),
-              availableSeats: remainingSeats,
-            }}
-          />
-        </DialogContent>
-      </Dialog>
+          <p className="text-sm text-muted-foreground text-center">
+            Le {new Date(liveDate).toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "long",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-2">
+        <Button 
+          variant="outline" 
+          className="w-full bg-primary text-white hover:bg-primary/90"
+          onClick={handleRegistration}
+        >
+          <Calendar className="mr-2 h-4 w-4" />
+          S'inscrire au live
+        </Button>
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <span>
+            {new Date(liveDate).toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "long",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </span>
+          <span className="flex items-center gap-1">
+            <Users className="h-4 w-4" />
+            {remainingSeats} places
+          </span>
+        </div>
+      </div>
     );
   }
 

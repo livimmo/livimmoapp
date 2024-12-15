@@ -7,6 +7,7 @@ type PropertyCardProps = Property & {
   viewers?: number;
   isLiveNow?: boolean;
   remainingSeats?: number;
+  isUserRegistered?: boolean;
 };
 
 export const PropertyCard = ({
@@ -23,6 +24,7 @@ export const PropertyCard = ({
   viewers = 0,
   isLiveNow,
   remainingSeats = 15,
+  isUserRegistered = false,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
@@ -42,6 +44,7 @@ export const PropertyCard = ({
         viewers={viewers}
         currentUrl={currentUrl}
         isLiveNow={isLiveNow}
+        isUserRegistered={isUserRegistered}
       />
       <PropertyInfo
         id={id}
@@ -56,6 +59,7 @@ export const PropertyCard = ({
         onJoinLive={handleJoinLive}
         isLiveNow={isLiveNow}
         remainingSeats={remainingSeats}
+        isUserRegistered={isUserRegistered}
       />
     </div>
   );
