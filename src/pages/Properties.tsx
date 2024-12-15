@@ -28,7 +28,7 @@ export interface Property {
 }
 
 // Mock data
-const mockProperties: Property[] = [
+export const mockProperties: Property[] = [
   {
     id: 1,
     title: "Villa moderne à Marrakech",

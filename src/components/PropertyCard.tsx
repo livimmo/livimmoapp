@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
 interface PropertyCardProps {
+  id: number;
   image: string;
   title: string;
   price: number;
@@ -25,6 +26,7 @@ interface PropertyCardProps {
 }
 
 export const PropertyCard = ({
+  id,
   image,
   title,
   price,
