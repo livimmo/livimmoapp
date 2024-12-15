@@ -4,20 +4,22 @@ import { useNavigate } from "react-router-dom";
 export const CTASection = () => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate("/signup");
-  };
-
   return (
-    <section className="mb-8">
-      <div className="bg-accent rounded-lg p-6 text-center">
-        <h3 className="text-lg font-semibold mb-2">
-          Vous êtes agent immobilier ou promoteur ?
-        </h3>
-        <p className="text-muted-foreground mb-4">
-          Rejoignez notre plateforme et commencez à diffuser vos biens en direct
+    <section className="bg-accent rounded-lg p-6 mb-20 mt-8">
+      <div className="text-center space-y-4">
+        <h2 className="text-2xl font-bold text-primary">
+          Prêt à trouver votre bien idéal ?
+        </h2>
+        <p className="text-muted-foreground">
+          Créez votre compte gratuitement et commencez votre recherche
         </p>
-        <Button onClick={handleClick}>Commencer maintenant</Button>
+        <Button 
+          onClick={() => navigate("/signup")}
+          size="lg"
+          className="bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg"
+        >
+          Créer mon compte
+        </Button>
       </div>
     </section>
   );
