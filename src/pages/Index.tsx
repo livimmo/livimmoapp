@@ -1,6 +1,5 @@
 import { Video, Bell, User, List, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SearchBar } from "@/components/home/SearchBar";
 import { LiveSection } from "@/components/home/LiveSection";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -11,6 +10,7 @@ import { FeaturedSection } from "@/components/home/FeaturedSection";
 import { HomeFilters } from "@/components/home/HomeFilters";
 import { CTASection } from "@/components/home/CTASection";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
+import { SmartSearchBar } from "@/components/search/SmartSearchBar";
 
 const featuredProperties = addCoordinatesToProperties([
   {
@@ -93,6 +93,20 @@ const Index = () => {
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const suggestions = [
+    "Casablanca",
+    "Rabat",
+    "Marrakech",
+    "Tanger",
+    "Agadir",
+    "Fès",
+    "Villa",
+    "Appartement",
+    "Bureau",
+    "Riad",
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -128,7 +142,13 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 pt-20">
-        <SearchBar />
+        <div className="mb-8">
+          <SmartSearchBar
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            suggestions={suggestions}
+          />
+        </div>
         
         {/* Featured Properties Section */}
         <FeaturedSection properties={featuredProperties} />
