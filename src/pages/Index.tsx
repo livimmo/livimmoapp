@@ -6,8 +6,6 @@ import { Search, Bell, User, Camera, LayoutList, Map } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LiveCalendar } from "@/components/home/LiveCalendar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
@@ -53,8 +51,6 @@ const Index = () => {
     }
   ];
 
-  const liveProperties = featuredProperties.filter(prop => prop.hasLive);
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -99,14 +95,6 @@ const Index = () => {
           />
         </div>
 
-        {/* Live Properties Section */}
-        <section className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Lives programmés</h2>
-          </div>
-          <LiveCalendar />
-        </section>
-
         {/* Featured Properties Section */}
         <section className="mb-8">
           <div className="flex items-center justify-between mb-4">
@@ -130,7 +118,7 @@ const Index = () => {
           </div>
           
           {viewMode === "list" ? (
-            <PropertyList properties={featuredProperties} viewMode="list" />
+            <PropertyList properties={featuredProperties} viewMode="carousel" />
           ) : (
             <PropertyMap properties={featuredProperties} />
           )}
