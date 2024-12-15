@@ -1,109 +1,117 @@
 import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Clock, Video, Users } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { ReservationForm } from "./ReservationForm";
+import { Card } from "@/components/ui/card";
+import { LiveCard } from "../live/LiveCard";
+import type { LiveEvent } from "@/types/live";
 
-interface LiveEvent {
-  id: number;
-  title: string;
-  date: Date;
-  type: string;
-  location: string;
-  agent: string;
-  availableSeats: number;
-  thumbnail: string;
-  price: string;
-}
+// Mock data for scheduled lives
+const scheduledLives: LiveEvent[] = [
+  {
+    id: 1,
+    title: "Villa Moderne avec Piscine",
+    date: new Date(Date.now() + 86400000),
+    type: "Villa",
+    location: "Marrakech",
+    agent: "Sarah Martin",
+    availableSeats: 15,
+    thumbnail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+    price: "2,500,000 MAD",
+    description: "Magnifique villa moderne avec piscine et jardin paysager"
+  },
+  {
+    id: 2,
+    title: "Appartement Vue Mer",
+    date: new Date(Date.now() + 172800000),
+    type: "Appartement",
+    location: "Tanger",
+    agent: "Mohammed Alami",
+    availableSeats: 10,
+    thumbnail: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+    price: "1,800,000 MAD",
+    description: "Superbe appartement avec vue imprenable sur la mer"
+  },
+  {
+    id: 3,
+    title: "Penthouse Luxueux",
+    date: new Date(Date.now() + 259200000),
+    type: "Appartement",
+    location: "Casablanca",
+    agent: "Karim Hassan",
+    availableSeats: 8,
+    thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+    price: "3,200,000 MAD",
+    description: "Penthouse de luxe avec terrasse panoramique"
+  },
+  {
+    id: 4,
+    title: "Riad Traditionnel",
+    date: new Date(Date.now() + 345600000),
+    type: "Riad",
+    location: "Marrakech",
+    agent: "Yasmine Benali",
+    availableSeats: 12,
+    thumbnail: "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
+    price: "4,500,000 MAD",
+    description: "Riad authentique au cœur de la médina"
+  },
+  {
+    id: 5,
+    title: "Villa Contemporaine",
+    date: new Date(Date.now() + 432000000),
+    type: "Villa",
+    location: "Rabat",
+    agent: "Adam Tazi",
+    availableSeats: 20,
+    thumbnail: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+    price: "5,900,000 MAD",
+    description: "Villa contemporaine avec design unique"
+  }
+];
 
 export const LiveCalendar = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
-  const [selectedLive, setSelectedLive] = useState<LiveEvent | null>(null);
-
-  // Mock data for scheduled lives
-  const scheduledLives: LiveEvent[] = [
-    {
-      id: 1,
-      title: "Villa Moderne avec Piscine",
-      date: new Date(Date.now() + 86400000),
-      type: "Villa",
-      location: "Marrakech",
-      agent: "Sarah Martin",
-      availableSeats: 15,
-      thumbnail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-      price: "2,500,000 MAD"
-    },
-    // ... Add more mock data
-  ];
 
   const livesForSelectedDate = scheduledLives.filter(
     live => live.date.toDateString() === selectedDate?.toDateString()
   );
 
+  const hasLivesOnDate = (date: Date) => {
+    return scheduledLives.some(
+      live => live.date.toDateString() === date.toDateString()
+    );
+  };
+
   return (
-    <div className="space-y-4">
-      <Calendar
-        mode="single"
-        selected={selectedDate}
-        onSelect={setSelectedDate}
-        className="rounded-lg border"
-      />
+    <div className="space-y-6">
+      <Card className="p-4">
+        <Calendar
+          mode="single"
+          selected={selectedDate}
+          onSelect={setSelectedDate}
+          className="rounded-lg border"
+          modifiers={{
+            hasLive: (date) => hasLivesOnDate(date),
+          }}
+          modifiersStyles={{
+            hasLive: {
+              backgroundColor: "#fef2f2",
+              color: "#ea384c",
+              fontWeight: "bold"
+            }
+          }}
+        />
+      </Card>
 
       <div className="space-y-4">
-        {livesForSelectedDate.map((live) => (
-          <Card key={live.id} className="overflow-hidden">
-            <div className="relative">
-              <img 
-                src={live.thumbnail} 
-                alt={live.title} 
-                className="w-full h-48 object-cover"
-              />
-              <Badge className="absolute top-2 right-2 bg-primary">
-                <Clock className="w-4 h-4 mr-1" />
-                {live.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </Badge>
-            </div>
-            <CardHeader>
-              <CardTitle className="text-lg">{live.title}</CardTitle>
-              <div className="text-sm text-muted-foreground">
-                {live.type} • {live.location}
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-sm space-y-2">
-                <div>Agent: {live.agent}</div>
-                <div>Prix: {live.price}</div>
-                <div className="flex items-center gap-1">
-                  <Users className="w-4 h-4" />
-                  {live.availableSeats} places disponibles
-                </div>
-              </div>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="w-full mt-4">
-                    <Video className="w-4 h-4 mr-2" />
-                    Réserver ma place
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Réserver pour {live.title}</DialogTitle>
-                  </DialogHeader>
-                  <ReservationForm live={live} />
-                </DialogContent>
-              </Dialog>
-            </CardContent>
-          </Card>
-        ))}
+        {livesForSelectedDate.length > 0 ? (
+          livesForSelectedDate.map((live) => (
+            <LiveCard key={live.id} live={live} />
+          ))
+        ) : (
+          <div className="text-center text-muted-foreground py-8">
+            Aucun live programmé pour cette date
+          </div>
+        )}
       </div>
     </div>
   );
