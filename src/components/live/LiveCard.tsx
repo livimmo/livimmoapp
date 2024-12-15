@@ -11,12 +11,21 @@ import {
 } from "@/components/ui/dialog";
 import { ReservationForm } from "../home/ReservationForm";
 import { LiveEvent } from "@/types/live";
+import { useNavigate } from "react-router-dom";
 
 interface LiveCardProps {
   live: LiveEvent;
 }
 
 export const LiveCard = ({ live }: LiveCardProps) => {
+  const navigate = useNavigate();
+
+  const handleJoinLive = () => {
+    navigate(`/live/${live.id}`);
+  };
+
+  const isUpcoming = new Date(live.date) > new Date();
+
   return (
     <Card className="overflow-hidden">
       <div className="relative">
@@ -47,20 +56,31 @@ export const LiveCard = ({ live }: LiveCardProps) => {
         </div>
       </CardContent>
       <CardFooter>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
-              <Video className="w-4 h-4 mr-2" />
-              Réserver ma place
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Réserver pour {live.title}</DialogTitle>
-            </DialogHeader>
-            <ReservationForm live={live} />
-          </DialogContent>
-        </Dialog>
+        {isUpcoming ? (
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
+                <Video className="w-4 h-4 mr-2" />
+                Réserver ma place
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Réserver pour {live.title}</DialogTitle>
+              </DialogHeader>
+              <ReservationForm live={live} />
+            </DialogContent>
+          </Dialog>
+        ) : (
+          <Button 
+            variant="outline" 
+            className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
+            onClick={handleJoinLive}
+          >
+            <Video className="w-4 h-4 mr-2" />
+            Rejoindre le live
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
