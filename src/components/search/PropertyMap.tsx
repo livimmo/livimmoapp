@@ -1,17 +1,18 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Property } from "@/types/property";
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// Fix for default markers
-const icon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+// Fix for default markers in React Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconUrl: markerIcon.src,
+  iconRetinaUrl: markerIcon2x.src,
+  shadowUrl: markerShadow.src,
 });
 
 interface PropertyMapProps {
@@ -19,8 +20,8 @@ interface PropertyMapProps {
 }
 
 export const PropertyMap = ({ properties }: PropertyMapProps) => {
-  // Centre par défaut sur Casablanca
-  const defaultCenter: [number, number] = [33.5731, -7.5898];
+  // Centre par défaut sur le Maroc (coordonnées approximatives du centre du pays)
+  const defaultCenter: [number, number] = [31.7917, -7.0926];
   
   // Calculer le centre de la carte basé sur les propriétés si disponibles
   const center = properties.length > 0
@@ -30,13 +31,21 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
       ] as [number, number]
     : defaultCenter;
 
+  useEffect(() => {
+    // Force une mise à jour de la carte quand les propriétés changent
+    const map = L.map('map');
+    return () => {
+      map.remove();
+    };
+  }, [properties]);
+
   return (
-    <div className="h-[500px] w-full relative">
+    <div className="h-[500px] w-full relative z-0">
       <MapContainer
         center={center}
-        zoom={12}
+        zoom={6}
+        scrollWheelZoom={true}
         style={{ height: "100%", width: "100%" }}
-        scrollWheelZoom={false}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -46,7 +55,6 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
           <Marker
             key={property.id}
             position={[property.coordinates.lat, property.coordinates.lng]}
-            icon={icon}
           >
             <Popup>
               <div className="p-2">
