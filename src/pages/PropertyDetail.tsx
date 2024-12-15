@@ -11,8 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Video, Heart } from "lucide-react";
+import { ShareButtons } from "@/components/properties/ShareButtons";
 
-// Données mockées pour le développement
 export const mockProperties = [
   {
     id: 1,
@@ -83,18 +83,25 @@ export const PropertyDetail = () => {
                   {property.price.toLocaleString()} DH
                 </p>
               </div>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setIsFavorite(!isFavorite)}
-              >
-                <Heart
-                  className={`h-5 w-5 ${
-                    isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"
-                  }`}
-                />
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setIsFavorite(!isFavorite)}
+                >
+                  <Heart
+                    className={`h-5 w-5 ${
+                      isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"
+                    }`}
+                  />
+                </Button>
+              </div>
             </div>
+
+            <ShareButtons 
+              property={property} 
+              currentUrl={window.location.href} 
+            />
 
             <div className="flex items-center text-muted-foreground">
               <MapPin className="h-4 w-4 mr-2" />
