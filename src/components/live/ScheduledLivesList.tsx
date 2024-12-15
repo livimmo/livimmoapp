@@ -3,6 +3,7 @@ import { PropertyMap } from "../search/PropertyMap";
 import { LiveEvent } from "@/types/live";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Property } from "@/types/property";
+import { generateMockCoordinates } from "@/data/mockProperties";
 
 interface ScheduledLivesListProps {
   lives: LiveEvent[];
@@ -27,10 +28,7 @@ export const ScheduledLivesList = ({ lives }: ScheduledLivesListProps) => {
       phone: "N/A",
       email: "N/A"
     },
-    coordinates: {
-      lat: 31.7917 + Math.random() * 2,
-      lng: -7.0926 + Math.random() * 2
-    }
+    coordinates: generateMockCoordinates(live.location)
   }));
 
   return (
