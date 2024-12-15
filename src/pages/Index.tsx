@@ -1,7 +1,7 @@
 import { PropertyList } from "@/components/search/PropertyList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Bell, User } from "lucide-react";
+import { Search, Bell, User, Tv } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const Index = () => {
@@ -52,7 +52,10 @@ const Index = () => {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-primary">LovImmo</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl font-bold text-primary">Livimmo</h1>
+            <Tv className="h-5 w-5 text-red-500" />
+          </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon">
               <Bell className="h-5 w-5" />
