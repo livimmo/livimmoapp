@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Carousel,
   CarouselContent,
@@ -10,8 +10,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { MapPin, Phone, Mail, Video, Heart } from "lucide-react";
+import { MapPin, Phone, Mail, Video, Heart, Users, Calendar, CircleDot } from "lucide-react";
 import { ShareButtons } from "@/components/properties/ShareButtons";
+import { LiveButton } from "@/components/property/LiveButton";
+import { useToast } from "@/hooks/use-toast";
 
 export const mockProperties = [
   {
@@ -32,6 +34,9 @@ export const mockProperties = [
     ],
     hasLive: true,
     liveDate: new Date("2024-03-20T15:00:00"),
+    isLiveNow: true,
+    viewers: 45,
+    remainingSeats: 10,
     agent: {
       name: "Sarah Alami",
       phone: "+212 6 12 34 56 78",
@@ -43,13 +48,36 @@ export const mockProperties = [
 
 export const PropertyDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [isFavorite, setIsFavorite] = useState(false);
 
   const property = mockProperties.find((p) => p.id === Number(id));
 
   if (!property) {
-    return <div>Propriété non trouvée</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg text-red-500">Propriété non trouvée</p>
+          <Button onClick={() => navigate(-1)} className="mt-4">
+            Retour
+          </Button>
+        </div>
+      </div>
+    );
   }
+
+  const handleJoinLive = () => {
+    navigate(`/live/${property.id}`);
+  };
+
+  const handleToggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+    toast({
+      title: isFavorite ? "Retiré des favoris" : "Ajouté aux favoris",
+      description: `${property.title} a été ${isFavorite ? "retiré de" : "ajouté à"} vos favoris.`,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -73,30 +101,53 @@ export const PropertyDetail = () => {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
-            <div className="absolute top-4 right-4 z-10 flex gap-2">
+
+            {/* Live Status Badges */}
+            {property.hasLive && (
+              <div className="absolute top-4 left-4 flex flex-col gap-2">
+                {property.isLiveNow ? (
+                  <>
+                    <Badge className="bg-[#ea384c]/90 backdrop-blur-sm text-white animate-pulse">
+                      <CircleDot className="w-4 h-4 mr-1" />
+                      Live en cours
+                    </Badge>
+                    <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                      <Users className="w-4 h-4 mr-1" />
+                      {property.viewers} spectateurs
+                    </Badge>
+                  </>
+                ) : (
+                  <Badge className="bg-primary/90 backdrop-blur-sm text-white">
+                    <Calendar className="w-4 h-4 mr-1" />
+                    Live le {new Date(property.liveDate).toLocaleDateString('fr-FR', {
+                      day: 'numeric',
+                      month: 'long',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </Badge>
+                )}
+              </div>
+            )}
+
+            <div className="absolute top-4 right-4 flex gap-2">
               <Button
                 variant="outline"
                 size="icon"
                 className="bg-white/90 backdrop-blur-sm"
-                onClick={() => setIsFavorite(!isFavorite)}
+                onClick={handleToggleFavorite}
               >
-                <Heart
-                  className={`h-5 w-5 ${
-                    isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"
-                  }`}
-                />
+                <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
               </Button>
+              <ShareButtons property={property} currentUrl={window.location.href} />
             </div>
           </div>
+
           <div className="mt-4">
             <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
             <p className="text-2xl font-semibold text-primary mb-4">
               {property.price.toLocaleString()} DH
             </p>
-            <ShareButtons 
-              property={property} 
-              currentUrl={window.location.href} 
-            />
           </div>
         </div>
 
@@ -143,13 +194,33 @@ export const PropertyDetail = () => {
             {property.hasLive && (
               <Card className="p-4 bg-accent">
                 <div className="flex items-center gap-2 mb-2">
-                  <Video className="h-5 w-5 text-primary" />
-                  <span className="font-semibold">Live programmé</span>
+                  {property.isLiveNow ? (
+                    <CircleDot className="h-5 w-5 text-[#ea384c] animate-pulse" />
+                  ) : (
+                    <Calendar className="h-5 w-5 text-primary" />
+                  )}
+                  <span className="font-semibold">
+                    {property.isLiveNow ? "Live en cours" : "Live programmé"}
+                  </span>
                 </div>
-                <p className="text-sm mb-4">
-                  {property.liveDate?.toLocaleDateString()}
-                </p>
-                <Button className="w-full">Rejoindre le live</Button>
+                {!property.isLiveNow && property.liveDate && (
+                  <p className="text-sm mb-4">
+                    {new Date(property.liveDate).toLocaleDateString('fr-FR', {
+                      day: 'numeric',
+                      month: 'long',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                )}
+                <LiveButton
+                  id={property.id}
+                  title={property.title}
+                  liveDate={property.liveDate}
+                  onJoinLive={handleJoinLive}
+                  isLiveNow={property.isLiveNow}
+                  remainingSeats={property.remainingSeats}
+                />
               </Card>
             )}
 
@@ -158,7 +229,7 @@ export const PropertyDetail = () => {
                 <img
                   src={property.agent.image}
                   alt={property.agent.name}
-                  className="w-16 h-16 rounded-full"
+                  className="w-16 h-16 rounded-full object-cover"
                 />
                 <div>
                   <h3 className="font-semibold">{property.agent.name}</h3>
