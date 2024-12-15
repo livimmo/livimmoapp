@@ -104,7 +104,7 @@ const Search = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background pb-16">
+    <div className="min-h-screen bg-background">
       <SearchFilters
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
