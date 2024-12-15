@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -17,6 +18,11 @@ const Index = () => {
   // Position par défaut (Casablanca)
   const position: [number, number] = [33.5731, -7.5898];
   
+  useEffect(() => {
+    // Force a re-render of the map when the component mounts
+    window.dispatchEvent(new Event('resize'));
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-6">
@@ -27,11 +33,10 @@ const Index = () => {
               zoom={13} 
               style={{ height: "100%", width: "100%" }}
               scrollWheelZoom={false}
-              key="map"
             >
               <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               />
               <Marker position={position}>
                 <Popup>
