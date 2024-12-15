@@ -26,9 +26,9 @@ export const mockProperties = [
     bathrooms: 3,
     features: ["Piscine", "Jardin", "Parking", "Sécurité 24/7", "Vue mer"],
     images: [
-      "/placeholder.svg",
-      "/placeholder.svg",
-      "/placeholder.svg",
+      "https://images.unsplash.com/photo-1721322800607-8c38375eef04",
+      "https://images.unsplash.com/photo-1472396961693-142e6e269027",
+      "https://images.unsplash.com/photo-1493962853295-0fd70327578a",
     ],
     hasLive: true,
     liveDate: new Date("2024-03-20T15:00:00"),
@@ -36,7 +36,7 @@ export const mockProperties = [
       name: "Sarah Alami",
       phone: "+212 6 12 34 56 78",
       email: "sarah.alami@example.com",
-      image: "/placeholder.svg"
+      image: "https://images.unsplash.com/photo-1535268647677-300dbf3d78d1"
     }
   },
 ];
