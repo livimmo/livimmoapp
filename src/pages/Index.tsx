@@ -4,7 +4,7 @@ import { BottomNav } from "@/components/BottomNav";
 const properties = [
   {
     id: 1,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2075&q=80",
     title: "Villa Moderne avec Piscine",
     price: 2500000,
     location: "Casablanca - Anfa",
@@ -14,7 +14,7 @@ const properties = [
   },
   {
     id: 2,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2053&q=80",
     title: "Appartement Vue Mer",
     price: 1800000,
     location: "Rabat - Hassan",
@@ -24,7 +24,7 @@ const properties = [
   },
   {
     id: 3,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
     title: "Duplex de Luxe",
     price: 3200000,
     location: "Marrakech - Guéliz",
