@@ -1,12 +1,21 @@
 export interface Property {
   id: number;
-  image: string;
   title: string;
+  type: string;
   price: number;
   location: string;
-  type: string;
   surface: number;
   rooms: number;
+  bathrooms: number;
+  description: string;
+  features: string[];
+  images: string[];
   hasLive?: boolean;
-  addedAt: Date;
+  liveDate?: Date;
+  agent: {
+    name: string;
+    image: string;
+    phone: string;
+    email: string;
+  };
 }

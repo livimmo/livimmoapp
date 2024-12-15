@@ -1,5 +1,5 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { type Property } from "@/pages/Properties";
+import { type Property } from "@/types/property";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -14,13 +14,20 @@ const icon = L.icon({
   shadowSize: [41, 41]
 });
 
+// Fonction pour générer des coordonnées aléatoires au Maroc
+const getRandomMaroccoCoordinates = (): [number, number] => {
+  const lat = 28 + Math.random() * 8; // Entre 28°N et 36°N
+  const lng = -11 + Math.random() * 7; // Entre -11°W et -4°W
+  return [lat, lng];
+};
+
 interface PropertyMapProps {
   properties: Property[];
 }
 
 export const PropertyMap = ({ properties }: PropertyMapProps) => {
-  // Default to Casablanca coordinates if no properties
-  const defaultCenter = [33.5731, -7.5898];
+  // Centre sur Casablanca par défaut
+  const defaultCenter: [number, number] = [33.5731, -7.5898];
 
   return (
     <div className="h-[500px] w-full">
@@ -28,25 +35,30 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
         center={defaultCenter}
         zoom={13}
         style={{ height: "100%", width: "100%" }}
+        scrollWheelZoom={true}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {properties.map((property) => (
-          <Marker 
-            key={property.id} 
-            position={defaultCenter}
-            icon={icon}
-          >
-            <Popup>
-              <div className="p-2">
-                <h3 className="font-semibold">{property.title}</h3>
-                <p className="text-sm">{property.price.toLocaleString()} DH</p>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+        {properties.map((property) => {
+          const coordinates = getRandomMaroccoCoordinates();
+          return (
+            <Marker 
+              key={property.id} 
+              position={coordinates}
+              icon={icon}
+            >
+              <Popup>
+                <div className="p-2">
+                  <h3 className="font-semibold">{property.title}</h3>
+                  <p className="text-sm">{property.price.toLocaleString()} DH</p>
+                  <p className="text-sm text-gray-500">{property.location}</p>
+                </div>
+              </Popup>
+            </Marker>
+          );
+        })}
       </MapContainer>
     </div>
   );

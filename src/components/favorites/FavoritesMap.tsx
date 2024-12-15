@@ -1,5 +1,5 @@
 import { PropertyMap } from "@/components/search/PropertyMap";
-import { Property } from "@/types/property";
+import { type Property } from "@/types/property";
 
 interface FavoritesMapProps {
   properties: Property[];
