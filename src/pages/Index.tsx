@@ -6,6 +6,8 @@ import { Search, Bell, User, Camera, LayoutList, Map } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { LiveCalendar } from "@/components/home/LiveCalendar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
@@ -100,12 +102,9 @@ const Index = () => {
         {/* Live Properties Section */}
         <section className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">En direct</h2>
-            <Button variant="link" className="text-primary">
-              Voir tout
-            </Button>
+            <h2 className="text-lg font-semibold">Lives programmés</h2>
           </div>
-          <PropertyList properties={liveProperties} viewMode="carousel" />
+          <LiveCalendar />
         </section>
 
         {/* Featured Properties Section */}
