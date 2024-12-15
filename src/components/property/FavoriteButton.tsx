@@ -34,14 +34,14 @@ export const FavoriteButton = ({
       size="icon"
       className={cn(
         "h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white/90",
-        isFavorite && "text-red-500 hover:text-red-600"
+        isFavorite && "text-[#ea384c] hover:text-[#ea384c]"
       )}
       onClick={handleClick}
     >
       <Heart
         className={cn(
           "h-5 w-5 transition-all",
-          isFavorite && "fill-current animate-scale-in"
+          isFavorite && "fill-[#ea384c]"
         )}
       />
     </Button>
