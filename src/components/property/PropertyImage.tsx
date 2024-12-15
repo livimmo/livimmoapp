@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
+import { Clock, Users } from "lucide-react";
+import { FavoriteButton } from "./FavoriteButton";
 import { Badge } from "@/components/ui/badge";
-import { Users, CircleDot } from "lucide-react";
-import { ViewersCounter } from "./ViewersCounter";
-import { LiveRegistrationStatus } from "./LiveRegistrationStatus";
+import { cn } from "@/lib/utils";
 
 interface PropertyImageProps {
   id: number;
@@ -11,10 +11,10 @@ interface PropertyImageProps {
   hasLive?: boolean;
   liveDate?: Date;
   viewers?: number;
-  currentUrl: string;
+  currentUrl?: string;
   isLiveNow?: boolean;
-  isUserRegistered?: boolean;
   remainingSeats?: number;
+  isUserRegistered?: boolean;
 }
 
 export const PropertyImage = ({
@@ -24,58 +24,63 @@ export const PropertyImage = ({
   hasLive,
   liveDate,
   viewers = 0,
-  currentUrl,
   isLiveNow,
-  isUserRegistered = false,
-  remainingSeats = 0,
+  remainingSeats,
+  isUserRegistered,
 }: PropertyImageProps) => {
   return (
-    <div className="relative aspect-[4/3]">
+    <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg">
       <Link to={`/property/${id}`}>
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-cover rounded-t-lg"
+          className="h-full w-full object-cover transition-transform duration-300 hover:scale-110"
         />
       </Link>
 
-      {hasLive && liveDate && (
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
+      <div className="absolute top-2 right-2 z-10">
+        <FavoriteButton propertyId={id} title={title} />
+      </div>
+
+      {hasLive && (
+        <div className="absolute bottom-2 left-2 flex flex-col gap-1">
           {isLiveNow ? (
             <>
-              <Badge className="bg-[#ea384c]/90 backdrop-blur-sm text-white animate-pulse">
-                <CircleDot className="w-4 h-4 mr-1" />
-                Live en cours
+              <Badge
+                variant="default"
+                className={cn(
+                  "bg-[#ea384c]/90 text-white backdrop-blur-sm animate-pulse",
+                  isUserRegistered && "bg-green-500/90"
+                )}
+              >
+                <span className="mr-1 inline-block h-2 w-2 rounded-full bg-white" />
+                {isUserRegistered ? "Inscrit" : "Live en cours"}
               </Badge>
-              {viewers > 0 && <ViewersCounter count={viewers} />}
+              <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                <Users className="mr-1 h-4 w-4" />
+                {viewers} spectateurs
+              </Badge>
+              {!isUserRegistered && remainingSeats && remainingSeats > 0 && (
+                <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                  {remainingSeats} places restantes
+                </Badge>
+              )}
             </>
           ) : (
-            <>
-              <Badge className="bg-primary/90 backdrop-blur-sm text-white">
+            liveDate && (
+              <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                <Clock className="mr-1 h-4 w-4" />
                 {new Date(liveDate).toLocaleDateString("fr-FR", {
-                  weekday: 'long',
+                  weekday: "long",
                   day: "numeric",
                   month: "long",
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
               </Badge>
-              {remainingSeats > 0 && (
-                <Badge variant="secondary" className="backdrop-blur-sm">
-                  <Users className="w-4 h-4 mr-1" />
-                  {remainingSeats} places disponibles
-                </Badge>
-              )}
-            </>
+            )
           )}
         </div>
-      )}
-
-      {hasLive && liveDate && (
-        <LiveRegistrationStatus 
-          isRegistered={isUserRegistered} 
-          liveDate={liveDate} 
-        />
       )}
     </div>
   );
