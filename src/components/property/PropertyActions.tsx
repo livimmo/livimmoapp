@@ -1,4 +1,4 @@
-import { Heart, Share2 } from "lucide-react";
+import { Share2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -86,9 +86,6 @@ export const PropertyActions = ({ title, currentUrl }: PropertyActionsProps) => 
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <button className="p-2 bg-white rounded-full shadow-md">
-        <Heart className="w-5 h-5 text-gray-500" />
-      </button>
     </div>
   );
 };
