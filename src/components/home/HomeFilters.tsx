@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { type Property } from "@/types/property";
 
@@ -50,7 +50,7 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
   };
 
   // Apply filters whenever any filter value changes
-  useState(() => {
+  useEffect(() => {
     applyFilters();
   }, [searchTerm, propertyType, priceRange, surfaceRange, showLiveOnly]);
 
