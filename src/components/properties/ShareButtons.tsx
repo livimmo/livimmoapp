@@ -62,10 +62,10 @@ export const ShareButtons = ({ property, currentUrl }: ShareButtonsProps) => {
       <Button
         variant="outline"
         size="icon"
-        className="bg-[#25D366] hover:bg-[#25D366]/90 text-white"
+        className="bg-[#25D366] hover:bg-[#25D366]/90 text-white border-none"
         onClick={() => handleShare("whatsapp")}
       >
-        <MessageCircle className="h-4 w-4" />
+        <MessageCircle className="h-4 w-4 fill-white" />
       </Button>
       <Button
         variant="outline"
