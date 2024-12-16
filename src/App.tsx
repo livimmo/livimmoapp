@@ -7,11 +7,16 @@ import DeveloperDetail from "@/pages/DeveloperDetail";
 import Developers from "@/pages/Developers";
 import Profile from "@/pages/Profile";
 import Search from "@/pages/Search";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <AuthProvider>
+        <Layout />
+      </AuthProvider>
+    ),
     children: [
       {
         path: "/",

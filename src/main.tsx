@@ -5,8 +5,12 @@ import router from './App';
 import './index.css';
 import 'leaflet/dist/leaflet.css';
 
-createRoot(document.getElementById("root")!).render(
-  <AuthProvider>
-    <RouterProvider router={router} />
-  </AuthProvider>
+const Root = () => (
+  <RouterProvider router={router}>
+    <AuthProvider>
+      {/* Router children will be rendered here */}
+    </AuthProvider>
+  </RouterProvider>
 );
+
+createRoot(document.getElementById("root")!).render(<Root />);
