@@ -1,21 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-
-interface User {
-  id: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  avatar?: string;
-  accountType: "buyer" | "agent";
-}
+import { User, UserRole } from '@/types/user';
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string, firstName: string, lastName: string, accountType: "buyer" | "agent") => Promise<void>;
+  login: (email: string, password: string, role?: UserRole) => Promise<void>;
+  signup: (email: string, password: string, firstName: string, lastName: string, role: UserRole) => Promise<void>;
   logout: () => void;
 }
 
@@ -26,7 +18,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, role?: UserRole) => {
     try {
       // TODO: Implement real authentication logic here
       // Simulation d'une connexion réussie
@@ -35,7 +27,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         email,
         firstName: 'John',
         lastName: 'Doe',
-        accountType: "buyer", // Par défaut, on met buyer
+        role: role,
       });
       
       toast({
@@ -43,7 +35,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         description: "Bienvenue sur Livimmo !",
       });
       
-      navigate('/');
+      // Redirection en fonction du rôle
+      if (role === "promoter" || role === "agent") {
+        navigate('/properties');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       toast({
         title: "Erreur de connexion",
@@ -53,7 +50,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signup = async (email: string, password: string, firstName: string, lastName: string, accountType: "buyer" | "agent") => {
+  const signup = async (email: string, password: string, firstName: string, lastName: string, role: UserRole) => {
     try {
       // TODO: Implement real signup logic here
       // Simulation d'une inscription réussie
@@ -62,7 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         email,
         firstName,
         lastName,
-        accountType,
+        role,
       });
       
       toast({
@@ -70,7 +67,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         description: "Bienvenue sur Livimmo !",
       });
       
-      navigate('/');
+      // Redirection en fonction du rôle
+      if (role === "promoter" || role === "agent") {
+        navigate('/properties');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       toast({
         title: "Erreur d'inscription",
