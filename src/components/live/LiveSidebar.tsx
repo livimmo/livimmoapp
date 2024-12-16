@@ -1,5 +1,5 @@
 import { LiveEvent } from "@/types/live";
-import { Radio, ChevronRight } from "lucide-react";
+import { Radio, ChevronRight, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
