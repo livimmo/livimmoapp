@@ -39,21 +39,22 @@ export const LiveInfo = ({
 
   return (
     <Card className={cn(
-      "p-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-      "transition-all duration-300",
+      "p-2 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60",
+      "transition-all duration-300 shadow-lg",
       "h-auto",
       "overflow-hidden",
       "flex flex-col",
       "fixed bottom-[64px] left-0 right-0",
       isMobile ? 'max-h-[30vh]' : 'max-h-[20vh]',
       "z-50",
-      "border-t border-border/50",
+      "border-t border-primary/20",
+      "hover:bg-background/90 hover:shadow-xl",
       isFullscreen && "z-[9999]"
     )}>
       <div className="w-full max-w-5xl mx-auto">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3 min-w-0 flex-1">
-            <div className="h-12 w-20 bg-gray-200 rounded-md overflow-hidden shrink-0 flex items-center justify-center">
+            <div className="h-12 w-20 bg-gray-200 rounded-md overflow-hidden shrink-0 flex items-center justify-center shadow-sm">
               <img 
                 src={property.images[0]} 
                 alt={property.title}
@@ -63,17 +64,17 @@ export const LiveInfo = ({
             <div className="min-w-0">
               <Link 
                 to={`/properties/${property.id}`}
-                className="hover:underline flex items-center gap-2"
+                className="hover:underline flex items-center gap-2 group"
               >
-                <h2 className="text-base font-semibold truncate">{property.title}</h2>
-                <ExternalLink className="w-3.5 h-3.5 text-primary shrink-0" />
+                <h2 className="text-base font-semibold truncate group-hover:text-primary transition-colors">{property.title}</h2>
+                <ExternalLink className="w-3.5 h-3.5 text-primary shrink-0 group-hover:scale-110 transition-transform" />
               </Link>
               <div className="flex items-center gap-2 mt-1">
                 <Badge 
                   variant="default" 
-                  className={`flex items-center gap-1 ${isReplay ? 'bg-blue-600' : 'bg-[#ea384c]'} hover:${isReplay ? 'bg-blue-600/90' : 'bg-[#ea384c]/90'} text-white`}
+                  className={`flex items-center gap-1 ${isReplay ? 'bg-blue-600' : 'bg-[#ea384c]'} hover:${isReplay ? 'bg-blue-600/90' : 'bg-[#ea384c]/90'} text-white shadow-sm`}
                 >
-                  <Radio className="w-3 h-3" />
+                  <Radio className="w-3 h-3 animate-pulse" />
                   <span>{isReplay ? 'REPLAY' : 'LIVE'}</span>
                 </Badge>
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -89,15 +90,15 @@ export const LiveInfo = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className={`bg-primary/10 hover:bg-primary/20 ${isFavorite ? 'text-[#ea384c]' : 'text-primary'}`}
+                className={`bg-primary/10 hover:bg-primary/20 ${isFavorite ? 'text-[#ea384c]' : 'text-primary'} transition-colors`}
                 onClick={handleToggleFavorite}
               >
-                <Heart className={`h-5 w-5 ${isFavorite ? "fill-[#ea384c]" : ""}`} />
+                <Heart className={`h-5 w-5 ${isFavorite ? "fill-[#ea384c]" : ""} transition-colors`} />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="bg-primary/10 text-primary hover:bg-primary/20"
+                className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                 onClick={onToggleChat}
               >
                 <MessageSquare className="h-5 w-5" />
@@ -105,7 +106,7 @@ export const LiveInfo = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="bg-primary/10 text-primary hover:bg-primary/20"
+                className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                 onClick={onToggleFullscreen}
               >
                 {isFullscreen ? (
@@ -117,7 +118,7 @@ export const LiveInfo = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="bg-primary/10 text-primary hover:bg-primary/20"
+                className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                 onClick={() => navigate(-1)}
               >
                 <X className="h-5 w-5" />
@@ -125,15 +126,15 @@ export const LiveInfo = ({
             </div>
             <Badge 
               variant="secondary" 
-              className="bg-accent text-accent-foreground"
+              className="bg-accent text-accent-foreground shadow-sm"
             >
               {offerCount} offres
             </Badge>
-            <p className="text-lg font-bold whitespace-nowrap">
+            <p className="text-lg font-bold whitespace-nowrap text-primary">
               {property.price.toLocaleString()} DH
             </p>
             <Button 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap" 
+              className="bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap shadow-sm transition-all hover:shadow-md" 
               onClick={() => setIsOfferDialogOpen(true)}
             >
               <Heart className="w-4 h-4 mr-1.5" />
