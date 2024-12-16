@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { Euro, HandCoins, UserPlus2 } from "lucide-react";
 
 interface OfferDialogProps {
   title: string;
@@ -28,6 +29,33 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user } = useAuth();
+
+  const getButtonContent = () => {
+    if (!isAuthenticated) {
+      return (
+        <>
+          <UserPlus2 className="w-4 h-4" />
+          Faire une offre rapide
+        </>
+      );
+    }
+    
+    if (price > 1000000) {
+      return (
+        <>
+          <Euro className="w-4 h-4" />
+          Proposer un prix
+        </>
+      );
+    }
+
+    return (
+      <>
+        <HandCoins className="w-4 h-4" />
+        Faire une offre
+      </>
+    );
+  };
 
   const validateForm = () => {
     if (!isAuthenticated) {
@@ -99,7 +127,12 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full">Faire une offre</Button>
+        <Button 
+          className="w-full" 
+          variant={!isAuthenticated ? "secondary" : "default"}
+        >
+          {getButtonContent()}
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
