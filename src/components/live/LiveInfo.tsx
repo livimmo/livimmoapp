@@ -56,7 +56,13 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
       <div className="w-full max-w-5xl mx-auto">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
-            <h2 className="text-base font-semibold truncate">{property.title}</h2>
+            <Link 
+              to={`/properties/${property.id}`}
+              className="hover:underline flex items-center gap-2"
+            >
+              <h2 className="text-base font-semibold truncate">{property.title}</h2>
+              <ExternalLink className="w-3.5 h-3.5 text-primary" />
+            </Link>
             <Badge 
               variant="default" 
               className="flex items-center gap-1 bg-[#ea384c]/90 hover:bg-[#ea384c] text-white shrink-0"
@@ -99,14 +105,6 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
                 </Button>
               </div>
             </div>
-
-            <Link 
-              to={`/properties/${property.id}`}
-              className="flex items-center gap-1.5 text-xs text-primary hover:underline mt-2"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              Voir plus de détails
-            </Link>
           </div>
         )}
 
