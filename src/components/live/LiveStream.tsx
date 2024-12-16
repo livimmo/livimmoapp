@@ -98,8 +98,8 @@ export const LiveStream = ({
           />
         </div>
 
-        {/* Contrôles vidéo - Repositionnés en bas */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent flex justify-end items-center gap-2 z-50">
+        {/* Contrôles vidéo */}
+        <div className="absolute bottom-[64px] left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent flex justify-end items-center gap-2 z-[51]">
           <Button
             variant="ghost"
             size="icon"
