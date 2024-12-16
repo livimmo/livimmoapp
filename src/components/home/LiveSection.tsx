@@ -10,12 +10,13 @@ import { useNavigate } from "react-router-dom";
 
 export const LiveSection = () => {
   const [viewMode, setViewMode] = useState<"list" | "map" | "hybrid">("hybrid");
+  const [hasShownNotification, setHasShownNotification] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simuler la détection d'un nouveau live
-    if (liveStreams.length > 0) {
+    // On ne montre la notification qu'une seule fois
+    if (!hasShownNotification && liveStreams.length > 0) {
       const latestLive = liveStreams[0];
       toast({
         title: "🔴 Nouveau live en cours !",
@@ -36,8 +37,9 @@ export const LiveSection = () => {
         className: "bg-red-500 text-white",
         duration: 10000,
       });
+      setHasShownNotification(true);
     }
-  }, [toast, navigate]);
+  }, [hasShownNotification, toast, navigate]); // Ajout des dépendances appropriées
 
   const liveProperties: Property[] = liveStreams.map((live) => ({
     id: live.id,
