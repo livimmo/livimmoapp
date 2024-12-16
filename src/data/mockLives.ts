@@ -3,7 +3,7 @@ import { LiveEvent } from "@/types/live";
 export const liveStreams: LiveEvent[] = [
   {
     id: 1,
-    title: "Visite Villa Moderne",
+    title: "Villa Moderne",
     date: new Date(),
     type: "Villa",
     location: "Marrakech",
@@ -58,6 +58,20 @@ export const liveStreams: LiveEvent[] = [
     status: "live",
     tags: ["Coup de fusil", "Nouveauté"]
   },
+  {
+    id: 5,
+    title: "Villa avec Piscine",
+    date: new Date(),
+    type: "Villa",
+    location: "Agadir",
+    agent: "Rachid Tazi",
+    availableSeats: 25,
+    thumbnail: "https://images.unsplash.com/photo-1613977257363-707ba9348227",
+    price: "3,800,000 MAD",
+    viewers: 38,
+    status: "live",
+    tags: ["Nouveauté"]
+  }
 ];
 
 export const scheduledLives: LiveEvent[] = [

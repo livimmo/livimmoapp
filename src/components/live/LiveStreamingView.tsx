@@ -8,6 +8,7 @@ import { Property } from "@/types/property";
 import { LiveEvent } from "@/types/live";
 import { liveStreams } from "@/data/mockLives";
 import { cn } from "@/lib/utils";
+import { LiveSidebar } from "./LiveSidebar";
 
 interface LiveStreamingViewProps {
   property: Property;
@@ -90,13 +91,10 @@ export const LiveStreamingView = ({
       </div>
 
       <div className="absolute bottom-[64px] left-0 right-0">
-        <LiveCarousel
+        <LiveSidebar
           lives={availableLives}
           currentLiveId={property.id}
-          onLiveSelect={(liveId) => {
-            window.location.href = `/live/${liveId}`;
-          }}
-          onLiveClose={handleCloseLive}
+          onCloseLive={handleCloseLive}
         />
       </div>
     </div>
