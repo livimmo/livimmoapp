@@ -32,6 +32,82 @@ export const LiveCarousel = ({
     stopOnInteraction: true,
   };
 
+  // Ajout de 5 lives de démonstration si lives est vide ou contient moins de 5 éléments
+  const demoLives: LiveEvent[] = [
+    {
+      id: 101,
+      title: "Villa de luxe avec piscine",
+      description: "Magnifique villa avec vue panoramique",
+      thumbnail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+      agent: "Sarah Martin",
+      location: "Marrakech",
+      type: "Villa",
+      price: "4,500,000 DH",
+      status: "live",
+      date: new Date(),
+      availableSeats: 15,
+      viewers: 24,
+    },
+    {
+      id: 102,
+      title: "Appartement vue mer",
+      description: "Superbe appartement en front de mer",
+      thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      agent: "Mohammed Alami",
+      location: "Tanger",
+      type: "Appartement",
+      price: "2,800,000 DH",
+      status: "live",
+      date: new Date(),
+      availableSeats: 10,
+      viewers: 18,
+    },
+    {
+      id: 103,
+      title: "Riad traditionnel",
+      description: "Authentique riad dans la médina",
+      thumbnail: "https://images.unsplash.com/photo-1590059390047-f5e617b6cbc7",
+      agent: "Yasmine Idrissi",
+      location: "Fès",
+      type: "Riad",
+      price: "3,200,000 DH",
+      status: "live",
+      date: new Date(),
+      availableSeats: 8,
+      viewers: 32,
+    },
+    {
+      id: 104,
+      title: "Penthouse moderne",
+      description: "Penthouse avec terrasse privée",
+      thumbnail: "https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e",
+      agent: "Karim Benjelloun",
+      location: "Casablanca",
+      type: "Appartement",
+      price: "5,900,000 DH",
+      status: "live",
+      date: new Date(),
+      availableSeats: 12,
+      viewers: 45,
+    },
+    {
+      id: 105,
+      title: "Villa contemporaine",
+      description: "Villa moderne avec jardin",
+      thumbnail: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+      agent: "Leila Amrani",
+      location: "Rabat",
+      type: "Villa",
+      price: "6,200,000 DH",
+      status: "live",
+      date: new Date(),
+      availableSeats: 20,
+      viewers: 29,
+    },
+  ];
+
+  const allLives = [...demoLives, ...lives].filter(live => live.id !== currentLiveId);
+
   return (
     <div className={cn(
       "p-4 transition-all duration-300",
@@ -41,7 +117,7 @@ export const LiveCarousel = ({
         <div className="flex items-center gap-2">
           <h3 className="text-white font-semibold">Autres lives en cours</h3>
           <Badge variant="secondary" className="bg-white/10 text-white">
-            {lives.length}
+            {allLives.length}
           </Badge>
         </div>
         <Button
@@ -70,7 +146,7 @@ export const LiveCarousel = ({
           className="w-full"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
-            {lives.map((live) => (
+            {allLives.map((live) => (
               <CarouselItem key={live.id} className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4">
                 <div
                   className={cn(
