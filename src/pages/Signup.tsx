@@ -6,35 +6,33 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff } from "lucide-react";
 import { SocialConnect } from "@/components/profile/SocialConnect";
-import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     phone: "",
     acceptTerms: false,
   });
-  const { toast } = useToast();
+  
+  const { signup } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.acceptTerms) {
-      toast({
-        title: "Erreur",
-        description: "Veuillez accepter les conditions générales d'utilisation",
-        variant: "destructive",
-      });
       return;
     }
     
-    // TODO: Implement signup logic
-    toast({
-      title: "Compte créé avec succès !",
-      description: "Bienvenue dans notre communauté.",
-    });
+    await signup(
+      formData.email,
+      formData.password,
+      formData.firstName,
+      formData.lastName
+    );
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -58,15 +56,27 @@ export const Signup = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="fullName">Nom complet</Label>
-              <Input
-                id="fullName"
-                placeholder="John Doe"
-                value={formData.fullName}
-                onChange={(e) => handleInputChange("fullName", e.target.value)}
-                required
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="firstName">Prénom</Label>
+                <Input
+                  id="firstName"
+                  placeholder="John"
+                  value={formData.firstName}
+                  onChange={(e) => handleInputChange("firstName", e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="lastName">Nom</Label>
+                <Input
+                  id="lastName"
+                  placeholder="Doe"
+                  value={formData.lastName}
+                  onChange={(e) => handleInputChange("lastName", e.target.value)}
+                  required
+                />
+              </div>
             </div>
 
             <div className="space-y-2">

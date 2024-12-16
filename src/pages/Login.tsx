@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import { SocialConnect } from "@/components/profile/SocialConnect";
-import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,18 +14,12 @@ const Login = () => {
     password: "",
     rememberMe: false,
   });
-  const { toast } = useToast();
-  const navigate = useNavigate();
+  
+  const { login } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // TODO: Implement actual login logic
-    toast({
-      title: "Connexion réussie !",
-      description: "Bienvenue sur Livimmo.",
-    });
-    navigate('/');
+    await login(formData.email, formData.password);
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {

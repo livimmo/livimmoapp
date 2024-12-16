@@ -1,11 +1,11 @@
 import { Video, Bell, User, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const HomeHeader = () => {
   const navigate = useNavigate();
-  // TODO: Remplacer par un vrai état de connexion
-  const isLoggedIn = false;
+  const { isAuthenticated } = useAuth();
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
@@ -20,7 +20,7 @@ export const HomeHeader = () => {
           <Video className="h-5 w-5 text-[#ea384c]" />
         </div>
         <div className="flex items-center gap-3">
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <>
               <Button 
                 variant="ghost" 
