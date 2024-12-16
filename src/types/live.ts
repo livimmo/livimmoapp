@@ -4,6 +4,7 @@ export interface LiveEvent {
   description?: string;
   thumbnail: string;
   agent: string;
+  agentId?: number;
   location: string;
   type: string;
   price: string;
