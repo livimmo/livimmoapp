@@ -29,8 +29,8 @@ const createMarkerIcon = (isLive: boolean) => {
         <circle cx="12" cy="13" r="4"/>
       </svg>
     `)}`,
-    scaledSize: { width: 32, height: 32 },
-    anchor: { x: 16, y: 32 },
+    scaledSize: new window.google.maps.Size(32, 32),
+    anchor: new window.google.maps.Point(16, 32)
   };
 };
 
