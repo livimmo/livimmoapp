@@ -24,10 +24,12 @@ export const mockProperties: Property[] = addCoordinatesToProperties([
     hasLive: true,
     liveDate: new Date(Date.now() + 86400000),
     agent: {
+      id: "agent-1",
       name: "Sarah Martin",
       image: "https://i.pravatar.cc/150?u=sarah",
       phone: "+212 6 12 34 56 78",
       email: "sarah.martin@example.com",
+      isVerified: true,
     },
   },
   {
@@ -47,10 +49,12 @@ export const mockProperties: Property[] = addCoordinatesToProperties([
     ],
     hasLive: false,
     agent: {
+      id: "agent-2",
       name: "Mohammed Alami",
       image: "https://i.pravatar.cc/150?u=mohammed",
       phone: "+212 6 23 45 67 89",
       email: "mohammed.alami@example.com",
+      isVerified: true,
     },
   },
 ]);
