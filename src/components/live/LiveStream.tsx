@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { FavoriteButton } from "@/components/property/FavoriteButton";
 import { LiveCarousel } from "./LiveCarousel";
-import { type Live } from "@/types/live";
+import { type LiveEvent } from "@/types/live";
 
 interface LiveStreamProps {
   videoId: string;
   currentLiveId: number;
-  otherLives: Live[];
+  otherLives: LiveEvent[];
   onLiveChange: (id: number) => void;
 }
 
@@ -34,7 +34,8 @@ export const LiveStream = ({
           <LiveCarousel 
             currentLiveId={currentLiveId}
             lives={otherLives}
-            onLiveChange={onLiveChange}
+            onLiveSelect={onLiveChange}
+            onClose={() => setShowCarousel(false)}
           />
         </div>
       )}
