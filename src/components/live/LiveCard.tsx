@@ -2,28 +2,40 @@ import { type LiveEvent } from "@/types/live";
 import { PropertyCard } from "@/components/PropertyCard";
 
 interface LiveCardProps {
-  live: LiveEvent;
+  title: string;
+  description?: string;
+  thumbnail: string;
+  agent: string;
+  agentId?: number;
+  location: string;
+  type: string;
+  price: string;
+  status: 'scheduled' | 'live' | 'ended' | 'replay';
+  date: Date;
+  availableSeats: number;
+  viewers?: number;
+  id: number;
 }
 
-export const LiveCard = ({ live }: LiveCardProps) => {
+export const LiveCard = (props: LiveCardProps) => {
   const propertyData = {
-    id: live.id,
-    title: live.title,
-    price: parseInt(live.price.replace(/[^\d]/g, "")),
-    location: live.location,
-    type: live.type,
+    id: props.id,
+    title: props.title,
+    price: parseInt(props.price.replace(/[^\d]/g, "")),
+    location: props.location,
+    type: props.type,
     surface: 0,
     rooms: 0,
     bathrooms: 0,
-    description: live.description || "",
+    description: props.description || "",
     features: [],
-    images: [live.thumbnail],
+    images: [props.thumbnail],
     hasLive: true,
-    liveDate: live.date,
+    liveDate: props.date,
     agent: {
-      id: live.agentId || Math.floor(Math.random() * 1000),
-      name: live.agent,
-      image: "https://i.pravatar.cc/150?u=" + live.agent.toLowerCase().replace(/\s/g, ''),
+      id: props.agentId || Math.floor(Math.random() * 1000),
+      name: props.agent,
+      image: "https://i.pravatar.cc/150?u=" + props.agent.toLowerCase().replace(/\s/g, ''),
       phone: "",
       email: "",
       company: "Livimmo",
@@ -33,9 +45,9 @@ export const LiveCard = ({ live }: LiveCardProps) => {
       lat: 0,
       lng: 0,
     },
-    viewers: live.viewers,
-    isLiveNow: live.status === "live",
-    remainingSeats: live.availableSeats,
+    viewers: props.viewers,
+    isLiveNow: props.status === "live",
+    remainingSeats: props.availableSeats,
     isUserRegistered: false,
     transactionType: "Vente" as const,
   };

@@ -1,26 +1,15 @@
 import { useParams } from "react-router-dom";
 import { mockAgents } from "@/data/mockAgents";
 import { Button } from "@/components/ui/button";
-import { StarRating } from "@/components/ratings/StarRating";
-import { PropertyCard } from "@/components/PropertyCard";
 import { Badge } from "@/components/ui/badge";
 import { mockProperties } from "@/data/mockProperties";
 import { scheduledLives } from "@/data/mockLives";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LiveCard } from "@/components/live/LiveCard";
-import { 
-  Phone, 
-  Mail, 
-  Facebook, 
-  Instagram, 
-  Linkedin, 
-  MapPin, 
-  Building2, 
-  Star, 
-  Calendar,
-  Video,
-  CheckCircle
-} from "lucide-react";
+import { Phone, Mail, Facebook, Instagram, Linkedin } from "lucide-react";
+import { AgentHeader } from "@/components/agent/AgentHeader";
+import { AgentStats } from "@/components/agent/AgentStats";
+import { AgentProperties } from "@/components/agent/AgentProperties";
+import { AgentLives } from "@/components/agent/AgentLives";
 
 const AgentDetail = () => {
   const { id } = useParams();
@@ -47,71 +36,8 @@ const AgentDetail = () => {
   return (
     <div className="container px-4 py-8 pb-20">
       <div className="space-y-6">
-        {/* En-tête du profil */}
-        <div className="flex flex-col md:flex-row gap-6 items-start">
-          <div className="w-32 h-32 rounded-full overflow-hidden">
-            <img src={agent.avatar} alt={agent.name} className="w-full h-full object-cover" />
-          </div>
-          
-          <div className="flex-1 space-y-4">
-            <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
-              <h1 className="text-2xl font-bold">{agent.name}</h1>
-              {agent.verified && (
-                <Badge variant="secondary" className="w-fit">
-                  Vérifié
-                </Badge>
-              )}
-            </div>
-            
-            {agent.company && (
-              <p className="text-gray-600">{agent.company}</p>
-            )}
-            
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-gray-500" />
-              <span>{agent.location}</span>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <StarRating rating={agent.rating} totalReviews={agent.totalReviews} />
-            </div>
-          </div>
-        </div>
-
-        {/* Statistiques */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="flex items-center gap-3 p-4 rounded-lg border">
-            <Building2 className="w-5 h-5 text-primary" />
-            <div>
-              <p className="text-sm text-muted-foreground">Biens actifs</p>
-              <p className="font-semibold">{agent.activeProperties}</p>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-3 p-4 rounded-lg border">
-            <Video className="w-5 h-5 text-primary" />
-            <div>
-              <p className="text-sm text-muted-foreground">Lives réalisés</p>
-              <p className="font-semibold">{agent.completedLives}</p>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-3 p-4 rounded-lg border">
-            <Calendar className="w-5 h-5 text-primary" />
-            <div>
-              <p className="text-sm text-muted-foreground">Lives programmés</p>
-              <p className="font-semibold">{agent.scheduledLives || 0}</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 p-4 rounded-lg border">
-            <CheckCircle className="w-5 h-5 text-primary" />
-            <div>
-              <p className="text-sm text-muted-foreground">Biens vendus</p>
-              <p className="font-semibold">{agent.soldProperties || 0}</p>
-            </div>
-          </div>
-        </div>
+        <AgentHeader agent={agent} />
+        <AgentStats agent={agent} />
 
         {/* Contact et réseaux sociaux */}
         <div className="space-y-4">
@@ -175,34 +101,15 @@ const AgentDetail = () => {
           </TabsList>
           
           <TabsContent value="properties" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {agentProperties.map((property) => (
-                <PropertyCard key={property.id} {...property} />
-              ))}
-              {agentProperties.length === 0 && (
-                <p className="col-span-full text-center text-muted-foreground py-8">
-                  Aucun bien actif pour le moment
-                </p>
-              )}
-            </div>
+            <AgentProperties properties={agentProperties} />
           </TabsContent>
 
           <TabsContent value="lives" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {agentLives.map((live) => (
-                <LiveCard key={live.id} {...live} />
-              ))}
-              {agentLives.length === 0 && (
-                <p className="col-span-full text-center text-muted-foreground py-8">
-                  Aucun live programmé pour le moment
-                </p>
-              )}
-            </div>
+            <AgentLives lives={agentLives} />
           </TabsContent>
 
           <TabsContent value="sold" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* TODO: Ajouter les biens vendus quand les données seront disponibles */}
               <p className="col-span-full text-center text-muted-foreground py-8">
                 Historique des ventes à venir
               </p>
