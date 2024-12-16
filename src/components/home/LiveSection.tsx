@@ -63,28 +63,6 @@ export const LiveSection = () => {
 
   return (
     <section className="mb-8">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Tous nos lives</h2>
-        <div className="flex gap-2">
-          <Button
-            variant={viewMode === "list" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("list")}
-          >
-            <List className="h-4 w-4 mr-2" />
-            Liste
-          </Button>
-          <Button
-            variant={viewMode === "map" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("map")}
-          >
-            <Map className="h-4 w-4 mr-2" />
-            Carte
-          </Button>
-        </div>
-      </div>
-
       <Tabs defaultValue="live" className="space-y-4">
         <TabsList>
           <TabsTrigger value="live" className="flex items-center gap-2">
