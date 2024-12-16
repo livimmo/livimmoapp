@@ -99,9 +99,9 @@ export const LiveStream = ({
       viewMode === 'fullscreen' && 'z-[9999]'
     )}>
       <div className="relative flex-1">
-        {/* Conteneur vidéo */}
+        {/* Conteneur vidéo avec overlay */}
         <div className={cn(
-          "w-full h-full z-[1]",
+          "relative w-full h-full z-[1] group",
           viewMode === 'fullscreen' && 'fixed inset-0 z-[9999]'
         )}>
           <iframe
@@ -112,14 +112,16 @@ export const LiveStream = ({
             allowFullScreen
             className="w-full h-full"
           />
+          {/* Overlay sombre au survol */}
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
 
-        {/* Contrôles vidéo */}
-        <div className="absolute bottom-[64px] left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent flex justify-between items-center gap-2 z-[51]">
+        {/* Contrôles vidéo avec fond dégradé */}
+        <div className="absolute bottom-[64px] left-0 right-0 p-4 bg-gradient-to-t from-black/70 via-black/40 to-transparent flex justify-between items-center gap-2 z-[51]">
           <Button
             variant="ghost"
             size="icon"
-            className="text-white hover:bg-white/20 transition-colors"
+            className="text-white hover:bg-white/20 transition-colors backdrop-blur-sm"
             onClick={() => setShowOtherLives(!showOtherLives)}
           >
             {showOtherLives ? (
@@ -130,10 +132,10 @@ export const LiveStream = ({
           </Button>
         </div>
 
-        {/* Carousel (Live ou Replay) */}
+        {/* Carousel avec transition fluide */}
         <div 
           className={cn(
-            "absolute left-0 right-0 z-[51] transition-all duration-300",
+            "absolute left-0 right-0 z-[51] transition-all duration-300 ease-in-out",
             showOtherLives ? "bottom-[120px] opacity-100" : "-bottom-full opacity-0"
           )}
         >
@@ -152,7 +154,7 @@ export const LiveStream = ({
           )}
         </div>
 
-        {/* Informations de la vidéo */}
+        {/* Informations de la vidéo avec fond flouté */}
         <div className={cn(
           "absolute bottom-0 left-0 right-0 z-[52]",
           viewMode === 'fullscreen' && 'z-[9999]'
