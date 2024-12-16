@@ -14,6 +14,11 @@ export const PropertyList = ({ properties, viewMode = "grid" }: PropertyListProp
 
   return (
     <div className="space-y-6">
+      {isAgent && (
+        <div className="flex justify-end">
+          <AddPropertyDialog />
+        </div>
+      )}
       
       <div className={`grid grid-cols-1 ${
         viewMode === "list" 

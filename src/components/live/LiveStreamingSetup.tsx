@@ -18,20 +18,15 @@ export interface LiveStreamConfig {
   propertyId: number;
   estimatedDuration: number;
   autoRecord: boolean;
-  startNow?: boolean;
-  scheduledDate?: Date;
 }
 
 export const LiveStreamingSetup = ({ properties, onStartStream }: LiveStreamingSetupProps) => {
-  const [title, setTitle] = useState(properties[0]?.title || "");
-  const [selectedPropertyId, setSelectedPropertyId] = useState<number>(properties[0]?.id);
+  const [title, setTitle] = useState("");
+  const [selectedPropertyId, setSelectedPropertyId] = useState<number>();
   const [estimatedDuration, setEstimatedDuration] = useState(30);
   const [autoRecord, setAutoRecord] = useState(true);
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [isMicOn, setIsMicOn] = useState(true);
-  const [startNow, setStartNow] = useState(true);
-  const [scheduledDate, setScheduledDate] = useState<string>("");
-  const [scheduledTime, setScheduledTime] = useState<string>("");
   const { toast } = useToast();
 
   const handleStartStream = () => {
@@ -44,27 +39,11 @@ export const LiveStreamingSetup = ({ properties, onStartStream }: LiveStreamingS
       return;
     }
 
-    if (!startNow && (!scheduledDate || !scheduledTime)) {
-      toast({
-        title: "Date de programmation manquante",
-        description: "Veuillez sélectionner une date et une heure pour le live programmé",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    let scheduledDateTime: Date | undefined;
-    if (!startNow && scheduledDate && scheduledTime) {
-      scheduledDateTime = new Date(`${scheduledDate}T${scheduledTime}`);
-    }
-
     onStartStream({
       title,
       propertyId: selectedPropertyId,
       estimatedDuration,
       autoRecord,
-      startNow,
-      scheduledDate: scheduledDateTime,
     });
   };
 
@@ -83,11 +62,7 @@ export const LiveStreamingSetup = ({ properties, onStartStream }: LiveStreamingS
 
       <div className="space-y-2">
         <Label htmlFor="property">Bien associé*</Label>
-        <Select 
-          value={selectedPropertyId?.toString()} 
-          onValueChange={(value) => setSelectedPropertyId(Number(value))}
-          disabled={properties.length === 1}
-        >
+        <Select value={selectedPropertyId?.toString()} onValueChange={(value) => setSelectedPropertyId(Number(value))}>
           <SelectTrigger>
             <SelectValue placeholder="Sélectionner un bien" />
           </SelectTrigger>
@@ -100,46 +75,6 @@ export const LiveStreamingSetup = ({ properties, onStartStream }: LiveStreamingS
           </SelectContent>
         </Select>
       </div>
-
-      <div className="space-y-2">
-        <Label>Type de live</Label>
-        <div className="flex items-center justify-between">
-          <Label htmlFor="startNow" className="cursor-pointer">
-            Démarrer maintenant
-          </Label>
-          <Switch
-            id="startNow"
-            checked={startNow}
-            onCheckedChange={setStartNow}
-          />
-        </div>
-      </div>
-
-      {!startNow && (
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="date">Date*</Label>
-            <Input
-              id="date"
-              type="date"
-              value={scheduledDate}
-              onChange={(e) => setScheduledDate(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="time">Heure*</Label>
-            <Input
-              id="time"
-              type="time"
-              value={scheduledTime}
-              onChange={(e) => setScheduledTime(e.target.value)}
-              required
-            />
-          </div>
-        </div>
-      )}
 
       <div className="space-y-2">
         <Label htmlFor="duration">Durée estimée (minutes)</Label>
@@ -192,7 +127,7 @@ export const LiveStreamingSetup = ({ properties, onStartStream }: LiveStreamingS
 
       <div className="flex gap-4">
         <Button onClick={handleStartStream} className="flex-1">
-          {startNow ? "Démarrer le live" : "Programmer le live"}
+          Démarrer le live
         </Button>
       </div>
     </div>
