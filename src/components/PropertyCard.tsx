@@ -6,6 +6,7 @@ import { PropertyActions } from "./property/PropertyActions";
 import { FavoriteButton } from "./property/FavoriteButton";
 import { Badge } from "./ui/badge";
 import { getRandomTags } from "@/utils/propertyTags";
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -31,6 +32,7 @@ export const PropertyCard = ({
   remainingSeats = 15,
   isUserRegistered = false,
   offers = 0,
+  agent,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
@@ -79,6 +81,12 @@ export const PropertyCard = ({
               {tag}
             </Badge>
           ))}
+        </div>
+        <div className="absolute bottom-2 left-2 z-10">
+          <Avatar className="border-2 border-white">
+            <AvatarImage src={agent.image} alt={agent.name} />
+            <AvatarFallback>{agent.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+          </Avatar>
         </div>
       </div>
       <PropertyInfo
