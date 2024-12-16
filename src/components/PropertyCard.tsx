@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { type Property } from "@/types/property";
 import { PropertyImage } from "./property/PropertyImage";
 import { PropertyInfo } from "./PropertyInfo";
+import { PropertyActions } from "./property/PropertyActions";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -35,18 +36,23 @@ export const PropertyCard = ({
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-      <PropertyImage
-        id={id}
-        title={title}
-        image={images[0]}
-        hasLive={hasLive}
-        liveDate={liveDate}
-        viewers={viewers}
-        currentUrl={currentUrl}
-        isLiveNow={isLiveNow}
-        isUserRegistered={isUserRegistered}
-        remainingSeats={remainingSeats}
-      />
+      <div className="relative">
+        <PropertyImage
+          id={id}
+          title={title}
+          image={images[0]}
+          hasLive={hasLive}
+          liveDate={liveDate}
+          viewers={viewers}
+          currentUrl={currentUrl}
+          isLiveNow={isLiveNow}
+          isUserRegistered={isUserRegistered}
+          remainingSeats={remainingSeats}
+        />
+        <div className="absolute top-2 right-2 z-10">
+          <PropertyActions title={title} currentUrl={currentUrl} />
+        </div>
+      </div>
       <PropertyInfo
         id={id}
         title={title}
