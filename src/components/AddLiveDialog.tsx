@@ -11,9 +11,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { Plus, Video, Youtube, Facebook, Instagram, MessageCircle } from "lucide-react";
+import { Plus, Video, Youtube, Facebook, Instagram, MessageCircle, MapPin, Home, Tag } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const AddLiveDialog = () => {
   const [date, setDate] = useState<Date>();
@@ -21,11 +28,16 @@ export const AddLiveDialog = () => {
   const [description, setDescription] = useState("");
   const [liveType, setLiveType] = useState<"youtube" | "facebook" | "instagram" | "whatsapp">("youtube");
   const [liveUrl, setLiveUrl] = useState("");
+  const [price, setPrice] = useState("");
+  const [surface, setSurface] = useState("");
+  const [location, setLocation] = useState("");
+  const [propertyType, setPropertyType] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!date || !title || !liveUrl) {
+    if (!date || !title || !liveUrl || !price || !surface || !location || !propertyType) {
       toast({
         title: "Erreur",
         description: "Veuillez remplir tous les champs obligatoires",
@@ -38,6 +50,32 @@ export const AddLiveDialog = () => {
       title: "Live programmé !",
       description: `Votre live "${title}" a été programmé pour le ${date.toLocaleDateString()}`,
     });
+  };
+
+  const propertyTypes = [
+    "Appartement",
+    "Villa",
+    "Maison",
+    "Terrain",
+    "Local commercial",
+    "Bureau",
+  ];
+
+  const availableTags = [
+    "Nouveauté",
+    "Coup de cœur",
+    "Vue mer",
+    "Piscine",
+    "Jardin",
+    "Terrasse",
+  ];
+
+  const handleTagToggle = (tag: string) => {
+    setTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
   };
 
   const getLiveUrlPlaceholder = () => {
@@ -80,6 +118,7 @@ export const AddLiveDialog = () => {
               required
             />
           </div>
+
           <div className="space-y-2">
             <label className="text-sm font-medium">Description</label>
             <Input
@@ -88,6 +127,90 @@ export const AddLiveDialog = () => {
               placeholder="Description de la visite..."
             />
           </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Prix*</label>
+            <div className="relative">
+              <Input
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                placeholder="Prix en DH"
+                required
+                className="pl-8"
+              />
+              <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">DH</span>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Surface*</label>
+            <div className="relative">
+              <Input
+                type="number"
+                value={surface}
+                onChange={(e) => setSurface(e.target.value)}
+                placeholder="Surface en m²"
+                required
+                className="pl-8"
+              />
+              <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">m²</span>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Localisation*</label>
+            <div className="relative">
+              <MapPin className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Adresse du bien"
+                required
+                className="pl-8"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Type de bien*</label>
+            <div className="relative">
+              <Home className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Select value={propertyType} onValueChange={setPropertyType} required>
+                <SelectTrigger className="pl-8">
+                  <SelectValue placeholder="Sélectionner le type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {propertyTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium flex items-center gap-2">
+              <Tag className="h-4 w-4" />
+              Tags
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {availableTags.map((tag) => (
+                <Button
+                  key={tag}
+                  type="button"
+                  variant={tags.includes(tag) ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handleTagToggle(tag)}
+                >
+                  {tag}
+                </Button>
+              ))}
+            </div>
+          </div>
+
           <div className="space-y-2">
             <label className="text-sm font-medium">Date du Live*</label>
             <Calendar
@@ -97,6 +220,7 @@ export const AddLiveDialog = () => {
               className="rounded-md border"
             />
           </div>
+
           <div className="space-y-2">
             <label className="text-sm font-medium">Type de Live*</label>
             <RadioGroup
@@ -137,10 +261,9 @@ export const AddLiveDialog = () => {
               </div>
             </RadioGroup>
           </div>
+
           <div className="space-y-2">
-            <label className="text-sm font-medium">
-              URL du Live*
-            </label>
+            <label className="text-sm font-medium">URL du Live*</label>
             <Input
               value={liveUrl}
               onChange={(e) => setLiveUrl(e.target.value)}
@@ -148,6 +271,7 @@ export const AddLiveDialog = () => {
               required
             />
           </div>
+
           <Button type="submit" className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
             <Video className="mr-2 h-4 w-4" />
             Programmer le Live
