@@ -23,13 +23,12 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
   return (
     <Card className={`
       p-3 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60
-      w-full mx-auto
       transition-all duration-300
       ${isCollapsed ? 'h-[72px]' : ''}
       overflow-hidden
       flex flex-col
-      fixed bottom-0 left-0 right-0
-      ${isMobile ? 'max-h-[40vh]' : 'max-h-[30vh]'}
+      fixed bottom-0 
+      ${isMobile ? 'left-0 right-0 max-h-[40vh]' : 'right-0 w-1/2 max-h-[30vh] border-l'}
       z-50
     `}>
       <div className="flex items-center justify-end mb-2">
