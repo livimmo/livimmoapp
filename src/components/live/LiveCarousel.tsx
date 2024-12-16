@@ -1,5 +1,5 @@
 import { LiveEvent } from "@/types/live";
-import { X, ChevronDown, ChevronUp, Minimize2, Maximize2 } from "lucide-react";
+import { X } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { getRandomTags } from "@/utils/propertyTags";
+import { LiveCarouselHeader } from "./LiveCarouselHeader";
 
 interface LiveCarouselProps {
   lives: LiveEvent[];
@@ -118,28 +119,11 @@ export const LiveCarousel = ({
       "p-4 transition-all duration-300",
       isCollapsed && "h-16"
     )}>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <h3 className="text-white font-semibold">Autres lives en cours</h3>
-          <Badge variant="secondary" className="bg-white/10 text-white">
-            {allLives.length}
-          </Badge>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/10"
-            onClick={() => setIsCollapsed(!isCollapsed)}
-          >
-            {isCollapsed ? (
-              <Maximize2 className="h-5 w-5" />
-            ) : (
-              <Minimize2 className="h-5 w-5" />
-            )}
-          </Button>
-        </div>
-      </div>
+      <LiveCarouselHeader 
+        liveCount={allLives.length}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
+      />
 
       {!isCollapsed && (
         <Carousel
