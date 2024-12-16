@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Building, Mail, MapPin, Phone, User } from "lucide-react";
+import { Building, Mail, MapPin, Phone } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PropertyCard } from "@/components/PropertyCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -27,22 +27,25 @@ const mockDeveloper = {
       features: ["Piscine", "Jardin", "Garage"],
       images: ["https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d"],
       hasLive: true,
-      agent_id: "1"
+      isLiveNow: false,
+      remainingSeats: 10,
+      agent: {
+        name: "Sarah Martin",
+        image: "https://i.pravatar.cc/150?u=sarah",
+        phone: "+212 6 12 34 56 78",
+        email: "sarah.martin@example.com",
+      }
     },
-    // ... autres projets
   ]
 };
 
 const DeveloperDetail = () => {
   const { id } = useParams();
-
-  // À remplacer par un appel API
   const developer = mockDeveloper;
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Profil du promoteur */}
         <Card className="lg:col-span-1">
           <CardHeader>
             <div className="flex items-center gap-4">
@@ -79,12 +82,11 @@ const DeveloperDetail = () => {
           </CardContent>
         </Card>
 
-        {/* Liste des projets */}
         <div className="lg:col-span-2">
           <h2 className="text-2xl font-semibold mb-6">Projets du promoteur</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {developer.projects.map((project) => (
-              <PropertyCard key={project.id} property={project} />
+              <PropertyCard key={project.id} {...project} />
             ))}
           </div>
         </div>
