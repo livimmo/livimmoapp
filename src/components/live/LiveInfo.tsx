@@ -1,8 +1,8 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users } from "lucide-react";
-import { OfferDialog } from "../property/OfferDialog";
+import { Users, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface LiveInfoProps {
   property: Property;
@@ -30,11 +30,14 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         </p>
       </div>
 
-      <div className="mt-4">
-        <OfferDialog 
-          title={property.title}
-          price={property.price}
-        />
+      <div className="mt-4 flex items-center justify-between">
+        <Link 
+          to={`/properties/${property.id}`}
+          className="flex items-center gap-2 text-sm text-primary hover:underline"
+        >
+          <ExternalLink className="w-4 h-4" />
+          Voir plus de détails
+        </Link>
       </div>
     </Card>
   );
