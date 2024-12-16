@@ -152,7 +152,7 @@ export const JoinLive = () => {
         </div>
 
         {/* Bannière pliable des autres lives */}
-        <div className={`absolute transition-all duration-300 ease-in-out ${showOtherLives ? 'bottom-24' : '-bottom-32'} left-4 right-4`}>
+        <div className={`absolute transition-all duration-300 ease-in-out ${showOtherLives ? 'bottom-24 opacity-100' : '-bottom-full opacity-0'} left-4 right-4`}>
           <Button
             variant="ghost"
             size="sm"
