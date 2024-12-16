@@ -1,10 +1,11 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink, Heart } from "lucide-react";
+import { Users, ExternalLink, Heart, Radio } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 
 interface LiveInfoProps {
   property: Property;
@@ -18,7 +19,13 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
   return (
     <Card className="p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="space-y-2">
-        <h2 className="text-xl font-semibold line-clamp-1">{property.title}</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold line-clamp-1">{property.title}</h2>
+          <Badge variant="default" className="flex items-center gap-1">
+            <Radio className="w-3 h-3" />
+            <span>LIVE</span>
+          </Badge>
+        </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Users className="w-4 h-4" />
           <span>{viewerCount} spectateurs</span>
