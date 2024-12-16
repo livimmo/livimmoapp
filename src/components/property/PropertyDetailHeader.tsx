@@ -65,6 +65,7 @@ export const PropertyDetailHeader = ({
                 <Badge className="bg-primary/90 backdrop-blur-sm text-white">
                   <Calendar className="w-4 h-4 mr-1" />
                   Live le {new Date(property.liveDate).toLocaleDateString('fr-FR', {
+                    weekday: 'long',
                     day: 'numeric',
                     month: 'long',
                     hour: '2-digit',
