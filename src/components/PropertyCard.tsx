@@ -5,6 +5,8 @@ import { PropertyInfo } from "./PropertyInfo";
 import { PropertyActions } from "./property/PropertyActions";
 import { FavoriteButton } from "./property/FavoriteButton";
 import { Badge } from "./ui/badge";
+import { AddLiveButton } from "./property/AddLiveButton";
+import { useAuth } from "@/contexts/AuthContext";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -28,12 +30,29 @@ export const PropertyCard = ({
   isLiveNow,
   remainingSeats = 15,
   isUserRegistered = false,
+  ...propertyProps
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
+  const { user } = useAuth();
+  const isAgentOrPromoter = user?.role === "agent" || user?.role === "promoter";
 
   const handleJoinLive = () => {
     navigate(`/live/${id}`);
+  };
+
+  const property = {
+    id,
+    images,
+    title,
+    price,
+    location,
+    type,
+    surface,
+    rooms,
+    hasLive,
+    liveDate,
+    ...propertyProps
   };
 
   return (
@@ -76,6 +95,11 @@ export const PropertyCard = ({
         remainingSeats={remainingSeats}
         isUserRegistered={isUserRegistered}
       />
+      {isAgentOrPromoter && (
+        <div className="p-4 pt-0">
+          <AddLiveButton property={property} />
+        </div>
+      )}
     </div>
   );
 };
