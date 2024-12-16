@@ -6,6 +6,7 @@ import { X, Maximize2, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveCarousel } from "./LiveCarousel";
 import { liveStreams } from "@/data/mockLives";
+import { cn } from "@/lib/utils";
 
 interface LiveStreamProps {
   videoId: string;
@@ -60,6 +61,7 @@ export const LiveStream = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [viewMode, setViewMode] = useState<'default' | 'cinema' | 'fullscreen'>('default');
+  const [showOtherLives, setShowOtherLives] = useState(true);
 
   const handleViewModeChange = (mode: 'default' | 'cinema' | 'fullscreen') => {
     if (mode === 'fullscreen') {
@@ -105,35 +107,55 @@ export const LiveStream = ({
         </div>
 
         {/* Contrôles vidéo */}
-        <div className="absolute bottom-[64px] left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent flex justify-end items-center gap-2 z-[51]">
+        <div className="absolute bottom-[64px] left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent flex justify-between items-center gap-2 z-[51]">
           <Button
             variant="ghost"
             size="icon"
             className="text-white hover:bg-white/20 transition-colors"
-            onClick={() => handleViewModeChange(viewMode === 'cinema' ? 'default' : 'cinema')}
+            onClick={() => setShowOtherLives(!showOtherLives)}
           >
-            {viewMode === 'cinema' ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+            {showOtherLives ? (
+              <Minimize2 className="h-5 w-5" />
+            ) : (
+              <Maximize2 className="h-5 w-5" />
+            )}
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/20 transition-colors"
-            onClick={() => handleViewModeChange('fullscreen')}
-          >
-            <Maximize2 className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/20 transition-colors"
-            onClick={handleClose}
-          >
-            <X className="h-5 w-5" />
-          </Button>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/20 transition-colors"
+              onClick={() => handleViewModeChange(viewMode === 'cinema' ? 'default' : 'cinema')}
+            >
+              {viewMode === 'cinema' ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/20 transition-colors"
+              onClick={() => handleViewModeChange('fullscreen')}
+            >
+              <Maximize2 className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/20 transition-colors"
+              onClick={handleClose}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
 
         {/* LiveCarousel */}
-        <div className="absolute bottom-[120px] left-0 right-0 z-[51]">
+        <div 
+          className={cn(
+            "absolute left-0 right-0 z-[51] transition-all duration-300",
+            showOtherLives ? "bottom-[120px] opacity-100" : "-bottom-full opacity-0"
+          )}
+        >
           <LiveCarousel
             lives={liveStreams}
             currentLiveId={currentLiveId}
