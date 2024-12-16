@@ -113,7 +113,6 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <HomeHeader />
 
-      {/* Main Content */}
       <main className="container mx-auto px-4 pt-20">
         <div className="mb-8">
           <SmartSearchBar
@@ -123,19 +122,15 @@ const Index = () => {
           />
         </div>
         
-        {/* Featured Properties Section */}
         <FeaturedSection properties={featuredProperties} />
 
-        {/* Live Properties Section */}
         <LiveSection properties={featuredProperties.filter(prop => prop.hasLive)} />
 
-        {/* Filters Section */}
         <HomeFilters 
           properties={featuredProperties}
           onFiltersChange={setFilteredProperties}
         />
 
-        {/* All Properties Section */}
         <section className="mb-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">
@@ -166,8 +161,7 @@ const Index = () => {
           
           {viewMode === "list" ? (
             <PropertyList 
-              properties={filteredProperties.length > 0 ? filteredProperties : featuredProperties} 
-              viewMode="list" 
+              properties={filteredProperties.length > 0 ? filteredProperties : featuredProperties}
             />
           ) : (
             <PropertyMap 
@@ -176,7 +170,6 @@ const Index = () => {
           )}
         </section>
 
-        {/* CTA Section */}
         <CTASection />
       </main>
     </div>
