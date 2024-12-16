@@ -5,13 +5,17 @@ import { PropertyCard } from '../PropertyCard';
 import { ScrollArea } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
 import { Clock } from 'lucide-react';
+import { Skeleton } from '../ui/skeleton';
 
 interface LiveGoogleMapProps {
   properties: Property[];
 }
 
+const libraries: ("places" | "geometry" | "drawing" | "localContext" | "visualization")[] = ["places"];
+
 export function LiveGoogleMap({ properties }: LiveGoogleMapProps) {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   const defaultCenter = {
     lat: 31.7917,
@@ -30,10 +34,29 @@ export function LiveGoogleMap({ properties }: LiveGoogleMapProps) {
     height: '100%'
   };
 
+  const handleLoad = () => {
+    setIsLoading(false);
+  };
+
+  if (!import.meta.env.VITE_GOOGLE_MAPS_API_KEY) {
+    return (
+      <div className="p-4 text-center text-muted-foreground">
+        Clé API Google Maps manquante. Veuillez configurer VITE_GOOGLE_MAPS_API_KEY.
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 h-[700px]">
       <div className="relative h-[400px] lg:h-full">
-        <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+        {isLoading && (
+          <Skeleton className="w-full h-full rounded-lg" />
+        )}
+        <LoadScript 
+          googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+          libraries={libraries}
+          onLoad={handleLoad}
+        >
           <GoogleMap
             mapContainerStyle={mapStyles}
             center={center}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { Skeleton } from "./ui/skeleton";
 
 interface GoogleMapInputProps {
   onLocationSelect?: (location: string) => void;
@@ -18,8 +19,11 @@ const containerStyle = {
   height: '300px'
 };
 
+const libraries: ("places" | "geometry" | "drawing" | "localContext" | "visualization")[] = ["places"];
+
 export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: GoogleMapInputProps) => {
   const [marker, setMarker] = useState(defaultCenter);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleMapClick = async (e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;
@@ -42,16 +46,37 @@ export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: 
     }
   };
 
+  const handleLoad = () => {
+    setIsLoading(false);
+  };
+
+  if (!import.meta.env.VITE_GOOGLE_MAPS_API_KEY) {
+    return (
+      <div className="p-4 text-center text-muted-foreground">
+        Clé API Google Maps manquante. Veuillez configurer VITE_GOOGLE_MAPS_API_KEY.
+      </div>
+    );
+  }
+
   return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={defaultCenter}
-        zoom={6}
-        onClick={handleMapClick}
+    <>
+      {isLoading && (
+        <Skeleton className="w-full h-[300px] rounded-lg" />
+      )}
+      <LoadScript 
+        googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+        libraries={libraries}
+        onLoad={handleLoad}
       >
-        <Marker position={marker} />
-      </GoogleMap>
-    </LoadScript>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={defaultCenter}
+          zoom={6}
+          onClick={handleMapClick}
+        >
+          <Marker position={marker} />
+        </GoogleMap>
+      </LoadScript>
+    </>
   );
 };
