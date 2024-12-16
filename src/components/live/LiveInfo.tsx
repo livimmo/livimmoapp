@@ -32,7 +32,7 @@ export const LiveInfo = ({ property, onMakeOffer, viewerCount = 0 }: LiveInfoPro
           </div>
         </div>
         <Button onClick={onMakeOffer} variant="default" size="sm">
-          Faire une offre
+          Proposer un prix
         </Button>
       </div>
     </div>
