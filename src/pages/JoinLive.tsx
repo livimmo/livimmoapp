@@ -28,12 +28,17 @@ export const JoinLive = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showChat, setShowChat] = useState(false);
   const [property, setProperty] = useState<Property | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const currentLiveId = Number(id);
   const otherLives = liveStreams.filter(live => live.id !== currentLiveId);
 
   const handleLiveChange = (newLiveId: number) => {
     navigate(`/live/${newLiveId}`);
+  };
+
+  const handleToggleFavorite = () => {
+    setIsFavorite(!isFavorite);
   };
 
   useEffect(() => {
@@ -119,7 +124,10 @@ export const JoinLive = () => {
           otherLives={otherLives}
           onLiveChange={handleLiveChange}
         />
-        <LiveControls />
+        <LiveControls 
+          isFavorite={isFavorite}
+          onToggleFavorite={handleToggleFavorite}
+        />
 
         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
           <LiveInfo 
