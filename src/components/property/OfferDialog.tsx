@@ -29,17 +29,47 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user } = useAuth();
 
-  const handleOffer = () => {
+  const validateForm = () => {
+    if (!isAuthenticated) {
+      if (!name.trim()) {
+        toast({
+          title: "Erreur",
+          description: "Veuillez entrer votre nom",
+          variant: "destructive",
+        });
+        return false;
+      }
+      if (!email.trim() || !email.includes("@")) {
+        toast({
+          title: "Erreur",
+          description: "Veuillez entrer une adresse email valide",
+          variant: "destructive",
+        });
+        return false;
+      }
+      if (!phone.trim()) {
+        toast({
+          title: "Erreur",
+          description: "Veuillez entrer votre numéro de téléphone",
+          variant: "destructive",
+        });
+        return false;
+      }
+    }
     if (offerAmount <= 0) {
       toast({
         title: "Erreur",
         description: "Le montant de l'offre doit être supérieur à 0",
         variant: "destructive",
       });
-      return;
+      return false;
     }
+    return true;
+  };
 
-    // Si l'utilisateur est connecté, on utilise ses informations
+  const handleOffer = () => {
+    if (!validateForm()) return;
+
     const offerData = {
       propertyTitle: title,
       amount: offerAmount,
@@ -79,8 +109,47 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
+          {!isAuthenticated && (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="name">Nom complet *</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="John Doe"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email *</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="john@example.com"
+                  required
+                />
+              </div>
+            </>
+          )}
+
           <div className="space-y-2">
-            <Label htmlFor="amount">Montant de votre offre (DH)</Label>
+            <Label htmlFor="phone">Téléphone *</Label>
+            <Input
+              id="phone"
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="+212 6XX XXX XXX"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="amount">Montant de votre offre (DH) *</Label>
             <Input
               id="amount"
               type="number"
@@ -89,6 +158,7 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
               className="mt-1"
             />
           </div>
+
           <div className="space-y-2">
             <Label htmlFor="message">Message (optionnel)</Label>
             <Textarea
@@ -97,42 +167,6 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               className="mt-1"
-            />
-          </div>
-
-          {!isAuthenticated && (
-            <>
-              <div className="space-y-2">
-                <Label htmlFor="name">Nom complet</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-            </>
-          )}
-
-          <div className="space-y-2">
-            <Label htmlFor="phone">Téléphone</Label>
-            <Input
-              id="phone"
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
             />
           </div>
 
