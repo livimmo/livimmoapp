@@ -9,6 +9,7 @@ import { PropertyDetailHeader } from "@/components/property/PropertyDetailHeader
 import { PropertyDetailContent } from "@/components/property/PropertyDetailContent";
 import { mockProperties } from "@/data/mockProperties";
 import { OfferDialog } from "@/components/property/OfferDialog";
+import { Badge } from "@/components/ui/badge";
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -93,7 +94,17 @@ const PropertyDetail = () => {
               </div>
             </Card>
 
-            <OfferDialog title={property.title} price={property.price} />
+            {property.hasLive ? (
+              <OfferDialog title={property.title} price={property.price} />
+            ) : (
+              <Card className="p-4 bg-destructive/10">
+                <div className="flex items-center justify-center">
+                  <Badge variant="destructive" className="text-base py-2">
+                    Bien vendu
+                  </Badge>
+                </div>
+              </Card>
+            )}
           </div>
         </div>
       </div>
