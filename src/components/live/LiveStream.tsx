@@ -46,34 +46,8 @@ export const LiveStream = ({
 }: LiveStreamProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const [viewMode, setViewMode] = useState<'default' | 'cinema' | 'fullscreen'>('default');
   const [showOtherLives, setShowOtherLives] = useState(false);
   const otherLivesCount = liveStreams.filter(live => live.id !== currentLiveId).length;
-
-  const handleViewModeChange = (mode: 'default' | 'cinema' | 'fullscreen') => {
-    if (mode === 'fullscreen') {
-      const element = document.documentElement;
-      if (!document.fullscreenElement) {
-        element.requestFullscreen().catch(err => {
-          console.error(`Erreur lors du passage en plein écran : ${err.message}`);
-        });
-      } else {
-        document.exitFullscreen().catch(err => {
-          console.error(`Erreur lors de la sortie du plein écran : ${err.message}`);
-        });
-      }
-    }
-    setViewMode(mode);
-  };
-
-  const handleClose = () => {
-    if (document.fullscreenElement) {
-      document.exitFullscreen().catch(err => {
-        console.error(`Erreur lors de la sortie du plein écran : ${err.message}`);
-      });
-    }
-    navigate(-1);
-  };
 
   const handleLiveSelect = (liveId: number) => {
     navigate(`/live/${liveId}`);
@@ -89,22 +63,16 @@ export const LiveStream = ({
   };
 
   return (
-    <div className={cn(
-      "fixed inset-0 bg-black flex flex-col",
-      viewMode === 'fullscreen' && 'z-[9999]'
-    )}>
+    <div className="fixed inset-0 bg-black flex flex-col">
       <div className="relative flex-1">
         <LiveHeader 
           otherLivesCount={otherLivesCount}
           isMobile={isMobile}
-          onClose={handleClose}
+          onClose={() => navigate(-1)}
           onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
         />
 
-        <div className={cn(
-          "relative w-full h-full z-[1] group",
-          viewMode === 'fullscreen' && 'fixed inset-0 z-[9999]'
-        )}>
+        <div className="relative w-full h-full z-[1] group">
           <iframe
             src={getEmbedUrl()}
             title="YouTube video player"
@@ -146,18 +114,13 @@ export const LiveStream = ({
           )}
         </div>
 
-        <div className={cn(
-          "absolute bottom-0 left-0 right-0 z-[52]",
-          viewMode === 'fullscreen' && 'z-[9999]'
-        )}>
+        <div className="absolute bottom-0 left-0 right-0 z-[52]">
           <LiveInfo 
             property={mockProperty}
             onMakeOffer={() => {}}
             viewerCount={Math.floor(Math.random() * 1000)}
             onToggleChat={() => {}}
             isReplay={isReplay}
-            onToggleFullscreen={() => handleViewModeChange(viewMode === 'fullscreen' ? 'default' : 'fullscreen')}
-            isFullscreen={viewMode === 'fullscreen'}
           />
         </div>
       </div>
