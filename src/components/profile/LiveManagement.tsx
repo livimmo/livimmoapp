@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { AddLiveDialog } from "@/components/AddLiveDialog";
 import { Calendar, Clock, Video, Users, X } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { EditLiveForm } from "./EditLiveForm";
@@ -36,6 +37,7 @@ export const LiveManagement = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold">Gestion des Lives</h3>
+        <AddLiveDialog />
       </div>
 
       <div className="space-y-4">
