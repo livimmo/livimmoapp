@@ -74,14 +74,14 @@ export const PropertyImage = ({
                     minute: "2-digit",
                   })}
                 </Badge>
+                {remainingSeats && remainingSeats > 0 && (
+                  <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                    <Users className="mr-1 h-4 w-4" />
+                    {remainingSeats} places restantes
+                  </Badge>
+                )}
               </>
             )
-          )}
-          {remainingSeats && remainingSeats > 0 && (
-            <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
-              <Users className="mr-1 h-4 w-4" />
-              {remainingSeats} places restantes
-            </Badge>
           )}
         </div>
       )}
