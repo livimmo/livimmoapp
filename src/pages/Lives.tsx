@@ -10,6 +10,7 @@ import { scheduledLives, liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { useAuth } from "@/contexts/AuthContext";
+import { AddLiveDialog } from "@/components/AddLiveDialog";
 
 const Lives = () => {
   const [currentLivesViewMode, setCurrentLivesViewMode] = useState<"list" | "map">("list");
@@ -23,7 +24,6 @@ const Lives = () => {
   const [showLiveOnly, setShowLiveOnly] = useState(true);
   const [transactionType, setTransactionType] = useState<"Vente" | "Location">("Vente");
 
-  // Create replay lives from existing lives
   const replayLives = liveStreams.map(live => ({
     ...live,
     status: "replay" as const,
@@ -107,6 +107,7 @@ const Lives = () => {
           transactionType={transactionType}
           setTransactionType={setTransactionType}
         />
+        {isAgentOrPromoter && <AddLiveDialog />}
       </div>
 
       {/* Section des lives en cours */}
