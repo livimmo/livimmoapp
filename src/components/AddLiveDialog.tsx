@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Video } from "lucide-react";
+import { Video, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -55,10 +55,11 @@ export const AddLiveDialog = () => {
       ) : (
         <Button
           onClick={() => setOpen(true)}
-          className="bg-[#ea384c] text-white hover:bg-[#ea384c]/90 relative"
+          className="bg-[#ea384c] text-white hover:bg-[#ea384c]/90 relative gap-1"
           size="sm"
         >
-          <div className="relative mr-2">
+          <Plus className="h-4 w-4" />
+          <div className="relative flex items-center gap-2">
             <Video className="h-4 w-4" />
             <div className="absolute -top-1 -right-1 flex items-center">
               <span className="flex h-2 w-2 rounded-full bg-white animate-pulse" />
