@@ -104,7 +104,7 @@ export const JoinLive = () => {
         <div className="absolute inset-0 bg-black">
           <iframe
             className="w-full h-full"
-            src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1"
+            src="https://www.youtube.com/embed/wouW2ww1vIY?autoplay=1"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe>
