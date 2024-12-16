@@ -3,6 +3,7 @@ import { type Property } from "@/types/property";
 import { PropertyImage } from "./property/PropertyImage";
 import { PropertyInfo } from "./PropertyInfo";
 import { PropertyActions } from "./property/PropertyActions";
+import { FavoriteButton } from "./property/FavoriteButton";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -49,7 +50,8 @@ export const PropertyCard = ({
           isUserRegistered={isUserRegistered}
           remainingSeats={remainingSeats}
         />
-        <div className="absolute top-2 right-2 z-10">
+        <div className="absolute top-2 right-2 z-10 flex gap-2">
+          <FavoriteButton propertyId={id} title={title} />
           <PropertyActions title={title} currentUrl={currentUrl} />
         </div>
       </div>
