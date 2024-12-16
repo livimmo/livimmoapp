@@ -6,24 +6,46 @@ import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 export const LiveSection = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simuler la détection d'un nouveau live
     if (liveStreams.length > 0) {
       const latestLive = liveStreams[0];
+      const remainingSeats = latestLive.availableSeats - (latestLive.viewers || 0);
+      
       toast({
-        title: "Nouveau live disponible !",
-        description: `"${latestLive.title}" vient de commencer avec ${latestLive.agent}`,
+        title: "🔴 Nouveau live disponible !",
+        description: (
+          <div className="flex flex-col gap-2">
+            <p>
+              "{latestLive.title}" vient de commencer avec {latestLive.agent}
+            </p>
+            <p className="text-sm">
+              {remainingSeats} places restantes
+            </p>
+            <Button 
+              variant="outline" 
+              className="bg-white text-red-500 hover:bg-red-50 border-red-200 mt-2"
+              onClick={() => {
+                navigate(`/join-live/${latestLive.id}`);
+              }}
+            >
+              Rejoindre maintenant
+            </Button>
+          </div>
+        ),
         variant: "default",
         className: "bg-red-500 text-white",
-        duration: 5000,
+        duration: 10000,
       });
     }
-  }, [toast]);
+  }, [toast, navigate]);
 
   // Convertir les lives en format Property pour les afficher avec PropertyCard
   const liveProperties: Property[] = liveStreams.map((live) => ({
