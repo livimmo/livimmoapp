@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Video, Users, MessageSquare, Heart, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { LiveChat } from "@/components/live/LiveChat";
 import { LiveInfo } from "@/components/live/LiveInfo";
 import { useToast } from "@/hooks/use-toast";
@@ -30,7 +28,7 @@ export const JoinLive = () => {
   useEffect(() => {
     // Simulate loading property data
     const timer = setTimeout(() => {
-      const location = "Marrakech"; // Location par défaut
+      const location = "Marrakech";
       setProperty({
         id: 1,
         title: "Villa Moderne avec Piscine",
@@ -101,13 +99,15 @@ export const JoinLive = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Video Container */}
       <div className="relative h-[calc(100vh-4rem)]">
-        {/* Mock video placeholder */}
+        {/* YouTube Live Embed */}
         <div className="absolute inset-0 bg-black">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Video className="h-16 w-16 text-white/50" />
-          </div>
+          <iframe
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
         </div>
 
         {/* Overlay controls */}
