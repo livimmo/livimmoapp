@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { SocialConnect } from "@/components/profile/SocialConnect";
 import { useAuth } from "@/contexts/AuthContext";
 import { RoleSelector } from "@/components/auth/RoleSelector";
 import { UserRole } from "@/types/user";
+import { Card } from "@/components/ui/card";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -148,12 +149,27 @@ const Login = () => {
           )}
         </form>
 
-        <p className="text-center text-sm">
-          Pas encore de compte ?{" "}
-          <Link to="/signup" className="text-primary hover:underline">
-            Inscrivez-vous ici
-          </Link>
-        </p>
+        <Card className="p-6 bg-accent border-none shadow-none">
+          <div className="text-center space-y-4">
+            <h2 className="text-lg font-semibold text-primary">
+              Nouveau sur Livimmo ?
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Créez votre compte gratuitement et accédez à toutes nos fonctionnalités exclusives : 
+              participez à des lives, faites des offres et suivez vos interactions.
+            </p>
+            <Link to="/signup">
+              <Button 
+                variant="default" 
+                className="w-full gap-2 bg-primary hover:bg-primary/90"
+                size="lg"
+              >
+                <UserPlus className="h-5 w-5" />
+                Créer mon compte gratuitement
+              </Button>
+            </Link>
+          </div>
+        </Card>
       </div>
     </div>
   );
