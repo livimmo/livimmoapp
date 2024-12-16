@@ -2,7 +2,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BottomNav } from "@/components/BottomNav";
 import { Header } from "@/components/layout/Header";
-import { Banner } from "@/components/layout/Banner";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Search from "./pages/Search";
@@ -23,8 +22,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Header />
-        <Banner />
-        <div className="pt-16">
+        <div className="pt-12">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/search" element={<Search />} />
