@@ -60,26 +60,31 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         </div>
         
         {isCollapsed ? (
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <Euro className="w-3.5 h-3.5" />
-              <Badge 
-                variant="secondary" 
-                className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
-              >
-                {offerCount} offres
-              </Badge>
+          <>
+            <div className="flex items-center justify-between gap-2 text-sm">
+              <p className="font-semibold">{property.price.toLocaleString()} DH</p>
+              <div className="flex items-center gap-1.5">
+                <Euro className="w-3.5 h-3.5" />
+                <Badge 
+                  variant="secondary" 
+                  className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
+                >
+                  {offerCount} offres
+                </Badge>
+              </div>
             </div>
-            <Button
-              size="sm"
-              variant="ghost"
-              className="h-8 px-2 hover:bg-accent"
-              onClick={() => setIsOfferDialogOpen(true)}
-            >
-              <ThumbsUp className="w-4 h-4 mr-1.5" />
-              <span className="text-sm">Intéressé</span>
-            </Button>
-          </div>
+            <div className="flex items-center justify-end">
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 px-2 hover:bg-accent"
+                onClick={() => setIsOfferDialogOpen(true)}
+              >
+                <ThumbsUp className="w-4 h-4 mr-1.5" />
+                <span className="text-sm">Intéressé</span>
+              </Button>
+            </div>
+          </>
         ) : (
           <>
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
