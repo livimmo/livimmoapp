@@ -38,6 +38,14 @@ const mockDevelopers: Developer[] = [
     location: "Marrakech",
     projectCount: 15,
     description: "Excellence dans l'immobilier"
+  },
+  {
+    id: 4,
+    name: "Softgroupe Immobilier",
+    logo: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00",
+    location: "Casablanca",
+    projectCount: 10,
+    description: "Innovation et qualité dans l'immobilier résidentiel"
   }
 ];
 
