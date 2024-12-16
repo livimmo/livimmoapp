@@ -1,8 +1,14 @@
+import { useState } from "react";
+import { Map, List } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { PropertyCard } from "@/components/PropertyCard";
+import { PropertyMap } from "@/components/search/PropertyMap";
 import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 
 export const LiveSection = () => {
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
+
   // Convertir les lives en format Property pour les afficher avec PropertyCard
   const liveProperties: Property[] = liveStreams.map((live) => ({
     id: live.id,
@@ -25,8 +31,8 @@ export const LiveSection = () => {
       email: "",
     },
     coordinates: {
-      lat: 0,
-      lng: 0,
+      lat: 31.7917 + Math.random() * 2 - 1, // Random coordinates for demo
+      lng: -7.0926 + Math.random() * 2 - 1,
     },
     isLiveNow: live.status === "live",
     viewers: live.viewers,
@@ -46,12 +52,39 @@ export const LiveSection = () => {
 
   return (
     <section className="mb-8">
-      <h2 className="text-lg font-semibold mb-4">Lives en cours</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {liveProperties.map((property) => (
-          <PropertyCard key={property.id} {...property} />
-        ))}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold">Lives en cours</h2>
+        <div className="flex gap-2">
+          <Button
+            variant={viewMode === "list" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setViewMode("list")}
+          >
+            <List className="h-4 w-4 mr-2" />
+            Liste
+          </Button>
+          <Button
+            variant={viewMode === "map" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setViewMode("map")}
+          >
+            <Map className="h-4 w-4 mr-2" />
+            Carte
+          </Button>
+        </div>
       </div>
+
+      {viewMode === "list" ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {liveProperties.map((property) => (
+            <PropertyCard key={property.id} {...property} />
+          ))}
+        </div>
+      ) : (
+        <div className="h-[500px] rounded-lg overflow-hidden">
+          <PropertyMap properties={liveProperties} />
+        </div>
+      )}
     </section>
   );
 };

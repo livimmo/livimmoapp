@@ -124,7 +124,7 @@ const Index = () => {
         
         <FeaturedSection properties={featuredProperties} />
 
-        <LiveSection properties={featuredProperties.filter(prop => prop.hasLive)} />
+        <LiveSection />
 
         <HomeFilters 
           properties={featuredProperties}
@@ -165,9 +165,11 @@ const Index = () => {
               viewMode="grid"
             />
           ) : (
-            <PropertyMap 
-              properties={filteredProperties.length > 0 ? filteredProperties : featuredProperties} 
-            />
+            <div className="h-[500px] rounded-lg overflow-hidden">
+              <PropertyMap 
+                properties={filteredProperties.length > 0 ? filteredProperties : featuredProperties} 
+              />
+            </div>
           )}
         </section>
 
