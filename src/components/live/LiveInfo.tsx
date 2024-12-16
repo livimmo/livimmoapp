@@ -56,6 +56,13 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
       <div className="w-full max-w-5xl mx-auto">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
+            <div className="h-8 w-12 bg-gray-200 rounded overflow-hidden shrink-0">
+              <img 
+                src={property.images[0]} 
+                alt={property.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
             <Link 
               to={`/properties/${property.id}`}
               className="hover:underline flex items-center gap-2"
