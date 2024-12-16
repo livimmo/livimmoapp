@@ -8,13 +8,14 @@ interface User {
   firstName?: string;
   lastName?: string;
   avatar?: string;
+  accountType: "buyer" | "agent";
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
+  signup: (email: string, password: string, firstName: string, lastName: string, accountType: "buyer" | "agent") => Promise<void>;
   logout: () => void;
 }
 
@@ -34,6 +35,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         email,
         firstName: 'John',
         lastName: 'Doe',
+        accountType: "buyer", // Par défaut, on met buyer
       });
       
       toast({
@@ -51,7 +53,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signup = async (email: string, password: string, firstName: string, lastName: string) => {
+  const signup = async (email: string, password: string, firstName: string, lastName: string, accountType: "buyer" | "agent") => {
     try {
       // TODO: Implement real signup logic here
       // Simulation d'une inscription réussie
@@ -60,6 +62,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         email,
         firstName,
         lastName,
+        accountType,
       });
       
       toast({
