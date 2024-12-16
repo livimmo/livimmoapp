@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Video, Users, MessageSquare, Heart, X, ChevronUp, ChevronDown } from "lucide-react";
+import { MessageSquare, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveChat } from "@/components/live/LiveChat";
 import { LiveInfo } from "@/components/live/LiveInfo";
+import { LiveStream } from "@/components/live/LiveStream";
+import { LiveControls } from "@/components/live/LiveControls";
+import { LiveSidebar } from "@/components/live/LiveSidebar";
 import { useToast } from "@/hooks/use-toast";
 import { type Property } from "@/types/property";
 import { generateMockCoordinates } from "@/data/mockProperties";
 import { useAuth } from "@/contexts/AuthContext";
 import { Banner } from "@/components/layout/Banner";
+import { liveStreams } from "@/data/mockLives";
 
 const mockLiveData = {
   viewerCount: 45,
@@ -141,41 +145,10 @@ export const JoinLive = () => {
           </Button>
         )}
 
-        {/* YouTube Live Embed */}
-        <div className="absolute inset-0 bg-black">
-          <iframe
-            className="w-full h-full"
-            src="https://www.youtube.com/embed/n3wtxcO_0GQ?autoplay=1"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
+        <LiveStream videoId="n3wtxcO_0GQ" />
+        <LiveControls isFavorite={isFavorite} onToggleFavorite={handleToggleFavorite} />
+        <LiveSidebar currentLiveId={Number(id)} lives={liveStreams} />
 
-        {/* Overlay controls */}
-        <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-black/50 text-white hover:bg-black/75"
-              onClick={() => navigate(-1)}
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-black/50 text-white hover:bg-black/75"
-              onClick={handleToggleFavorite}
-            >
-              <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
-            </Button>
-          </div>
-        </div>
-
-        {/* Bottom controls */}
         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
           <LiveInfo 
             property={property} 
@@ -192,7 +165,6 @@ export const JoinLive = () => {
           </Button>
         </div>
 
-        {/* Chat sidebar */}
         {showChat && (
           <div className="absolute top-0 right-0 bottom-0 w-80 bg-background border-l">
             <LiveChat 
