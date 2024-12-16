@@ -17,6 +17,11 @@ export const LiveInfo = ({ property, viewerCount = 0 }: LiveInfoProps) => {
   return (
     <div className="space-y-4 p-4 bg-black/50 rounded-lg text-white max-w-md">
       <div>
+        <div className="flex items-center gap-2 mb-2">
+          <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
+            LIVE
+          </div>
+        </div>
         <h2 className="text-lg font-semibold">{property.title}</h2>
         <p className="text-sm opacity-75">{property.location}</p>
       </div>
