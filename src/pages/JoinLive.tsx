@@ -16,6 +16,12 @@ const mockLiveData = {
   ],
 };
 
+// Liste des vidéos YouTube disponibles
+const YOUTUBE_VIDEOS = [
+  "n3wtxcO_0GQ",
+  "Mw9OhAm8qtM"
+];
+
 export const JoinLive = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -24,6 +30,7 @@ export const JoinLive = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [property, setProperty] = useState<Property | null>(null);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   useEffect(() => {
     // Simulate loading property data
@@ -72,6 +79,10 @@ export const JoinLive = () => {
     });
   };
 
+  const handleChangeVideo = () => {
+    setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % YOUTUBE_VIDEOS.length);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -104,7 +115,7 @@ export const JoinLive = () => {
         <div className="absolute inset-0 bg-black">
           <iframe
             className="w-full h-full"
-            src="https://www.youtube.com/embed/n3wtxcO_0GQ?autoplay=1"
+            src={`https://www.youtube.com/embed/${YOUTUBE_VIDEOS[currentVideoIndex]}?autoplay=1`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe>
@@ -124,6 +135,14 @@ export const JoinLive = () => {
             <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
               LIVE
             </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="bg-black/50 text-white hover:bg-black/75"
+              onClick={handleChangeVideo}
+            >
+              Changer de vue
+            </Button>
           </div>
           <div className="flex items-center gap-2">
             <Button
