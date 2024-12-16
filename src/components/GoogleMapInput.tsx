@@ -19,7 +19,7 @@ const containerStyle = {
   height: '300px'
 };
 
-const libraries: ("places" | "geometry" | "drawing" | "localContext" | "visualization")[] = ["places"];
+const libraries: ("places" | "geometry" | "drawing" | "visualization")[] = ["places"];
 
 export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: GoogleMapInputProps) => {
   const [marker, setMarker] = useState(defaultCenter);

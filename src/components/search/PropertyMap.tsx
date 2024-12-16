@@ -11,7 +11,7 @@ interface PropertyMapProps {
   properties: Property[];
 }
 
-const libraries: ("places" | "geometry" | "drawing" | "localContext" | "visualization")[] = ["places"];
+const libraries: ("places" | "geometry" | "drawing" | "visualization")[] = ["places"];
 
 export const PropertyMap = ({ properties }: PropertyMapProps) => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);

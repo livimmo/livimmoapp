@@ -11,7 +11,7 @@ interface LiveGoogleMapProps {
   properties: Property[];
 }
 
-const libraries: ("places" | "geometry" | "drawing" | "localContext" | "visualization")[] = ["places"];
+const libraries: ("places" | "geometry" | "drawing" | "visualization")[] = ["places"];
 
 export function LiveGoogleMap({ properties }: LiveGoogleMapProps) {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
