@@ -58,7 +58,7 @@ export const PropertyDetailHeader = ({
                   </Badge>
                   <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
                     <Users className="w-4 h-4 mr-1" />
-                    {property.viewers} spectateurs
+                    {property.viewers || 0} spectateurs
                   </Badge>
                 </>
               ) : (
