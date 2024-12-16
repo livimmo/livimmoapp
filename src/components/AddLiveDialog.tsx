@@ -101,7 +101,7 @@ export const AddLiveDialog = ({ variant = "default" }: { variant?: "default" | "
         ) : (
           <Button className="gap-2 bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
             <Plus className="h-4 w-4" />
-            Ajouter un Live
+            Live
           </Button>
         )}
       </DialogTrigger>
