@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Video } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { ReservationForm } from "@/components/home/ReservationForm";
 import { useToast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
@@ -25,12 +26,13 @@ export const LiveButton = ({
   isUserRegistered,
   remainingSeats,
 }: LiveButtonProps) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleRegistration = () => {
+    // Simulation d'inscription automatique
     toast({
       title: "Inscription confirmée !",
       description: `Votre place pour "${title}" a été réservée. Vous recevrez un email de confirmation.`,
@@ -43,8 +45,8 @@ export const LiveButton = ({
       return;
     }
 
-    if (isLiveNow) {
-      navigate(`/live/${id}`);
+    if (isLiveNow && onJoinLive) {
+      onJoinLive();
     } else {
       if (isUserRegistered) {
         toast({
@@ -75,6 +77,7 @@ export const LiveButton = ({
         }
       </Button>
 
+      {/* Dialog pour utilisateurs non connectés */}
       <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
         <DialogContent>
           <DialogHeader>

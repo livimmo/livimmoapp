@@ -23,12 +23,10 @@ export const ScheduledLivesList = ({ lives }: ScheduledLivesListProps) => {
     features: [],
     images: [live.thumbnail],
     agent: {
-      id: `agent-${live.id}`,
       name: live.agent,
       image: "/placeholder.svg",
       phone: "N/A",
-      email: "N/A",
-      isVerified: false
+      email: "N/A"
     },
     coordinates: generateMockCoordinates(live.location)
   }));

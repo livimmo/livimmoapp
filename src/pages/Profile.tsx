@@ -5,7 +5,7 @@ import { AccountTypeSelector, AccountType } from "@/components/profile/AccountTy
 import { PersonalInfo } from "@/components/profile/PersonalInfo";
 import { SocialConnect } from "@/components/profile/SocialConnect";
 import { Button } from "@/components/ui/button";
-import { LogOut, Lock, Languages, Building2 } from "lucide-react";
+import { LogOut, Lock, Languages } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Select,
@@ -169,23 +169,6 @@ const Profile = () => {
             onSubmit={handleSubmit}
             onChange={handleProfileChange}
           />
-
-          {profile.accountType === "buyer" && (
-            <div className="border-t pt-8">
-              <h2 className="text-lg font-semibold mb-4">Annuaire</h2>
-              <p className="text-muted-foreground mb-4">
-                Découvrez notre sélection d'agents immobiliers et de promoteurs de confiance.
-              </p>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => navigate("/directory")}
-              >
-                <Building2 className="mr-2 h-4 w-4" />
-                Accéder à l'annuaire
-              </Button>
-            </div>
-          )}
 
           <div className="border-t pt-8">
             <h2 className="text-lg font-semibold mb-4">Connexion sociale</h2>

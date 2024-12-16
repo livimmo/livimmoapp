@@ -21,12 +21,10 @@ export const LiveCard = ({ live }: LiveCardProps) => {
     hasLive: true,
     liveDate: live.date,
     agent: {
-      id: `agent-${live.id}`,
       name: live.agent,
       image: "",
       phone: "",
       email: "",
-      isVerified: false,
     },
     coordinates: {
       lat: 0,

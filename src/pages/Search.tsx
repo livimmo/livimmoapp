@@ -35,12 +35,10 @@ const mockProperties: Property[] = addCoordinatesToProperties([
     hasLive: true,
     tags: ["Coup de fusil", "Nouveauté"],
     agent: {
-      id: "agent-1",
       name: "Sarah Martin",
       image: "https://i.pravatar.cc/150?u=sarah",
       phone: "+212 6 12 34 56 78",
       email: "sarah.martin@example.com",
-      isVerified: true,
     }
   },
   {
@@ -58,12 +56,10 @@ const mockProperties: Property[] = addCoordinatesToProperties([
     hasLive: false,
     tags: ["Exclusivité"],
     agent: {
-      id: "agent-2",
       name: "Mohammed Alami",
       image: "https://i.pravatar.cc/150?u=mohammed",
       phone: "+212 6 23 45 67 89",
       email: "mohammed.alami@example.com",
-      isVerified: true,
     }
   },
   {
@@ -81,12 +77,10 @@ const mockProperties: Property[] = addCoordinatesToProperties([
     hasLive: true,
     tags: ["Nouveauté"],
     agent: {
-      id: "agent-3",
       name: "Fatima Zahra",
       image: "https://i.pravatar.cc/150?u=fatima",
       phone: "+212 6 34 56 78 90",
       email: "fatima.zahra@example.com",
-      isVerified: true,
     }
   },
   {
@@ -104,12 +98,10 @@ const mockProperties: Property[] = addCoordinatesToProperties([
     hasLive: true,
     tags: ["Coup de fusil"],
     agent: {
-      id: "agent-4",
       name: "Karim Idrissi",
       image: "https://i.pravatar.cc/150?u=karim",
       phone: "+212 6 45 67 89 01",
       email: "karim.idrissi@example.com",
-      isVerified: true,
     }
   },
   {
@@ -127,12 +119,10 @@ const mockProperties: Property[] = addCoordinatesToProperties([
     hasLive: false,
     tags: ["Exclusivité", "Nouveauté"],
     agent: {
-      id: "agent-5",
       name: "Yasmine Benjelloun",
       image: "https://i.pravatar.cc/150?u=yasmine",
       phone: "+212 6 56 78 90 12",
       email: "yasmine.benjelloun@example.com",
-      isVerified: true,
     }
   }
 ]);

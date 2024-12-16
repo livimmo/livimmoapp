@@ -36,12 +36,10 @@ const featuredProperties = addCoordinatesToProperties([
     hasLive: true,
     liveDate: new Date("2024-03-15"),
     agent: {
-      id: "agent-1",
       name: "Karim Benjelloun",
       image: "https://i.pravatar.cc/150?u=karim",
       phone: "+212 6 00 11 22 33",
       email: "karim.benjelloun@example.com",
-      isVerified: true,
     },
   },
   {
@@ -62,12 +60,10 @@ const featuredProperties = addCoordinatesToProperties([
     ],
     hasLive: false,
     agent: {
-      id: "agent-2",
       name: "Sophia Martinez",
       image: "https://i.pravatar.cc/150?u=sophia",
       phone: "+212 6 11 22 33 44",
       email: "sophia.martinez@example.com",
-      isVerified: true,
     },
   },
   {
@@ -89,12 +85,10 @@ const featuredProperties = addCoordinatesToProperties([
     hasLive: true,
     liveDate: new Date("2024-03-20"),
     agent: {
-      id: "agent-3",
       name: "Yasmine Alaoui",
       image: "https://i.pravatar.cc/150?u=yasmine",
       phone: "+212 6 22 33 44 55",
       email: "yasmine.alaoui@example.com",
-      isVerified: false,
     },
   },
 ]);

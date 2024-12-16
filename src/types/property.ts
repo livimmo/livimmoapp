@@ -16,14 +16,12 @@ export interface Property {
   viewers?: number;
   remainingSeats?: number;
   tags?: string[];
-  offers?: number;
+  offers?: number; // Nombre d'offres reçues
   agent: {
-    id: string;
     name: string;
     image: string;
     phone: string;
     email: string;
-    isVerified?: boolean;
   };
   coordinates: {
     lat: number;

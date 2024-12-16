@@ -65,12 +65,10 @@ const mockPropertiesBase = [
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
     ],
     agent: {
-      id: "agent-1",
       name: "Sarah Martin",
       image: "https://i.pravatar.cc/150?u=sarah",
       phone: "+212 6 12 34 56 78",
       email: "sarah.martin@example.com",
-      isVerified: true,
     }
   },
   {
@@ -86,25 +84,23 @@ const mockPropertiesBase = [
     features: ["Vue mer", "Terrasse", "Parking"],
     hasLive: false,
     tags: ["Exclusivité"],
-    offers: 8,
+    offers: 8, // Bien modérément populaire
     images: [
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
       "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
     ],
     agent: {
-      id: "agent-2",
       name: "Mohammed Alami",
       image: "https://i.pravatar.cc/150?u=mohammed",
       phone: "+212 6 23 45 67 89",
       email: "mohammed.alami@example.com",
-      isVerified: true,
     },
   },
   {
     id: 3,
     title: "Riad traditionnel rénové à Marrakech",
     price: 3200000,
-    description: "Authentique riad du 18ème siècle entièrement rénové...",
+    description: "Authentique riad du 18ème siècle entièrement rénové, alliant le charme de l'architecture traditionnelle aux commodités modernes. Situé dans la médina de Marrakech, ce bien d'exception de 300m² dispose d'un patio avec fontaine, d'une piscine et d'une terrasse offrant une vue imprenable sur l'Atlas.",
     location: "Médina, Marrakech",
     type: "Riad",
     surface: 300,
@@ -130,21 +126,19 @@ const mockPropertiesBase = [
     viewers: 0,
     remainingSeats: 20,
     agent: {
-      id: "agent-3",
       name: "Yasmine Idrissi",
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
       phone: "+212 6 63 45 67 89",
-      email: "yasmine.idrissi@example.com",
-      isVerified: true,
+      email: "yasmine.idrissi@example.com"
     },
-    offers: 5,
+    offers: 5, // Bien peu populaire
     coordinates: generateMockCoordinates("Médina, Marrakech")
   },
   {
     id: 4,
     title: "Penthouse contemporain à Tanger",
     price: 3800000,
-    description: "Penthouse d'exception de 250m² situé dans le quartier prisé de Malabata...",
+    description: "Penthouse d'exception de 250m² situé dans le quartier prisé de Malabata. Cette propriété unique offre une vue à 360° sur le détroit de Gibraltar et la ville de Tanger. Les finitions haut de gamme, la domotique intégrée et les vastes terrasses en font un bien rare sur le marché.",
     location: "Malabata, Tanger",
     type: "Penthouse",
     surface: 250,
@@ -166,14 +160,12 @@ const mockPropertiesBase = [
     ],
     hasLive: false,
     agent: {
-      id: "agent-4",
       name: "Omar Tazi",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
       phone: "+212 6 64 56 78 90",
-      email: "omar.tazi@example.com",
-      isVerified: false,
+      email: "omar.tazi@example.com"
     },
-    offers: 0,
+    offers: 0, // Pas d'offres
     coordinates: generateMockCoordinates("Malabata, Tanger")
   }
 ];
