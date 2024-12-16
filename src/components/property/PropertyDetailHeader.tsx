@@ -69,7 +69,7 @@ export const PropertyDetailHeader = ({
           </div>
         )}
 
-        <div className="absolute top-4 right-4 flex gap-2">
+        <div className="absolute top-4 right-4">
           <Button
             variant="outline"
             size="icon"
@@ -78,7 +78,6 @@ export const PropertyDetailHeader = ({
           >
             <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
           </Button>
-          <ShareButtons property={property} currentUrl={window.location.href} />
         </div>
       </div>
 
@@ -87,6 +86,7 @@ export const PropertyDetailHeader = ({
         <p className="text-2xl font-semibold text-primary mb-4">
           {property.price.toLocaleString()} DH
         </p>
+        <ShareButtons property={property} currentUrl={window.location.href} />
       </div>
     </div>
   );
