@@ -24,25 +24,27 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
   return (
     <Card className={`
       p-3 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60
-      ${isMobile ? 'max-w-[calc(100%-2rem)] mx-auto' : 'max-w-md'}
+      ${isMobile ? 'w-[calc(100%-2rem)] mx-auto' : 'w-[600px]'}
       transition-all duration-300
-      ${isCollapsed ? 'max-h-[72px]' : ''}
+      ${isCollapsed ? 'h-[72px]' : ''}
       overflow-hidden
+      flex flex-col
+      absolute bottom-4 left-1/2 -translate-x-1/2
     `}>
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between">
         <Button
           variant="ghost"
           size="sm"
-          className="p-1 h-6 hover:bg-transparent"
+          className="p-1 h-6 hover:bg-transparent absolute right-2 top-2"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
           {isCollapsed ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
         </Button>
       </div>
 
-      <div className="space-y-1.5">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 min-w-0">
+      <div className="space-y-1.5 w-full">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
             <h2 className="text-base font-semibold truncate">{property.title}</h2>
             <Badge 
               variant="default" 
@@ -59,20 +61,60 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
           />
         </div>
         
-        {isCollapsed ? (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between gap-2">
-              <p className="font-semibold">{property.price.toLocaleString()} DH</p>
-              <div className="flex items-center gap-1.5">
-                <Badge 
-                  variant="secondary" 
-                  className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
-                >
-                  {offerCount} offres
-                </Badge>
+        {!isCollapsed && (
+          <div className="grid grid-cols-2 gap-4 mt-3">
+            <div className="space-y-2">
+              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <Users className="w-3.5 h-3.5" />
+                  <span>{viewerCount} spectateurs</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
+                  >
+                    {offerCount} offres
+                  </Badge>
+                </div>
               </div>
+
+              <p className="text-lg font-bold">
+                {property.price.toLocaleString()} DH
+              </p>
+
+              <Link 
+                to={`/properties/${property.id}`}
+                className="flex items-center gap-1.5 text-xs text-primary hover:underline"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                Voir plus de détails
+              </Link>
             </div>
-            <div className="flex items-center justify-end">
+
+            <div className="flex flex-col justify-between items-end">
+              <Button 
+                size="sm"
+                className="w-full md:w-auto" 
+                onClick={() => setIsOfferDialogOpen(true)}
+              >
+                <Heart className="w-4 h-4 mr-1.5" />
+                Je suis intéressé(e)
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {isCollapsed && (
+          <div className="flex items-center justify-between gap-4 mt-2">
+            <p className="font-semibold">{property.price.toLocaleString()} DH</p>
+            <div className="flex items-center gap-2">
+              <Badge 
+                variant="secondary" 
+                className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
+              >
+                {offerCount} offres
+              </Badge>
               <Button
                 size="sm"
                 variant="ghost"
@@ -84,45 +126,6 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
               </Button>
             </div>
           </div>
-        ) : (
-          <>
-            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5" />
-                <span>{viewerCount} spectateurs</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Badge 
-                  variant="secondary" 
-                  className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
-                >
-                  {offerCount} offres
-                </Badge>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between gap-3 mt-3">
-              <p className="text-lg font-bold">
-                {property.price.toLocaleString()} DH
-              </p>
-              <Button 
-                size="sm"
-                className="shrink-0" 
-                onClick={() => setIsOfferDialogOpen(true)}
-              >
-                <Heart className="w-4 h-4 mr-1.5" />
-                Je suis intéressé(e)
-              </Button>
-            </div>
-
-            <Link 
-              to={`/properties/${property.id}`}
-              className="flex items-center gap-1.5 text-xs text-primary hover:underline mt-2"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              Voir plus de détails
-            </Link>
-          </>
         )}
       </div>
 
