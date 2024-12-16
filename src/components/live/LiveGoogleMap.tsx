@@ -20,24 +20,6 @@ const defaultCenter = {
   lng: -7.0926,
 };
 
-const createMarkerIcon = (isLive: boolean) => {
-  const color = isLive ? "#ef4444" : "#94a3b8"; // red-500 for live, slate-400 for non-live
-  return {
-    url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="1.5">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-        <path d="M16 16v3"/>
-        <path d="M8 16v3"/>
-        <circle cx="12" cy="11" r="3"/>
-        <path d="M12 8v6"/>
-        <path d="M9 11h6"/>
-      </svg>
-    `)}`,
-    scaledSize: new google.maps.Size(32, 32),
-    anchor: new google.maps.Point(16, 32),
-  };
-};
-
 export const LiveGoogleMap = ({ properties }: LiveGoogleMapProps) => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
@@ -47,6 +29,26 @@ export const LiveGoogleMap = ({ properties }: LiveGoogleMapProps) => {
         lng: properties.reduce((sum, p) => sum + p.coordinates.lng, 0) / properties.length,
       }
     : defaultCenter;
+
+  const createMarkerIcon = (isLive: boolean) => {
+    if (typeof google === 'undefined') return null;
+    
+    const color = isLive ? "#ef4444" : "#94a3b8"; // red-500 for live, slate-400 for non-live
+    return {
+      url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="1.5">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <path d="M16 16v3"/>
+          <path d="M8 16v3"/>
+          <circle cx="12" cy="11" r="3"/>
+          <path d="M12 8v6"/>
+          <path d="M9 11h6"/>
+        </svg>
+      `)}`,
+      scaledSize: new google.maps.Size(32, 32),
+      anchor: new google.maps.Point(16, 32),
+    };
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[700px]">
