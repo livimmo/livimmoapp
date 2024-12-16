@@ -60,10 +60,12 @@ export const JoinLive = () => {
         hasLive: true,
         liveDate: new Date(),
         agent: {
+          id: "agent-1",
           name: "Karim Benjelloun",
           image: "https://i.pravatar.cc/150?u=karim",
           phone: "+212 6 00 11 22 33",
           email: "karim.benjelloun@example.com",
+          isVerified: true,
         },
         coordinates: generateMockCoordinates(location),
       });

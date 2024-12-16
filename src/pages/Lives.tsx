@@ -66,10 +66,12 @@ const Lives = () => {
     hasLive: true,
     liveDate: live.date,
     agent: {
+      id: `agent-${live.id}`,
       name: live.agent,
       image: "",
       phone: "",
       email: "",
+      isVerified: false,
     },
     coordinates: {
       lat: 31.7917 + Math.random() * 2 - 1,
