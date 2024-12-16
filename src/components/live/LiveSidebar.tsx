@@ -53,7 +53,7 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
         isCollapsed ? "h-12" : "h-48"
       )}
       style={{
-        bottom: "calc(100vh - 64px - 48px)",
+        bottom: "calc(64px + 56px)",
       }}
     >
       <div className="absolute inset-x-0 -top-8 flex justify-center">
