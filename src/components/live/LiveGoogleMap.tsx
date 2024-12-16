@@ -45,8 +45,10 @@ export const LiveGoogleMap = ({ properties }: LiveGoogleMapProps) => {
             }}
             onClick={() => setSelectedProperty(property)}
             icon={{
-              url: property.isLiveNow 
+              url: !property.hasLive 
                 ? "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                : property.isLiveNow
+                ? "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
                 : "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
             }}
           />
@@ -68,7 +70,9 @@ export const LiveGoogleMap = ({ properties }: LiveGoogleMapProps) => {
                   className="w-full h-[150px] object-cover rounded-lg"
                 />
                 <div className="absolute bottom-2 left-2">
-                  {selectedProperty.isLiveNow ? (
+                  {!selectedProperty.hasLive ? (
+                    <Badge variant="destructive">Vendu</Badge>
+                  ) : selectedProperty.isLiveNow ? (
                     <Badge variant="destructive" className="bg-red-500">
                       <span className="mr-1 inline-block h-2 w-2 rounded-full bg-white animate-pulse" />
                       Live en cours
