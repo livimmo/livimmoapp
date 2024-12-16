@@ -1,5 +1,5 @@
 import { LiveEvent } from "@/types/live";
-import { X, ChevronDown, ChevronUp } from "lucide-react";
+import { X, ChevronDown, ChevronUp, Minimize2, Maximize2 } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -125,18 +125,20 @@ export const LiveCarousel = ({
             {allLives.length}
           </Badge>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-white hover:bg-white/10"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          {isCollapsed ? (
-            <ChevronDown className="h-5 w-5" />
-          ) : (
-            <ChevronUp className="h-5 w-5" />
-          )}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/10"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          >
+            {isCollapsed ? (
+              <Maximize2 className="h-5 w-5" />
+            ) : (
+              <Minimize2 className="h-5 w-5" />
+            )}
+          </Button>
+        </div>
       </div>
 
       {!isCollapsed && (
