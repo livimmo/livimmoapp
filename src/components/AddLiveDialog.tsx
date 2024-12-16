@@ -26,6 +26,7 @@ import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 
 export const AddLiveDialog = () => {
   const [date, setDate] = useState<Date>();
+  const [time, setTime] = useState("12:00");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [liveType, setLiveType] = useState<"youtube" | "facebook" | "instagram" | "whatsapp">("youtube");
@@ -40,7 +41,7 @@ export const AddLiveDialog = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!date || !title || !liveUrl || !price || !surface || !location || !propertyType) {
+    if (!date || !time || !title || !liveUrl || !price || !surface || !location || !propertyType) {
       toast({
         title: "Erreur",
         description: "Veuillez remplir tous les champs obligatoires",
@@ -49,9 +50,14 @@ export const AddLiveDialog = () => {
       return;
     }
 
+    // Combine date and time
+    const dateTime = new Date(date);
+    const [hours, minutes] = time.split(":");
+    dateTime.setHours(parseInt(hours), parseInt(minutes));
+
     toast({
       title: "Live programmé !",
-      description: `Votre live "${title}" a été programmé pour le ${date.toLocaleDateString()}`,
+      description: `Votre live "${title}" a été programmé pour le ${dateTime.toLocaleDateString()} à ${time}`,
     });
     setOpen(false);
   };
@@ -218,13 +224,22 @@ export const AddLiveDialog = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Date du Live*</label>
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className="rounded-md border"
-              />
+              <label className="text-sm font-medium">Date et heure du Live*</label>
+              <div className="space-y-2">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  className="rounded-md border"
+                />
+                <Input
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  required
+                  className="mt-2"
+                />
+              </div>
             </div>
 
             <div className="space-y-2">
