@@ -28,6 +28,7 @@ export const PropertyCard = ({
   isLiveNow,
   remainingSeats = 15,
   isUserRegistered = false,
+  transactionType,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
@@ -55,11 +56,14 @@ export const PropertyCard = ({
           <FavoriteButton propertyId={id} title={title} />
           <PropertyActions title={title} currentUrl={currentUrl} />
         </div>
-        {!hasLive && (
-          <div className="absolute top-2 left-2 z-10">
+        <div className="absolute top-2 left-2 z-10 flex gap-2">
+          {!hasLive && (
             <Badge variant="destructive">Vendu</Badge>
-          </div>
-        )}
+          )}
+          <Badge variant={transactionType === "Location" ? "secondary" : "default"}>
+            {transactionType}
+          </Badge>
+        </div>
       </div>
       <PropertyInfo
         id={id}

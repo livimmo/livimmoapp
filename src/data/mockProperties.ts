@@ -45,6 +45,10 @@ const generateRandomLiveStatus = () => {
   };
 };
 
+const generateRandomTransactionType = (): "Vente" | "Location" => {
+  return Math.random() > 0.5 ? "Vente" : "Location";
+};
+
 const mockPropertiesBase = [
   {
     id: 1,
@@ -60,6 +64,7 @@ const mockPropertiesBase = [
     hasLive: true,
     tags: ["Coup de fusil", "Nouveauté"],
     offers: 15,
+    transactionType: generateRandomTransactionType(),
     images: [
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
@@ -170,14 +175,15 @@ const mockPropertiesBase = [
   }
 ];
 
-export const addCoordinatesToProperty = (property: Omit<Property, 'coordinates'>): Property => ({
-  ...property,
-  coordinates: generateMockCoordinates(property.location),
-  ...generateRandomLiveStatus()
-});
-
 export const addCoordinatesToProperties = (properties: Array<Omit<Property, 'coordinates'>>): Property[] => {
   return properties.map(property => addCoordinatesToProperty(property));
 };
+
+export const addCoordinatesToProperty = (property: Omit<Property, 'coordinates'>): Property => ({
+  ...property,
+  coordinates: generateMockCoordinates(property.location),
+  ...generateRandomLiveStatus(),
+  transactionType: generateRandomTransactionType(),
+});
 
 export const mockProperties: Property[] = addCoordinatesToProperties(mockPropertiesBase);
