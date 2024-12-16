@@ -9,8 +9,6 @@ import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { scheduledLives, liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
-import { AddLiveDialog } from "@/components/AddLiveDialog";
-import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Lives = () => {
@@ -54,7 +52,6 @@ const Lives = () => {
   const filteredScheduledLives = filterLives(scheduledLives);
   const filteredReplayLives = filterLives(replayLives);
 
-  // Convert current lives to Property format for the map
   const currentLiveProperties: Property[] = filteredCurrentLives.map((live) => ({
     id: live.id,
     title: live.title,
@@ -85,7 +82,6 @@ const Lives = () => {
     transactionType: Math.random() > 0.5 ? "Vente" : "Location"
   }));
 
-  // Suggestions based on available locations and types
   const suggestions = Array.from(new Set([
     ...liveStreams.map(live => live.location),
     ...liveStreams.map(live => live.type),
@@ -114,18 +110,6 @@ const Lives = () => {
           transactionType={transactionType}
           setTransactionType={setTransactionType}
         />
-        {isAgentOrPromoter && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <AddLiveDialog />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Démarrer ou programmer un live</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )}
       </div>
 
       {/* Section des lives en cours */}
