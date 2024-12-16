@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/select";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 
-export const AddLiveDialog = () => {
+export const AddLiveDialog = ({ variant = "default" }: { variant?: "default" | "minimal" }) => {
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState("12:00");
   const [title, setTitle] = useState("");
@@ -91,10 +91,16 @@ export const AddLiveDialog = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="gap-2 bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
-          <Plus className="h-4 w-4" />
-          Ajouter un Live
-        </Button>
+        {variant === "minimal" ? (
+          <Button variant="ghost" size="sm">
+            <Plus className="h-4 w-4" />
+          </Button>
+        ) : (
+          <Button className="gap-2 bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
+            <Plus className="h-4 w-4" />
+            Ajouter un Live
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="sticky top-0 bg-white pt-4 pb-2 z-10">
