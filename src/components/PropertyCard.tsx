@@ -12,6 +12,7 @@ type PropertyCardProps = Property & {
   isLiveNow?: boolean;
   remainingSeats?: number;
   isUserRegistered?: boolean;
+  offers?: number;
 };
 
 export const PropertyCard = ({
@@ -29,6 +30,7 @@ export const PropertyCard = ({
   isLiveNow,
   remainingSeats = 15,
   isUserRegistered = false,
+  offers = 0,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
@@ -52,6 +54,7 @@ export const PropertyCard = ({
           isLiveNow={isLiveNow}
           isUserRegistered={isUserRegistered}
           remainingSeats={remainingSeats}
+          offers={offers}
         />
         <div className="absolute top-2 right-2 z-10 flex gap-2">
           <FavoriteButton propertyId={id} title={title} />
