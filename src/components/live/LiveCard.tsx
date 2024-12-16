@@ -15,7 +15,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
     surface: 0,
     rooms: 0,
     bathrooms: 0,
-    description: live.description || "Découvrez ce bien exceptionnel lors de notre visite virtuelle en direct. Notre agent immobilier vous fera découvrir tous les aspects de cette propriété et répondra à toutes vos questions en temps réel.",
+    description: live.description || "",
     features: [],
     images: [live.thumbnail],
     hasLive: true,

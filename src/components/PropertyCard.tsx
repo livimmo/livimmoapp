@@ -20,7 +20,12 @@ export const PropertyCard = ({
   type,
   surface,
   rooms,
-  description,
+</lov-replace>
+
+<lov-search>
+        description={description}
+</lov-search>
+<lov-replace>
   hasLive,
   liveDate,
   viewers = 0,
