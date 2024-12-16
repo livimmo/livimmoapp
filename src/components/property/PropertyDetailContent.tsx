@@ -1,6 +1,5 @@
 import { MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface PropertyDetailContentProps {
   property: any;
