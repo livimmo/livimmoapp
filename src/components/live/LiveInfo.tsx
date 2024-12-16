@@ -27,9 +27,10 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
       ${isCollapsed ? 'h-[72px]' : ''}
       overflow-hidden
       flex flex-col
-      fixed bottom-0 
-      ${isMobile ? 'left-0 right-0 max-h-[40vh]' : 'right-0 w-1/2 max-h-[30vh] border-l'}
+      fixed bottom-[64px] left-0 right-0
+      ${isMobile ? 'max-h-[40vh]' : 'max-h-[30vh]'}
       z-50
+      border-t
     `}>
       <div className="flex items-center justify-end mb-2">
         <Button
