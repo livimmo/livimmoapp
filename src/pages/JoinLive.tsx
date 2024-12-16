@@ -126,14 +126,16 @@ export const JoinLive = () => {
             onMakeOffer={handleMakeOffer} 
             viewerCount={mockLiveData.viewerCount}
           />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="bg-black/50 text-white hover:bg-black/75 z-[100]"
-            onClick={() => setShowChat(!showChat)}
-          >
-            <MessageSquare className="h-5 w-5" />
-          </Button>
+          <div className="flex flex-col gap-2 ml-auto">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-black/50 text-white hover:bg-black/75 z-[100]"
+              onClick={() => setShowChat(!showChat)}
+            >
+              <MessageSquare className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
 
         {showChat && (
