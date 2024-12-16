@@ -122,6 +122,15 @@ export const JoinLive = () => {
         <LiveControls isFavorite={isFavorite} onToggleFavorite={handleToggleFavorite} />
         <LiveSidebar currentLiveId={Number(id)} lives={liveStreams} />
 
+        {showChat && (
+          <div className="absolute top-0 right-12 bottom-[72px] w-80 z-[100]">
+            <LiveChat 
+              messages={mockLiveData.messages} 
+              onClose={() => setShowChat(false)}
+            />
+          </div>
+        )}
+
         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
           <LiveInfo 
             property={property} 
@@ -139,15 +148,6 @@ export const JoinLive = () => {
             </Button>
           </div>
         </div>
-
-        {showChat && (
-          <div className="absolute top-0 right-12 bottom-0 w-80 z-[100]">
-            <LiveChat 
-              messages={mockLiveData.messages} 
-              onClose={() => setShowChat(false)}
-            />
-          </div>
-        )}
       </div>
     </div>
   );
