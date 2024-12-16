@@ -71,7 +71,8 @@ export const scheduledLives: LiveEvent[] = [
     availableSeats: 15,
     thumbnail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
     price: "2,500,000 MAD",
-    description: "Magnifique villa moderne avec piscine et jardin paysager"
+    description: "Magnifique villa moderne avec piscine et jardin paysager",
+    status: "scheduled"
   },
   {
     id: 2,
@@ -83,7 +84,8 @@ export const scheduledLives: LiveEvent[] = [
     availableSeats: 10,
     thumbnail: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
     price: "1,800,000 MAD",
-    description: "Superbe appartement avec vue imprenable sur la mer"
+    description: "Superbe appartement avec vue imprenable sur la mer",
+    status: "scheduled"
   },
   {
     id: 3,
@@ -95,7 +97,8 @@ export const scheduledLives: LiveEvent[] = [
     availableSeats: 8,
     thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
     price: "3,200,000 MAD",
-    description: "Penthouse de luxe avec terrasse panoramique"
+    description: "Penthouse de luxe avec terrasse panoramique",
+    status: "scheduled"
   },
   {
     id: 4,
@@ -107,7 +110,8 @@ export const scheduledLives: LiveEvent[] = [
     availableSeats: 12,
     thumbnail: "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
     price: "4,500,000 MAD",
-    description: "Riad authentique au cœur de la médina"
+    description: "Riad authentique au cœur de la médina",
+    status: "scheduled"
   },
   {
     id: 5,
@@ -119,7 +123,8 @@ export const scheduledLives: LiveEvent[] = [
     availableSeats: 20,
     thumbnail: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
     price: "5,900,000 MAD",
-    description: "Villa contemporaine avec design unique"
+    description: "Villa contemporaine avec design unique",
+    status: "scheduled"
   },
   {
     id: 6,
@@ -131,7 +136,8 @@ export const scheduledLives: LiveEvent[] = [
     availableSeats: 15,
     thumbnail: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3",
     price: "2,100,000 MAD",
-    description: "Magnifique duplex avec grande terrasse aménagée"
+    description: "Magnifique duplex avec grande terrasse aménagée",
+    status: "scheduled"
   },
   {
     id: 7,
@@ -143,6 +149,7 @@ export const scheduledLives: LiveEvent[] = [
     availableSeats: 10,
     thumbnail: "https://images.unsplash.com/photo-1600585154526-990dced4db0d",
     price: "3,800,000 MAD",
-    description: "Charmante maison de campagne avec vue sur la forêt"
+    description: "Charmante maison de campagne avec vue sur la forêt",
+    status: "scheduled"
   }
 ];
