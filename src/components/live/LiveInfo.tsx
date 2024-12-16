@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { type Property } from "@/types/property";
 import { Users } from "lucide-react";
+import { useState } from "react";
+import { LiveOfferDialog } from "./LiveOfferDialog";
 
 interface LiveInfoProps {
   property: Property;
@@ -8,7 +10,9 @@ interface LiveInfoProps {
   viewerCount?: number;
 }
 
-export const LiveInfo = ({ property, onMakeOffer, viewerCount = 0 }: LiveInfoProps) => {
+export const LiveInfo = ({ property, viewerCount = 0 }: LiveInfoProps) => {
+  const [showOfferDialog, setShowOfferDialog] = useState(false);
+
   return (
     <div className="space-y-4 p-4 bg-black/50 rounded-lg text-white max-w-md">
       <div>
@@ -31,10 +35,21 @@ export const LiveInfo = ({ property, onMakeOffer, viewerCount = 0 }: LiveInfoPro
             <span className="text-sm">{viewerCount}</span>
           </div>
         </div>
-        <Button onClick={onMakeOffer} variant="default" size="sm">
+        <Button 
+          onClick={() => setShowOfferDialog(true)} 
+          variant="default" 
+          size="sm"
+        >
           Proposer un prix
         </Button>
       </div>
+
+      <LiveOfferDialog
+        title={property.title}
+        price={property.price}
+        isOpen={showOfferDialog}
+        onClose={() => setShowOfferDialog(false)}
+      />
     </div>
   );
 };
