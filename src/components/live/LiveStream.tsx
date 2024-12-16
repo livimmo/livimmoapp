@@ -56,12 +56,8 @@ export const LiveStream = ({
             strokeLinecap="round" 
             strokeLinejoin="round"
           >
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-            <path d="M16 16v3"/>
-            <path d="M8 16v3"/>
-            <circle cx="12" cy="11" r="3"/>
-            <path d="M12 8v6"/>
-            <path d="M9 11h6"/>
+            <path d="M17 10l2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6l2 2h4Z"/>
+            <circle cx="12" cy="13" r="3"/>
           </svg>
           {showCarousel ? "Masquer" : "Autres lives"}
           <Badge 
