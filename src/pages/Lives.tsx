@@ -20,7 +20,7 @@ const Lives = () => {
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
   const [showLiveOnly, setShowLiveOnly] = useState(true);
-  const [transactionType, setTransactionType] = useState<"Vente" | "Location">("Vente");
+  const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
   // Create replay lives from existing lives
   const replayLives = liveStreams.map(live => ({
@@ -174,3 +174,4 @@ const Lives = () => {
 };
 
 export default Lives;
+

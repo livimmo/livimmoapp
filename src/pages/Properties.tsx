@@ -9,7 +9,7 @@ export const Properties = () => {
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
-  const [transactionType, setTransactionType] = useState<"Vente" | "Location">("Vente");
+  const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
   const mockProperties = addCoordinatesToProperties([
     {
@@ -70,7 +70,7 @@ export const Properties = () => {
     const matchesPriceRange = property.price >= priceRange[0] && property.price <= priceRange[1];
     const matchesSurfaceRange = property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
     const matchesLive = !showLiveOnly || property.hasLive;
-    const matchesTransactionType = property.transactionType === transactionType;
+    const matchesTransactionType = transactionType.includes(property.transactionType);
 
     return matchesSearch && matchesType && matchesPriceRange && matchesSurfaceRange && matchesLive && matchesTransactionType;
   });

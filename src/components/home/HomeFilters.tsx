@@ -13,7 +13,7 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
-  const [transactionType, setTransactionType] = useState<"Vente" | "Location">("Vente");
+  const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
   const suggestions = [
     "Casablanca",
@@ -31,34 +31,33 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
   const applyFilters = () => {
     let filtered = [...properties];
 
-    // Filter by search term (location)
     if (searchTerm) {
       filtered = filtered.filter((property) =>
         property.location.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Filter by property type
     if (propertyType !== "all") {
       filtered = filtered.filter((property) => property.type === propertyType);
     }
 
-    // Filter by transaction type
-    filtered = filtered.filter((property) => property.transactionType === transactionType);
+    // Updated transaction type filter to handle multiple selections
+    if (transactionType.length > 0) {
+      filtered = filtered.filter((property) => 
+        transactionType.includes(property.transactionType)
+      );
+    }
 
-    // Filter by price range
     filtered = filtered.filter(
       (property) =>
         property.price >= priceRange[0] && property.price <= priceRange[1]
     );
 
-    // Filter by surface range
     filtered = filtered.filter(
       (property) =>
         property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1]
     );
 
-    // Filter by live availability
     if (showLiveOnly) {
       filtered = filtered.filter((property) => property.hasLive);
     }
@@ -66,7 +65,6 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
     onFiltersChange(filtered);
   };
 
-  // Apply filters whenever any filter value changes
   useEffect(() => {
     applyFilters();
   }, [searchTerm, propertyType, priceRange, surfaceRange, showLiveOnly, transactionType]);

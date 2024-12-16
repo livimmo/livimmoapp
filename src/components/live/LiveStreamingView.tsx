@@ -18,7 +18,7 @@ interface LiveStreamingViewProps {
 export const LiveStreamingView = ({
   property,
   isHost = false,
-  onEndStream = () => {},
+  onEndStream,
 }: LiveStreamingViewProps) => {
   const [showChat, setShowChat] = useState(false);
   const [viewerCount, setViewerCount] = useState(0);
