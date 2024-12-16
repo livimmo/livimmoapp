@@ -22,9 +22,6 @@ const Dashboard = () => {
             lastName={user?.lastName || ""}
             email={user?.email || ""}
             phone={user?.phone || ""}
-            address={user?.address || ""}
-            city={user?.city || ""}
-            country={user?.country || ""}
           />
         </TabsContent>
         

@@ -12,9 +12,9 @@ interface PersonalInfoProps {
   lastName: string;
   email: string;
   phone: string;
-  accountType: AccountType;
-  onSubmit: (e: React.FormEvent) => void;
-  onChange: (field: string, value: string) => void;
+  accountType?: AccountType;
+  onSubmit?: (e: React.FormEvent) => void;
+  onChange?: (field: string, value: string) => void;
 }
 
 const availableTags = [
@@ -30,9 +30,9 @@ export const PersonalInfo = ({
   lastName,
   email,
   phone,
-  accountType,
-  onSubmit,
-  onChange,
+  accountType = "buyer",
+  onSubmit = (e) => e.preventDefault(),
+  onChange = () => {},
 }: PersonalInfoProps) => {
   return (
     <form onSubmit={onSubmit} className="space-y-6">
