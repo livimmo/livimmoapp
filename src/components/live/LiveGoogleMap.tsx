@@ -30,92 +30,97 @@ export const LiveGoogleMap = ({ properties }: LiveGoogleMapProps) => {
       }
     : defaultCenter;
 
-  // Create a custom marker icon using SVG
-  const createMarkerIcon = (isLive: boolean) => {
-    const color = isLive ? "#ef4444" : "#6b7280"; // Red for live, gray for non-live
-    return {
-      url: `data:image/svg+xml,${encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
-          <circle cx="12" cy="13" r="3"/>
-        </svg>
-      `)}`,
-      scaledSize: new google.maps.Size(32, 32),
-    };
-  };
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[700px]">
       <div className="relative h-full">
         <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-          <GoogleMap
-            mapContainerStyle={mapStyles}
-            zoom={6}
-            center={center}
-            mapTypeId="hybrid"
-          >
-            {properties.map((property) => (
-              <Marker
-                key={property.id}
-                position={{
-                  lat: property.coordinates.lat,
-                  lng: property.coordinates.lng,
-                }}
-                onClick={() => setSelectedProperty(property)}
-                icon={createMarkerIcon(property.isLiveNow || false)}
-              />
-            ))}
+          {({ loaded }) => {
+            if (!loaded) return <div>Loading...</div>;
 
-            {selectedProperty && (
-              <InfoWindow
-                position={{
-                  lat: selectedProperty.coordinates.lat,
-                  lng: selectedProperty.coordinates.lng,
-                }}
-                onCloseClick={() => setSelectedProperty(null)}
+            const createMarkerIcon = (isLive: boolean) => {
+              const color = isLive ? "#ef4444" : "#6b7280"; // Red for live, gray for non-live
+              return {
+                url: `data:image/svg+xml,${encodeURIComponent(`
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                    <circle cx="12" cy="13" r="3"/>
+                  </svg>
+                `)}`,
+                scaledSize: new window.google.maps.Size(32, 32),
+              };
+            };
+
+            return (
+              <GoogleMap
+                mapContainerStyle={mapStyles}
+                zoom={6}
+                center={center}
+                mapTypeId="hybrid"
               >
-                <div className="p-2 max-w-[300px]">
-                  <div className="relative mb-2">
-                    <img
-                      src={selectedProperty.images[0]}
-                      alt={selectedProperty.title}
-                      className="w-full h-[150px] object-cover rounded-lg"
-                    />
-                    <div className="absolute bottom-2 left-2">
-                      {!selectedProperty.hasLive ? (
-                        <Badge variant="destructive">Vendu</Badge>
-                      ) : selectedProperty.isLiveNow ? (
-                        <Badge variant="destructive" className="bg-red-500">
-                          <span className="mr-1 inline-block h-2 w-2 rounded-full bg-white animate-pulse" />
-                          Live en cours
-                        </Badge>
-                      ) : (
-                        <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
-                          <Clock className="mr-1 h-4 w-4" />
-                          {new Date(selectedProperty.liveDate).toLocaleDateString("fr-FR", {
-                            day: "numeric",
-                            month: "short",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </Badge>
-                      )}
+                {properties.map((property) => (
+                  <Marker
+                    key={property.id}
+                    position={{
+                      lat: property.coordinates.lat,
+                      lng: property.coordinates.lng,
+                    }}
+                    onClick={() => setSelectedProperty(property)}
+                    icon={createMarkerIcon(property.isLiveNow || false)}
+                  />
+                ))}
+
+                {selectedProperty && (
+                  <InfoWindow
+                    position={{
+                      lat: selectedProperty.coordinates.lat,
+                      lng: selectedProperty.coordinates.lng,
+                    }}
+                    onCloseClick={() => setSelectedProperty(null)}
+                  >
+                    <div className="p-2 max-w-[300px]">
+                      <div className="relative mb-2">
+                        <img
+                          src={selectedProperty.images[0]}
+                          alt={selectedProperty.title}
+                          className="w-full h-[150px] object-cover rounded-lg"
+                        />
+                        <div className="absolute bottom-2 left-2">
+                          {!selectedProperty.hasLive ? (
+                            <Badge variant="destructive">Vendu</Badge>
+                          ) : selectedProperty.isLiveNow ? (
+                            <Badge variant="destructive" className="bg-red-500">
+                              <span className="mr-1 inline-block h-2 w-2 rounded-full bg-white animate-pulse" />
+                              Live en cours
+                            </Badge>
+                          ) : (
+                            <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                              <Clock className="mr-1 h-4 w-4" />
+                              {new Date(selectedProperty.liveDate).toLocaleDateString("fr-FR", {
+                                day: "numeric",
+                                month: "short",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                      <h3 className="font-semibold text-base mb-1">{selectedProperty.title}</h3>
+                      <p className="text-primary font-bold">
+                        {selectedProperty.price.toLocaleString()} DH
+                      </p>
+                      <p className="text-sm text-gray-500">{selectedProperty.location}</p>
+                      <div className="flex gap-2 text-sm text-gray-500 mt-1">
+                        <span>{selectedProperty.surface} m²</span>
+                        <span>•</span>
+                        <span>{selectedProperty.type}</span>
+                      </div>
                     </div>
-                  </div>
-                  <h3 className="font-semibold text-base mb-1">{selectedProperty.title}</h3>
-                  <p className="text-primary font-bold">
-                    {selectedProperty.price.toLocaleString()} DH
-                  </p>
-                  <p className="text-sm text-gray-500">{selectedProperty.location}</p>
-                  <div className="flex gap-2 text-sm text-gray-500 mt-1">
-                    <span>{selectedProperty.surface} m²</span>
-                    <span>•</span>
-                    <span>{selectedProperty.type}</span>
-                  </div>
-                </div>
-              </InfoWindow>
-            )}
-          </GoogleMap>
+                  </InfoWindow>
+                )}
+              </GoogleMap>
+            );
+          }}
         </LoadScript>
       </div>
 
