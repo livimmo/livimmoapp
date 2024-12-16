@@ -42,8 +42,9 @@ export const AddLiveDialog = () => {
           onClick={() => setOpen(true)}
           className="relative"
         >
-          <div className="relative flex items-center">
+          <div className="relative flex items-center gap-1">
             <Video className="h-4 w-4 text-[#ea384c]" />
+            <Plus className="h-3 w-3 text-[#ea384c]" />
           </div>
         </Button>
       ) : (
