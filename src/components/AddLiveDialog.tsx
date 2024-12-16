@@ -9,12 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { Plus, Video, Youtube, Facebook, Instagram, MessageCircle, MapPin, Home, Tag, X, Save } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { GoogleMapInput } from "./GoogleMapInput";
 import {
   Select,
   SelectContent,
@@ -50,7 +50,6 @@ export const AddLiveDialog = () => {
       return;
     }
 
-    // Combine date and time
     const dateTime = new Date(date);
     const [hours, minutes] = time.split(":");
     dateTime.setHours(parseInt(hours), parseInt(minutes));
@@ -81,16 +80,11 @@ export const AddLiveDialog = () => {
 
   const getLiveUrlPlaceholder = () => {
     switch (liveType) {
-      case "youtube":
-        return "https://youtube.com/live/...";
-      case "facebook":
-        return "https://facebook.com/live/...";
-      case "instagram":
-        return "https://instagram.com/live/...";
-      case "whatsapp":
-        return "https://wa.me/...";
-      default:
-        return "";
+      case "youtube": return "https://youtube.com/live/...";
+      case "facebook": return "https://facebook.com/live/...";
+      case "instagram": return "https://instagram.com/live/...";
+      case "whatsapp": return "https://wa.me/...";
+      default: return "";
     }
   };
 
@@ -103,19 +97,24 @@ export const AddLiveDialog = () => {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-4 sticky top-0 bg-white pt-4 pb-2 z-10">
-          <DialogHeader>
-            <DialogTitle>Programmer un nouveau Live</DialogTitle>
-            <DialogDescription>
-              Remplissez les informations pour programmer votre visite en direct
-            </DialogDescription>
-          </DialogHeader>
-          <DialogClose asChild>
-            <Button variant="ghost" size="icon" className="absolute right-4 top-4">
+        <DialogHeader className="sticky top-0 bg-white pt-4 pb-2 z-10">
+          <div className="flex justify-between items-center">
+            <div>
+              <DialogTitle>Programmer un nouveau Live</DialogTitle>
+              <DialogDescription>
+                Remplissez les informations pour programmer votre visite en direct
+              </DialogDescription>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="absolute right-4 top-4"
+              onClick={() => setOpen(false)}
+            >
               <X className="h-4 w-4" />
             </Button>
-          </DialogClose>
-        </div>
+          </div>
+        </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6 pb-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -171,7 +170,8 @@ export const AddLiveDialog = () => {
 
           <div className="space-y-2">
             <label className="text-sm font-medium">Localisation*</label>
-            <div className="relative">
+            <GoogleMapInput onLocationSelect={setLocation} />
+            <div className="relative mt-2">
               <MapPin className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 value={location}
@@ -295,11 +295,9 @@ export const AddLiveDialog = () => {
           </div>
 
           <div className="flex gap-2 justify-end sticky bottom-0 bg-white pt-2">
-            <DialogClose asChild>
-              <Button type="button" variant="outline">
-                Annuler
-              </Button>
-            </DialogClose>
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              Annuler
+            </Button>
             <Button type="submit" className="bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
               <Save className="mr-2 h-4 w-4" />
               Enregistrer
