@@ -115,11 +115,11 @@ export const LiveStream = ({
         </div>
 
         {/* Contrôles vidéo */}
-        <div className="absolute bottom-[64px] left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent flex justify-between items-center gap-2 z-[9999] backdrop-blur-sm shadow-lg transition-all duration-300 hover:from-black/95">
+        <div className="absolute bottom-[64px] left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent flex justify-between items-center gap-2 z-[51]">
           <Button
             variant="ghost"
             size="icon"
-            className="text-white hover:bg-white/20 transition-colors transform hover:scale-105"
+            className="text-white hover:bg-white/20 transition-colors"
             onClick={() => setShowOtherLives(!showOtherLives)}
           >
             {showOtherLives ? (
@@ -133,7 +133,7 @@ export const LiveStream = ({
         {/* Carousel (Live ou Replay) */}
         <div 
           className={cn(
-            "absolute left-0 right-0 z-[9998] transition-all duration-300",
+            "absolute left-0 right-0 z-[51] transition-all duration-300",
             showOtherLives ? "bottom-[120px] opacity-100" : "-bottom-full opacity-0"
           )}
         >
