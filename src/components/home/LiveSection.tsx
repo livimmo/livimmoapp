@@ -1,13 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Map, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PropertyCard } from "@/components/PropertyCard";
 import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
+import { useToast } from "@/hooks/use-toast";
 
 export const LiveSection = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Simuler la détection d'un nouveau live
+    if (liveStreams.length > 0) {
+      const latestLive = liveStreams[0];
+      toast({
+        title: "Nouveau live disponible !",
+        description: `"${latestLive.title}" vient de commencer avec ${latestLive.agent}`,
+        variant: "default",
+        className: "bg-red-500 text-white",
+        duration: 5000,
+      });
+    }
+  }, [toast]);
 
   // Convertir les lives en format Property pour les afficher avec PropertyCard
   const liveProperties: Property[] = liveStreams.map((live) => ({
