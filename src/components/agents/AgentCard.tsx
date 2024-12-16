@@ -1,18 +1,12 @@
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { BadgeCheck, Building2, Star } from "lucide-react";
+import { BadgeCheck, Building2 } from "lucide-react";
 import { StarRating } from "@/components/ratings/StarRating";
+import { Agent } from "@/types/agent";
 
 interface AgentCardProps {
-  agent: {
-    id: string;
-    name: string;
-    image: string;
-    isVerified?: boolean;
-    description?: string;
-    projectCount?: number;
-  };
+  agent: Agent;
   isDeveloper?: boolean;
   onClick?: () => void;
 }
@@ -58,7 +52,7 @@ export const AgentCard = ({ agent, isDeveloper, onClick }: AgentCardProps) => {
             </>
           ) : (
             <div className="flex items-center gap-2">
-              <StarRating rating={4.5} totalReviews={12} />
+              <StarRating rating={agent.rating || 4.5} totalReviews={agent.totalReviews || 0} />
             </div>
           )}
         </div>

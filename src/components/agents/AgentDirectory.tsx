@@ -5,13 +5,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search } from "lucide-react";
 import { AgentCard } from "./AgentCard";
 import { mockProperties } from "@/data/mockProperties";
+import { Agent } from "@/types/agent";
 
 // Extraire les agents uniques des propriétés mockées
 const uniqueAgents = Array.from(
   new Map(mockProperties.map((p) => [p.agent.id, p.agent])).values()
-);
+) as Agent[];
 
-const developers = [
+const developers: Agent[] = [
   {
     id: "dev-1",
     name: "Groupe Al Omrane",
@@ -81,11 +82,7 @@ export const AgentDirectory = () => {
             {filteredDevelopers.map((developer) => (
               <AgentCard
                 key={developer.id}
-                agent={{
-                  ...developer,
-                  phone: "",
-                  email: "",
-                }}
+                agent={developer}
                 isDeveloper
                 onClick={() => navigate(`/developer/${developer.id}`)}
               />
