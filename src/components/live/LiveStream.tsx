@@ -93,9 +93,7 @@ export const LiveStream = ({
           className={cn(
             "absolute left-0 right-0 z-[51] transition-all duration-300 ease-in-out",
             showOtherLives 
-              ? isMobile 
-                ? "bottom-[180px] opacity-100" 
-                : "bottom-[120px] opacity-100" 
+              ? "bottom-[180px] opacity-100" 
               : "-bottom-full opacity-0"
           )}
         >
