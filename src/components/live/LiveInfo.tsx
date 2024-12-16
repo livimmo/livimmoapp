@@ -1,7 +1,7 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink, Heart, Radio, Euro, ChevronDown, ChevronUp } from "lucide-react";
+import { Users, ExternalLink, Heart, Radio, Euro, ChevronDown, ChevronUp, ThumbsUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
@@ -60,14 +60,25 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         </div>
         
         {isCollapsed ? (
-          <div className="flex items-center gap-1.5">
-            <Euro className="w-3.5 h-3.5" />
-            <Badge 
-              variant="secondary" 
-              className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <Euro className="w-3.5 h-3.5" />
+              <Badge 
+                variant="secondary" 
+                className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
+              >
+                {offerCount} offres
+              </Badge>
+            </div>
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-8 px-2 hover:bg-accent"
+              onClick={() => setIsOfferDialogOpen(true)}
             >
-              {offerCount} offres
-            </Badge>
+              <ThumbsUp className="w-4 h-4 mr-1.5" />
+              <span className="text-sm">Intéressé</span>
+            </Button>
           </div>
         ) : (
           <>
