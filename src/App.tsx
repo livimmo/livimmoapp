@@ -10,8 +10,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <div className="min-h-screen bg-background">
           <Header />
           <main>
@@ -25,8 +25,8 @@ function App() {
           <BottomNav />
           <Toaster />
         </div>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 
