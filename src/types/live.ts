@@ -17,11 +17,5 @@ export interface LiveEvent {
   duration?: number;
   viewCount?: number;
   propertyId?: number;
-}
-
-export interface LiveStreamConfig {
-  title: string;
-  propertyId: number;
-  estimatedDuration: number;
-  autoRecord: boolean;
+  surface?: number;
 }
