@@ -62,7 +62,7 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
       </Button>
 
       {!isCollapsed && (
-        <ScrollArea className="h-[400px]">
+        <ScrollArea className="h-[600px]">
           <div className="p-4">
             <Carousel
               plugins={[plugin.current]}
@@ -71,11 +71,12 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
                 align: "start",
                 loop: true,
                 axis: "y",
+                slides: { perView: 3, spacing: 8 }
               }}
             >
-              <CarouselContent className="-mt-2 h-[300px]">
+              <CarouselContent className="-mt-2">
                 {otherLives.map(live => (
-                  <CarouselItem key={live.id} className="pt-2 basis-full">
+                  <CarouselItem key={live.id} className="pt-2 basis-full min-h-[180px]">
                     <div 
                       className="cursor-pointer group"
                       onClick={() => navigate(`/live/${live.id}`)}
@@ -84,7 +85,7 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
                         <img 
                           src={live.thumbnail} 
                           alt={live.title}
-                          className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-110"
+                          className="w-full h-24 object-cover transition-transform duration-300 group-hover:scale-110"
                         />
                         <Badge 
                           variant="destructive" 
