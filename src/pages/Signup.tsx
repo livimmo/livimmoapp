@@ -31,7 +31,8 @@ export const Signup = () => {
       formData.email,
       formData.password,
       formData.firstName,
-      formData.lastName
+      formData.lastName,
+      "buyer" // Par défaut, on crée un compte acheteur
     );
   };
 
