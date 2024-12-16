@@ -6,8 +6,8 @@ import { addCoordinatesToProperties } from "@/data/mockProperties";
 export const Properties = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("");
-  const [minPrice, setMinPrice] = useState<number | "">("");
-  const [maxPrice, setMaxPrice] = useState<number | "">("");
+  const [priceRange, setPriceRange] = useState([0, 5000000]);
+  const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [transactionType, setTransactionType] = useState<"Vente" | "Location">("Vente");
 
@@ -67,12 +67,12 @@ export const Properties = () => {
     const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       property.location.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = !propertyType || property.type === propertyType;
-    const matchesMinPrice = !minPrice || property.price >= minPrice;
-    const matchesMaxPrice = !maxPrice || property.price <= maxPrice;
+    const matchesPriceRange = property.price >= priceRange[0] && property.price <= priceRange[1];
+    const matchesSurfaceRange = property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
     const matchesLive = !showLiveOnly || property.hasLive;
     const matchesTransactionType = property.transactionType === transactionType;
 
-    return matchesSearch && matchesType && matchesMinPrice && matchesMaxPrice && matchesLive && matchesTransactionType;
+    return matchesSearch && matchesType && matchesPriceRange && matchesSurfaceRange && matchesLive && matchesTransactionType;
   });
 
   return (
@@ -82,10 +82,10 @@ export const Properties = () => {
         setSearchTerm={setSearchTerm}
         propertyType={propertyType}
         setPropertyType={setPropertyType}
-        minPrice={minPrice}
-        setMinPrice={setMinPrice}
-        maxPrice={maxPrice}
-        setMaxPrice={setMaxPrice}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+        surfaceRange={surfaceRange}
+        setSurfaceRange={setSurfaceRange}
         showLiveOnly={showLiveOnly}
         setShowLiveOnly={setShowLiveOnly}
         transactionType={transactionType}
