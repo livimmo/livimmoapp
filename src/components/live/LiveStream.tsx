@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FavoriteButton } from "@/components/property/FavoriteButton";
-import { LiveCarousel } from "./LiveCarousel";
 import { type LiveEvent } from "@/types/live";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -55,14 +53,6 @@ export const LiveStream = ({
           </Button>
         </div>
       )}
-
-      <div className="absolute top-0 left-0 right-0 z-10">
-        <LiveCarousel 
-          currentLiveId={currentLiveId}
-          lives={otherLives}
-          onLiveSelect={onLiveChange}
-        />
-      </div>
 
       <iframe
         src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
