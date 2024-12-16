@@ -1,8 +1,15 @@
-import { Video, Bell, User, LogIn, UserPlus } from "lucide-react";
+import { Video, Bell, User, LogIn, UserPlus, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { AddLiveDialog } from "@/components/AddLiveDialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -22,6 +29,8 @@ export const Header = () => {
     }
   };
 
+  const isAgent = user?.role === 'agent' || user?.role === 'promoter';
+
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
       <div className="container mx-auto px-4 h-12 flex items-center justify-between">
@@ -37,6 +46,18 @@ export const Header = () => {
         <div className="flex items-center gap-2">
           {isAuthenticated ? (
             <>
+              {isAgent && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <AddLiveDialog />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Démarrer ou programmer un live</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
               <Button 
                 variant="ghost" 
                 size="sm"
