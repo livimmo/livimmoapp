@@ -101,7 +101,7 @@ export const LiveStream = ({
       <div className="relative flex-1">
         {/* Conteneur vidéo */}
         <div className={cn(
-          "w-full h-full",
+          "w-full h-full z-[1]",
           viewMode === 'fullscreen' && 'fixed inset-0 z-[9999]'
         )}>
           <iframe
@@ -154,7 +154,7 @@ export const LiveStream = ({
 
         {/* Informations de la vidéo */}
         <div className={cn(
-          "absolute bottom-0 left-0 right-0",
+          "absolute bottom-0 left-0 right-0 z-[52]",
           viewMode === 'fullscreen' && 'z-[9999]'
         )}>
           <LiveInfo 
