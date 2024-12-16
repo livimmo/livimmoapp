@@ -1,8 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LiveManagement } from "@/components/profile/LiveManagement";
 import { PersonalInfo } from "@/components/profile/PersonalInfo";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Dashboard = () => {
+  const { user } = useAuth();
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-6">Tableau de bord</h1>
@@ -14,7 +17,15 @@ const Dashboard = () => {
         </TabsList>
         
         <TabsContent value="profile">
-          <PersonalInfo />
+          <PersonalInfo 
+            firstName={user?.firstName || ""}
+            lastName={user?.lastName || ""}
+            email={user?.email || ""}
+            phone={user?.phone || ""}
+            address={user?.address || ""}
+            city={user?.city || ""}
+            country={user?.country || ""}
+          />
         </TabsContent>
         
         <TabsContent value="lives">

@@ -29,6 +29,10 @@ const mockDeveloper = {
       hasLive: true,
       isLiveNow: false,
       remainingSeats: 10,
+      coordinates: {
+        lat: 31.6295,
+        lng: -7.9811
+      },
       agent: {
         name: "Sarah Martin",
         image: "https://i.pravatar.cc/150?u=sarah",
