@@ -1,8 +1,8 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink, Heart, Radio, MessageSquare } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Users, ExternalLink, Heart, Radio, MessageSquare, X, Maximize2, Minimize2 } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -14,13 +14,23 @@ interface LiveInfoProps {
   viewerCount: number;
   onToggleChat?: () => void;
   isReplay?: boolean;
+  onToggleFullscreen?: () => void;
+  isFullscreen?: boolean;
 }
 
-export const LiveInfo = ({ property, viewerCount, onToggleChat, isReplay }: LiveInfoProps) => {
+export const LiveInfo = ({ 
+  property, 
+  viewerCount, 
+  onToggleChat, 
+  isReplay,
+  onToggleFullscreen,
+  isFullscreen 
+}: LiveInfoProps) => {
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
   const [offerCount] = useState(12);
   const isMobile = useIsMobile();
   const [isFavorite, setIsFavorite] = useState(false);
+  const navigate = useNavigate();
 
   const handleToggleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -89,6 +99,26 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat, isReplay }: Live
                 onClick={onToggleChat}
               >
                 <MessageSquare className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="bg-primary/10 text-primary hover:bg-primary/20"
+                onClick={onToggleFullscreen}
+              >
+                {isFullscreen ? (
+                  <Minimize2 className="h-5 w-5" />
+                ) : (
+                  <Maximize2 className="h-5 w-5" />
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="bg-primary/10 text-primary hover:bg-primary/20"
+                onClick={() => navigate(-1)}
+              >
+                <X className="h-5 w-5" />
               </Button>
             </div>
             <Badge 

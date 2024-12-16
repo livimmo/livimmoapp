@@ -171,6 +171,8 @@ export const LiveStream = ({
             viewerCount={Math.floor(Math.random() * 1000)}
             onToggleChat={() => {}}
             isReplay={isReplay}
+            onToggleFullscreen={() => handleViewModeChange(viewMode === 'fullscreen' ? 'default' : 'fullscreen')}
+            isFullscreen={viewMode === 'fullscreen'}
           />
         </div>
       </div>
