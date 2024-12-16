@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { Bell, LogIn, User, UserPlus } from "lucide-react";
+import { Bell, LogIn, User, UserPlus, Video } from "lucide-react";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -20,8 +20,16 @@ export const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
 
   const handleLogoClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    navigate('/');
+    const target = e.target as HTMLElement;
+    if (target.closest('.camera-icon')) {
+      navigate('/lives?filter=live');
+      toast({
+        title: "Lives en cours",
+        description: "Affichage des biens en live direct",
+      });
+    } else {
+      navigate('/');
+    }
   };
 
   const handleNotificationsClick = () => {
@@ -45,10 +53,13 @@ export const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div 
-            className="text-xl font-bold cursor-pointer"
+            className="flex items-center gap-2 cursor-pointer"
             onClick={handleLogoClick}
           >
-            Livimmo
+            <Video className="h-5 w-5 text-[#ea384c] camera-icon" />
+            <h1 className="text-xl font-bold text-primary">
+              Livimmo
+            </h1>
           </div>
 
           <div className="flex items-center gap-3">
