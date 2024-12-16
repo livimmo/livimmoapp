@@ -1,11 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { LiveSidebar } from "./LiveSidebar";
 import { LiveInfo } from "./LiveInfo";
 import { useState } from "react";
-import { X, Maximize2, Minimize2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { LiveCarousel } from "./LiveCarousel";
-import { liveStreams } from "@/data/mockLives";
 
 interface LiveStreamProps {
   videoId: string;
@@ -15,6 +12,7 @@ interface LiveStreamProps {
   isReplay?: boolean;
 }
 
+// Liste des timestamps pour les replays
 const replayTimestamps = [
   'VIQpb65HmMs',
   'VIQpb65HmMs?start=300',
@@ -60,6 +58,7 @@ export const LiveStream = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [viewMode, setViewMode] = useState<'default' | 'cinema' | 'fullscreen'>('default');
+  const [showChat, setShowChat] = useState(false);
 
   const handleViewModeChange = (mode: 'default' | 'cinema' | 'fullscreen') => {
     if (mode === 'fullscreen') {
@@ -72,14 +71,7 @@ export const LiveStream = ({
     setViewMode(mode);
   };
 
-  const handleClose = () => {
-    navigate(-1);
-  };
-
-  const handleLiveSelect = (liveId: number) => {
-    navigate(`/live/${liveId}`);
-  };
-
+  // Fonction pour générer l'URL de l'embed YouTube
   const getEmbedUrl = () => {
     const baseUrl = 'https://www.youtube.com/embed/';
     const videoIdWithTimestamp = isReplay 
@@ -89,68 +81,49 @@ export const LiveStream = ({
     return `${baseUrl}${videoIdWithTimestamp}?autoplay=1&rel=0&modestbranding=1&showinfo=0`;
   };
 
+  // Styles conditionnels en fonction du mode de visualisation
+  const containerStyles = {
+    default: 'w-full lg:w-[calc(100%-350px)]',
+    cinema: 'w-full',
+    fullscreen: 'w-full h-screen fixed inset-0 z-50 bg-black',
+  };
+
+  const videoContainerStyles = {
+    default: 'aspect-video w-full relative',
+    cinema: 'aspect-video w-full max-w-[1600px] mx-auto relative',
+    fullscreen: 'w-full h-full',
+  };
+
   return (
-    <div className="fixed inset-0 bg-black flex flex-col">
-      <div className="relative flex-1">
-        {/* Conteneur vidéo */}
-        <div className="w-full h-full">
-          <iframe
-            src={getEmbedUrl()}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="w-full h-full"
-          />
-        </div>
+    <div 
+      className={`
+        relative flex flex-col lg:flex-row
+        ${containerStyles[viewMode]}
+        ${viewMode === 'cinema' ? 'bg-black' : ''}
+      `}
+    >
+      <div className={videoContainerStyles[viewMode]}>
+        <iframe
+          src={getEmbedUrl()}
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="w-full h-full"
+        />
 
-        {/* Contrôles vidéo */}
-        <div className="absolute bottom-[64px] left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent flex justify-end items-center gap-2 z-[51]">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/20 transition-colors"
-            onClick={() => handleViewModeChange(viewMode === 'cinema' ? 'default' : 'cinema')}
-          >
-            {viewMode === 'cinema' ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/20 transition-colors"
-            onClick={() => handleViewModeChange('fullscreen')}
-          >
-            <Maximize2 className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/20 transition-colors"
-            onClick={handleClose}
-          >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-
-        {/* LiveCarousel */}
-        <div className="absolute bottom-[120px] left-0 right-0 z-[51]">
-          <LiveCarousel
-            lives={liveStreams}
-            currentLiveId={currentLiveId}
-            onLiveSelect={handleLiveSelect}
-          />
-        </div>
-
-        {/* Informations de la vidéo */}
+        {/* Ajout de LiveInfo pour les replays */}
         <div className="absolute bottom-0 left-0 right-0">
           <LiveInfo 
             property={mockProperty}
             onMakeOffer={() => {}}
             viewerCount={Math.floor(Math.random() * 1000)}
-            onToggleChat={() => {}}
+            onToggleChat={() => setShowChat(!showChat)}
             isReplay={isReplay}
           />
         </div>
+
+        <LiveSidebar currentLiveId={currentLiveId} lives={otherLives} />
       </div>
     </div>
   );
