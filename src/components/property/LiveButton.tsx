@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Video } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -37,7 +37,6 @@ export const LiveButton = ({
     }
 
     if (isLiveNow) {
-      // Vérifier si l'utilisateur a un rôle avant de rediriger
       if (!user?.role) {
         toast({
           title: "Sélection du rôle requise",
@@ -65,14 +64,7 @@ export const LiveButton = ({
 
   const handleAuthSuccess = () => {
     setShowAuthDialog(false);
-    // Ne pas rediriger automatiquement vers le live après la connexion
-    if (!user?.role) {
-      toast({
-        title: "Sélection du rôle requise",
-        description: "Veuillez sélectionner votre rôle pour continuer",
-      });
-      navigate('/select-role');
-    }
+    // Suppression de la redirection automatique vers le live
   };
 
   return (
