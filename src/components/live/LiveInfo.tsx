@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { FavoriteButton } from "@/components/property/FavoriteButton";
 
 interface LiveInfoProps {
   property: Property;
@@ -20,11 +21,20 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
     <Card className="p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold line-clamp-1">{property.title}</h2>
-          <Badge variant="default" className="flex items-center gap-1">
-            <Radio className="w-3 h-3" />
-            <span>LIVE</span>
-          </Badge>
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl font-semibold line-clamp-1">{property.title}</h2>
+            <Badge 
+              variant="default" 
+              className="flex items-center gap-1 bg-[#ea384c] hover:bg-[#ea384c]/90"
+            >
+              <Radio className="w-3 h-3" />
+              <span>LIVE</span>
+            </Badge>
+          </div>
+          <FavoriteButton 
+            propertyId={property.id}
+            title={property.title}
+          />
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Users className="w-4 h-4" />
