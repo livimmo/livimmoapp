@@ -10,7 +10,7 @@ interface PropertyMapProps {
   properties: Property[];
 }
 
-export const PropertyMap = ({ properties }: PropertyMapProps) => {
+export const LiveGoogleMap = ({ properties }: PropertyMapProps) => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   
   const defaultCenter = {
