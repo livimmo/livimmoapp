@@ -4,6 +4,7 @@ import { X, Maximize, Minimize, MonitorPlay } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LiveSidebar } from "./LiveSidebar";
+import { LiveInfo } from "./LiveInfo";
 import { useState } from "react";
 
 interface LiveStreamProps {
@@ -22,6 +23,33 @@ const REPLAY_IDS = [
   'VIQpb65HmMs?start=1200',
 ];
 
+const mockProperty = {
+  id: 1,
+  title: "Villa Moderne avec Piscine",
+  price: 2500000,
+  location: "Marrakech",
+  type: "Villa",
+  surface: 350,
+  rooms: 5,
+  bathrooms: 3,
+  description: "Magnifique villa moderne avec piscine et jardin paysager",
+  features: ["Piscine", "Jardin", "Garage"],
+  images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9"],
+  hasLive: true,
+  liveDate: new Date(),
+  agent: {
+    name: "Karim Benjelloun",
+    image: "https://i.pravatar.cc/150?u=karim",
+    phone: "+212 6 00 11 22 33",
+    email: "karim.benjelloun@example.com",
+  },
+  coordinates: {
+    lat: 31.7917,
+    lng: -7.0926,
+  },
+  transactionType: "Vente" as const,
+};
+
 export const LiveStream = ({ 
   videoId, 
   currentLiveId,
@@ -32,6 +60,7 @@ export const LiveStream = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [viewMode, setViewMode] = useState<'default' | 'cinema' | 'fullscreen'>('default');
+  const [showChat, setShowChat] = useState(false);
 
   const handleViewModeChange = (mode: 'default' | 'cinema' | 'fullscreen') => {
     if (mode === 'fullscreen') {
@@ -119,6 +148,16 @@ export const LiveStream = ({
         allowFullScreen
         className="w-full h-full"
       />
+
+      {/* Ajout de LiveInfo pour les replays */}
+      <div className="absolute bottom-0 left-0 right-0">
+        <LiveInfo 
+          property={mockProperty}
+          onMakeOffer={() => {}}
+          viewerCount={Math.floor(Math.random() * 1000)}
+          onToggleChat={() => setShowChat(!showChat)}
+        />
+      </div>
 
       <LiveSidebar currentLiveId={currentLiveId} lives={otherLives} />
     </div>

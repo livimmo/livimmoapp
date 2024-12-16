@@ -34,12 +34,12 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
 
   return (
     <>
-      <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+      <Card className="group cursor-pointer hover:bg-accent rounded-lg overflow-hidden transition-all duration-300">
         <CardContent className="p-0 relative">
           <img
             src={live.thumbnail}
             alt={live.title}
-            className="w-full h-48 object-cover"
+            className="w-full h-48 object-cover transition-transform group-hover:scale-105"
           />
           <div className="absolute top-2 left-2 flex gap-2">
             <Badge variant="secondary" className="bg-black/50 text-white">
@@ -53,12 +53,14 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
               </Badge>
             )}
           </div>
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/30">
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30">
             <Play className="w-12 h-12 text-white" />
           </div>
         </CardContent>
         <CardContent className="p-4">
-          <h3 className="font-semibold mb-2 line-clamp-2">{live.title}</h3>
+          <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+            {live.title}
+          </h3>
           <div className="text-sm text-muted-foreground mb-2">
             Diffusé le {format(new Date(live.date), "d MMMM yyyy", { locale: fr })}
           </div>
@@ -69,12 +71,12 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
           )}
         </CardContent>
         <CardFooter className="p-4 pt-0 flex flex-col gap-4">
-          <Button onClick={handleWatch} variant="secondary" className="w-full">
+          <Button onClick={handleWatch} variant="secondary" className="w-full group-hover:bg-primary group-hover:text-white transition-colors">
             <Play className="w-4 h-4 mr-2" />
             Visionner
           </Button>
           <div 
-            className="flex items-center justify-between w-full pt-3 border-t cursor-pointer hover:bg-gray-50 transition-colors rounded-md"
+            className="flex items-center justify-between w-full pt-3 border-t cursor-pointer hover:bg-accent/50 transition-colors rounded-md p-2"
             onClick={handleAgentClick}
           >
             <div className="flex items-center gap-2">
