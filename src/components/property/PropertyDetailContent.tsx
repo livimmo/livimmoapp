@@ -1,8 +1,9 @@
 import { MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { type Property } from "@/types/property";
 
 interface PropertyDetailContentProps {
-  property: any;
+  property: Property;
 }
 
 export const PropertyDetailContent = ({ property }: PropertyDetailContentProps) => {
@@ -30,13 +31,13 @@ export const PropertyDetailContent = ({ property }: PropertyDetailContentProps) 
 
       <div>
         <h2 className="text-xl font-semibold mb-2">Description</h2>
-        <p className="text-muted-foreground">{property.description}</p>
+        <p className="text-muted-foreground whitespace-pre-line">{property.description}</p>
       </div>
 
       <div>
         <h2 className="text-xl font-semibold mb-2">Équipements</h2>
         <div className="flex flex-wrap gap-2">
-          {property.features.map((feature: string) => (
+          {property.features.map((feature) => (
             <Badge key={feature} variant="secondary">
               {feature}
             </Badge>
