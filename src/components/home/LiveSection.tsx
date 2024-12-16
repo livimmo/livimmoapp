@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 
 export const LiveSection = () => {
-  const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  const [viewMode, setViewMode] = useState<"list" | "map" | "hybrid">("hybrid");
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -60,7 +60,7 @@ export const LiveSection = () => {
       email: "",
     },
     coordinates: {
-      lat: 31.7917 + Math.random() * 2 - 1, // Random coordinates for demo
+      lat: 31.7917 + Math.random() * 2 - 1,
       lng: -7.0926 + Math.random() * 2 - 1,
     },
     isLiveNow: live.status === "live",
@@ -93,6 +93,14 @@ export const LiveSection = () => {
             Liste
           </Button>
           <Button
+            variant={viewMode === "hybrid" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setViewMode("hybrid")}
+          >
+            <List className="h-4 w-4 mr-2" />
+            Hybride
+          </Button>
+          <Button
             variant={viewMode === "map" ? "default" : "outline"}
             size="sm"
             onClick={() => setViewMode("map")}
@@ -103,15 +111,30 @@ export const LiveSection = () => {
         </div>
       </div>
 
-      {viewMode === "list" ? (
+      {viewMode === "list" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {liveProperties.map((property) => (
             <PropertyCard key={property.id} {...property} />
           ))}
         </div>
-      ) : (
+      )}
+
+      {viewMode === "map" && (
         <div className="h-[500px] rounded-lg overflow-hidden">
           <LiveGoogleMap properties={liveProperties} />
+        </div>
+      )}
+
+      {viewMode === "hybrid" && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="h-[500px] rounded-lg overflow-hidden">
+            <LiveGoogleMap properties={liveProperties} />
+          </div>
+          <div className="space-y-4 overflow-auto max-h-[500px] pr-2">
+            {liveProperties.map((property) => (
+              <PropertyCard key={property.id} {...property} />
+            ))}
+          </div>
         </div>
       )}
     </section>
