@@ -1,4 +1,4 @@
-import { Video, Bell, User, LogIn } from "lucide-react";
+import { Video, Bell, User, LogIn, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -57,15 +57,26 @@ export const HomeHeader = () => {
               </Button>
             </>
           ) : (
-            <Button 
-              variant="default"
-              size="sm"
-              onClick={() => navigate('/login')}
-              className="flex items-center gap-2"
-            >
-              <LogIn className="h-4 w-4" />
-              Connexion
-            </Button>
+            <>
+              <Button 
+                variant="outline"
+                size="sm"
+                onClick={() => navigate('/signup')}
+                className="flex items-center gap-2"
+              >
+                <UserPlus className="h-4 w-4" />
+                S'inscrire
+              </Button>
+              <Button 
+                variant="default"
+                size="sm"
+                onClick={() => navigate('/login')}
+                className="flex items-center gap-2"
+              >
+                <LogIn className="h-4 w-4" />
+                Connexion
+              </Button>
+            </>
           )}
         </div>
       </div>
