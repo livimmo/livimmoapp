@@ -1,13 +1,37 @@
 import { PropertyCard } from "@/components/PropertyCard";
+import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 
-interface LiveSectionProps {
-  properties: Property[];
-}
-
-export const LiveSection = ({ properties }: LiveSectionProps) => {
-  // Filtrer pour ne garder que les propriétés en direct
-  const liveProperties = properties.filter((property) => property.isLiveNow);
+export const LiveSection = () => {
+  // Convertir les lives en format Property pour les afficher avec PropertyCard
+  const liveProperties: Property[] = liveStreams.map((live) => ({
+    id: live.id,
+    title: live.title,
+    price: parseInt(live.price.replace(/[^\d]/g, "")),
+    location: live.location,
+    type: live.type,
+    surface: 0,
+    rooms: 0,
+    bathrooms: 0,
+    description: live.description || "",
+    features: [],
+    images: [live.thumbnail],
+    hasLive: true,
+    liveDate: live.date,
+    agent: {
+      name: live.agent,
+      image: "",
+      phone: "",
+      email: "",
+    },
+    coordinates: {
+      lat: 0,
+      lng: 0,
+    },
+    isLiveNow: live.status === "live",
+    viewers: live.viewers,
+    remainingSeats: live.availableSeats,
+  }));
 
   if (liveProperties.length === 0) {
     return (
