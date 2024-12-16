@@ -2,10 +2,11 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LiveEvent } from "@/types/live";
-import { Eye, Play, Clock } from "lucide-react";
+import { Eye, Play, Clock, CheckCircle2 } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface ReplayCardProps {
   live: LiveEvent;
@@ -17,6 +18,15 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
   const handleWatch = () => {
     navigate(`/replay/${live.id}`);
   };
+
+  const handleAgentClick = () => {
+    if (live.agentId) {
+      navigate(`/agent/${live.agentId}`);
+    }
+  };
+
+  // Générer aléatoirement le statut vérifié
+  const isVerified = Math.random() > 0.5;
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
@@ -53,11 +63,35 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
           </p>
         )}
       </CardContent>
-      <CardFooter className="p-4 pt-0">
+      <CardFooter className="p-4 pt-0 flex flex-col gap-4">
         <Button onClick={handleWatch} variant="secondary" className="w-full">
           <Play className="w-4 h-4 mr-2" />
           Visionner
         </Button>
+        <div 
+          className="flex items-center justify-between w-full pt-3 border-t cursor-pointer hover:bg-gray-50 transition-colors rounded-md"
+          onClick={handleAgentClick}
+        >
+          <div className="flex items-center gap-2">
+            <Avatar className="h-8 w-8 border border-gray-200">
+              <AvatarImage 
+                src={`https://i.pravatar.cc/150?u=${live.agent.toLowerCase().replace(/\s/g, '')}`} 
+                alt={live.agent} 
+              />
+              <AvatarFallback>{live.agent.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-900">{live.agent}</span>
+              <span className="text-xs text-gray-500">Livimmo</span>
+            </div>
+          </div>
+          {isVerified && (
+            <div className="flex items-center gap-1 text-primary">
+              <CheckCircle2 className="h-4 w-4" />
+              <span className="text-xs">Vérifié</span>
+            </div>
+          )}
+        </div>
       </CardFooter>
     </Card>
   );

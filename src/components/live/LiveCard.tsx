@@ -21,10 +21,13 @@ export const LiveCard = ({ live }: LiveCardProps) => {
     hasLive: true,
     liveDate: live.date,
     agent: {
+      id: live.agentId || Math.floor(Math.random() * 1000),
       name: live.agent,
-      image: "",
+      image: "https://i.pravatar.cc/150?u=" + live.agent.toLowerCase().replace(/\s/g, ''),
       phone: "",
       email: "",
+      company: "Livimmo",
+      verified: Math.random() > 0.5,
     },
     coordinates: {
       lat: 0,
