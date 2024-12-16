@@ -25,7 +25,7 @@ export const LiveButton = ({
   isUserRegistered,
   remainingSeats,
 }: LiveButtonProps) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -37,7 +37,16 @@ export const LiveButton = ({
     }
 
     if (isLiveNow) {
-      // Utilisation de useEffect pour la navigation
+      // Vérifier si l'utilisateur a un rôle avant de rediriger
+      if (!user?.role) {
+        toast({
+          title: "Sélection du rôle requise",
+          description: "Veuillez sélectionner votre rôle avant de rejoindre le live",
+          variant: "destructive",
+        });
+        navigate('/select-role');
+        return;
+      }
       navigate(`/live/${id}`);
     } else {
       if (isUserRegistered) {
@@ -56,9 +65,13 @@ export const LiveButton = ({
 
   const handleAuthSuccess = () => {
     setShowAuthDialog(false);
-    if (isLiveNow) {
-      // Utilisation de useEffect pour la navigation
-      navigate(`/live/${id}`);
+    // Ne pas rediriger automatiquement vers le live après la connexion
+    if (!user?.role) {
+      toast({
+        title: "Sélection du rôle requise",
+        description: "Veuillez sélectionner votre rôle pour continuer",
+      });
+      navigate('/select-role');
     }
   };
 
