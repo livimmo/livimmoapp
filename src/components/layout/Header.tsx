@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { AddPropertyDialog } from "@/components/property/AddPropertyDialog";
@@ -14,6 +14,7 @@ import { Bell, LogIn, User, UserPlus } from "lucide-react";
 
 export const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, user, logout } = useAuth();
   const { toast } = useToast();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -37,6 +38,7 @@ export const Header = () => {
   };
 
   const isAgentOrPromoter = user?.role === 'agent' || user?.role === 'promoter';
+  const isHomePage = location.pathname === '/';
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
@@ -52,7 +54,7 @@ export const Header = () => {
           <div className="flex items-center gap-3">
             {isAuthenticated ? (
               <>
-                {isAgentOrPromoter && (
+                {isAgentOrPromoter && isHomePage && (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
