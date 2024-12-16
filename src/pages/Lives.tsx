@@ -9,6 +9,9 @@ import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { scheduledLives, liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
+import { AddLiveDialog } from "@/components/AddLiveDialog";
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Lives = () => {
   const [currentLivesViewMode, setCurrentLivesViewMode] = useState<"list" | "map">("list");
@@ -90,23 +93,40 @@ const Lives = () => {
     ...scheduledLives.map(live => live.type),
   ]));
 
+  const { user } = useAuth();
+  const isAgentOrPromoter = user?.role === 'agent' || user?.role === 'promoter';
+
   return (
     <div className="container mx-auto px-4 py-8 mt-12 space-y-8">
-      <PropertyFilters
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        propertyType={propertyType}
-        setPropertyType={setPropertyType}
-        priceRange={priceRange}
-        setPriceRange={setPriceRange}
-        surfaceRange={surfaceRange}
-        setSurfaceRange={setSurfaceRange}
-        showLiveOnly={showLiveOnly}
-        setShowLiveOnly={setShowLiveOnly}
-        suggestions={suggestions}
-        transactionType={transactionType}
-        setTransactionType={setTransactionType}
-      />
+      <div className="flex justify-between items-center">
+        <PropertyFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          propertyType={propertyType}
+          setPropertyType={setPropertyType}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          surfaceRange={surfaceRange}
+          setSurfaceRange={setSurfaceRange}
+          showLiveOnly={showLiveOnly}
+          setShowLiveOnly={setShowLiveOnly}
+          suggestions={suggestions}
+          transactionType={transactionType}
+          setTransactionType={setTransactionType}
+        />
+        {isAgentOrPromoter && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AddLiveDialog />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Démarrer ou programmer un live</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+      </div>
 
       {/* Section des lives en cours */}
       <section>
