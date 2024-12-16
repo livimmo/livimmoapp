@@ -108,9 +108,9 @@ export const EditLiveForm = ({ live, onClose }: EditLiveFormProps) => {
       />
 
       <TagSelector
-        tags={tags}
+        selectedTags={tags}
         availableTags={availableTags}
-        onTagToggle={handleTagToggle}
+        onChange={setTags}
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

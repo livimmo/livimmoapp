@@ -139,17 +139,30 @@ const AgentDetail = () => {
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Biens gérés</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Ici, vous pouvez mapper sur les biens de l'agent une fois que vous aurez les données */}
-            <PropertyCard property={{
-              id: 1,
-              title: "Appartement exemple",
-              price: 250000,
-              location: "Paris",
-              surface: 75,
-              rooms: 3,
-              type: "Appartement",
-              images: ["placeholder.jpg"],
-            }} />
+            <PropertyCard
+              id={1}
+              title="Appartement exemple"
+              price={250000}
+              location="Paris"
+              surface={75}
+              rooms={3}
+              type="Appartement"
+              images={["placeholder.jpg"]}
+              agent={{
+                name: agent.name,
+                image: agent.avatar,
+                phone: agent.contact.phone,
+                email: agent.contact.email
+              }}
+              coordinates={{
+                lat: 48.8566,
+                lng: 2.3522
+              }}
+              description="Description de l'appartement"
+              features={["Balcon", "Parking"]}
+              bathrooms={2}
+              transactionType="Vente"
+            />
           </div>
         </div>
       </div>
