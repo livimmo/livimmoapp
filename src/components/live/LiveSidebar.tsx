@@ -31,8 +31,8 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
         variant="ghost"
         size="icon"
         className={cn(
-          "absolute -left-4 top-20 bg-gradient-to-r from-primary to-[#ea384c] hover:from-primary/90 hover:to-[#ea384c]/90",
-          "text-white rounded-full shadow-lg transition-all duration-300 group",
+          "absolute -left-4 top-20 bg-white hover:bg-white/90",
+          "text-[#ea384c] rounded-full shadow-lg transition-all duration-300 group",
           "hover:scale-110",
           isCollapsed ? "hover:translate-x-1" : "hover:-translate-x-1"
         )}
@@ -41,10 +41,10 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
         <div className="relative">
           {isCollapsed ? (
             <>
-              <Radio className="h-4 w-4 animate-pulse" />
+              <Radio className="h-4 w-4 animate-pulse text-[#ea384c]" />
               <Badge 
                 variant="secondary" 
-                className="absolute -top-3 -right-3 h-5 min-w-5 p-0 flex items-center justify-center bg-[#ea384c] text-white text-xs"
+                className="absolute -top-3 -right-3 h-5 min-w-5 p-0 flex items-center justify-center bg-white text-[#ea384c] text-xs border border-[#ea384c]"
               >
                 {otherLives.length}
               </Badge>
