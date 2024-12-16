@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AddLiveDialog } from "@/components/AddLiveDialog";
-import { Calendar, Clock, Video, Users, X } from "lucide-react";
+import { Calendar, Clock, Video, Users } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { EditLiveForm } from "./EditLiveForm";
 
@@ -97,14 +97,6 @@ export const LiveManagement = () => {
           <DialogDescription>
             Modifiez les informations de votre live programmé
           </DialogDescription>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setEditingLive(null)}
-            className="absolute right-4 top-4"
-          >
-            <X className="h-4 w-4" />
-          </Button>
           {editingLive && (
             <EditLiveForm
               live={editingLive}
