@@ -27,7 +27,6 @@ export const AddLiveDialog = () => {
   };
 
   const handleConfirmation = () => {
-    // TODO: Implémenter la logique de sauvegarde
     setOpen(false);
     setActiveTab("property");
     setPropertyData(null);
@@ -43,18 +42,31 @@ export const AddLiveDialog = () => {
           onClick={() => setOpen(true)}
           className="relative"
         >
-          <div className="relative">
-            <Camera className="h-4 w-4 text-red-500" />
-            <div className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full animate-pulse" />
+          <div className="relative flex items-center">
+            <Camera className="h-4 w-4 text-[#ea384c]" />
+            <div className="absolute -top-1 -right-1 flex items-center justify-center">
+              <span className="flex h-2 w-2 rounded-full bg-[#ea384c] animate-pulse" />
+              <span className="absolute text-[8px] font-bold text-white -right-4 -top-0.5">
+                REC
+              </span>
+            </div>
           </div>
         </Button>
       ) : (
         <Button
           onClick={() => setOpen(true)}
-          className="bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
+          className="bg-[#ea384c] text-white hover:bg-[#ea384c]/90 relative"
           size="sm"
         >
-          <Video className="mr-2 h-4 w-4" />
+          <div className="relative mr-2">
+            <Video className="h-4 w-4" />
+            <div className="absolute -top-1 -right-1 flex items-center">
+              <span className="flex h-2 w-2 rounded-full bg-white animate-pulse" />
+              <span className="absolute text-[8px] font-bold text-white -right-4 -top-0.5">
+                REC
+              </span>
+            </div>
+          </div>
           Ajouter un Live
         </Button>
       )}
