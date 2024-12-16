@@ -14,7 +14,7 @@ interface PropertyListProps {
   viewMode?: "list" | "carousel";
 }
 
-export const PropertyList: React.FC<PropertyListProps> = ({ properties, viewMode = "list" }) => {
+export const PropertyList = ({ properties, viewMode = "list" }: PropertyListProps) => {
   if (viewMode === "carousel") {
     return (
       <Carousel className="w-full max-w-5xl mx-auto">
