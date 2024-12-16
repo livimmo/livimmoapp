@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { SearchFilters } from "@/components/search/SearchFilters";
-import { PropertyList } from "@/components/search/PropertyList";
-import { PropertyMap } from "@/components/search/PropertyMap";
+import { PropertyList } from "@/components/properties/PropertyList";
 import { Button } from "@/components/ui/button";
 import { List, Grid, Map as MapIcon } from "lucide-react";
 import { type Property } from "@/types/property";
@@ -137,7 +136,7 @@ const Search = () => {
   const [surfaceRange, setSurfaceRange] = useState([0, 500]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const [viewMode, setViewMode] = useState<"list" | "grid" | "map">("list");
 
   const filteredProperties = mockProperties.filter((property) => {
     const matchesSearch = property.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -180,8 +179,8 @@ const Search = () => {
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setViewMode("carousel")}
-            className={viewMode === "carousel" ? "bg-accent" : ""}
+            onClick={() => setViewMode("grid")}
+            className={viewMode === "grid" ? "bg-accent" : ""}
           >
             <Grid className="h-4 w-4" />
           </Button>
@@ -195,11 +194,7 @@ const Search = () => {
           </Button>
         </div>
 
-        {viewMode === "map" ? (
-          <PropertyMap properties={filteredProperties} />
-        ) : (
-          <PropertyList properties={filteredProperties} viewMode={viewMode === "carousel" ? "carousel" : "list"} />
-        )}
+        <PropertyList properties={filteredProperties} viewMode={viewMode} />
 
         {filteredProperties.length === 0 && (
           <div className="text-center py-8 text-gray-500">
