@@ -1,4 +1,4 @@
-import { Camera } from "lucide-react";
+import { Video } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -10,11 +10,11 @@ interface LiveBadgeProps {
 export const LiveBadge = ({ count, className }: LiveBadgeProps) => {
   return (
     <div className={cn("relative inline-flex", className)}>
-      <Camera className="h-4 w-4 text-red-500" />
+      <Video className="h-4 w-4 text-red-500" />
       {count > 0 && (
         <Badge 
           variant="destructive" 
-          className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-[10px]"
+          className="absolute -top-2 -right-2 h-4 w-4 p-0 flex items-center justify-center text-[10px]"
         >
           {count}
         </Badge>
