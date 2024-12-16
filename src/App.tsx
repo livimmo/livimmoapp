@@ -1,4 +1,3 @@
-```tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { JoinLive } from "@/pages/JoinLive";
 import { Toaster } from "@/components/ui/toaster";
@@ -33,4 +32,3 @@ function App() {
 }
 
 export default App;
-```
