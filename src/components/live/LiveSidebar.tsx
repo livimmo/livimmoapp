@@ -1,5 +1,5 @@
 import { LiveEvent } from "@/types/live";
-import { Radio, ChevronRight, Eye } from "lucide-react";
+import { Radio, ChevronDown, ChevronUp, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
@@ -22,90 +22,80 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
   return (
     <div
       className={cn(
-        "fixed right-0 top-0 h-screen bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-        "border-l shadow-lg transition-all duration-300 z-50",
-        isCollapsed ? "w-12" : "w-72"
+        "fixed left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+        "border-b shadow-lg transition-all duration-300 z-40",
+        isCollapsed ? "h-12" : "h-48"
       )}
+      style={{
+        bottom: isCollapsed ? "calc(64px + 56px)" : "calc(64px + 56px)",
+      }}
     >
-      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center">
+      <div className="absolute inset-x-0 bottom-0 flex justify-center">
         <Button
           variant="ghost"
-          size="icon"
+          size="sm"
           className={cn(
-            "relative bg-white hover:bg-white/90",
-            "text-[#ea384c] rounded-full shadow-lg transition-all duration-300 group",
-            "hover:scale-110",
-            isCollapsed ? "hover:translate-x-1" : "hover:-translate-x-1"
+            "relative bg-white hover:bg-white/90 px-3",
+            "text-[#ea384c] shadow-lg transition-all duration-300 group",
+            "hover:scale-110"
           )}
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          <div className="relative">
+          <div className="relative flex items-center gap-2">
+            <Radio className="h-4 w-4 text-[#ea384c]" />
+            <span className="text-sm font-medium">
+              {otherLives.length} lives en cours
+            </span>
             {isCollapsed ? (
-              <>
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#ea384c] rounded-full animate-ping" />
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#ea384c] rounded-full" />
-                <Radio className="h-4 w-4 text-[#ea384c]" />
-                <Badge 
-                  variant="secondary" 
-                  className="absolute -top-3 -right-3 h-5 min-w-5 p-0 flex items-center justify-center bg-white text-[#ea384c] text-xs border border-[#ea384c]"
-                >
-                  {otherLives.length}
-                </Badge>
-              </>
+              <ChevronUp className="h-4 w-4" />
             ) : (
-              <ChevronRight className="h-4 w-4" />
+              <ChevronDown className="h-4 w-4" />
             )}
           </div>
         </Button>
       </div>
 
       {!isCollapsed && (
-        <div className="h-full pt-6">
-          <div className="px-4 mb-4">
-            <h3 className="font-semibold text-sm">Autres Lives en cours</h3>
-            <p className="text-xs text-muted-foreground">{otherLives.length} lives disponibles</p>
-          </div>
-          <ScrollArea className="h-[calc(100vh-100px)]">
-            <div className="space-y-2 p-2">
-              {otherLives.map(live => (
-                <div
-                  key={live.id}
-                  className="group cursor-pointer hover:bg-accent rounded-lg p-2 transition-colors"
-                  onClick={() => navigate(`/live/${live.id}`)}
-                >
-                  <div className="flex gap-3">
-                    <div className="relative flex-shrink-0">
-                      <img 
-                        src={live.thumbnail} 
-                        alt={live.title}
-                        className="w-20 h-16 object-cover rounded-md"
-                      />
-                      <Badge 
-                        variant="destructive" 
-                        className="absolute top-1 left-1 scale-75"
-                      >
-                        Live
-                      </Badge>
-                      <Badge 
-                        variant="secondary" 
-                        className="absolute bottom-1 left-1 scale-75 flex items-center gap-1 bg-black/75 text-white"
-                      >
-                        <Eye className="w-3 h-3" />
-                        {live.viewers}
-                      </Badge>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
-                        {live.title}
-                      </h4>
-                      <span className="text-xs text-muted-foreground">{live.location}</span>
-                    </div>
+        <ScrollArea className="h-full pt-2 pb-8">
+          <div className="flex gap-4 px-4 overflow-x-auto">
+            {otherLives.map(live => (
+              <div
+                key={live.id}
+                className="group cursor-pointer hover:bg-accent rounded-lg p-2 transition-colors flex-shrink-0 w-64"
+                onClick={() => navigate(`/live/${live.id}`)}
+              >
+                <div className="space-y-2">
+                  <div className="relative">
+                    <img 
+                      src={live.thumbnail} 
+                      alt={live.title}
+                      className="w-full h-24 object-cover rounded-md"
+                    />
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute top-1 left-1 scale-75"
+                    >
+                      Live
+                    </Badge>
+                    <Badge 
+                      variant="secondary" 
+                      className="absolute bottom-1 left-1 scale-75 flex items-center gap-1 bg-black/75 text-white"
+                    >
+                      <Eye className="w-3 h-3" />
+                      {live.viewers}
+                    </Badge>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-sm line-clamp-1 group-hover:text-primary transition-colors">
+                      {live.title}
+                    </h4>
+                    <span className="text-xs text-muted-foreground">{live.location}</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          </ScrollArea>
-        </div>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
       )}
     </div>
   );
