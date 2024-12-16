@@ -54,7 +54,7 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
       </div>
 
       <div className="space-y-1.5 w-full max-w-5xl mx-auto">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
           <div className="flex items-center gap-2 min-w-0 flex-1">
             <h2 className="text-base font-semibold truncate">{property.title}</h2>
             <Badge 
@@ -68,9 +68,9 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         </div>
         
         {!isCollapsed && (
-          <div className={`grid ${isMobile ? 'grid-cols-1 space-y-2' : 'grid-cols-2'} gap-4 mt-3`}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
             <div className="space-y-2">
-              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
                   <Users className="w-3.5 h-3.5" />
                   <span>{viewerCount} spectateurs</span>
@@ -85,13 +85,13 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
                 <p className="text-lg font-bold">
                   {property.price.toLocaleString()} DH
                 </p>
                 <Button 
                   size="sm"
-                  className="w-auto" 
+                  className="w-full sm:w-auto" 
                   onClick={() => setIsOfferDialogOpen(true)}
                 >
                   <Heart className="w-4 h-4 mr-1.5" />
@@ -111,13 +111,13 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         )}
 
         {isCollapsed && (
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
               <p className="font-semibold">{property.price.toLocaleString()} DH</p>
               <Button
                 size="sm"
                 variant="ghost"
-                className="h-8 px-2 hover:bg-accent"
+                className="h-8 px-2 hover:bg-accent w-full sm:w-auto"
                 onClick={() => setIsOfferDialogOpen(true)}
               >
                 <Heart className="w-4 h-4 mr-1.5" />
