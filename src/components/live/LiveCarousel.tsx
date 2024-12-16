@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 
 interface LiveCarouselProps {
@@ -19,6 +19,14 @@ interface LiveCarouselProps {
   onLiveSelect: (liveId: number) => void;
   onLiveClose?: (liveId: number) => void;
 }
+
+// Fonction utilitaire pour générer des tags aléatoires
+const getRandomTags = () => {
+  const allTags = ["Coup de fusil", "Nouveauté", "Exclusivité", "Neuf", "Solde"];
+  const numberOfTags = Math.floor(Math.random() * 2) + 1; // 1 ou 2 tags
+  const shuffled = [...allTags].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, numberOfTags);
+};
 
 export const LiveCarousel = ({ 
   lives, 
@@ -32,7 +40,6 @@ export const LiveCarousel = ({
     stopOnInteraction: true,
   };
 
-  // Ajout de 5 lives de démonstration si lives est vide ou contient moins de 5 éléments
   const demoLives: LiveEvent[] = [
     {
       id: 101,
@@ -47,6 +54,7 @@ export const LiveCarousel = ({
       date: new Date(),
       availableSeats: 15,
       viewers: 24,
+      tags: getRandomTags(),
     },
     {
       id: 102,
@@ -61,6 +69,7 @@ export const LiveCarousel = ({
       date: new Date(),
       availableSeats: 10,
       viewers: 18,
+      tags: getRandomTags(),
     },
     {
       id: 103,
@@ -75,6 +84,7 @@ export const LiveCarousel = ({
       date: new Date(),
       availableSeats: 8,
       viewers: 32,
+      tags: getRandomTags(),
     },
     {
       id: 104,
@@ -89,6 +99,7 @@ export const LiveCarousel = ({
       date: new Date(),
       availableSeats: 12,
       viewers: 45,
+      tags: getRandomTags(),
     },
     {
       id: 105,
@@ -103,6 +114,7 @@ export const LiveCarousel = ({
       date: new Date(),
       availableSeats: 20,
       viewers: 29,
+      tags: getRandomTags(),
     },
   ];
 
@@ -179,7 +191,7 @@ export const LiveCarousel = ({
                       Rejoindre
                     </Badge>
                   </div>
-                  <div className="absolute top-2 left-2">
+                  <div className="absolute top-2 left-2 flex flex-wrap gap-1 max-w-[80%]">
                     <Badge 
                       variant="destructive" 
                       className="flex items-center gap-1.5 px-2 py-1"
@@ -190,6 +202,21 @@ export const LiveCarousel = ({
                       </span>
                       <span className="animate-pulse">En direct</span>
                     </Badge>
+                    {live.tags?.map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant={
+                          tag === "Coup de fusil"
+                            ? "destructive"
+                            : tag === "Nouveauté"
+                            ? "default"
+                            : "secondary"
+                        }
+                        className="bg-white/90 backdrop-blur-sm"
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black to-transparent">
                     <p className="text-white text-sm font-medium truncate">
