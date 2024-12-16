@@ -8,23 +8,45 @@ import { PropertyCard } from "@/components/PropertyCard";
 import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { scheduledLives, liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
-
-// Simuler des replays à partir des lives existants
-const replayLives = liveStreams.map(live => ({
-  ...live,
-  status: "replay" as const,
-  viewers: Math.floor(Math.random() * 1000) // Nombre de vues aléatoire
-}));
+import { PropertyFilters } from "@/components/properties/PropertyFilters";
 
 const Lives = () => {
   const [currentLivesViewMode, setCurrentLivesViewMode] = useState<"list" | "map">("list");
   const [scheduledViewMode, setScheduledViewMode] = useState<"list" | "map" | "calendar">("list");
+  
+  // Filter states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [propertyType, setPropertyType] = useState("all");
+  const [priceRange, setPriceRange] = useState([0, 5000000]);
+  const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
+  const [showLiveOnly, setShowLiveOnly] = useState(true);
 
-  // Convertir les lives en format Property pour la carte
-  const currentLiveProperties: Property[] = liveStreams.map((live) => ({
+  // Filter function for both current and scheduled lives
+  const filterLives = (lives: any[]) => {
+    return lives.filter((live) => {
+      const matchesSearch = live.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          live.location.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesType = propertyType === "all" || live.type === propertyType;
+      const price = typeof live.price === 'string' 
+        ? parseInt(live.price.replace(/[^\d]/g, ""))
+        : live.price;
+      const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
+      
+      // Note: Surface filtering is commented out as it's not available in the mock data
+      // Would need to add surface data to implement this filter
+      
+      return matchesSearch && matchesType && matchesPrice;
+    });
+  };
+
+  const filteredCurrentLives = filterLives(liveStreams);
+  const filteredScheduledLives = filterLives(scheduledLives);
+
+  // Convert current lives to Property format for the map
+  const currentLiveProperties: Property[] = filteredCurrentLives.map((live) => ({
     id: live.id,
     title: live.title,
-    price: parseInt(live.price.replace(/[^\d]/g, "")),
+    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
     location: live.location,
     type: live.type,
     surface: 0,
@@ -50,8 +72,31 @@ const Lives = () => {
     remainingSeats: live.availableSeats,
   }));
 
+  // Suggestions based on available locations and types
+  const suggestions = Array.from(new Set([
+    ...liveStreams.map(live => live.location),
+    ...liveStreams.map(live => live.type),
+    ...scheduledLives.map(live => live.location),
+    ...scheduledLives.map(live => live.type),
+  ]));
+
   return (
     <div className="container mx-auto px-4 py-8 mt-12 space-y-8">
+      {/* Filters Section */}
+      <PropertyFilters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        propertyType={propertyType}
+        setPropertyType={setPropertyType}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+        surfaceRange={surfaceRange}
+        setSurfaceRange={setSurfaceRange}
+        showLiveOnly={showLiveOnly}
+        setShowLiveOnly={setShowLiveOnly}
+        suggestions={suggestions}
+      />
+
       {/* Section des lives en cours */}
       <section>
         <div className="flex justify-between items-center mb-6">
@@ -79,7 +124,7 @@ const Lives = () => {
           </div>
         </div>
         
-        {liveStreams.length > 0 ? (
+        {filteredCurrentLives.length > 0 ? (
           currentLivesViewMode === "list" ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {currentLiveProperties.map((property) => (
@@ -101,7 +146,7 @@ const Lives = () => {
       {/* Section des lives programmés */}
       <section>
         <h2 className="text-2xl font-bold mb-6">Lives programmés</h2>
-        <ScheduledLivesList lives={scheduledLives} />
+        <ScheduledLivesList lives={filteredScheduledLives} />
       </section>
 
       {/* Section des replays */}
