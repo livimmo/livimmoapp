@@ -99,10 +99,10 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="bg-primary/10 text-primary hover:bg-primary/20"
+                  className={`bg-primary/10 hover:bg-primary/20 ${isFavorite ? 'text-[#ea384c]' : 'text-primary'}`}
                   onClick={handleToggleFavorite}
                 >
-                  <Heart className={`h-5 w-5 ${isFavorite ? "fill-primary text-primary" : ""}`} />
+                  <Heart className={`h-5 w-5 ${isFavorite ? "fill-[#ea384c]" : ""}`} />
                 </Button>
                 <Button
                   variant="ghost"
@@ -148,10 +148,10 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 bg-primary/10 text-primary hover:bg-primary/20"
+                className={`h-8 bg-primary/10 hover:bg-primary/20 ${isFavorite ? 'text-[#ea384c]' : 'text-primary'}`}
                 onClick={handleToggleFavorite}
               >
-                <Heart className={`h-4 w-4 ${isFavorite ? "fill-primary text-primary" : ""}`} />
+                <Heart className={`h-4 w-4 ${isFavorite ? "fill-[#ea384c]" : ""}`} />
               </Button>
               <Button
                 variant="ghost"
