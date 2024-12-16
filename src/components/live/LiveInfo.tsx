@@ -60,16 +60,16 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
       </div>
 
       <div className="w-full max-w-5xl mx-auto">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="h-12 w-16 bg-gray-200 rounded overflow-hidden shrink-0">
+        <div className="flex items-start gap-4">
+          <div className="flex items-start gap-3 min-w-0 flex-1">
+            <div className="h-14 w-20 bg-gray-200 rounded-md overflow-hidden shrink-0 flex items-center justify-center">
               <img 
                 src={property.images[0]} 
                 alt={property.title}
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 pt-0.5">
               <Link 
                 to={`/properties/${property.id}`}
                 className="hover:underline flex items-center gap-2"
