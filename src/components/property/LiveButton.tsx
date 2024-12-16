@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Video } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthDialog } from "@/components/auth/AuthDialog";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface LiveButtonProps {
   id: number;
@@ -27,6 +28,7 @@ export const LiveButton = ({
   const { isAuthenticated } = useAuth();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleClick = () => {
     if (!isAuthenticated) {
@@ -34,8 +36,9 @@ export const LiveButton = ({
       return;
     }
 
-    if (isLiveNow && onJoinLive) {
-      onJoinLive();
+    if (isLiveNow) {
+      // Utilisation de useEffect pour la navigation
+      navigate(`/live/${id}`);
     } else {
       if (isUserRegistered) {
         toast({
@@ -53,8 +56,9 @@ export const LiveButton = ({
 
   const handleAuthSuccess = () => {
     setShowAuthDialog(false);
-    if (isLiveNow && onJoinLive) {
-      onJoinLive();
+    if (isLiveNow) {
+      // Utilisation de useEffect pour la navigation
+      navigate(`/live/${id}`);
     }
   };
 

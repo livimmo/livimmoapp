@@ -9,13 +9,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 
 export const LiveSection = () => {
-  const [viewMode, setViewMode] = useState<"list" | "map" | "hybrid">("hybrid");
+  const [viewMode, setViewMode] = useState<"list" | "map" | "hybrid">("list"); // Changement du mode par défaut
   const [hasShownNotification, setHasShownNotification] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // On ne montre la notification qu'une seule fois
     if (!hasShownNotification && liveStreams.length > 0) {
       const latestLive = liveStreams[0];
       toast({
@@ -39,7 +38,7 @@ export const LiveSection = () => {
       });
       setHasShownNotification(true);
     }
-  }, [hasShownNotification, toast, navigate]); // Ajout des dépendances appropriées
+  }, [hasShownNotification, toast, navigate]);
 
   const liveProperties: Property[] = liveStreams.map((live) => ({
     id: live.id,
