@@ -11,11 +11,10 @@ import { ReservationForm } from "@/components/home/ReservationForm";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface AuthDialogProps {
-  isOpen?: boolean;
-  onClose?: () => void;
+  isOpen: boolean;
+  onClose: () => void;
   title?: string;
   description?: string;
-  initialMode?: "signin" | "signup";
   liveData?: {
     id: number;
     title: string;
@@ -30,7 +29,6 @@ export const AuthDialog = ({
   onClose,
   title = "Rejoignez notre communauté",
   description = "Créez votre compte pour accéder à toutes les fonctionnalités",
-  initialMode = "signup",
   liveData,
   onSuccess,
 }: AuthDialogProps) => {
@@ -48,7 +46,7 @@ export const AuthDialog = ({
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
 
-        <Tabs defaultValue={initialMode} className="w-full">
+        <Tabs defaultValue="signup" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="signup">Inscription</TabsTrigger>
             <TabsTrigger value="login">Connexion</TabsTrigger>
