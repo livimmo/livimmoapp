@@ -36,8 +36,8 @@ export const PropertyCard = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-      <div className="relative">
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 w-full h-full max-w-sm mx-auto">
+      <div className="relative aspect-[4/3]">
         <PropertyImage
           id={id}
           title={title}
@@ -50,7 +50,7 @@ export const PropertyCard = ({
           isUserRegistered={isUserRegistered}
           remainingSeats={remainingSeats}
         />
-        <div className="absolute top-2 right-2 z-10">
+        <div className="absolute top-3 right-3 z-10">
           <PropertyActions title={title} currentUrl={currentUrl} />
         </div>
       </div>
