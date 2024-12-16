@@ -1,6 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Users } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useState } from "react";
+import { ReservationForm } from "@/components/home/ReservationForm";
 
 interface LiveButtonProps {
   id: number;
@@ -11,29 +20,60 @@ interface LiveButtonProps {
 }
 
 export const LiveButton = ({
+  id,
+  title,
   onJoinLive,
   isLiveNow,
   isUserRegistered,
 }: LiveButtonProps) => {
   const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
+  const [showLeadDialog, setShowLeadDialog] = useState(false);
 
-  const handleRegistration = () => {
-    toast({
-      title: "Inscription confirmée !",
-      description: "Vous recevrez un rappel avant le début du live.",
-    });
+  const handleClick = () => {
+    if (!isAuthenticated) {
+      setShowLeadDialog(true);
+      return;
+    }
+
+    if (isLiveNow && onJoinLive) {
+      onJoinLive();
+    } else {
+      toast({
+        title: "Inscription confirmée !",
+        description: "Vous recevrez un rappel avant le début du live.",
+      });
+    }
   };
 
   if (isLiveNow) {
     return (
-      <Button 
-        variant="default"
-        className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90 animate-pulse"
-        onClick={onJoinLive}
-      >
-        <Users className="mr-2 h-4 w-4" />
-        Rejoindre le live
-      </Button>
+      <>
+        <Button 
+          variant="default"
+          className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90 animate-pulse"
+          onClick={handleClick}
+        >
+          <Users className="mr-2 h-4 w-4" />
+          Rejoindre le live
+        </Button>
+
+        <Dialog open={showLeadDialog} onOpenChange={setShowLeadDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Inscrivez-vous pour rejoindre le live</DialogTitle>
+            </DialogHeader>
+            <ReservationForm 
+              live={{ 
+                id, 
+                title, 
+                date: new Date() 
+              }} 
+              onClose={() => setShowLeadDialog(false)} 
+            />
+          </DialogContent>
+        </Dialog>
+      </>
     );
   }
 
@@ -51,13 +91,31 @@ export const LiveButton = ({
   }
 
   return (
-    <Button 
-      variant="default"
-      className="w-full bg-primary text-white hover:bg-primary/90"
-      onClick={handleRegistration}
-    >
-      <Users className="mr-2 h-4 w-4" />
-      S'inscrire au live
-    </Button>
+    <>
+      <Button 
+        variant="default"
+        className="w-full bg-primary text-white hover:bg-primary/90"
+        onClick={handleClick}
+      >
+        <Users className="mr-2 h-4 w-4" />
+        S'inscrire au live
+      </Button>
+
+      <Dialog open={showLeadDialog} onOpenChange={setShowLeadDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Inscrivez-vous au live</DialogTitle>
+          </DialogHeader>
+          <ReservationForm 
+            live={{ 
+              id, 
+              title, 
+              date: new Date() 
+            }} 
+            onClose={() => setShowLeadDialog(false)} 
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };

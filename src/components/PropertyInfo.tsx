@@ -27,10 +27,8 @@ export const PropertyInfo = ({
   surface,
   rooms,
   hasLive,
-  liveDate,
   onJoinLive,
   isLiveNow,
-  remainingSeats,
   isUserRegistered,
 }: PropertyInfoProps) => {
   return (
@@ -56,10 +54,8 @@ export const PropertyInfo = ({
           <LiveButton
             id={id}
             title={title}
-            liveDate={liveDate}
             onJoinLive={onJoinLive}
             isLiveNow={isLiveNow}
-            remainingSeats={remainingSeats}
             isUserRegistered={isUserRegistered}
           />
         )}
