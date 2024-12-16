@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AccountType } from "./AccountTypeSelector";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Facebook, Instagram, Youtube, WhatsApp } from "lucide-react";
+import { Facebook, Instagram, Youtube, MessageCircle } from "lucide-react";
 
 interface PersonalInfoProps {
   firstName: string;
@@ -118,7 +118,7 @@ export const PersonalInfo = ({
               <div className="flex items-center space-x-2">
                 <Checkbox id="whatsapp" />
                 <Label htmlFor="whatsapp" className="flex items-center gap-2">
-                  <WhatsApp className="h-4 w-4" />
+                  <MessageCircle className="h-4 w-4" />
                   WhatsApp Video
                 </Label>
               </div>
