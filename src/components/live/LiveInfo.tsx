@@ -1,9 +1,10 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink } from "lucide-react";
+import { Users, ExternalLink, Euro } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
+import { useState } from "react";
 
 interface LiveInfoProps {
   property: Property;
@@ -12,6 +13,8 @@ interface LiveInfoProps {
 }
 
 export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
+  const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
+
   return (
     <Card className="p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="space-y-2">
@@ -32,12 +35,13 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
       </div>
 
       <div className="mt-4 space-y-3">
-        <LiveOfferDialog 
-          title={property.title}
-          price={property.price}
-          isOpen={false}
-          onClose={() => {}}
-        />
+        <Button 
+          className="w-full" 
+          onClick={() => setIsOfferDialogOpen(true)}
+        >
+          <Euro className="w-4 h-4" />
+          Proposer un prix
+        </Button>
         
         <Link 
           to={`/properties/${property.id}`}
@@ -46,6 +50,13 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
           <ExternalLink className="w-4 h-4" />
           Voir plus de détails
         </Link>
+
+        <LiveOfferDialog 
+          title={property.title}
+          price={property.price}
+          isOpen={isOfferDialogOpen}
+          onClose={() => setIsOfferDialogOpen(false)}
+        />
       </div>
     </Card>
   );
