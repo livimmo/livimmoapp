@@ -1,4 +1,4 @@
-import { Video, Bell, User, LogIn, Building } from "lucide-react";
+import { Video, Bell, User, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -20,15 +20,6 @@ export const Header = () => {
           <Video className="h-5 w-5 text-[#ea384c]" />
         </div>
         <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/developers')}
-            className="hidden md:flex items-center gap-2"
-          >
-            <Building className="h-4 w-4" />
-            <span>Promoteurs & Projets</span>
-          </Button>
           {isAuthenticated ? (
             <>
               <Button 
