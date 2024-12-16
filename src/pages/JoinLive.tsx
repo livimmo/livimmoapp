@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Video, Users, MessageSquare, Heart, X, ChevronUp, ChevronDown } from "lucide-react";
+import { Video, Users, MessageSquare, X, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveChat } from "@/components/live/LiveChat";
 import { LiveInfo } from "@/components/live/LiveInfo";
-import { useToast } from "@/hooks/use-toast";
 import { type Property } from "@/types/property";
 import { liveStreams } from "@/data/mockLives";
 
@@ -19,9 +18,7 @@ const mockLiveData = {
 export const JoinLive = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [property, setProperty] = useState<Property | null>(null);
   const [showOtherLives, setShowOtherLives] = useState(false);
@@ -64,14 +61,6 @@ export const JoinLive = () => {
     return () => clearTimeout(timer);
   }, [id]);
 
-  const handleToggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-    toast({
-      title: isFavorite ? "Retiré des favoris" : "Ajouté aux favoris",
-      description: `${property?.title} a été ${isFavorite ? "retiré de" : "ajouté à"} vos favoris.`,
-    });
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -112,33 +101,21 @@ export const JoinLive = () => {
 
         {/* Overlay controls */}
         <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-black/50 text-white hover:bg-black/75"
-              onClick={() => navigate(-1)}
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-black/50 text-white hover:bg-black/75"
-              onClick={handleToggleFavorite}
-            >
-              <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="bg-black/50 text-white hover:bg-black/75"
+            onClick={() => navigate(-1)}
+          >
+            <X className="h-5 w-5" />
+          </Button>
         </div>
 
         {/* Bottom controls */}
         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
           <LiveInfo 
             property={property} 
-            onMakeOffer={handleToggleFavorite} 
+            onMakeOffer={() => {}} 
             viewerCount={mockLiveData.viewerCount}
           />
           <Button
