@@ -2,9 +2,10 @@ import { useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 interface GoogleMapInputProps {
-  onLocationSelect: (location: string) => void;
+  onLocationSelect?: (location: string) => void;
   value?: string;
   onChange?: (location: string) => void;
+  required?: boolean;
 }
 
 const defaultCenter = {
@@ -17,7 +18,7 @@ const containerStyle = {
   height: '300px'
 };
 
-export const GoogleMapInput = ({ onLocationSelect, value, onChange }: GoogleMapInputProps) => {
+export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: GoogleMapInputProps) => {
   const [marker, setMarker] = useState(defaultCenter);
 
   const handleMapClick = async (e: google.maps.MapMouseEvent) => {
@@ -33,7 +34,7 @@ export const GoogleMapInput = ({ onLocationSelect, value, onChange }: GoogleMapI
       
       if (response.results[0]) {
         const location = response.results[0].formatted_address;
-        onLocationSelect(location);
+        onLocationSelect?.(location);
         onChange?.(location);
       }
     } catch (error) {

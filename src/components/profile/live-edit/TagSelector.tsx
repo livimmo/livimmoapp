@@ -2,12 +2,20 @@ import { Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TagSelectorProps {
-  tags: string[];
+  selectedTags: string[];
   availableTags: string[];
-  onTagToggle: (tag: string) => void;
+  onChange: (tags: string[]) => void;
 }
 
-export const TagSelector = ({ tags, availableTags, onTagToggle }: TagSelectorProps) => {
+export const TagSelector = ({ selectedTags, availableTags, onChange }: TagSelectorProps) => {
+  const handleTagToggle = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      onChange(selectedTags.filter(t => t !== tag));
+    } else {
+      onChange([...selectedTags, tag]);
+    }
+  };
+
   return (
     <div className="space-y-2">
       <label className="text-sm font-medium flex items-center gap-2">
@@ -19,9 +27,9 @@ export const TagSelector = ({ tags, availableTags, onTagToggle }: TagSelectorPro
           <Button
             key={tag}
             type="button"
-            variant={tags.includes(tag) ? "default" : "outline"}
+            variant={selectedTags.includes(tag) ? "default" : "outline"}
             size="sm"
-            onClick={() => onTagToggle(tag)}
+            onClick={() => handleTagToggle(tag)}
           >
             {tag}
           </Button>
