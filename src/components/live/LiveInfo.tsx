@@ -1,7 +1,7 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink, Euro } from "lucide-react";
+import { Users, ExternalLink, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
@@ -39,8 +39,8 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
           className="w-full" 
           onClick={() => setIsOfferDialogOpen(true)}
         >
-          <Euro className="w-4 h-4" />
-          Proposer un prix
+          <Heart className="w-4 h-4 mr-2" />
+          Je suis intéressé(e)
         </Button>
         
         <Link 
