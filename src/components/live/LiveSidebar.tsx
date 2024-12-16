@@ -1,11 +1,11 @@
 import { LiveEvent } from "@/types/live";
-import { Eye, ChevronRight } from "lucide-react";
+import { Eye, ChevronRight, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface LiveSidebarProps {
   currentLiveId: number;
@@ -20,10 +20,11 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
   if (otherLives.length === 0) return null;
 
   return (
-    <div 
+    <div
       className={cn(
-        "absolute right-0 top-0 bottom-0 bg-black/80 text-white transition-all duration-300",
-        isCollapsed ? "w-12" : "w-64"
+        "fixed right-0 top-1/2 -translate-y-1/2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+        "border-l shadow-lg transition-all duration-300 z-50",
+        isCollapsed ? "w-12" : "w-80"
       )}
     >
       <Button
@@ -42,56 +43,48 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
             "h-4 w-4 transition-transform duration-300",
             !isCollapsed && "rotate-180"
           )} />
-          <Badge 
-            variant="secondary" 
-            className="absolute -top-3 -right-3 h-5 min-w-5 p-0 flex items-center justify-center bg-[#ea384c] text-white text-xs"
-          >
-            {otherLives.length}
-          </Badge>
+          <div className="absolute -top-8 -right-3 flex flex-col items-center gap-1">
+            <Badge 
+              variant="secondary" 
+              className="h-5 min-w-5 p-0 flex items-center justify-center bg-[#ea384c] text-white text-xs"
+            >
+              {otherLives.length}
+            </Badge>
+            <Badge 
+              variant="secondary" 
+              className="h-5 p-1 flex items-center gap-1 bg-[#F97316] text-white text-xs whitespace-nowrap"
+            >
+              12 offres
+            </Badge>
+            <Button
+              size="sm"
+              className="h-7 px-2 text-xs bg-primary hover:bg-primary/90 text-white"
+            >
+              <Heart className="h-3 w-3 mr-1" />
+              Intéressé
+            </Button>
+          </div>
         </div>
       </Button>
 
       {!isCollapsed && (
-        <>
-          <h3 className="font-semibold mb-4 p-4">Autres lives en cours</h3>
-          <ScrollArea className="h-[calc(100%-2rem)]">
-            <div className="space-y-4 px-4">
-              {otherLives.map((live) => (
-                <div
-                  key={live.id}
-                  className="group cursor-pointer hover:bg-white/10 rounded-lg p-2 transition-colors"
-                  onClick={() => navigate(`/live/${live.id}`)}
-                >
-                  <div className="relative mb-2">
-                    <img
-                      src={live.thumbnail}
-                      alt={live.title}
-                      className="w-full h-24 object-cover rounded-lg"
-                    />
-                    <div className="absolute top-2 right-2 flex gap-2">
-                      <Badge 
-                        variant="secondary" 
-                        className="bg-black/50 text-white flex items-center gap-1"
-                      >
-                        <Eye className="w-3 h-3" />
-                        {live.viewers}
-                      </Badge>
-                      <Badge 
-                        variant="destructive" 
-                        className="animate-pulse"
-                      >
-                        Live
-                      </Badge>
-                    </div>
-                  </div>
-                  <h4 className="text-sm font-medium line-clamp-2 group-hover:text-primary">
-                    {live.title}
-                  </h4>
+        <ScrollArea className="h-[400px]">
+          <div className="p-4 space-y-4">
+            {otherLives.map(live => (
+              <button
+                key={live.id}
+                className="w-full text-left hover:bg-accent p-2 rounded-lg transition-colors"
+                onClick={() => navigate(`/live/${live.id}`)}
+              >
+                <div className="font-medium truncate">{live.title}</div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                  <Eye className="h-3 w-3" />
+                  <span>{live.viewers} spectateurs</span>
                 </div>
-              ))}
-            </div>
-          </ScrollArea>
-        </>
+              </button>
+            ))}
+          </div>
+        </ScrollArea>
       )}
     </div>
   );
