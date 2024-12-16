@@ -18,10 +18,13 @@ export interface Property {
   tags?: string[];
   offers?: number;
   agent: {
+    id?: number;
     name: string;
     image: string;
     phone: string;
     email: string;
+    company?: string;
+    verified?: boolean;
   };
   coordinates: {
     lat: number;

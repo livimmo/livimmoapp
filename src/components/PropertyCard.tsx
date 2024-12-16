@@ -43,6 +43,17 @@ export const PropertyCard = ({
     navigate(`/live/${id}`);
   };
 
+  const handleAgentClick = () => {
+    if (agent.id) {
+      navigate(`/agent/${agent.id}`);
+    }
+  };
+
+  // Générer aléatoirement le statut vérifié si non défini
+  if (agent.verified === undefined) {
+    agent.verified = Math.random() > 0.5;
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <div className="relative">
@@ -99,7 +110,10 @@ export const PropertyCard = ({
         remainingSeats={remainingSeats}
         isUserRegistered={isUserRegistered}
       />
-      <div className="px-4 py-3 border-t flex items-center justify-between bg-gray-50">
+      <div 
+        className="px-4 py-3 border-t flex items-center justify-between bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors"
+        onClick={handleAgentClick}
+      >
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8 border border-gray-200">
             <AvatarImage src={agent.image} alt={agent.name} />
