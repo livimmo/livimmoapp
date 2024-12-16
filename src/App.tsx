@@ -1,33 +1,44 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { JoinLive } from "@/pages/JoinLive";
 import { Toaster } from "@/components/ui/toaster";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BottomNav } from "@/components/BottomNav";
+import { Header } from "@/components/layout/Header";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { Layout } from "@/components/layout/Layout";
-import Index from "@/pages/Index";
-import { PropertyDetails } from "@/pages/PropertyDetails";
-import { SearchResults } from "@/pages/SearchResults";
-import { Contact } from "@/pages/Contact";
-import { About } from "@/pages/About";
-import { NotFound } from "@/pages/NotFound";
+import Index from "./pages/Index";
+import Search from "./pages/Search";
+import Lives from "./pages/Lives";
+import Favorites from "./pages/Favorites";
+import Profile from "./pages/Profile";
+import Notifications from "./pages/Notifications";
+import Properties from "./pages/Properties";
+import PropertyDetail from "./pages/PropertyDetail";
+import JoinLive from "./pages/JoinLive";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route path="/join-live/:id" element={<JoinLive />} />
-          <Route element={<Layout />}>
+        <Header />
+        <div className="pt-16">
+          <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/property/:id" element={<PropertyDetails />} />
-            <Route path="/search" element={<SearchResults />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/about" element={<About />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
+            <Route path="/search" element={<Search />} />
+            <Route path="/lives" element={<Lives />} />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/properties" element={<Properties />} />
+            <Route path="/property/:id" element={<PropertyDetail />} />
+            <Route path="/live/:id" element={<JoinLive />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </div>
+        <BottomNav />
         <Toaster />
       </AuthProvider>
-    </Router>
+    </BrowserRouter>
   );
 }
 

@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { MessageSquare } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Video, Users, MessageSquare, Heart, X, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveChat } from "@/components/live/LiveChat";
 import { LiveInfo } from "@/components/live/LiveInfo";
 import { useToast } from "@/hooks/use-toast";
 import { type Property } from "@/types/property";
 import { liveStreams } from "@/data/mockLives";
-import { LiveOverlayControls } from "@/components/live/LiveOverlayControls";
-import { OtherLivesList } from "@/components/live/OtherLivesList";
 
 const mockLiveData = {
   viewerCount: 45,
@@ -20,13 +18,13 @@ const mockLiveData = {
 
 export const JoinLive = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [property, setProperty] = useState<Property | null>(null);
   const [showOtherLives, setShowOtherLives] = useState(false);
-  const [isLiveStarted, setIsLiveStarted] = useState(true); // Démarrer le live automatiquement
 
   // Filtrer les autres lives en cours (excluant le live actuel)
   const otherLives = liveStreams.filter(live => live.id !== Number(id));
@@ -91,7 +89,7 @@ export const JoinLive = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-lg text-red-500">Live non disponible</p>
-          <Button onClick={() => window.history.back()} className="mt-4">
+          <Button onClick={() => navigate(-1)} className="mt-4">
             Retour
           </Button>
         </div>
@@ -104,31 +102,40 @@ export const JoinLive = () => {
       <div className="relative h-[calc(100vh-4rem)]">
         {/* YouTube Live Embed */}
         <div className="absolute inset-0 bg-black">
-          {isLiveStarted ? (
-            <iframe
-              className="w-full h-full"
-              src="https://www.youtube.com/embed/n3wtxcO_0GQ?autoplay=1"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          ) : (
-            <div className="flex items-center justify-center h-full">
-              <Button 
-                variant="default" 
-                size="lg"
-                onClick={() => setIsLiveStarted(true)}
-                className="bg-red-500 hover:bg-red-600"
-              >
-                Démarrer le live
-              </Button>
-            </div>
-          )}
+          <iframe
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/n3wtxcO_0GQ?autoplay=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
         </div>
 
-        <LiveOverlayControls 
-          isFavorite={isFavorite}
-          onToggleFavorite={handleToggleFavorite}
-        />
+        {/* Overlay controls */}
+        <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-black/50 text-white hover:bg-black/75"
+              onClick={() => navigate(-1)}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+            <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
+              LIVE
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-black/50 text-white hover:bg-black/75"
+              onClick={handleToggleFavorite}
+            >
+              <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+            </Button>
+          </div>
+        </div>
 
         {/* Bottom controls */}
         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
@@ -147,11 +154,54 @@ export const JoinLive = () => {
           </Button>
         </div>
 
-        <OtherLivesList 
-          showOtherLives={showOtherLives}
-          setShowOtherLives={setShowOtherLives}
-          otherLives={otherLives}
-        />
+        {/* Bannière pliable des autres lives */}
+        <div className={`absolute transition-all duration-300 ease-in-out ${showOtherLives ? 'bottom-24' : '-bottom-32'} left-4 right-4`}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute -top-8 right-4 bg-black/75 text-white hover:bg-black/90"
+            onClick={() => setShowOtherLives(!showOtherLives)}
+          >
+            {showOtherLives ? (
+              <>
+                <ChevronDown className="h-4 w-4 mr-2" />
+                Masquer les autres lives
+              </>
+            ) : (
+              <>
+                <ChevronUp className="h-4 w-4 mr-2" />
+                Voir les autres lives
+              </>
+            )}
+          </Button>
+          <div className="bg-black/75 p-4 rounded-lg">
+            <h3 className="text-white text-sm font-medium mb-2">Autres lives en cours</h3>
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {otherLives.map((live) => (
+                <div
+                  key={live.id}
+                  className="flex-shrink-0 cursor-pointer hover:opacity-75 transition-opacity"
+                  onClick={() => navigate(`/live/${live.id}`)}
+                >
+                  <div className="relative w-48">
+                    <img
+                      src={live.thumbnail}
+                      alt={live.title}
+                      className="w-full h-24 object-cover rounded-lg"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent rounded-b-lg">
+                      <p className="text-white text-xs font-medium truncate">{live.title}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Video className="w-3 h-3 text-red-500" />
+                        <span className="text-white text-xs">{live.viewers} spectateurs</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
         {/* Chat sidebar */}
         {showChat && (

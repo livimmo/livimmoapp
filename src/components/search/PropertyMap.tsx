@@ -25,14 +25,9 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
       }
     : defaultCenter;
 
-  const mapOptions = {
-    mapTypeId: 'hybrid',
-    zoomControl: true,
-    mapTypeControl: true,
-    scaleControl: true,
-    streetViewControl: true,
-    rotateControl: true,
-    fullscreenControl: true
+  const containerStyle = {
+    width: '100%',
+    height: '100%'
   };
 
   return (
@@ -40,10 +35,9 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
       <div className="relative h-full">
         <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
           <GoogleMap
-            mapContainerStyle={{ width: '100%', height: '100%' }}
+            mapContainerStyle={containerStyle}
             center={center}
             zoom={6}
-            options={mapOptions}
           >
             {properties.map((property) => (
               <Marker
