@@ -69,6 +69,23 @@ export const PropertyCard = ({
             <Badge variant="destructive">Vendu</Badge>
           </div>
         )}
+        
+        {/* Photo de l'agent */}
+        <div 
+          className="absolute bottom-2 left-2 z-10 flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full p-1 pr-3 cursor-pointer hover:bg-white transition-colors"
+          onClick={handleAgentClick}
+        >
+          <Avatar className="h-8 w-8 border-2 border-white">
+            <AvatarImage src={agent.image} alt={agent.name} />
+            <AvatarFallback>{agent.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+          </Avatar>
+          <div className="flex items-center gap-1">
+            <span className="text-sm font-medium">{agent.name}</span>
+            <Badge variant="secondary" className="h-4 w-4 p-0 flex items-center justify-center">
+              <Check className="h-3 w-3" />
+            </Badge>
+          </div>
+        </div>
       </div>
       <PropertyInfo
         id={id}
@@ -85,22 +102,6 @@ export const PropertyCard = ({
         remainingSeats={remainingSeats}
         isUserRegistered={isUserRegistered}
       />
-      {/* Agent badge moved here */}
-      <div 
-        className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full p-1 pr-3 cursor-pointer hover:bg-white transition-colors mx-4 mb-4"
-        onClick={handleAgentClick}
-      >
-        <Avatar className="h-8 w-8 border-2 border-white">
-          <AvatarImage src={agent.image} alt={agent.name} />
-          <AvatarFallback>{agent.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-        </Avatar>
-        <div className="flex items-center gap-1">
-          <span className="text-sm font-medium">{agent.name}</span>
-          <Badge variant="secondary" className="h-4 w-4 p-0 flex items-center justify-center">
-            <Check className="h-3 w-3" />
-          </Badge>
-        </div>
-      </div>
     </div>
   );
 };
