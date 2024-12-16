@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Property } from "@/types/property";
@@ -12,23 +12,14 @@ import { ScrollArea } from '../ui/scroll-area';
 // Fix for default markers in React Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconUrl: markerIcon.toString(),
-  iconRetinaUrl: markerIcon2x.toString(),
-  shadowUrl: markerShadow.toString(),
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
 });
 
 interface PropertyMapProps {
   properties: Property[];
 }
-
-// Component to handle map center updates
-const MapUpdater = ({ center }: { center: [number, number] }) => {
-  const map = useMap();
-  useEffect(() => {
-    map.setView(center, map.getZoom());
-  }, [center, map]);
-  return null;
-};
 
 export const PropertyMap = ({ properties }: PropertyMapProps) => {
   const defaultCenter: [number, number] = [31.7917, -7.0926];
@@ -55,7 +46,6 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
           scrollWheelZoom={true}
           style={{ height: "100%", width: "100%" }}
         >
-          <MapUpdater center={center} />
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
