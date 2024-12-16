@@ -1,45 +1,15 @@
-import { useState, useEffect } from "react";
-import { Map, List, Video } from "lucide-react";
+import { useState } from "react";
+import { Map, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PropertyCard } from "@/components/PropertyCard";
 import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
-import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
 
 export const LiveSection = () => {
-  const [viewMode, setViewMode] = useState<"list" | "map" | "hybrid">("list"); // Changement du mode par défaut
-  const [hasShownNotification, setHasShownNotification] = useState(false);
-  const { toast } = useToast();
-  const navigate = useNavigate();
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
 
-  useEffect(() => {
-    if (!hasShownNotification && liveStreams.length > 0) {
-      const latestLive = liveStreams[0];
-      toast({
-        title: "🔴 Nouveau live en cours !",
-        description: (
-          <div className="mt-2 space-y-2">
-            <p>"{latestLive.title}" vient de commencer avec {latestLive.agent}</p>
-            <Button 
-              onClick={() => navigate(`/live/${latestLive.id}`)}
-              className="w-full"
-              variant="default"
-            >
-              <Video className="w-4 h-4 mr-2" />
-              Rejoindre le live maintenant
-            </Button>
-          </div>
-        ),
-        variant: "default",
-        className: "bg-red-500 text-white",
-        duration: 10000,
-      });
-      setHasShownNotification(true);
-    }
-  }, [hasShownNotification, toast, navigate]);
-
+  // Convertir les lives en format Property pour les afficher avec PropertyCard
   const liveProperties: Property[] = liveStreams.map((live) => ({
     id: live.id,
     title: live.title,
@@ -61,7 +31,7 @@ export const LiveSection = () => {
       email: "",
     },
     coordinates: {
-      lat: 31.7917 + Math.random() * 2 - 1,
+      lat: 31.7917 + Math.random() * 2 - 1, // Random coordinates for demo
       lng: -7.0926 + Math.random() * 2 - 1,
     },
     isLiveNow: live.status === "live",
@@ -94,14 +64,6 @@ export const LiveSection = () => {
             Liste
           </Button>
           <Button
-            variant={viewMode === "hybrid" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("hybrid")}
-          >
-            <List className="h-4 w-4 mr-2" />
-            Hybride
-          </Button>
-          <Button
             variant={viewMode === "map" ? "default" : "outline"}
             size="sm"
             onClick={() => setViewMode("map")}
@@ -112,30 +74,15 @@ export const LiveSection = () => {
         </div>
       </div>
 
-      {viewMode === "list" && (
+      {viewMode === "list" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {liveProperties.map((property) => (
             <PropertyCard key={property.id} {...property} />
           ))}
         </div>
-      )}
-
-      {viewMode === "map" && (
+      ) : (
         <div className="h-[500px] rounded-lg overflow-hidden">
           <LiveGoogleMap properties={liveProperties} />
-        </div>
-      )}
-
-      {viewMode === "hybrid" && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="h-[500px] rounded-lg overflow-hidden">
-            <LiveGoogleMap properties={liveProperties} />
-          </div>
-          <div className="space-y-4 overflow-auto max-h-[500px] pr-2">
-            {liveProperties.map((property) => (
-              <PropertyCard key={property.id} {...property} />
-            ))}
-          </div>
         </div>
       )}
     </section>

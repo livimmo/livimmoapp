@@ -5,7 +5,6 @@ import { AccountType } from "./AccountTypeSelector";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Facebook, Instagram, Youtube, MessageCircle } from "lucide-react";
 import { LiveManagement } from "./LiveManagement";
-import { IdentityDocumentUpload } from "./IdentityDocumentUpload";
 
 interface PersonalInfoProps {
   firstName: string;
@@ -77,8 +76,6 @@ export const PersonalInfo = ({
           />
         </div>
       </div>
-
-      {accountType === "buyer" && <IdentityDocumentUpload />}
 
       {accountType === "agent" && (
         <>

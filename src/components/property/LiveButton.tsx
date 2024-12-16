@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Video } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { AuthDialog } from "@/components/auth/AuthDialog";
-import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
+import { ReservationForm } from "@/components/home/ReservationForm";
+import { useToast } from "@/components/ui/use-toast";
 
 interface LiveButtonProps {
   id: number;
@@ -26,19 +25,17 @@ export const LiveButton = ({
   remainingSeats,
 }: LiveButtonProps) => {
   const { isAuthenticated } = useAuth();
-  const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [showLeadDialog, setShowLeadDialog] = useState(false);
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   const handleClick = () => {
     if (!isAuthenticated) {
-      setShowAuthDialog(true);
+      setShowLeadDialog(true);
       return;
     }
 
-    if (isLiveNow) {
-      // Utilisation de useEffect pour la navigation
-      navigate(`/live/${id}`);
+    if (isLiveNow && onJoinLive) {
+      onJoinLive();
     } else {
       if (isUserRegistered) {
         toast({
@@ -46,19 +43,12 @@ export const LiveButton = ({
           description: "Vous recevrez un rappel avant le début du live",
         });
       } else {
+        // Si l'utilisateur est connecté, on l'inscrit directement
         toast({
           title: "Inscription confirmée !",
           description: "Vous recevrez un rappel avant le début du live",
         });
       }
-    }
-  };
-
-  const handleAuthSuccess = () => {
-    setShowAuthDialog(false);
-    if (isLiveNow) {
-      // Utilisation de useEffect pour la navigation
-      navigate(`/live/${id}`);
     }
   };
 
@@ -80,27 +70,16 @@ export const LiveButton = ({
         }
       </Button>
 
-      <AuthDialog
-        isOpen={showAuthDialog}
-        onClose={() => setShowAuthDialog(false)}
-        title={isLiveNow ? "Rejoignez le live maintenant !" : "Réservez votre place"}
-        description={
-          isLiveNow
-            ? "Créez votre compte gratuitement pour rejoindre ce live en direct et interagir avec l'agent"
-            : "Inscrivez-vous pour réserver votre place et recevoir un rappel avant le début du live"
-        }
-        liveData={
-          liveDate
-            ? {
-                id,
-                title,
-                date: liveDate,
-                availableSeats: remainingSeats,
-              }
-            : undefined
-        }
-        onSuccess={handleAuthSuccess}
-      />
+      {!isAuthenticated && showLeadDialog && (
+        <ReservationForm
+          live={{
+            id,
+            title,
+            date: liveDate || new Date(),
+          }}
+          onClose={() => setShowLeadDialog(false)}
+        />
+      )}
     </>
   );
 };
