@@ -25,16 +25,12 @@ const createMarkerIcon = (isLive: boolean) => {
   return {
     url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="1.5">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-        <path d="M16 16v3"/>
-        <path d="M8 16v3"/>
-        <circle cx="12" cy="11" r="3"/>
-        <path d="M12 8v6"/>
-        <path d="M9 11h6"/>
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+        <circle cx="12" cy="13" r="4"/>
       </svg>
     `)}`,
-    scaledSize: new google.maps.Size(32, 32),
-    anchor: new google.maps.Point(16, 32),
+    scaledSize: { width: 32, height: 32 },
+    anchor: { x: 16, y: 32 },
   };
 };
 
@@ -52,76 +48,74 @@ export const LiveGoogleMap = ({ properties }: LiveGoogleMapProps) => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[700px]">
       <div className="relative h-full">
         <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-          {({ loaded }) => loaded && (
-            <GoogleMap
-              mapContainerStyle={mapStyles}
-              zoom={6}
-              center={center}
-              mapTypeId="hybrid"
-            >
-              {properties.map((property) => (
-                <Marker
-                  key={property.id}
-                  position={{
-                    lat: property.coordinates.lat,
-                    lng: property.coordinates.lng,
-                  }}
-                  onClick={() => setSelectedProperty(property)}
-                  icon={createMarkerIcon(property.hasLive && property.isLiveNow)}
-                />
-              ))}
+          <GoogleMap
+            mapContainerStyle={mapStyles}
+            zoom={6}
+            center={center}
+            mapTypeId="hybrid"
+          >
+            {properties.map((property) => (
+              <Marker
+                key={property.id}
+                position={{
+                  lat: property.coordinates.lat,
+                  lng: property.coordinates.lng,
+                }}
+                onClick={() => setSelectedProperty(property)}
+                icon={createMarkerIcon(property.hasLive && property.isLiveNow)}
+              />
+            ))}
 
-              {selectedProperty && (
-                <InfoWindow
-                  position={{
-                    lat: selectedProperty.coordinates.lat,
-                    lng: selectedProperty.coordinates.lng,
-                  }}
-                  onCloseClick={() => setSelectedProperty(null)}
-                >
-                  <div className="p-2 max-w-[300px]">
-                    <div className="relative mb-2">
-                      <img
-                        src={selectedProperty.images[0]}
-                        alt={selectedProperty.title}
-                        className="w-full h-[150px] object-cover rounded-lg"
-                      />
-                      <div className="absolute bottom-2 left-2">
-                        {!selectedProperty.hasLive ? (
-                          <Badge variant="destructive">Vendu</Badge>
-                        ) : selectedProperty.isLiveNow ? (
-                          <Badge variant="destructive" className="bg-red-500">
-                            <span className="mr-1 inline-block h-2 w-2 rounded-full bg-white animate-pulse" />
-                            Live en cours
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
-                            <Clock className="mr-1 h-4 w-4" />
-                            {new Date(selectedProperty.liveDate).toLocaleDateString("fr-FR", {
-                              day: "numeric",
-                              month: "short",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                    <h3 className="font-semibold text-base mb-1">{selectedProperty.title}</h3>
-                    <p className="text-primary font-bold">
-                      {selectedProperty.price.toLocaleString()} DH
-                    </p>
-                    <p className="text-sm text-gray-500">{selectedProperty.location}</p>
-                    <div className="flex gap-2 text-sm text-gray-500 mt-1">
-                      <span>{selectedProperty.surface} m²</span>
-                      <span>•</span>
-                      <span>{selectedProperty.type}</span>
+            {selectedProperty && (
+              <InfoWindow
+                position={{
+                  lat: selectedProperty.coordinates.lat,
+                  lng: selectedProperty.coordinates.lng,
+                }}
+                onCloseClick={() => setSelectedProperty(null)}
+              >
+                <div className="p-2 max-w-[300px]">
+                  <div className="relative mb-2">
+                    <img
+                      src={selectedProperty.images[0]}
+                      alt={selectedProperty.title}
+                      className="w-full h-[150px] object-cover rounded-lg"
+                    />
+                    <div className="absolute bottom-2 left-2">
+                      {!selectedProperty.hasLive ? (
+                        <Badge variant="destructive">Vendu</Badge>
+                      ) : selectedProperty.isLiveNow ? (
+                        <Badge variant="destructive" className="bg-red-500">
+                          <span className="mr-1 inline-block h-2 w-2 rounded-full bg-white animate-pulse" />
+                          Live en cours
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                          <Clock className="mr-1 h-4 w-4" />
+                          {new Date(selectedProperty.liveDate).toLocaleDateString("fr-FR", {
+                            day: "numeric",
+                            month: "short",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </Badge>
+                      )}
                     </div>
                   </div>
-                </InfoWindow>
-              )}
-            </GoogleMap>
-          )}
+                  <h3 className="font-semibold text-base mb-1">{selectedProperty.title}</h3>
+                  <p className="text-primary font-bold">
+                    {selectedProperty.price.toLocaleString()} DH
+                  </p>
+                  <p className="text-sm text-gray-500">{selectedProperty.location}</p>
+                  <div className="flex gap-2 text-sm text-gray-500 mt-1">
+                    <span>{selectedProperty.surface} m²</span>
+                    <span>•</span>
+                    <span>{selectedProperty.type}</span>
+                  </div>
+                </div>
+              </InfoWindow>
+            )}
+          </GoogleMap>
         </LoadScript>
       </div>
 
