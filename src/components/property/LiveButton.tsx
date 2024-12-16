@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Users } from "lucide-react";
+import { Video } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   Dialog,
@@ -54,7 +54,7 @@ export const LiveButton = ({
           className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90 animate-pulse"
           onClick={handleClick}
         >
-          <Users className="mr-2 h-4 w-4" />
+          <Video className="mr-2 h-4 w-4" />
           Rejoindre le live
         </Button>
 
@@ -84,7 +84,7 @@ export const LiveButton = ({
         className="w-full bg-green-500 text-white hover:bg-green-500/90"
         disabled
       >
-        <Users className="mr-2 h-4 w-4" />
+        <Video className="mr-2 h-4 w-4" />
         Inscrit au live
       </Button>
     );
@@ -97,7 +97,7 @@ export const LiveButton = ({
         className="w-full bg-primary text-white hover:bg-primary/90"
         onClick={handleClick}
       >
-        <Users className="mr-2 h-4 w-4" />
+        <Video className="mr-2 h-4 w-4" />
         S'inscrire au live
       </Button>
 
