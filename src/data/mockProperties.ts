@@ -10,7 +10,7 @@ const cityCoordinates = {
   "Fès": { lat: 34.0333, lng: -5.0000 }
 };
 
-export const generateMockCoordinates = (location: string) => {
+const generateMockCoordinates = (location: string) => {
   const cityName = Object.keys(cityCoordinates).find(city => 
     location.toLowerCase().includes(city.toLowerCase())
   ) || "Casablanca";
@@ -45,7 +45,7 @@ const generateRandomLiveStatus = () => {
   };
 };
 
-export const mockProperties: Property[] = addCoordinatesToProperties([
+const mockPropertiesBase = [
   {
     id: 1,
     title: "Villa moderne à Marrakech",
@@ -59,7 +59,7 @@ export const mockProperties: Property[] = addCoordinatesToProperties([
     features: ["Piscine", "Jardin", "Garage"],
     hasLive: true,
     tags: ["Coup de fusil", "Nouveauté"],
-    offers: 15, // Bien très populaire
+    offers: 15,
     images: [
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
@@ -69,7 +69,7 @@ export const mockProperties: Property[] = addCoordinatesToProperties([
       image: "https://i.pravatar.cc/150?u=sarah",
       phone: "+212 6 12 34 56 78",
       email: "sarah.martin@example.com",
-    },
+    }
   },
   {
     id: 2,
@@ -168,7 +168,7 @@ export const mockProperties: Property[] = addCoordinatesToProperties([
     offers: 0, // Pas d'offres
     coordinates: generateMockCoordinates("Malabata, Tanger")
   }
-]);
+];
 
 export const addCoordinatesToProperty = (property: Omit<Property, 'coordinates'>): Property => ({
   ...property,
@@ -176,6 +176,8 @@ export const addCoordinatesToProperty = (property: Omit<Property, 'coordinates'>
   ...generateRandomLiveStatus()
 });
 
-export const addCoordinatesToProperties = (properties: Omit<Property, 'coordinates'>[]): Property[] => {
+export const addCoordinatesToProperties = (properties: Array<Omit<Property, 'coordinates'>>): Property[] => {
   return properties.map(property => addCoordinatesToProperty(property));
 };
+
+export const mockProperties: Property[] = addCoordinatesToProperties(mockPropertiesBase);

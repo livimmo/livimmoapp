@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { Fire, Inbox } from "lucide-react";
+import { Inbox, Star, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface OffersCounterProps {
@@ -26,12 +26,14 @@ export const OffersCounter = ({ offers, className }: OffersCounterProps) => {
       )}
     >
       {isHot ? (
-        <Fire className="h-3 w-3" />
+        <Trophy className="h-3 w-3" />
+      ) : isPopular ? (
+        <Star className="h-3 w-3" />
       ) : (
         <Inbox className="h-3 w-3" />
       )}
       {offers} {offers > 1 ? "offres reçues" : "offre reçue"}
-      {isHot && " 🔥"}
+      {isHot && " 🏆"}
     </Badge>
   );
 };
