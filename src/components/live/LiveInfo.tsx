@@ -68,7 +68,7 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         </div>
         
         {!isCollapsed && (
-          <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-4 mt-3`}>
+          <div className={`grid ${isMobile ? 'grid-cols-1 space-y-2' : 'grid-cols-2'} gap-4 mt-3`}>
             <div className="space-y-2">
               <div className="flex items-center gap-4 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
@@ -85,7 +85,7 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
                 </div>
               </div>
 
-              <p className="text-lg font-bold">
+              <p className={`text-lg font-bold ${isMobile ? 'text-right' : ''}`}>
                 {property.price.toLocaleString()} DH
               </p>
 
@@ -98,7 +98,7 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
               </Link>
             </div>
 
-            <div className="flex justify-end">
+            <div className={`flex ${isMobile ? 'justify-end mt-2' : 'justify-end'}`}>
               <Button 
                 size="sm"
                 className="w-auto" 
