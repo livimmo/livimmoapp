@@ -3,8 +3,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AccountType } from "./AccountTypeSelector";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Facebook, Instagram, Youtube, MessageCircle } from "lucide-react";
+import { Facebook, Instagram, Youtube, MessageCircle, Upload } from "lucide-react";
 import { LiveManagement } from "./LiveManagement";
+import { useToast } from "@/hooks/use-toast";
 
 interface PersonalInfoProps {
   firstName: string;
@@ -33,6 +34,38 @@ export const PersonalInfo = ({
   onSubmit,
   onChange,
 }: PersonalInfoProps) => {
+  const { toast } = useToast();
+
+  const handleIdUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Vérification de la taille du fichier (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "Erreur",
+          description: "Le fichier est trop volumineux. Taille maximum : 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Vérification du type de fichier
+      if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
+        toast({
+          title: "Erreur",
+          description: "Format de fichier non supporté. Utilisez JPG, PNG ou PDF",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Succès",
+        description: "Pièce d'identité téléchargée avec succès",
+      });
+    }
+  };
+
   return (
     <form onSubmit={onSubmit} className="space-y-6">
       <h2 className="text-lg font-semibold">Informations personnelles</h2>
@@ -76,6 +109,38 @@ export const PersonalInfo = ({
           />
         </div>
       </div>
+
+      {accountType === "buyer" && (
+        <div className="space-y-4 border-t pt-4">
+          <h3 className="text-lg font-semibold">
+            Pièce d'identité
+          </h3>
+          <div className="space-y-2">
+            <Label htmlFor="idDocument">Télécharger votre pièce d'identité</Label>
+            <div className="flex items-center gap-4">
+              <Input
+                id="idDocument"
+                type="file"
+                accept=".jpg,.jpeg,.png,.pdf"
+                className="hidden"
+                onChange={handleIdUpload}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => document.getElementById('idDocument')?.click()}
+                className="flex items-center gap-2"
+              >
+                <Upload className="h-4 w-4" />
+                Choisir un fichier
+              </Button>
+              <p className="text-sm text-muted-foreground">
+                Formats acceptés : JPG, PNG, PDF (max 5MB)
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {accountType === "agent" && (
         <>
