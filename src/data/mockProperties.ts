@@ -10,7 +10,7 @@ const cityCoordinates = {
   "Fès": { lat: 34.0333, lng: -5.0000 }
 };
 
-const generateMockCoordinates = (location: string) => {
+export const generateMockCoordinates = (location: string) => {
   const cityName = Object.keys(cityCoordinates).find(city => 
     location.toLowerCase().includes(city.toLowerCase())
   ) || "Casablanca";
@@ -34,12 +34,12 @@ const generateRandomLiveStatus = () => {
 
   const now = new Date();
   const futureDate = new Date();
-  futureDate.setDate(now.getDate() + Math.floor(Math.random() * 14)); // Date dans les 14 prochains jours
+  futureDate.setDate(now.getDate() + Math.floor(Math.random() * 14));
   
   return {
     hasLive,
     liveDate: futureDate,
-    isLiveNow: Math.random() > 0.8, // 20% de chance d'être en live
+    isLiveNow: Math.random() > 0.8,
     viewers: Math.floor(Math.random() * 50),
     remainingSeats: Math.floor(Math.random() * 20)
   };
