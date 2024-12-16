@@ -101,10 +101,12 @@ export const AddLiveDialog = ({ variant = "default" }: { variant?: "default" | "
         ) : (
           <Button className="gap-2 bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
             <Plus className="h-4 w-4" />
-            Live
+            <span className="hidden md:inline">Ajouter un Live</span>
+            <span className="md:hidden">Live</span>
           </Button>
         )}
       </DialogTrigger>
+      
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="sticky top-0 bg-white pt-4 pb-2 z-10">
           <div className="flex justify-between items-center">
