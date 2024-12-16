@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PropertyCard } from "@/components/PropertyCard";
 import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
+import { ReplayCard } from "@/components/live/ReplayCard";
 import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
+import { type LiveEvent } from "@/types/live";
 
 export const LiveSection = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
@@ -112,8 +114,8 @@ export const LiveSection = () => {
         <TabsContent value="replay">
           {viewMode === "list" ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {replayProperties.map((property) => (
-                <PropertyCard key={property.id} {...property} />
+              {replayLives.map((live) => (
+                <ReplayCard key={live.id} live={live} />
               ))}
             </div>
           ) : (
