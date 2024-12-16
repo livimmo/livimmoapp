@@ -70,11 +70,12 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
               opts={{
                 align: "start",
                 loop: true,
+                axis: "y",
               }}
             >
-              <CarouselContent>
+              <CarouselContent className="-mt-2 h-[300px]">
                 {otherLives.map(live => (
-                  <CarouselItem key={live.id}>
+                  <CarouselItem key={live.id} className="pt-2 basis-full">
                     <div 
                       className="cursor-pointer group"
                       onClick={() => navigate(`/live/${live.id}`)}
@@ -107,8 +108,8 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
                 ))}
               </CarouselContent>
               <div className="flex justify-center gap-2 mt-4">
-                <CarouselPrevious className="static translate-y-0" />
-                <CarouselNext className="static translate-y-0" />
+                <CarouselPrevious className="rotate-90 static translate-y-0" />
+                <CarouselNext className="rotate-90 static translate-y-0" />
               </div>
             </Carousel>
           </div>
