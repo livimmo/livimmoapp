@@ -3,6 +3,7 @@ import { Clock, Users } from "lucide-react";
 import { FavoriteButton } from "./FavoriteButton";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { OffersCounter } from "./OffersCounter";
 
 interface PropertyImageProps {
   id: number;
@@ -15,6 +16,7 @@ interface PropertyImageProps {
   isLiveNow?: boolean;
   remainingSeats?: number;
   isUserRegistered?: boolean;
+  offers?: number;
 }
 
 export const PropertyImage = ({
@@ -27,6 +29,7 @@ export const PropertyImage = ({
   isLiveNow,
   remainingSeats,
   isUserRegistered,
+  offers = 0,
 }: PropertyImageProps) => {
   return (
     <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg">
@@ -41,6 +44,12 @@ export const PropertyImage = ({
       <div className="absolute top-2 right-2 z-10">
         <FavoriteButton propertyId={id} title={title} />
       </div>
+
+      {offers > 0 && (
+        <div className="absolute top-2 left-2 z-10">
+          <OffersCounter offers={offers} />
+        </div>
+      )}
 
       {hasLive && (
         <div className="absolute bottom-2 left-2 flex flex-col gap-1">

@@ -16,6 +16,7 @@ export interface Property {
   viewers?: number;
   remainingSeats?: number;
   tags?: string[];
+  offers?: number; // Nombre d'offres reçues
   agent: {
     name: string;
     image: string;

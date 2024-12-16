@@ -45,81 +45,56 @@ const generateRandomLiveStatus = () => {
   };
 };
 
-export const mockProperties: Property[] = [
+export const mockProperties: Property[] = addCoordinatesToProperties([
   {
     id: 1,
-    title: "Villa de luxe avec piscine à Casablanca",
-    price: 4500000,
-    description: "Magnifique villa moderne de 400m² située dans le prestigieux quartier d'Anfa. Cette propriété d'exception offre une vue imprenable sur l'océan et dispose d'une piscine à débordement, d'un jardin paysager et d'un système domotique dernier cri. Parfaite pour une famille exigeante recherchant le confort et le luxe.",
-    location: "Anfa, Casablanca",
+    title: "Villa moderne à Marrakech",
+    price: 2500000,
+    location: "Marrakech",
     type: "Villa",
-    surface: 400,
-    rooms: 6,
-    bathrooms: 4,
-    features: [
-      "Piscine à débordement",
-      "Vue mer",
-      "Jardin paysager",
-      "Domotique",
-      "Garage 2 voitures",
-      "Salle de sport",
-      "Hammam",
-      "Système d'alarme"
-    ],
-    images: [
-      "https://images.unsplash.com/photo-1613977257363-707ba9348227",
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"
-    ],
+    surface: 250,
+    rooms: 5,
+    bathrooms: 3,
+    description: "Magnifique villa moderne avec vue imprenable",
+    features: ["Piscine", "Jardin", "Garage"],
     hasLive: true,
-    liveDate: new Date("2024-03-20T15:00:00"),
-    isLiveNow: false,
-    viewers: 0,
-    remainingSeats: 15,
+    tags: ["Coup de fusil", "Nouveauté"],
+    offers: 15, // Bien très populaire
+    images: [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+    ],
     agent: {
-      name: "Sarah Alami",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
-      phone: "+212 6 61 23 45 67",
-      email: "sarah.alami@example.com"
+      name: "Sarah Martin",
+      image: "https://i.pravatar.cc/150?u=sarah",
+      phone: "+212 6 12 34 56 78",
+      email: "sarah.martin@example.com",
     },
-    coordinates: generateMockCoordinates("Anfa, Casablanca")
   },
   {
     id: 2,
-    title: "Appartement haut standing à Marina Casablanca",
-    price: 2800000,
-    description: "Superbe appartement de 180m² situé au cœur de la Marina de Casablanca. Bénéficiant d'une vue panoramique sur le port et l'océan, ce bien d'exception propose des prestations haut de gamme et une décoration raffinée. Les grandes baies vitrées offrent une luminosité exceptionnelle tout au long de la journée.",
-    location: "Marina, Casablanca",
+    title: "Appartement vue mer à Tanger",
+    price: 1800000,
+    location: "Tanger",
     type: "Appartement",
-    surface: 180,
-    rooms: 4,
+    surface: 120,
+    rooms: 3,
     bathrooms: 2,
-    features: [
-      "Vue panoramique",
-      "Terrasse",
-      "Climatisation centralisée",
-      "Parking sous-sol",
-      "Sécurité 24/7",
-      "Ascenseur",
-      "Cave"
-    ],
+    description: "Superbe appartement avec vue sur mer",
+    features: ["Vue mer", "Terrasse", "Parking"],
+    hasLive: false,
+    tags: ["Exclusivité"],
+    offers: 8, // Bien modérément populaire
     images: [
-      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00",
-      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd",
-      "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6"
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
     ],
-    hasLive: true,
-    liveDate: new Date("2024-03-22T16:00:00"),
-    isLiveNow: true,
-    viewers: 12,
-    remainingSeats: 8,
     agent: {
-      name: "Karim Benjelloun",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
-      phone: "+212 6 62 34 56 78",
-      email: "karim.benjelloun@example.com"
+      name: "Mohammed Alami",
+      image: "https://i.pravatar.cc/150?u=mohammed",
+      phone: "+212 6 23 45 67 89",
+      email: "mohammed.alami@example.com",
     },
-    coordinates: generateMockCoordinates("Marina, Casablanca")
   },
   {
     id: 3,
@@ -156,6 +131,7 @@ export const mockProperties: Property[] = [
       phone: "+212 6 63 45 67 89",
       email: "yasmine.idrissi@example.com"
     },
+    offers: 5, // Bien peu populaire
     coordinates: generateMockCoordinates("Médina, Marrakech")
   },
   {
@@ -189,9 +165,10 @@ export const mockProperties: Property[] = [
       phone: "+212 6 64 56 78 90",
       email: "omar.tazi@example.com"
     },
+    offers: 0, // Pas d'offres
     coordinates: generateMockCoordinates("Malabata, Tanger")
   }
-];
+]);
 
 export const addCoordinatesToProperty = (property: Omit<Property, 'coordinates'>): Property => ({
   ...property,
