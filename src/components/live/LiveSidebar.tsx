@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
-import { Slider } from "@/components/ui/slider";
 
 interface LiveSidebarProps {
   currentLiveId: number;
@@ -19,33 +18,19 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 10000000]); // Prix max 10M DH
-  const [surfaceRange, setSurfaceRange] = useState([0, 1000]); // Surface max 1000m²
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Filtrer les lives qui ne sont pas le live actuel et qui sont en direct
   const otherLives = lives.filter(live => live.id !== currentLiveId && live.status === 'live');
 
-  // Convertir le prix de string à number pour le filtrage
-  const getPriceAsNumber = (priceStr: string) => {
-    return parseInt(priceStr.replace(/[^\d]/g, ""));
-  };
-
-  // Filtrer les lives en fonction de tous les critères
+  // Filtrer les lives en fonction du terme de recherche
   const filteredLives = otherLives.filter(live => {
     const searchLower = searchTerm.toLowerCase();
-    const price = getPriceAsNumber(live.price);
-    const surface = live.surface || 0; // Utiliser 0 si la surface n'est pas définie
-
     return (
-      (live.title.toLowerCase().includes(searchLower) ||
+      live.title.toLowerCase().includes(searchLower) ||
       live.location.toLowerCase().includes(searchLower) ||
       live.type.toLowerCase().includes(searchLower) ||
-      live.agent.toLowerCase().includes(searchLower)) &&
-      price >= priceRange[0] &&
-      price <= priceRange[1] &&
-      surface >= surfaceRange[0] &&
-      surface <= surfaceRange[1]
+      live.agent.toLowerCase().includes(searchLower)
     );
   });
 
@@ -80,7 +65,7 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
       className={cn(
         "fixed left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
         "border-b shadow-lg transition-all duration-300 z-40",
-        isCollapsed ? "h-12" : "h-[400px]"
+        isCollapsed ? "h-12" : "h-64"
       )}
       style={{
         bottom: "calc(64px + 56px)",
@@ -113,7 +98,7 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
 
       {!isCollapsed && (
         <div className="h-full flex flex-col">
-          <div className="p-4 space-y-4">
+          <div className="p-2">
             <div className="relative">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
@@ -122,38 +107,6 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-8"
               />
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Prix (DH)</label>
-              <Slider
-                value={priceRange}
-                min={0}
-                max={10000000}
-                step={100000}
-                onValueChange={setPriceRange}
-                className="my-4"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>{priceRange[0].toLocaleString()} DH</span>
-                <span>{priceRange[1].toLocaleString()} DH</span>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Surface (m²)</label>
-              <Slider
-                value={surfaceRange}
-                min={0}
-                max={1000}
-                step={10}
-                onValueChange={setSurfaceRange}
-                className="my-4"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>{surfaceRange[0]} m²</span>
-                <span>{surfaceRange[1]} m²</span>
-              </div>
             </div>
           </div>
 
@@ -198,10 +151,6 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
                         <Badge variant="outline" className="scale-75">
                           {live.type}
                         </Badge>
-                      </div>
-                      <div className="flex justify-between items-center mt-1">
-                        <span className="text-xs text-primary">{live.price}</span>
-                        <span className="text-xs text-muted-foreground">{live.surface}m²</span>
                       </div>
                       <span className="text-xs text-muted-foreground block mt-1">
                         {live.agent}
