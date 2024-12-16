@@ -84,18 +84,19 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
                       >
                         Live
                       </Badge>
+                      <Badge 
+                        variant="secondary" 
+                        className="absolute bottom-1 left-1 scale-75 flex items-center gap-1 bg-black/75 text-white"
+                      >
+                        <Eye className="w-3 h-3" />
+                        {live.viewers}
+                      </Badge>
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
                         {live.title}
                       </h4>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge variant="secondary" className="flex items-center gap-1 scale-90">
-                          <Eye className="w-3 h-3" />
-                          {live.viewers}
-                        </Badge>
-                        <span className="text-xs text-muted-foreground">{live.location}</span>
-                      </div>
+                      <span className="text-xs text-muted-foreground">{live.location}</span>
                     </div>
                   </div>
                 </div>
