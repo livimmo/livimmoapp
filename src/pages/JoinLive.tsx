@@ -118,7 +118,11 @@ export const JoinLive = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="relative h-[calc(100vh-4rem)]">
-        <LiveStream videoId="n3wtxcO_0GQ" />
+        <LiveStream 
+          videoId="n3wtxcO_0GQ" 
+          propertyId={property?.id || 0}
+          propertyTitle={property?.title || ''}
+        />
         <LiveControls isFavorite={isFavorite} onToggleFavorite={handleToggleFavorite} />
         <LiveSidebar currentLiveId={Number(id)} lives={liveStreams} />
 

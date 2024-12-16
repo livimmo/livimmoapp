@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { FavoriteButton } from "@/components/property/FavoriteButton";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LiveInfoProps {
@@ -75,11 +74,6 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
               </Badge>
             </div>
           </div>
-          <FavoriteButton 
-            propertyId={property.id}
-            title={property.title}
-            className="shrink-0"
-          />
         </div>
         
         {!isCollapsed && (
