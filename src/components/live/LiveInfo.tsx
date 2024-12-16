@@ -7,6 +7,7 @@ import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 interface LiveInfoProps {
   property: Property;
@@ -37,17 +38,18 @@ export const LiveInfo = ({
   };
 
   return (
-    <Card className={`
-      p-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60
-      transition-all duration-300
-      h-auto
-      overflow-hidden
-      flex flex-col
-      fixed bottom-[64px] left-0 right-0
-      ${isMobile ? 'max-h-[30vh]' : 'max-h-[20vh]'}
-      z-50
-      border-t border-border/50
-    `}>
+    <Card className={cn(
+      "p-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+      "transition-all duration-300",
+      "h-auto",
+      "overflow-hidden",
+      "flex flex-col",
+      "fixed bottom-[64px] left-0 right-0",
+      isMobile ? 'max-h-[30vh]' : 'max-h-[20vh]',
+      "z-50",
+      "border-t border-border/50",
+      isFullscreen && "z-[9999]"
+    )}>
       <div className="w-full max-w-5xl mx-auto">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3 min-w-0 flex-1">

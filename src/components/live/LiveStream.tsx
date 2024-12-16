@@ -65,11 +65,12 @@ export const LiveStream = ({
 
   const handleViewModeChange = (mode: 'default' | 'cinema' | 'fullscreen') => {
     if (mode === 'fullscreen') {
-      const iframe = document.querySelector('iframe');
-      if (iframe) {
-        iframe.requestFullscreen();
+      const element = document.documentElement;
+      if (!document.fullscreenElement) {
+        element.requestFullscreen();
+      } else {
+        document.exitFullscreen();
       }
-      return;
     }
     setViewMode(mode);
   };
@@ -92,10 +93,16 @@ export const LiveStream = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black flex flex-col">
+    <div className={cn(
+      "fixed inset-0 bg-black flex flex-col",
+      viewMode === 'fullscreen' && 'z-[9999]'
+    )}>
       <div className="relative flex-1">
         {/* Conteneur vidéo */}
-        <div className="w-full h-full">
+        <div className={cn(
+          "w-full h-full",
+          viewMode === 'fullscreen' && 'fixed inset-0 z-[9999]'
+        )}>
           <iframe
             src={getEmbedUrl()}
             title="YouTube video player"
@@ -120,33 +127,6 @@ export const LiveStream = ({
               <Maximize2 className="h-5 w-5" />
             )}
           </Button>
-
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/20 transition-colors"
-              onClick={() => handleViewModeChange(viewMode === 'cinema' ? 'default' : 'cinema')}
-            >
-              {viewMode === 'cinema' ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/20 transition-colors"
-              onClick={() => handleViewModeChange('fullscreen')}
-            >
-              <Maximize2 className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/20 transition-colors"
-              onClick={handleClose}
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
         </div>
 
         {/* LiveCarousel */}
@@ -164,7 +144,10 @@ export const LiveStream = ({
         </div>
 
         {/* Informations de la vidéo */}
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className={cn(
+          "absolute bottom-0 left-0 right-0",
+          viewMode === 'fullscreen' && 'z-[9999]'
+        )}>
           <LiveInfo 
             property={mockProperty}
             onMakeOffer={() => {}}
