@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LiveInfo } from "./LiveInfo";
 import { useState } from "react";
+import { X, Maximize2, Minimize2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface LiveStreamProps {
   videoId: string;
@@ -57,7 +59,6 @@ export const LiveStream = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [viewMode, setViewMode] = useState<'default' | 'cinema' | 'fullscreen'>('default');
-  const [showChat, setShowChat] = useState(false);
 
   const handleViewModeChange = (mode: 'default' | 'cinema' | 'fullscreen') => {
     if (mode === 'fullscreen') {
@@ -70,6 +71,10 @@ export const LiveStream = ({
     setViewMode(mode);
   };
 
+  const handleClose = () => {
+    navigate(-1);
+  };
+
   // Fonction pour générer l'URL de l'embed YouTube
   const getEmbedUrl = () => {
     const baseUrl = 'https://www.youtube.com/embed/';
@@ -80,44 +85,56 @@ export const LiveStream = ({
     return `${baseUrl}${videoIdWithTimestamp}?autoplay=1&rel=0&modestbranding=1&showinfo=0`;
   };
 
-  // Styles conditionnels en fonction du mode de visualisation
-  const containerStyles = {
-    default: 'w-full lg:w-[calc(100%-350px)]',
-    cinema: 'w-full',
-    fullscreen: 'w-full h-screen fixed inset-0 z-50 bg-black',
-  };
-
-  const videoContainerStyles = {
-    default: 'aspect-video w-full relative',
-    cinema: 'aspect-video w-full max-w-[1600px] mx-auto relative',
-    fullscreen: 'w-full h-full',
-  };
-
   return (
-    <div 
-      className={`
-        relative flex flex-col lg:flex-row
-        ${containerStyles[viewMode]}
-        ${viewMode === 'cinema' ? 'bg-black' : ''}
-      `}
-    >
-      <div className={videoContainerStyles[viewMode]}>
-        <iframe
-          src={getEmbedUrl()}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="w-full h-full"
-        />
+    <div className="fixed inset-0 bg-black flex flex-col">
+      <div className="relative flex-1">
+        {/* Contrôles vidéo */}
+        <div className="absolute top-4 right-4 flex gap-2 z-50">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/20"
+            onClick={() => handleViewModeChange(viewMode === 'cinema' ? 'default' : 'cinema')}
+          >
+            {viewMode === 'cinema' ? <Minimize2 /> : <Maximize2 />}
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/20"
+            onClick={() => handleViewModeChange('fullscreen')}
+          >
+            <Maximize2 />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/20"
+            onClick={handleClose}
+          >
+            <X />
+          </Button>
+        </div>
 
-        {/* Ajout de LiveInfo pour les replays */}
+        {/* Conteneur vidéo */}
+        <div className="w-full h-full">
+          <iframe
+            src={getEmbedUrl()}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="w-full h-full"
+          />
+        </div>
+
+        {/* Informations de la vidéo */}
         <div className="absolute bottom-0 left-0 right-0">
           <LiveInfo 
             property={mockProperty}
             onMakeOffer={() => {}}
             viewerCount={Math.floor(Math.random() * 1000)}
-            onToggleChat={() => setShowChat(!showChat)}
+            onToggleChat={() => {}}
             isReplay={isReplay}
           />
         </div>
