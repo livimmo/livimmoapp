@@ -87,6 +87,7 @@ export const LiveStream = ({
         <VideoControls 
           showOtherLives={showOtherLives}
           onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
+          isReplay={isReplay}
         />
 
         <div 
