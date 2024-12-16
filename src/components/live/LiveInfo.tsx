@@ -14,15 +14,15 @@ interface LiveInfoProps {
 export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
   return (
     <Card className="p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex items-center justify-between mb-4">
+      <div className="space-y-2">
         <h2 className="text-xl font-semibold line-clamp-1">{property.title}</h2>
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Users className="w-4 h-4" />
           <span>{viewerCount} spectateurs</span>
         </div>
       </div>
       
-      <div className="space-y-2">
+      <div className="space-y-2 mt-4">
         <p className="text-2xl font-bold">
           {property.price.toLocaleString()} DH
         </p>
