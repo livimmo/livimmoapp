@@ -27,6 +27,24 @@ export const generateMockCoordinates = (location: string) => {
   };
 };
 
+// Fonction pour générer un statut live aléatoire
+const generateRandomLiveStatus = () => {
+  const hasLive = Math.random() > 0.5;
+  if (!hasLive) return { hasLive };
+
+  const now = new Date();
+  const futureDate = new Date();
+  futureDate.setDate(now.getDate() + Math.floor(Math.random() * 14)); // Date dans les 14 prochains jours
+  
+  return {
+    hasLive,
+    liveDate: futureDate,
+    isLiveNow: Math.random() > 0.8, // 20% de chance d'être en live
+    viewers: Math.floor(Math.random() * 50),
+    remainingSeats: Math.floor(Math.random() * 20)
+  };
+};
+
 export const mockProperties: Property[] = [
   {
     id: 1,
