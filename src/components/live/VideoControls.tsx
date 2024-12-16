@@ -15,7 +15,7 @@ export const VideoControls = ({
       <Button
         variant="default"
         size="sm"
-        className="bg-primary/90 hover:bg-primary text-white transition-colors backdrop-blur-sm flex items-center gap-2"
+        className="bg-[#ea384c]/90 hover:bg-[#ea384c] text-white transition-colors backdrop-blur-sm flex items-center gap-2"
         onClick={onToggleOtherLives}
       >
         <Video className="h-4 w-4" />
