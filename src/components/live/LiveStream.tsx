@@ -2,14 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LiveInfo } from "./LiveInfo";
 import { useState } from "react";
-import { Maximize2, Minimize2, ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { LiveCarousel } from "./LiveCarousel";
 import { ReplayCarousel } from "./ReplayCarousel";
 import { liveStreams } from "@/data/mockLives";
 import { cn } from "@/lib/utils";
 import { LiveStreamProps, replayTimestamps } from "@/types/live";
 import { LiveHeader } from "./LiveHeader";
+import { VideoControls } from "./VideoControls";
 
 const mockProperty = {
   id: 1,
@@ -102,7 +101,6 @@ export const LiveStream = ({
           onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
         />
 
-        {/* Conteneur vidéo avec overlay */}
         <div className={cn(
           "relative w-full h-full z-[1] group",
           viewMode === 'fullscreen' && 'fixed inset-0 z-[9999]'
@@ -118,23 +116,11 @@ export const LiveStream = ({
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
 
-        {/* Contrôles vidéo avec fond dégradé */}
-        <div className="absolute bottom-[64px] left-0 right-0 p-4 bg-gradient-to-t from-black/70 via-black/40 to-transparent flex justify-between items-center gap-2 z-[51]">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/20 transition-colors backdrop-blur-sm"
-            onClick={() => setShowOtherLives(!showOtherLives)}
-          >
-            {showOtherLives ? (
-              <Minimize2 className="h-6 w-6" />
-            ) : (
-              <Maximize2 className="h-6 w-6" />
-            )}
-          </Button>
-        </div>
+        <VideoControls 
+          showOtherLives={showOtherLives}
+          onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
+        />
 
-        {/* Carousel avec transition fluide */}
         <div 
           className={cn(
             "absolute left-0 right-0 z-[51] transition-all duration-300 ease-in-out",
@@ -160,7 +146,6 @@ export const LiveStream = ({
           )}
         </div>
 
-        {/* Informations de la vidéo avec fond flouté */}
         <div className={cn(
           "absolute bottom-0 left-0 right-0 z-[52]",
           viewMode === 'fullscreen' && 'z-[9999]'
