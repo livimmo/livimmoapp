@@ -69,7 +69,8 @@ const mockPropertiesBase = [
       image: "https://i.pravatar.cc/150?u=sarah",
       phone: "+212 6 12 34 56 78",
       email: "sarah.martin@example.com",
-    }
+    },
+    transactionType: "Vente" as const
   },
   {
     id: 2,
@@ -84,7 +85,7 @@ const mockPropertiesBase = [
     features: ["Vue mer", "Terrasse", "Parking"],
     hasLive: false,
     tags: ["Exclusivité"],
-    offers: 8, // Bien modérément populaire
+    offers: 8,
     images: [
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
       "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
@@ -95,6 +96,7 @@ const mockPropertiesBase = [
       phone: "+212 6 23 45 67 89",
       email: "mohammed.alami@example.com",
     },
+    transactionType: "Location" as const
   },
   {
     id: 3,
@@ -131,7 +133,8 @@ const mockPropertiesBase = [
       phone: "+212 6 63 45 67 89",
       email: "yasmine.idrissi@example.com"
     },
-    offers: 5, // Bien peu populaire
+    offers: 5,
+    transactionType: "Vente" as const,
     coordinates: generateMockCoordinates("Médina, Marrakech")
   },
   {
@@ -165,10 +168,14 @@ const mockPropertiesBase = [
       phone: "+212 6 64 56 78 90",
       email: "omar.tazi@example.com"
     },
-    offers: 0, // Pas d'offres
+    offers: 0,
+    transactionType: "Location" as const,
     coordinates: generateMockCoordinates("Malabata, Tanger")
   }
-];
+].map(property => ({
+  ...property,
+  transactionType: Math.random() > 0.5 ? "Vente" : "Location" as const
+}));
 
 export const addCoordinatesToProperty = (property: Omit<Property, 'coordinates'>): Property => ({
   ...property,

@@ -16,7 +16,7 @@ export interface Property {
   viewers?: number;
   remainingSeats?: number;
   tags?: string[];
-  offers?: number; // Nombre d'offres reçues
+  offers?: number;
   agent: {
     name: string;
     image: string;
@@ -27,4 +27,5 @@ export interface Property {
     lat: number;
     lng: number;
   };
+  transactionType: "Vente" | "Location";
 }

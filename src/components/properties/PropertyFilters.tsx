@@ -12,6 +12,7 @@ import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { SmartSearchBar } from "@/components/search/SmartSearchBar";
 import { Input } from "@/components/ui/input";
+import { TransactionTypeFilter } from "./filters/TransactionTypeFilter";
 
 interface PropertyFiltersProps {
   searchTerm: string;
@@ -25,6 +26,8 @@ interface PropertyFiltersProps {
   showLiveOnly: boolean;
   setShowLiveOnly: (value: boolean) => void;
   suggestions?: string[];
+  transactionType: "Vente" | "Location";
+  setTransactionType: (value: "Vente" | "Location") => void;
 }
 
 export const PropertyFilters = ({
@@ -39,6 +42,8 @@ export const PropertyFilters = ({
   showLiveOnly,
   setShowLiveOnly,
   suggestions = [],
+  transactionType,
+  setTransactionType,
 }: PropertyFiltersProps) => {
   const [showFilters, setShowFilters] = useState(false);
   const [manualPrice, setManualPrice] = useState(false);
@@ -93,6 +98,11 @@ export const PropertyFilters = ({
 
       {showFilters && (
         <div className="space-y-4">
+          <TransactionTypeFilter
+            transactionType={transactionType}
+            setTransactionType={setTransactionType}
+          />
+
           <div className="flex items-center gap-4">
             <Select value={propertyType} onValueChange={setPropertyType}>
               <SelectTrigger className="w-[180px]">
