@@ -63,9 +63,9 @@ export const PropertyForm = ({ onSubmit, initialData }) => {
       <div className="space-y-2">
         <Label>Localisation*</Label>
         <GoogleMapInput
+          onLocationSelect={setLocation}
           value={location}
           onChange={setLocation}
-          required
         />
       </div>
 

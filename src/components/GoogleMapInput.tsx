@@ -3,6 +3,8 @@ import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 interface GoogleMapInputProps {
   onLocationSelect: (location: string) => void;
+  value?: string;
+  onChange?: (location: string) => void;
 }
 
 const defaultCenter = {
@@ -15,7 +17,7 @@ const containerStyle = {
   height: '300px'
 };
 
-export const GoogleMapInput = ({ onLocationSelect }: GoogleMapInputProps) => {
+export const GoogleMapInput = ({ onLocationSelect, value, onChange }: GoogleMapInputProps) => {
   const [marker, setMarker] = useState(defaultCenter);
 
   const handleMapClick = async (e: google.maps.MapMouseEvent) => {
@@ -30,7 +32,9 @@ export const GoogleMapInput = ({ onLocationSelect }: GoogleMapInputProps) => {
       const response = await geocoder.geocode({ location: { lat, lng } });
       
       if (response.results[0]) {
-        onLocationSelect(response.results[0].formatted_address);
+        const location = response.results[0].formatted_address;
+        onLocationSelect(location);
+        onChange?.(location);
       }
     } catch (error) {
       console.error("Erreur lors de la géocodification:", error);
