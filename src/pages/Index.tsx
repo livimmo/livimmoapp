@@ -113,7 +113,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <HomeHeader />
 
-      <main className="container mx-auto px-4 pt-20">
+      <main className="container mx-auto px-4 pt-24">
         <div className="mb-8">
           <SmartSearchBar
             searchTerm={searchTerm}
