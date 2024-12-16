@@ -42,18 +42,15 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
 
       <div className="space-y-1.5">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex flex-col min-w-0">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-semibold truncate">{property.title}</h2>
-              <Badge 
-                variant="default" 
-                className="flex items-center gap-1 bg-[#ea384c] hover:bg-[#ea384c]/90 shrink-0"
-              >
-                <Radio className="w-3 h-3" />
-                <span>LIVE</span>
-              </Badge>
-            </div>
-            <p className="text-sm text-muted-foreground">{property.price.toLocaleString()} DH</p>
+          <div className="flex items-center gap-2 min-w-0">
+            <h2 className="text-base font-semibold truncate">{property.title}</h2>
+            <Badge 
+              variant="default" 
+              className="flex items-center gap-1 bg-[#ea384c] hover:bg-[#ea384c]/90 shrink-0"
+            >
+              <Radio className="w-3 h-3" />
+              <span>LIVE</span>
+            </Badge>
           </div>
           <FavoriteButton 
             propertyId={property.id}
