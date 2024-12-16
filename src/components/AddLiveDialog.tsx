@@ -96,8 +96,8 @@ export const AddLiveDialog = () => {
           Ajouter un Live
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <div className="flex justify-between items-center mb-4">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-4 sticky top-0 bg-white pt-4 pb-2 z-10">
           <DialogHeader>
             <DialogTitle>Programmer un nouveau Live</DialogTitle>
             <DialogDescription>
@@ -111,53 +111,55 @@ export const AddLiveDialog = () => {
           </DialogClose>
         </div>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Titre du Live*</label>
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Ex: Visite Villa Moderne Casablanca"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Description</label>
-            <Input
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Description de la visite..."
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Prix*</label>
-            <div className="relative">
+        <form onSubmit={handleSubmit} className="space-y-6 pb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Titre du Live*</label>
               <Input
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                placeholder="Prix en DH"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Ex: Visite Villa Moderne Casablanca"
                 required
-                className="pl-8"
               />
-              <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">DH</span>
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Surface*</label>
-            <div className="relative">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Description</label>
               <Input
-                type="number"
-                value={surface}
-                onChange={(e) => setSurface(e.target.value)}
-                placeholder="Surface en m²"
-                required
-                className="pl-8"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Description de la visite..."
               />
-              <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">m²</span>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Prix*</label>
+              <div className="relative">
+                <Input
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  placeholder="Prix en DH"
+                  required
+                  className="pl-8"
+                />
+                <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">DH</span>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Surface*</label>
+              <div className="relative">
+                <Input
+                  type="number"
+                  value={surface}
+                  onChange={(e) => setSurface(e.target.value)}
+                  placeholder="Surface en m²"
+                  required
+                  className="pl-8"
+                />
+                <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">m²</span>
+              </div>
             </div>
           </div>
 
@@ -214,55 +216,57 @@ export const AddLiveDialog = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Date du Live*</label>
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              className="rounded-md border"
-            />
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Date du Live*</label>
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                className="rounded-md border"
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Type de Live*</label>
-            <RadioGroup
-              value={liveType}
-              onValueChange={(value: "youtube" | "facebook" | "instagram" | "whatsapp") => setLiveType(value)}
-              className="grid grid-cols-2 gap-4"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="youtube" id="youtube" />
-                <Label htmlFor="youtube" className="flex items-center gap-2">
-                  <Youtube className="h-4 w-4" />
-                  YouTube Live
-                </Label>
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="facebook" id="facebook" />
-                <Label htmlFor="facebook" className="flex items-center gap-2">
-                  <Facebook className="h-4 w-4" />
-                  Facebook Live
-                </Label>
-              </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Type de Live*</label>
+              <RadioGroup
+                value={liveType}
+                onValueChange={(value: "youtube" | "facebook" | "instagram" | "whatsapp") => setLiveType(value)}
+                className="grid grid-cols-2 gap-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="youtube" id="youtube" />
+                  <Label htmlFor="youtube" className="flex items-center gap-2">
+                    <Youtube className="h-4 w-4" />
+                    YouTube Live
+                  </Label>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="facebook" id="facebook" />
+                  <Label htmlFor="facebook" className="flex items-center gap-2">
+                    <Facebook className="h-4 w-4" />
+                    Facebook Live
+                  </Label>
+                </div>
 
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="instagram" id="instagram" />
-                <Label htmlFor="instagram" className="flex items-center gap-2">
-                  <Instagram className="h-4 w-4" />
-                  Instagram Live
-                </Label>
-              </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="instagram" id="instagram" />
+                  <Label htmlFor="instagram" className="flex items-center gap-2">
+                    <Instagram className="h-4 w-4" />
+                    Instagram Live
+                  </Label>
+                </div>
 
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="whatsapp" id="whatsapp" />
-                <Label htmlFor="whatsapp" className="flex items-center gap-2">
-                  <MessageCircle className="h-4 w-4" />
-                  WhatsApp Video
-                </Label>
-              </div>
-            </RadioGroup>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="whatsapp" id="whatsapp" />
+                  <Label htmlFor="whatsapp" className="flex items-center gap-2">
+                    <MessageCircle className="h-4 w-4" />
+                    WhatsApp Video
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -275,7 +279,7 @@ export const AddLiveDialog = () => {
             />
           </div>
 
-          <div className="flex gap-2 justify-end mt-6">
+          <div className="flex gap-2 justify-end sticky bottom-0 bg-white pt-2">
             <DialogClose asChild>
               <Button type="button" variant="outline">
                 Annuler
