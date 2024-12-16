@@ -1,7 +1,7 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink, Heart, Radio, ChevronDown, ChevronUp, ThumbsUp } from "lucide-react";
+import { Users, ExternalLink, Heart, Radio, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
@@ -85,9 +85,19 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
                 </div>
               </div>
 
-              <p className={`text-lg font-bold ${isMobile ? 'text-right' : ''}`}>
-                {property.price.toLocaleString()} DH
-              </p>
+              <div className="flex items-center justify-between">
+                <p className="text-lg font-bold">
+                  {property.price.toLocaleString()} DH
+                </p>
+                <Button 
+                  size="sm"
+                  className="w-auto" 
+                  onClick={() => setIsOfferDialogOpen(true)}
+                >
+                  <Heart className="w-4 h-4 mr-1.5" />
+                  Je suis intéressé(e)
+                </Button>
+              </div>
 
               <Link 
                 to={`/properties/${property.id}`}
@@ -97,39 +107,30 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
                 Voir plus de détails
               </Link>
             </div>
-
-            <div className={`flex ${isMobile ? 'justify-end mt-2' : 'justify-end'}`}>
-              <Button 
-                size="sm"
-                className="w-auto" 
-                onClick={() => setIsOfferDialogOpen(true)}
-              >
-                <Heart className="w-4 h-4 mr-1.5" />
-                Je suis intéressé(e)
-              </Button>
-            </div>
           </div>
         )}
 
         {isCollapsed && (
           <div className="flex items-center justify-between gap-4">
-            <p className="font-semibold">{property.price.toLocaleString()} DH</p>
-            <div className="flex items-center gap-2">
-              <Badge 
-                variant="secondary" 
-                className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
-              >
-                {offerCount} offres
-              </Badge>
+            <div className="flex items-center gap-4">
+              <p className="font-semibold">{property.price.toLocaleString()} DH</p>
               <Button
                 size="sm"
                 variant="ghost"
                 className="h-8 px-2 hover:bg-accent"
                 onClick={() => setIsOfferDialogOpen(true)}
               >
-                <ThumbsUp className="w-4 h-4 mr-1.5" />
+                <Heart className="w-4 h-4 mr-1.5" />
                 <span className="text-sm">Intéressé</span>
               </Button>
+            </div>
+            <div>
+              <Badge 
+                variant="secondary" 
+                className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
+              >
+                {offerCount} offres
+              </Badge>
             </div>
           </div>
         )}
