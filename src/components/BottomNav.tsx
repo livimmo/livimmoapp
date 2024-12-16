@@ -1,4 +1,4 @@
-import { Home, Search, Video, Heart, User } from "lucide-react";
+import { Home, Search, Video, Heart, User, Building2 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export const BottomNav = () => {
@@ -12,6 +12,7 @@ export const BottomNav = () => {
     { icon: Home, label: "Accueil", path: "/" },
     { icon: Search, label: "Recherche", path: "/search" },
     { icon: Video, label: "Lives", path: "/lives" },
+    { icon: Building2, label: "Promoteurs", path: "/developers" },
     { icon: Heart, label: "Favoris", path: "/favorites" },
     { icon: User, label: "Profil", path: "/profile" },
   ];
@@ -29,7 +30,7 @@ export const BottomNav = () => {
                 : "text-gray-500 hover:text-primary"
             }`}
           >
-            <item.icon className="w-6 h-6" />
+            <item.icon className="w-5 h-5" />
             <span className="text-xs mt-1">{item.label}</span>
           </Link>
         ))}
