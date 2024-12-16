@@ -14,8 +14,8 @@ import { liveStreams } from "@/data/mockLives";
 const mockLiveData = {
   viewerCount: 45,
   messages: [
-    { id: 1, sender: "Sophie Martin", text: "Quelle est la superficie du jardin ?", timestamp: new Date() },
-    { id: 2, sender: "Agent", text: "Le jardin fait 500m²", timestamp: new Date() },
+    { id: 1, user: "Sophie Martin", message: "Quelle est la superficie du jardin ?", timestamp: new Date() },
+    { id: 2, user: "Agent", message: "Le jardin fait 500m²", timestamp: new Date() },
   ],
 };
 

@@ -9,8 +9,6 @@ import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { scheduledLives, liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
-import { useAuth } from "@/contexts/AuthContext";
-import { AddLiveDialog } from "@/components/AddLiveDialog";
 
 const Lives = () => {
   const [currentLivesViewMode, setCurrentLivesViewMode] = useState<"list" | "map">("list");
@@ -24,10 +22,11 @@ const Lives = () => {
   const [showLiveOnly, setShowLiveOnly] = useState(true);
   const [transactionType, setTransactionType] = useState<"Vente" | "Location">("Vente");
 
+  // Create replay lives from existing lives
   const replayLives = liveStreams.map(live => ({
     ...live,
     status: "replay" as const,
-    viewers: Math.floor(Math.random() * 1000)
+    viewers: Math.floor(Math.random() * 1000) // Random number of views
   }));
 
   // Filter function for both current and scheduled lives
@@ -41,6 +40,9 @@ const Lives = () => {
         : live.price;
       const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
       
+      // Note: Surface filtering is commented out as it's not available in the mock data
+      // Would need to add surface data to implement this filter
+      
       return matchesSearch && matchesType && matchesPrice;
     });
   };
@@ -49,6 +51,7 @@ const Lives = () => {
   const filteredScheduledLives = filterLives(scheduledLives);
   const filteredReplayLives = filterLives(replayLives);
 
+  // Convert current lives to Property format for the map
   const currentLiveProperties: Property[] = filteredCurrentLives.map((live) => ({
     id: live.id,
     title: live.title,
@@ -79,6 +82,7 @@ const Lives = () => {
     transactionType: Math.random() > 0.5 ? "Vente" : "Location"
   }));
 
+  // Suggestions based on available locations and types
   const suggestions = Array.from(new Set([
     ...liveStreams.map(live => live.location),
     ...liveStreams.map(live => live.type),
@@ -86,32 +90,26 @@ const Lives = () => {
     ...scheduledLives.map(live => live.type),
   ]));
 
-  const { user } = useAuth();
-  const isAgentOrPromoter = user?.role === 'agent' || user?.role === 'promoter';
-
   return (
     <div className="container mx-auto px-4 py-8 mt-12 space-y-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <PropertyFilters
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          propertyType={propertyType}
-          setPropertyType={setPropertyType}
-          priceRange={priceRange}
-          setPriceRange={setPriceRange}
-          surfaceRange={surfaceRange}
-          setSurfaceRange={setSurfaceRange}
-          showLiveOnly={showLiveOnly}
-          setShowLiveOnly={setShowLiveOnly}
-          suggestions={suggestions}
-          transactionType={transactionType}
-          setTransactionType={setTransactionType}
-        />
-        {isAgentOrPromoter && <AddLiveDialog />}
-      </div>
+      <PropertyFilters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        propertyType={propertyType}
+        setPropertyType={setPropertyType}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+        surfaceRange={surfaceRange}
+        setSurfaceRange={setSurfaceRange}
+        showLiveOnly={showLiveOnly}
+        setShowLiveOnly={setShowLiveOnly}
+        suggestions={suggestions}
+        transactionType={transactionType}
+        setTransactionType={setTransactionType}
+      />
 
       {/* Section des lives en cours */}
-      <section className="bg-white rounded-lg shadow-sm p-6">
+      <section>
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <span className="inline-block w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
@@ -139,7 +137,7 @@ const Lives = () => {
         
         {filteredCurrentLives.length > 0 ? (
           currentLivesViewMode === "list" ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {currentLiveProperties.map((property) => (
                 <PropertyCard key={property.id} {...property} />
               ))}
@@ -150,22 +148,22 @@ const Lives = () => {
             </div>
           )
         ) : (
-          <div className="text-center text-muted-foreground py-12">
+          <div className="text-center text-muted-foreground">
             Aucun live en cours pour le moment
           </div>
         )}
       </section>
 
       {/* Section des lives programmés */}
-      <section className="bg-white rounded-lg shadow-sm p-6">
+      <section>
         <h2 className="text-2xl font-bold mb-6">Lives programmés</h2>
         <ScheduledLivesList lives={filteredScheduledLives} />
       </section>
 
       {/* Section des replays */}
-      <section className="bg-white rounded-lg shadow-sm p-6">
+      <section>
         <h2 className="text-2xl font-bold mb-6">Replays disponibles</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredReplayLives.map((live) => (
             <ReplayCard key={live.id} live={live} />
           ))}

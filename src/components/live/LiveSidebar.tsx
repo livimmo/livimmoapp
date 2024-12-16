@@ -1,5 +1,5 @@
 import { LiveEvent } from "@/types/live";
-import { Radio, ChevronDown, ChevronUp, Eye, Search, X } from "lucide-react";
+import { Radio, ChevronDown, ChevronUp, Eye, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
@@ -11,10 +11,9 @@ import { useState, useEffect, useRef } from "react";
 interface LiveSidebarProps {
   currentLiveId: number;
   lives: LiveEvent[];
-  onCloseLive?: (liveId: number) => void;
 }
 
-export const LiveSidebar = ({ currentLiveId, lives, onCloseLive }: LiveSidebarProps) => {
+export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -83,7 +82,7 @@ export const LiveSidebar = ({ currentLiveId, lives, onCloseLive }: LiveSidebarPr
           )}
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          <div className="relative flex items-center gap-2 hover:text-[#ea384c]">
+          <div className="relative flex items-center gap-2">
             <Radio className="h-4 w-4" />
             <span className="text-sm font-medium">
               {otherLives.length} lives en cours
@@ -119,22 +118,9 @@ export const LiveSidebar = ({ currentLiveId, lives, onCloseLive }: LiveSidebarPr
               {filteredLives.map(live => (
                 <div
                   key={live.id}
-                  className="group cursor-pointer hover:bg-accent rounded-lg p-2 transition-colors flex-shrink-0 w-64 relative"
+                  className="group cursor-pointer hover:bg-accent rounded-lg p-2 transition-colors flex-shrink-0 w-64"
                   onClick={() => navigate(`/live/${live.id}`)}
                 >
-                  {onCloseLive && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/75 text-white"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onCloseLive(live.id);
-                      }}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  )}
                   <div className="space-y-2">
                     <div className="relative">
                       <img 
