@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Users } from "lucide-react";
+import { Video } from "lucide-react";
 
 interface VideoControlsProps {
   showOtherLives: boolean;
@@ -18,7 +18,7 @@ export const VideoControls = ({
         className="bg-primary/90 hover:bg-primary text-white transition-colors backdrop-blur-sm flex items-center gap-2"
         onClick={onToggleOtherLives}
       >
-        <Users className="h-4 w-4" />
+        <Video className="h-4 w-4" />
         <span className="text-sm">Autres lives en cours</span>
       </Button>
     </div>
