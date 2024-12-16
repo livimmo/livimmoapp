@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AddLiveDialog } from "@/components/AddLiveDialog";
-import { Calendar, Clock, Video, Users } from "lucide-react";
+import { Calendar, Clock, Video, Users, X } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { EditLiveForm } from "./EditLiveForm";
 
 interface ScheduledLive {
   id: number;
@@ -12,7 +14,6 @@ interface ScheduledLive {
 }
 
 export const LiveManagement = () => {
-  // Mock data - à remplacer par des vraies données
   const [scheduledLives] = useState<ScheduledLive[]>([
     {
       id: 1,
@@ -29,6 +30,8 @@ export const LiveManagement = () => {
       viewers: 8,
     },
   ]);
+
+  const [editingLive, setEditingLive] = useState<ScheduledLive | null>(null);
 
   return (
     <div className="space-y-6">
@@ -53,7 +56,11 @@ export const LiveManagement = () => {
               >
                 <div className="flex justify-between items-start mb-2">
                   <h4 className="font-medium">{live.title}</h4>
-                  <Button variant="outline" size="sm">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setEditingLive(live)}
+                  >
                     Modifier
                   </Button>
                 </div>
@@ -83,6 +90,27 @@ export const LiveManagement = () => {
           </div>
         )}
       </div>
+
+      <Dialog open={!!editingLive} onOpenChange={() => setEditingLive(null)}>
+        <DialogContent className="max-w-2xl">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">Modifier le live</h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setEditingLive(null)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          {editingLive && (
+            <EditLiveForm
+              live={editingLive}
+              onClose={() => setEditingLive(null)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
