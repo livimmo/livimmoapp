@@ -1,7 +1,7 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink, Heart, Radio, Euro, ChevronDown, ChevronUp, ThumbsUp } from "lucide-react";
+import { Users, ExternalLink, Heart, Radio, ChevronDown, ChevronUp, ThumbsUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
@@ -64,7 +64,6 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
             <div className="flex items-center justify-between gap-2 text-sm">
               <p className="font-semibold">{property.price.toLocaleString()} DH</p>
               <div className="flex items-center gap-1.5">
-                <Euro className="w-3.5 h-3.5" />
                 <Badge 
                   variant="secondary" 
                   className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
@@ -93,7 +92,6 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
                 <span>{viewerCount} spectateurs</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Euro className="w-3.5 h-3.5" />
                 <Badge 
                   variant="secondary" 
                   className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
