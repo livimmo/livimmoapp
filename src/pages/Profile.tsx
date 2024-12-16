@@ -89,6 +89,7 @@ const Profile = () => {
             firstName={profile.firstName}
             lastName={profile.lastName}
             avatar={profile.avatar}
+            accountType={profile.accountType}
           />
 
           <div className="flex flex-col gap-4">
