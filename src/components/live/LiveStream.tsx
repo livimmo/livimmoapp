@@ -11,13 +11,23 @@ interface LiveStreamProps {
   currentLiveId: number;
   otherLives: LiveEvent[];
   onLiveChange: (id: number) => void;
+  isReplay?: boolean;
 }
+
+const REPLAY_IDS = [
+  'VIQpb65HmMs',
+  'VIQpb65HmMs?start=300',
+  'VIQpb65HmMs?start=600',
+  'VIQpb65HmMs?start=900',
+  'VIQpb65HmMs?start=1200',
+];
 
 export const LiveStream = ({ 
   videoId, 
   currentLiveId,
   otherLives,
-  onLiveChange 
+  onLiveChange,
+  isReplay = false
 }: LiveStreamProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -37,6 +47,11 @@ export const LiveStream = ({
     cinema: "relative w-full h-[85vh] bg-black",
     fullscreen: "relative w-full h-screen bg-black"
   };
+
+  // Si c'est un replay, on prend un ID aléatoire parmi les replays
+  const actualVideoId = isReplay ? 
+    REPLAY_IDS[Math.floor(Math.random() * REPLAY_IDS.length)] : 
+    videoId;
 
   return (
     <div className={containerClasses[viewMode]}>
@@ -99,7 +114,7 @@ export const LiveStream = ({
       )}
 
       <iframe
-        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
+        src={`https://www.youtube.com/embed/${actualVideoId}?autoplay=1&mute=1`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         className="w-full h-full"
