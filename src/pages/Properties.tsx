@@ -6,8 +6,8 @@ import { addCoordinatesToProperties } from "@/data/mockProperties";
 export const Properties = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 5000000]);
-  const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
+  const [minPrice, setMinPrice] = useState<number | "">("");
+  const [maxPrice, setMaxPrice] = useState<number | "">("");
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [transactionType, setTransactionType] = useState<"Vente" | "Location">("Vente");
 
@@ -67,8 +67,8 @@ export const Properties = () => {
     const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       property.location.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = !propertyType || property.type === propertyType;
-    const matchesMinPrice = !priceRange[0] || property.price >= priceRange[0];
-    const matchesMaxPrice = !priceRange[1] || property.price <= priceRange[1];
+    const matchesMinPrice = !minPrice || property.price >= minPrice;
+    const matchesMaxPrice = !maxPrice || property.price <= maxPrice;
     const matchesLive = !showLiveOnly || property.hasLive;
     const matchesTransactionType = property.transactionType === transactionType;
 
@@ -82,10 +82,10 @@ export const Properties = () => {
         setSearchTerm={setSearchTerm}
         propertyType={propertyType}
         setPropertyType={setPropertyType}
-        priceRange={priceRange}
-        setPriceRange={setPriceRange}
-        surfaceRange={surfaceRange}
-        setSurfaceRange={setSurfaceRange}
+        minPrice={minPrice}
+        setMinPrice={setMinPrice}
+        maxPrice={maxPrice}
+        setMaxPrice={setMaxPrice}
         showLiveOnly={showLiveOnly}
         setShowLiveOnly={setShowLiveOnly}
         transactionType={transactionType}

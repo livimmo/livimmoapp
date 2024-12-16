@@ -105,7 +105,6 @@ const Index = () => {
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
-  const [transactionType, setTransactionType] = useState<"Vente" | "Location">("Vente");
 
   const suggestions = [
     "Casablanca",
@@ -139,8 +138,6 @@ const Index = () => {
           showLiveOnly={showLiveOnly}
           setShowLiveOnly={setShowLiveOnly}
           suggestions={suggestions}
-          transactionType={transactionType}
-          setTransactionType={setTransactionType}
         />
 
         <section className="mb-8">
