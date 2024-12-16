@@ -1,32 +1,44 @@
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface TransactionTypeFilterProps {
-  transactionType: "Vente" | "Location";
-  setTransactionType: (value: "Vente" | "Location") => void;
+  transactionType: string[];
+  setTransactionType: (value: string[]) => void;
 }
 
 export const TransactionTypeFilter = ({
   transactionType,
   setTransactionType,
 }: TransactionTypeFilterProps) => {
+  const handleCheckboxChange = (type: string, checked: boolean) => {
+    if (checked) {
+      setTransactionType([...transactionType, type]);
+    } else {
+      setTransactionType(transactionType.filter(t => t !== type));
+    }
+  };
+
   return (
     <div className="space-y-2">
       <Label>Type de transaction</Label>
-      <RadioGroup
-        value={transactionType}
-        onValueChange={(value: "Vente" | "Location") => setTransactionType(value)}
-        className="flex gap-4"
-      >
+      <div className="flex gap-4">
         <div className="flex items-center space-x-2">
-          <RadioGroupItem value="Vente" id="vente" />
+          <Checkbox 
+            id="vente"
+            checked={transactionType.includes("Vente")}
+            onCheckedChange={(checked) => handleCheckboxChange("Vente", checked as boolean)}
+          />
           <Label htmlFor="vente">Vente</Label>
         </div>
         <div className="flex items-center space-x-2">
-          <RadioGroupItem value="Location" id="location" />
+          <Checkbox 
+            id="location"
+            checked={transactionType.includes("Location")}
+            onCheckedChange={(checked) => handleCheckboxChange("Location", checked as boolean)}
+          />
           <Label htmlFor="location">Location</Label>
         </div>
-      </RadioGroup>
+      </div>
     </div>
   );
 };
