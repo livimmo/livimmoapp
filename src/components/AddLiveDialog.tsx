@@ -1,26 +1,36 @@
 import { useState } from "react";
-import { Video, Plus } from "lucide-react";
+import { Video, Camera, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PropertyForm } from "./live/PropertyForm";
+import { LiveForm } from "./live/LiveForm";
+import { ConfirmationStep } from "./live/ConfirmationStep";
 
 export const AddLiveDialog = () => {
   const [open, setOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("property");
+  const [propertyData, setPropertyData] = useState(null);
+  const [liveData, setLiveData] = useState(null);
   const isMobile = useIsMobile();
-  const { toast } = useToast();
 
-  const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      setOpen(false);
-      return;
-    }
+  const handlePropertySubmit = (data) => {
+    setPropertyData(data);
+    setActiveTab("live");
+  };
 
-    // Pour l'instant, on affiche juste un message indiquant que la fonctionnalité arrive bientôt
-    toast({
-      title: "Fonctionnalité à venir",
-      description: "L'ajout de lives sera bientôt disponible !",
-    });
+  const handleLiveSubmit = (data) => {
+    setLiveData(data);
+    setActiveTab("confirmation");
+  };
+
+  const handleConfirmation = () => {
+    // TODO: Implémenter la logique de sauvegarde
+    setOpen(false);
+    setActiveTab("property");
+    setPropertyData(null);
+    setLiveData(null);
   };
 
   return (
@@ -29,17 +39,17 @@ export const AddLiveDialog = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => handleOpenChange(true)}
+          onClick={() => setOpen(true)}
           className="relative"
         >
           <div className="relative">
-            <Video className="h-4 w-4" />
-            <Plus className="h-3 w-3 absolute -top-1 -right-1 text-primary" />
+            <Camera className="h-4 w-4 text-red-500" />
+            <div className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full animate-pulse" />
           </div>
         </Button>
       ) : (
         <Button
-          onClick={() => handleOpenChange(true)}
+          onClick={() => setOpen(true)}
           className="bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
           size="sm"
         >
@@ -48,12 +58,46 @@ export const AddLiveDialog = () => {
         </Button>
       )}
 
-      <Dialog open={open} onOpenChange={handleOpenChange}>
-        <DialogContent className="max-w-2xl">
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-4xl">
           <DialogHeader>
             <DialogTitle>Ajouter un Live</DialogTitle>
           </DialogHeader>
-          {/* Le contenu du dialogue sera implémenté dans une prochaine étape */}
+          
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="property">Bien immobilier</TabsTrigger>
+              <TabsTrigger value="live" disabled={!propertyData}>
+                Configuration du Live
+              </TabsTrigger>
+              <TabsTrigger value="confirmation" disabled={!liveData}>
+                Confirmation
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="property">
+              <PropertyForm 
+                onSubmit={handlePropertySubmit}
+                initialData={propertyData}
+              />
+            </TabsContent>
+
+            <TabsContent value="live">
+              <LiveForm 
+                onSubmit={handleLiveSubmit}
+                propertyData={propertyData}
+                initialData={liveData}
+              />
+            </TabsContent>
+
+            <TabsContent value="confirmation">
+              <ConfirmationStep
+                propertyData={propertyData}
+                liveData={liveData}
+                onConfirm={handleConfirmation}
+              />
+            </TabsContent>
+          </Tabs>
         </DialogContent>
       </Dialog>
     </>
