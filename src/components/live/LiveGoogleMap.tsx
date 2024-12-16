@@ -6,11 +6,11 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
 import { Clock } from 'lucide-react';
 
-interface PropertyMapProps {
+interface LiveGoogleMapProps {
   properties: Property[];
 }
 
-export const LiveGoogleMap = ({ properties }: PropertyMapProps) => {
+export function LiveGoogleMap({ properties }: LiveGoogleMapProps) {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   
   const defaultCenter = {
@@ -120,4 +120,4 @@ export const LiveGoogleMap = ({ properties }: PropertyMapProps) => {
       </ScrollArea>
     </div>
   );
-};
+}
