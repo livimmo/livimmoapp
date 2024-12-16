@@ -6,7 +6,7 @@ import { PropertyActions } from "./property/PropertyActions";
 import { FavoriteButton } from "./property/FavoriteButton";
 import { Badge } from "./ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Check } from "lucide-react";
+import { Check, Star, Award } from "lucide-react";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -86,18 +86,33 @@ export const PropertyCard = ({
         isUserRegistered={isUserRegistered}
       />
       <div 
-        className="px-4 pb-4 flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+        className="px-4 pb-4 flex items-center justify-between cursor-pointer hover:opacity-80 transition-opacity"
         onClick={handleAgentClick}
       >
-        <Avatar className="h-8 w-8 border border-primary/10">
-          <AvatarImage src={agent.image} alt={agent.name} />
-          <AvatarFallback>{agent.name.charAt(0)}</AvatarFallback>
-        </Avatar>
-        <div className="flex items-center gap-1">
-          <span className="text-sm text-gray-600">{agent.name}</span>
-          {agent.isVerified && (
-            <Check className="h-4 w-4 text-primary" />
-          )}
+        <div className="flex items-center gap-2">
+          <Avatar className="h-8 w-8 border border-primary/10">
+            <AvatarImage src={agent.image} alt={agent.name} />
+            <AvatarFallback>{agent.name.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <span className="text-sm font-medium text-gray-900">{agent.name}</span>
+            <div className="flex items-center gap-1">
+              {agent.isVerified && (
+                <Badge variant="secondary" className="h-5 px-1.5">
+                  <Check className="h-3 w-3 text-primary mr-1" />
+                  Vérifié
+                </Badge>
+              )}
+              <Badge variant="secondary" className="h-5 px-1.5">
+                <Star className="h-3 w-3 text-yellow-500 mr-1" />
+                4.8
+              </Badge>
+              <Badge variant="secondary" className="h-5 px-1.5">
+                <Award className="h-3 w-3 text-primary mr-1" />
+                Expert
+              </Badge>
+            </div>
+          </div>
         </div>
       </div>
     </div>
