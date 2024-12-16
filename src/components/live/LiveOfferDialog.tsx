@@ -10,6 +10,14 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Clock } from "lucide-react";
 
 interface LiveOfferDialogProps {
   title: string;
@@ -20,6 +28,7 @@ interface LiveOfferDialogProps {
 
 export const LiveOfferDialog = ({ title, price, isOpen, onClose }: LiveOfferDialogProps) => {
   const [offerAmount, setOfferAmount] = useState(price);
+  const [validityDays, setValidityDays] = useState("7"); // Default 7 days
   const { toast } = useToast();
   const { isAuthenticated, user } = useAuth();
 
@@ -36,6 +45,7 @@ export const LiveOfferDialog = ({ title, price, isOpen, onClose }: LiveOfferDial
     const offerData = {
       propertyTitle: title,
       amount: offerAmount,
+      validityDays: parseInt(validityDays),
       contact: isAuthenticated
         ? {
             name: `${user?.firstName} ${user?.lastName}`,
@@ -48,10 +58,17 @@ export const LiveOfferDialog = ({ title, price, isOpen, onClose }: LiveOfferDial
 
     toast({
       title: "Offre envoyée !",
-      description: `Votre offre de ${offerAmount.toLocaleString()} DH pour ${title} a été envoyée.`,
+      description: `Votre offre de ${offerAmount.toLocaleString()} DH pour ${title} est valable ${validityDays} jours.`,
     });
     onClose();
   };
+
+  const validityOptions = [
+    { value: "3", label: "3 jours" },
+    { value: "7", label: "7 jours" },
+    { value: "14", label: "14 jours" },
+    { value: "30", label: "30 jours" },
+  ];
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -71,7 +88,29 @@ export const LiveOfferDialog = ({ title, price, isOpen, onClose }: LiveOfferDial
             />
           </div>
 
-          <Button onClick={handleOffer} className="w-full">
+          <div className="space-y-2">
+            <Label htmlFor="validity" className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              Durée de validité
+            </Label>
+            <Select value={validityDays} onValueChange={setValidityDays}>
+              <SelectTrigger>
+                <SelectValue placeholder="Sélectionnez une durée" />
+              </SelectTrigger>
+              <SelectContent>
+                {validityOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Votre offre expirera automatiquement après cette période si elle n'est pas acceptée.
+            </p>
+          </div>
+
+          <Button onClick={handleOffer} className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
             Envoyer l'offre
           </Button>
         </div>
