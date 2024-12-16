@@ -1,5 +1,5 @@
 import { LiveEvent } from "@/types/live";
-import { Radio, ChevronDown, ChevronUp, Eye, Search } from "lucide-react";
+import { Radio, ChevronDown, ChevronUp, Eye, Search, Minimize2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ interface LiveSidebarProps {
 export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isMinimized, setIsMinimized] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -65,38 +66,54 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
       className={cn(
         "fixed left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
         "border-b shadow-lg transition-all duration-300 z-40",
-        isCollapsed ? "h-12" : "h-64"
+        isCollapsed ? "h-12" : "h-64",
+        isMinimized && "!w-16 !left-auto !h-auto !rounded-l-xl !border !border-r-0"
       )}
       style={{
         bottom: "calc(64px + 56px)",
       }}
     >
       <div className="absolute inset-x-0 -top-8 flex justify-center">
-        <Button
-          variant="ghost"
-          size="sm"
-          className={cn(
-            "relative bg-black/50 hover:bg-black/75 px-3",
-            "text-white shadow-lg transition-all duration-300",
-            "hover:scale-110 backdrop-blur-sm"
-          )}
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          <div className="relative flex items-center gap-2">
-            <Radio className="h-4 w-4" />
-            <span className="text-sm font-medium">
-              {otherLives.length} lives en cours
-            </span>
-            {isCollapsed ? (
-              <ChevronUp className="h-4 w-4" />
-            ) : (
-              <ChevronDown className="h-4 w-4" />
+        <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn(
+              "relative bg-black/50 hover:bg-black/75 px-3",
+              "text-white shadow-lg transition-all duration-300",
+              "hover:scale-110 backdrop-blur-sm",
+              isMinimized && "!p-2"
             )}
-          </div>
-        </Button>
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          >
+            <div className="relative flex items-center gap-2">
+              <Radio className="h-4 w-4" />
+              {!isMinimized && (
+                <>
+                  <span className="text-sm font-medium">
+                    {otherLives.length} lives en cours
+                  </span>
+                  {isCollapsed ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </>
+              )}
+            </div>
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="relative bg-black/50 hover:bg-black/75 px-2 text-white shadow-lg transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+            onClick={() => setIsMinimized(!isMinimized)}
+          >
+            <Minimize2 className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
-      {!isCollapsed && (
+      {!isCollapsed && !isMinimized && (
         <div className="h-full flex flex-col">
           <div className="p-2">
             <div className="relative">
