@@ -27,13 +27,13 @@ export const Signup = () => {
       return;
     }
     
-    await signup(
-      formData.email,
-      formData.password,
-      formData.firstName,
-      formData.lastName,
-      "buyer" // Par défaut, on crée un compte acheteur
-    );
+    await signup({
+      email: formData.email,
+      password: formData.password,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      role: "buyer" // Par défaut, on crée un compte acheteur
+    });
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
