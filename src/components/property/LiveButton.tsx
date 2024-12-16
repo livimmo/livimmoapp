@@ -14,6 +14,7 @@ import { ReservationForm } from "@/components/home/ReservationForm";
 interface LiveButtonProps {
   id: number;
   title: string;
+  liveDate?: Date;
   onJoinLive?: () => void;
   isLiveNow?: boolean;
   isUserRegistered?: boolean;
@@ -22,6 +23,7 @@ interface LiveButtonProps {
 export const LiveButton = ({
   id,
   title,
+  liveDate,
   onJoinLive,
   isLiveNow,
   isUserRegistered,
@@ -67,7 +69,7 @@ export const LiveButton = ({
               live={{ 
                 id, 
                 title, 
-                date: new Date() 
+                date: liveDate || new Date() 
               }} 
               onClose={() => setShowLeadDialog(false)} 
             />
@@ -110,7 +112,7 @@ export const LiveButton = ({
             live={{ 
               id, 
               title, 
-              date: new Date() 
+              date: liveDate || new Date() 
             }} 
             onClose={() => setShowLeadDialog(false)} 
           />
