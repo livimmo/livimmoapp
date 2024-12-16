@@ -44,22 +44,36 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
             <h2 className="text-base font-semibold truncate">{property.title}</h2>
-            <Badge 
-              variant="default" 
-              className="flex items-center gap-1 bg-[#ea384c] hover:bg-[#ea384c]/90 shrink-0"
-            >
-              <Radio className="w-3 h-3" />
-              <span>LIVE</span>
-            </Badge>
+            {!isCollapsed && (
+              <Badge 
+                variant="default" 
+                className="flex items-center gap-1 bg-[#ea384c] hover:bg-[#ea384c]/90 shrink-0"
+              >
+                <Radio className="w-3 h-3" />
+                <span>LIVE</span>
+              </Badge>
+            )}
           </div>
-          <FavoriteButton 
-            propertyId={property.id}
-            title={property.title}
-            className="shrink-0"
-          />
+          {!isCollapsed && (
+            <FavoriteButton 
+              propertyId={property.id}
+              title={property.title}
+              className="shrink-0"
+            />
+          )}
         </div>
         
-        {!isCollapsed && (
+        {isCollapsed ? (
+          <div className="flex items-center gap-1.5">
+            <Euro className="w-3.5 h-3.5" />
+            <Badge 
+              variant="secondary" 
+              className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
+            >
+              {offerCount} offres
+            </Badge>
+          </div>
+        ) : (
           <>
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <div className="flex items-center gap-1.5">
