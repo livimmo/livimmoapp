@@ -4,13 +4,7 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { ReservationForm } from "@/components/home/ReservationForm";
+import { AuthDialog } from "@/components/auth/AuthDialog";
 
 interface FavoriteButtonProps {
   propertyId: number;
@@ -29,11 +23,11 @@ export const FavoriteButton = ({
   const { isAuthenticated } = useAuth();
   const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [showLeadDialog, setShowLeadDialog] = useState(false);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
 
   const handleClick = () => {
     if (!isAuthenticated) {
-      setShowLeadDialog(true);
+      setShowAuthDialog(true);
       return;
     }
 
@@ -72,21 +66,16 @@ export const FavoriteButton = ({
         />
       </Button>
 
-      <Dialog open={showLeadDialog} onOpenChange={setShowLeadDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Inscrivez-vous pour ajouter aux favoris</DialogTitle>
-          </DialogHeader>
-          <ReservationForm 
-            live={{ 
-              id: propertyId, 
-              title, 
-              date: new Date() 
-            }} 
-            onClose={() => setShowLeadDialog(false)} 
-          />
-        </DialogContent>
-      </Dialog>
+      <AuthDialog
+        isOpen={showAuthDialog}
+        onClose={() => setShowAuthDialog(false)}
+        title="Ajoutez ce bien à vos favoris"
+        description="Créez votre compte gratuitement pour sauvegarder vos biens préférés et recevoir des notifications personnalisées"
+        onSuccess={() => {
+          setShowAuthDialog(false);
+          handleClick();
+        }}
+      />
     </>
   );
 };

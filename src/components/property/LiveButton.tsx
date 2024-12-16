@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Video } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { ReservationForm } from "@/components/home/ReservationForm";
-import { useToast } from "@/components/ui/use-toast";
+import { AuthDialog } from "@/components/auth/AuthDialog";
+import { useToast } from "@/hooks/use-toast";
 
 interface LiveButtonProps {
   id: number;
@@ -25,12 +25,12 @@ export const LiveButton = ({
   remainingSeats,
 }: LiveButtonProps) => {
   const { isAuthenticated } = useAuth();
-  const [showLeadDialog, setShowLeadDialog] = useState(false);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
   const { toast } = useToast();
 
   const handleClick = () => {
     if (!isAuthenticated) {
-      setShowLeadDialog(true);
+      setShowAuthDialog(true);
       return;
     }
 
@@ -43,12 +43,18 @@ export const LiveButton = ({
           description: "Vous recevrez un rappel avant le début du live",
         });
       } else {
-        // Si l'utilisateur est connecté, on l'inscrit directement
         toast({
           title: "Inscription confirmée !",
           description: "Vous recevrez un rappel avant le début du live",
         });
       }
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    setShowAuthDialog(false);
+    if (isLiveNow && onJoinLive) {
+      onJoinLive();
     }
   };
 
@@ -70,16 +76,27 @@ export const LiveButton = ({
         }
       </Button>
 
-      {!isAuthenticated && showLeadDialog && (
-        <ReservationForm
-          live={{
-            id,
-            title,
-            date: liveDate || new Date(),
-          }}
-          onClose={() => setShowLeadDialog(false)}
-        />
-      )}
+      <AuthDialog
+        isOpen={showAuthDialog}
+        onClose={() => setShowAuthDialog(false)}
+        title={isLiveNow ? "Rejoignez le live maintenant !" : "Réservez votre place"}
+        description={
+          isLiveNow
+            ? "Créez votre compte gratuitement pour rejoindre ce live en direct et interagir avec l'agent"
+            : "Inscrivez-vous pour réserver votre place et recevoir un rappel avant le début du live"
+        }
+        liveData={
+          liveDate
+            ? {
+                id,
+                title,
+                date: liveDate,
+                availableSeats: remainingSeats,
+              }
+            : undefined
+        }
+        onSuccess={handleAuthSuccess}
+      />
     </>
   );
 };
