@@ -51,8 +51,8 @@ export const LiveGoogleMap = ({ properties }: LiveGoogleMapProps) => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[700px]">
-      <div className="relative h-full">
+    <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 h-[700px]">
+      <div className="relative h-[400px] lg:h-full">
         <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
           <GoogleMap
             mapContainerStyle={mapStyles}
@@ -125,7 +125,7 @@ export const LiveGoogleMap = ({ properties }: LiveGoogleMapProps) => {
         </LoadScript>
       </div>
 
-      <ScrollArea className="h-full bg-white rounded-lg shadow-lg p-4">
+      <ScrollArea className="h-[300px] lg:h-full bg-white rounded-lg shadow-lg p-4">
         <div className="space-y-4">
           {properties.map((property) => (
             <div
