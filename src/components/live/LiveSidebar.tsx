@@ -26,14 +26,14 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
       interval = setInterval(() => {
         if (scrollRef.current) {
           const nextIndex = (currentIndex + 1) % otherLives.length;
-          const cardWidth = 256 + 16; // width of card (256px) + gap (16px)
+          const cardWidth = 256 + 16;
           scrollRef.current.scrollTo({
             left: nextIndex * cardWidth,
             behavior: 'smooth'
           });
           setCurrentIndex(nextIndex);
         }
-      }, 3000); // Change slide every 3 seconds
+      }, 3000);
     }
 
     return () => {
@@ -53,22 +53,22 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
         isCollapsed ? "h-12" : "h-48"
       )}
       style={{
-        bottom: isCollapsed ? "calc(64px + 56px)" : "calc(64px + 56px)",
+        bottom: "calc(64px + 56px)",
       }}
     >
-      <div className="absolute inset-x-0 bottom-0 flex justify-center">
+      <div className="absolute inset-x-0 -top-8 flex justify-center">
         <Button
           variant="ghost"
           size="sm"
           className={cn(
-            "relative bg-white hover:bg-white/90 px-3",
-            "text-[#ea384c] shadow-lg transition-all duration-300 group",
-            "hover:scale-110"
+            "relative bg-black/50 hover:bg-black/75 px-3",
+            "text-white shadow-lg transition-all duration-300",
+            "hover:scale-110 backdrop-blur-sm"
           )}
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
           <div className="relative flex items-center gap-2">
-            <Radio className="h-4 w-4 text-[#ea384c]" />
+            <Radio className="h-4 w-4" />
             <span className="text-sm font-medium">
               {otherLives.length} lives en cours
             </span>
