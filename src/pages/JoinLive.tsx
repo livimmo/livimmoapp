@@ -27,10 +27,12 @@ export const JoinLive = () => {
   const otherLives = liveStreams.filter(live => live.id !== Number(id));
 
   useEffect(() => {
-    // Simulate loading property data
-    const timer = setTimeout(() => {
+    let isMounted = true;
+
+    const loadProperty = async () => {
+      // Simulate loading property data
       const location = "Marrakech";
-      setProperty({
+      const propertyData = {
         id: 1,
         title: "Villa Moderne avec Piscine",
         price: 2500000,
@@ -54,11 +56,19 @@ export const JoinLive = () => {
           lat: 31.7917,
           lng: -7.0926,
         },
-      });
-      setIsLoading(false);
-    }, 1500);
+      };
 
-    return () => clearTimeout(timer);
+      if (isMounted) {
+        setProperty(propertyData);
+        setIsLoading(false);
+      }
+    };
+
+    loadProperty();
+
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
   if (isLoading) {
@@ -92,6 +102,7 @@ export const JoinLive = () => {
         {/* YouTube Live Embed */}
         <div className="absolute inset-0 bg-black">
           <iframe
+            key={id}
             className="w-full h-full"
             src="https://www.youtube.com/embed/n3wtxcO_0GQ?autoplay=1"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
