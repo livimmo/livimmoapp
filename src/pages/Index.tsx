@@ -4,7 +4,7 @@ import { LiveSection } from "@/components/home/LiveSection";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { PropertyMap } from "@/components/search/PropertyMap";
-import { PropertyList } from "@/components/search/PropertyList";
+import { PropertyList } from "@/components/properties/PropertyList";
 import { type Property } from "@/types/property";
 import { FeaturedSection } from "@/components/home/FeaturedSection";
 import { HomeFilters } from "@/components/home/HomeFilters";
@@ -162,6 +162,7 @@ const Index = () => {
           {viewMode === "list" ? (
             <PropertyList 
               properties={filteredProperties.length > 0 ? filteredProperties : featuredProperties}
+              viewMode="grid"
             />
           ) : (
             <PropertyMap 
