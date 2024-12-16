@@ -5,6 +5,7 @@ import { PropertyInfo } from "./PropertyInfo";
 import { PropertyActions } from "./property/PropertyActions";
 import { FavoriteButton } from "./property/FavoriteButton";
 import { Badge } from "./ui/badge";
+import { getRandomTags } from "@/utils/propertyTags";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -31,6 +32,7 @@ export const PropertyCard = ({
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
+  const tags = getRandomTags();
 
   const handleJoinLive = () => {
     navigate(`/live/${id}`);
@@ -55,11 +57,26 @@ export const PropertyCard = ({
           <FavoriteButton propertyId={id} title={title} />
           <PropertyActions title={title} currentUrl={currentUrl} />
         </div>
-        {!hasLive && (
-          <div className="absolute top-2 left-2 z-10">
+        <div className="absolute top-2 left-2 z-10 flex flex-wrap gap-1 max-w-[80%]">
+          {!hasLive && (
             <Badge variant="destructive">Vendu</Badge>
-          </div>
-        )}
+          )}
+          {tags.map((tag) => (
+            <Badge
+              key={tag}
+              variant={
+                tag === "Coup de fusil"
+                  ? "destructive"
+                  : tag === "Nouveauté"
+                  ? "default"
+                  : "secondary"
+              }
+              className="bg-white/90 backdrop-blur-sm"
+            >
+              {tag}
+            </Badge>
+          ))}
+        </div>
       </div>
       <PropertyInfo
         id={id}

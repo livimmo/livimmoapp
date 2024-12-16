@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
+import { getRandomTags } from "@/utils/propertyTags";
 
 interface LiveCarouselProps {
   lives: LiveEvent[];
@@ -19,14 +20,6 @@ interface LiveCarouselProps {
   onLiveSelect: (liveId: number) => void;
   onLiveClose?: (liveId: number) => void;
 }
-
-// Fonction utilitaire pour générer des tags aléatoires
-const getRandomTags = () => {
-  const allTags = ["Coup de fusil", "Nouveauté", "Exclusivité", "Neuf", "Solde"];
-  const numberOfTags = Math.floor(Math.random() * 2) + 1; // 1 ou 2 tags
-  const shuffled = [...allTags].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, numberOfTags);
-};
 
 export const LiveCarousel = ({ 
   lives, 
