@@ -6,24 +6,27 @@ import Properties from "./pages/Properties";
 import PropertyDetail from "./pages/PropertyDetail";
 import Lives from "./pages/Lives";
 import AgentProfile from "./pages/AgentProfile";
+import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<Properties />} />
-            <Route path="/property/:id" element={<PropertyDetail />} />
-            <Route path="/lives" element={<Lives />} />
-            <Route path="/agent/:id" element={<AgentProfile />} />
-          </Routes>
-        </main>
-        <BottomNav />
-        <Toaster />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="min-h-screen bg-background">
+          <Header />
+          <main>
+            <Routes>
+              <Route path="/" element={<Properties />} />
+              <Route path="/property/:id" element={<PropertyDetail />} />
+              <Route path="/lives" element={<Lives />} />
+              <Route path="/agent/:id" element={<AgentProfile />} />
+            </Routes>
+          </main>
+          <BottomNav />
+          <Toaster />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
