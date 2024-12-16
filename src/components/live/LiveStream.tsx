@@ -90,7 +90,8 @@ export const LiveStream = ({
       ? replayTimestamps[Math.floor(Math.random() * replayTimestamps.length)]
       : videoId;
     
-    return `${baseUrl}${videoIdWithTimestamp}?autoplay=1&rel=0&modestbranding=1&showinfo=0`;
+    const autoplayParam = isReplay ? '&autoplay=1' : '';
+    return `${baseUrl}${videoIdWithTimestamp}?rel=0&modestbranding=1&showinfo=0${autoplayParam}`;
   };
 
   return (
