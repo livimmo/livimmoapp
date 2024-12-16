@@ -15,6 +15,7 @@ import { ReservationForm } from "@/components/home/ReservationForm";
 interface FavoriteButtonProps {
   propertyId: number;
   title: string;
+  className?: string;
   isFavorite?: boolean;
   onToggleFavorite?: (id: number) => void;
 }
@@ -22,6 +23,7 @@ interface FavoriteButtonProps {
 export const FavoriteButton = ({
   propertyId,
   title,
+  className,
   isFavorite: initialIsFavorite = false,
   onToggleFavorite,
 }: FavoriteButtonProps) => {
@@ -59,7 +61,8 @@ export const FavoriteButton = ({
         className={cn(
           "h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-all duration-300",
           isFavorite && "text-[#ea384c] hover:text-[#ea384c]",
-          isAnimating && "scale-125"
+          isAnimating && "scale-125",
+          className
         )}
         onClick={handleClick}
       >
