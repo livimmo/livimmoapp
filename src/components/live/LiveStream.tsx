@@ -13,7 +13,6 @@ interface LiveStreamProps {
   isReplay?: boolean;
 }
 
-// Liste des timestamps pour les replays
 const replayTimestamps = [
   'VIQpb65HmMs',
   'VIQpb65HmMs?start=300',
@@ -75,7 +74,6 @@ export const LiveStream = ({
     navigate(-1);
   };
 
-  // Fonction pour générer l'URL de l'embed YouTube
   const getEmbedUrl = () => {
     const baseUrl = 'https://www.youtube.com/embed/';
     const videoIdWithTimestamp = isReplay 
@@ -88,8 +86,20 @@ export const LiveStream = ({
   return (
     <div className="fixed inset-0 bg-black flex flex-col">
       <div className="relative flex-1">
-        {/* Contrôles vidéo - Repositionnés et stylisés */}
-        <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent flex justify-end items-center gap-2 z-50">
+        {/* Conteneur vidéo */}
+        <div className="w-full h-full">
+          <iframe
+            src={getEmbedUrl()}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="w-full h-full"
+          />
+        </div>
+
+        {/* Contrôles vidéo - Repositionnés en bas */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent flex justify-end items-center gap-2 z-50">
           <Button
             variant="ghost"
             size="icon"
@@ -114,18 +124,6 @@ export const LiveStream = ({
           >
             <X className="h-5 w-5" />
           </Button>
-        </div>
-
-        {/* Conteneur vidéo */}
-        <div className="w-full h-full">
-          <iframe
-            src={getEmbedUrl()}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="w-full h-full"
-          />
         </div>
 
         {/* Informations de la vidéo */}
