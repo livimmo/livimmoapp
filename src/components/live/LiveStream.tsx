@@ -4,6 +4,8 @@ import { LiveInfo } from "./LiveInfo";
 import { useState } from "react";
 import { X, Maximize2, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LiveCarousel } from "./LiveCarousel";
+import { liveStreams } from "@/data/mockLives";
 
 interface LiveStreamProps {
   videoId: string;
@@ -74,6 +76,10 @@ export const LiveStream = ({
     navigate(-1);
   };
 
+  const handleLiveSelect = (liveId: number) => {
+    navigate(`/live/${liveId}`);
+  };
+
   const getEmbedUrl = () => {
     const baseUrl = 'https://www.youtube.com/embed/';
     const videoIdWithTimestamp = isReplay 
@@ -124,6 +130,15 @@ export const LiveStream = ({
           >
             <X className="h-5 w-5" />
           </Button>
+        </div>
+
+        {/* LiveCarousel */}
+        <div className="absolute bottom-[120px] left-0 right-0 z-[51]">
+          <LiveCarousel
+            lives={liveStreams}
+            currentLiveId={currentLiveId}
+            onLiveSelect={handleLiveSelect}
+          />
         </div>
 
         {/* Informations de la vidéo */}
