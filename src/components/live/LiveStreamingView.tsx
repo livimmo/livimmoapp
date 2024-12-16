@@ -75,6 +75,10 @@ export const LiveStreamingView = ({
     onEndStream();
   };
 
+  const handleToggleChat = () => {
+    setShowChat(!showChat);
+  };
+
   return (
     <div className="relative h-screen bg-black">
       <div className="absolute inset-0 flex items-center justify-center">
@@ -94,7 +98,7 @@ export const LiveStreamingView = ({
             property={property}
             onMakeOffer={() => {}}
             viewerCount={viewerCount}
-            onToggleChat={() => setShowChat(!showChat)}
+            onToggleChat={handleToggleChat}
           />
         </div>
       )}
