@@ -129,7 +129,7 @@ export const JoinLive = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="bg-black/50 text-white hover:bg-black/75"
+            className="bg-black/50 text-white hover:bg-black/75 z-[100]"
             onClick={() => setShowChat(!showChat)}
           >
             <MessageSquare className="h-5 w-5" />
@@ -137,7 +137,7 @@ export const JoinLive = () => {
         </div>
 
         {showChat && (
-          <div className="absolute top-0 right-0 bottom-0 w-80 bg-background border-l">
+          <div className="absolute top-0 right-12 bottom-0 w-80 z-[100]">
             <LiveChat 
               messages={mockLiveData.messages} 
               onClose={() => setShowChat(false)}

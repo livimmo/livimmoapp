@@ -25,7 +25,6 @@ export const LiveChat = ({ messages: initialMessages, onClose }: LiveChatProps) 
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    // Ajouter le message de bienvenue du bot au début
     setMessages([
       {
         ...welcomeMessage,
@@ -47,7 +46,6 @@ export const LiveChat = ({ messages: initialMessages, onClose }: LiveChatProps) 
 
       setMessages((prev) => [...prev, userMessage]);
       
-      // Simuler une réponse du bot après un court délai
       setTimeout(() => {
         const botResponse: Message = {
           id: Date.now() + 1,
@@ -65,7 +63,6 @@ export const LiveChat = ({ messages: initialMessages, onClose }: LiveChatProps) 
   };
 
   const handleQuestionClick = (question: BotQuestion) => {
-    // Ajouter la question sélectionnée comme message de l'utilisateur
     const userMessage: Message = {
       id: Date.now(),
       user: "Vous",
@@ -75,7 +72,6 @@ export const LiveChat = ({ messages: initialMessages, onClose }: LiveChatProps) 
 
     setMessages((prev) => [...prev, userMessage]);
 
-    // Simuler une réponse du bot
     setTimeout(() => {
       const botResponse: Message = {
         id: Date.now() + 1,
@@ -90,7 +86,7 @@ export const LiveChat = ({ messages: initialMessages, onClose }: LiveChatProps) 
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-[100]">
       <div className="p-4 border-b flex justify-between items-center">
         <h2 className="font-semibold">Chat en direct</h2>
         <Button variant="ghost" size="icon" onClick={onClose}>
