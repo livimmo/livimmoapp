@@ -5,6 +5,7 @@ import { useState } from "react";
 import { X, Maximize2, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveCarousel } from "./LiveCarousel";
+import { ReplayCarousel } from "./ReplayCarousel";
 import { liveStreams } from "@/data/mockLives";
 import { cn } from "@/lib/utils";
 
@@ -129,18 +130,26 @@ export const LiveStream = ({
           </Button>
         </div>
 
-        {/* LiveCarousel */}
+        {/* Carousel (Live ou Replay) */}
         <div 
           className={cn(
             "absolute left-0 right-0 z-[51] transition-all duration-300",
             showOtherLives ? "bottom-[120px] opacity-100" : "-bottom-full opacity-0"
           )}
         >
-          <LiveCarousel
-            lives={liveStreams}
-            currentLiveId={currentLiveId}
-            onLiveSelect={handleLiveSelect}
-          />
+          {isReplay ? (
+            <ReplayCarousel
+              replays={liveStreams}
+              currentReplayId={currentLiveId}
+              onReplaySelect={handleLiveSelect}
+            />
+          ) : (
+            <LiveCarousel
+              lives={liveStreams}
+              currentLiveId={currentLiveId}
+              onLiveSelect={handleLiveSelect}
+            />
+          )}
         </div>
 
         {/* Informations de la vidéo */}
