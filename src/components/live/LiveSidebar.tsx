@@ -27,33 +27,35 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
         isCollapsed ? "w-12" : "w-72"
       )}
     >
-      <Button
-        variant="ghost"
-        size="icon"
-        className={cn(
-          "absolute -left-4 top-20 bg-white hover:bg-white/90",
-          "text-[#ea384c] rounded-full shadow-lg transition-all duration-300 group",
-          "hover:scale-110",
-          isCollapsed ? "hover:translate-x-1" : "hover:-translate-x-1"
-        )}
-        onClick={() => setIsCollapsed(!isCollapsed)}
-      >
-        <div className="relative">
-          {isCollapsed ? (
-            <>
-              <Radio className="h-4 w-4 animate-pulse text-[#ea384c]" />
-              <Badge 
-                variant="secondary" 
-                className="absolute -top-3 -right-3 h-5 min-w-5 p-0 flex items-center justify-center bg-white text-[#ea384c] text-xs border border-[#ea384c]"
-              >
-                {otherLives.length}
-              </Badge>
-            </>
-          ) : (
-            <ChevronRight className="h-4 w-4" />
+      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center">
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn(
+            "relative bg-white hover:bg-white/90",
+            "text-[#ea384c] rounded-full shadow-lg transition-all duration-300 group",
+            "hover:scale-110",
+            isCollapsed ? "hover:translate-x-1" : "hover:-translate-x-1"
           )}
-        </div>
-      </Button>
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          <div className="relative">
+            {isCollapsed ? (
+              <>
+                <Radio className="h-4 w-4 animate-pulse text-[#ea384c]" />
+                <Badge 
+                  variant="secondary" 
+                  className="absolute -top-3 -right-3 h-5 min-w-5 p-0 flex items-center justify-center bg-white text-[#ea384c] text-xs border border-[#ea384c]"
+                >
+                  {otherLives.length}
+                </Badge>
+              </>
+            ) : (
+              <ChevronRight className="h-4 w-4" />
+            )}
+          </div>
+        </Button>
+      </div>
 
       {!isCollapsed && (
         <div className="h-full pt-6">
