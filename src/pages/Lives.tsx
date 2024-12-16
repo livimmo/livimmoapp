@@ -20,7 +20,6 @@ const Lives = () => {
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
   const [showLiveOnly, setShowLiveOnly] = useState(true);
-  const [transactionType, setTransactionType] = useState("all");
 
   // Create replay lives from existing lives
   const replayLives = liveStreams.map(live => ({
@@ -91,6 +90,7 @@ const Lives = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 mt-12 space-y-8">
+      {/* Filters Section */}
       <PropertyFilters
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -103,8 +103,6 @@ const Lives = () => {
         showLiveOnly={showLiveOnly}
         setShowLiveOnly={setShowLiveOnly}
         suggestions={suggestions}
-        transactionType={transactionType}
-        setTransactionType={setTransactionType}
       />
 
       {/* Section des lives en cours */}

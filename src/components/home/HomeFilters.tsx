@@ -13,7 +13,6 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
-  const [transactionType, setTransactionType] = useState("all");
 
   const suggestions = [
     "Casablanca",
@@ -43,11 +42,6 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
       filtered = filtered.filter((property) => property.type === propertyType);
     }
 
-    // Filter by transaction type
-    if (transactionType !== "all") {
-      filtered = filtered.filter((property) => property.transactionType === transactionType);
-    }
-
     // Filter by price range
     filtered = filtered.filter(
       (property) =>
@@ -71,7 +65,7 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
   // Apply filters whenever any filter value changes
   useEffect(() => {
     applyFilters();
-  }, [searchTerm, propertyType, priceRange, surfaceRange, showLiveOnly, transactionType]);
+  }, [searchTerm, propertyType, priceRange, surfaceRange, showLiveOnly]);
 
   return (
     <div className="mb-8">
@@ -87,8 +81,6 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
         showLiveOnly={showLiveOnly}
         setShowLiveOnly={setShowLiveOnly}
         suggestions={suggestions}
-        transactionType={transactionType}
-        setTransactionType={setTransactionType}
       />
     </div>
   );
