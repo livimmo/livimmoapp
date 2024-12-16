@@ -1,46 +1,44 @@
-import { Toaster } from "@/components/ui/toaster";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { BottomNav } from "@/components/BottomNav";
-import { Header } from "@/components/layout/Header";
-import { AuthProvider } from "@/contexts/AuthContext";
-import Index from "./pages/Index";
-import Search from "./pages/Search";
-import Lives from "./pages/Lives";
-import Favorites from "./pages/Favorites";
-import Profile from "./pages/Profile";
-import Notifications from "./pages/Notifications";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import RootLayout from "./layouts/RootLayout";
+import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import Properties from "./pages/Properties";
 import PropertyDetail from "./pages/PropertyDetail";
-import JoinLive from "./pages/JoinLive";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import Developers from "./pages/Developers";
+import DeveloperDetail from "./pages/DeveloperDetail";
+import Dashboard from "./pages/Dashboard";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
-    <BrowserRouter>
+    <ThemeProvider>
       <AuthProvider>
-        <Header />
-        <div className="pt-16">
+        <Router>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/lives" element={<Lives />} />
-            <Route path="/favorites" element={<Favorites />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/notifications" element={<Notifications />} />
-            <Route path="/properties" element={<Properties />} />
-            <Route path="/property/:id" element={<PropertyDetail />} />
-            <Route path="/live/:id" element={<JoinLive />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/developers" element={<Developers />} />
+            <Route element={<RootLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/properties" element={<Properties />} />
+              <Route path="/property/:id" element={<PropertyDetail />} />
+              <Route path="/developer/:id" element={<DeveloperDetail />} />
+              <Route
+                path="/dashboard/*"
+                element={
+                  <PrivateRoute>
+                    <Dashboard />
+                  </PrivateRoute>
+                }
+              />
+              <Route path="/sign-in" element={<SignIn />} />
+              <Route path="/sign-up" element={<SignUp />} />
+            </Route>
           </Routes>
-        </div>
-        <BottomNav />
-        <Toaster />
+        </Router>
+        <Toaster position="top-center" expand={true} richColors />
       </AuthProvider>
-    </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
