@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, ThumbsUp, Calendar, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveChat } from "@/components/live/LiveChat";
 import { LiveInfo } from "@/components/live/LiveInfo";
 import { LiveStream } from "@/components/live/LiveStream";
-import { LiveControls } from "@/components/live/LiveControls";
 import { useToast } from "@/hooks/use-toast";
 import { type Property } from "@/types/property";
 import { generateMockCoordinates } from "@/data/mockProperties";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
+import { Badge } from "@/components/ui/badge";
 
 const mockLiveData = {
   viewerCount: 45,
@@ -27,7 +27,9 @@ export const JoinLive = () => {
   const { isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [showChat, setShowChat] = useState(false);
+  const [showOfferForm, setShowOfferForm] = useState(false);
   const [property, setProperty] = useState<Property | null>(null);
+  const [viewerCount, setViewerCount] = useState(mockLiveData.viewerCount);
   const [isFavorite, setIsFavorite] = useState(false);
 
   const currentLiveId = Number(id);
@@ -81,14 +83,22 @@ export const JoinLive = () => {
       setIsLoading(false);
     }, 1500);
 
-    return () => clearTimeout(timer);
+    // Simulate viewer count updates
+    const viewerInterval = setInterval(() => {
+      setViewerCount(prev => {
+        const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+        return Math.max(0, prev + change);
+      });
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(viewerInterval);
+    };
   }, [id, isAuthenticated, navigate, toast]);
 
   const handleMakeOffer = () => {
-    toast({
-      title: "Offre envoyée !",
-      description: "Votre offre a été transmise à l'agent.",
-    });
+    setShowOfferForm(true);
   };
 
   if (isLoading) {
@@ -125,31 +135,58 @@ export const JoinLive = () => {
           otherLives={otherLives}
           onLiveChange={handleLiveChange}
         />
-        <LiveControls 
-          isFavorite={isFavorite}
-          onToggleFavorite={handleToggleFavorite}
-        />
+
+        <div className="absolute top-4 left-4 z-50">
+          <Badge 
+            variant="secondary" 
+            className="bg-black/75 text-white backdrop-blur-sm flex items-center gap-2"
+          >
+            <Users className="w-4 h-4" />
+            {viewerCount} spectateurs
+          </Badge>
+        </div>
 
         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
           <LiveInfo 
             property={property} 
             onMakeOffer={handleMakeOffer} 
-            viewerCount={mockLiveData.viewerCount}
+            viewerCount={viewerCount}
           />
-          <div className="flex flex-col gap-2 ml-auto">
+          <div className="flex flex-col gap-2 ml-4">
             <Button
               variant="ghost"
               size="icon"
-              className="bg-black/50 text-white hover:bg-black/75 z-[100]"
+              className="bg-black/50 text-white hover:bg-black/75"
               onClick={() => setShowChat(!showChat)}
             >
               <MessageSquare className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-black/50 text-white hover:bg-black/75"
+              onClick={handleToggleFavorite}
+            >
+              <ThumbsUp className={`h-5 w-5 ${isFavorite ? "text-primary" : ""}`} />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-black/50 text-white hover:bg-black/75"
+              onClick={() => {
+                toast({
+                  title: "Visite programmée",
+                  description: "Nous vous contacterons pour confirmer la date",
+                });
+              }}
+            >
+              <Calendar className="h-5 w-5" />
             </Button>
           </div>
         </div>
 
         {showChat && (
-          <div className="absolute top-0 right-12 bottom-0 w-80 z-[100]">
+          <div className="absolute top-0 right-0 bottom-0 w-80 z-[100]">
             <LiveChat 
               messages={mockLiveData.messages} 
               onClose={() => setShowChat(false)}
