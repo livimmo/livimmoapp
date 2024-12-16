@@ -1,5 +1,5 @@
 import { LiveEvent } from "@/types/live";
-import { Eye, ChevronRight } from "lucide-react";
+import { Radio, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
@@ -39,16 +39,19 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
         <div className="relative">
-          <ChevronRight className={cn(
-            "h-4 w-4 transition-transform duration-300",
-            !isCollapsed && "rotate-180"
-          )} />
-          <Badge 
-            variant="secondary" 
-            className="absolute -top-3 -right-3 h-5 min-w-5 p-0 flex items-center justify-center bg-[#ea384c] text-white text-xs"
-          >
-            {otherLives.length}
-          </Badge>
+          {isCollapsed ? (
+            <>
+              <Radio className="h-4 w-4 animate-pulse" />
+              <Badge 
+                variant="secondary" 
+                className="absolute -top-3 -right-3 h-5 min-w-5 p-0 flex items-center justify-center bg-[#ea384c] text-white text-xs"
+              >
+                {otherLives.length}
+              </Badge>
+            </>
+          ) : (
+            <ChevronRight className="h-4 w-4" />
+          )}
         </div>
       </Button>
 
