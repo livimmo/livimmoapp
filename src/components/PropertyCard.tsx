@@ -35,10 +35,6 @@ export const PropertyCard = ({
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
 
-  const handleJoinLive = () => {
-    navigate(`/live/${id}`);
-  };
-
   const handleAgentClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -80,7 +76,6 @@ export const PropertyCard = ({
         rooms={rooms}
         hasLive={hasLive}
         liveDate={liveDate}
-        onJoinLive={handleJoinLive}
         isLiveNow={isLiveNow}
         remainingSeats={remainingSeats}
         isUserRegistered={isUserRegistered}

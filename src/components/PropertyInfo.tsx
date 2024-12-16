@@ -12,7 +12,6 @@ interface PropertyInfoProps {
   rooms: number;
   hasLive?: boolean;
   liveDate?: Date;
-  onJoinLive?: () => void;
   isLiveNow?: boolean;
   remainingSeats?: number;
   isUserRegistered?: boolean;
@@ -27,8 +26,9 @@ export const PropertyInfo = ({
   surface,
   rooms,
   hasLive,
-  onJoinLive,
+  liveDate,
   isLiveNow,
+  remainingSeats,
   isUserRegistered,
 }: PropertyInfoProps) => {
   return (
@@ -50,13 +50,14 @@ export const PropertyInfo = ({
         <span>{rooms} pièces</span>
       </div>
       <div className="grid grid-cols-1 gap-2">
-        {hasLive && onJoinLive && (
+        {hasLive && (
           <LiveButton
             id={id}
             title={title}
-            onJoinLive={onJoinLive}
+            liveDate={liveDate}
             isLiveNow={isLiveNow}
             isUserRegistered={isUserRegistered}
+            remainingSeats={remainingSeats}
           />
         )}
       </div>
