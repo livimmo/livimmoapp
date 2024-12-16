@@ -7,13 +7,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { Euro, HandCoins, UserPlus2 } from "lucide-react";
+import { OfferForm } from "./offer/OfferForm";
+import { VisitBookingForm } from "./offer/VisitBookingForm";
 
 interface OfferDialogProps {
   title: string;
@@ -57,46 +57,15 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
     );
   };
 
-  const validateForm = () => {
-    if (!isAuthenticated) {
-      if (!name.trim()) {
-        toast({
-          title: "Erreur",
-          description: "Veuillez entrer votre nom",
-          variant: "destructive",
-        });
-        return false;
-      }
-      if (!email.trim() || !email.includes("@")) {
-        toast({
-          title: "Erreur",
-          description: "Veuillez entrer une adresse email valide",
-          variant: "destructive",
-        });
-        return false;
-      }
-      if (!phone.trim()) {
-        toast({
-          title: "Erreur",
-          description: "Veuillez entrer votre numéro de téléphone",
-          variant: "destructive",
-        });
-        return false;
-      }
-    }
+  const handleOffer = () => {
     if (offerAmount <= 0) {
       toast({
         title: "Erreur",
         description: "Le montant de l'offre doit être supérieur à 0",
         variant: "destructive",
       });
-      return false;
+      return;
     }
-    return true;
-  };
-
-  const handleOffer = () => {
-    if (!validateForm()) return;
 
     const offerData = {
       propertyTitle: title,
@@ -119,7 +88,17 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
 
     toast({
       title: "Offre envoyée !",
-      description: `Votre offre de ${offerAmount.toLocaleString()} DH pour ${title} a été envoyée. L'agent vous contactera bientôt.`,
+      description: `Votre offre de ${offerAmount.toLocaleString()} DH pour ${title} a été envoyée.`,
+    });
+    setIsOpen(false);
+  };
+
+  const handleVisitBooking = (visitData: any) => {
+    console.log("Visit booking data:", visitData);
+    
+    toast({
+      title: "Visite réservée !",
+      description: `Votre demande de visite pour ${title} a été envoyée. Vous recevrez une confirmation sous peu.`,
     });
     setIsOpen(false);
   };
@@ -141,72 +120,43 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
             Prix demandé : {price.toLocaleString()} DH
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4">
-          {!isAuthenticated && (
-            <>
-              <div className="space-y-2">
-                <Label htmlFor="name">Nom complet *</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="John Doe"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="john@example.com"
-                  required
-                />
-              </div>
-            </>
-          )}
 
-          <div className="space-y-2">
-            <Label htmlFor="phone">Téléphone *</Label>
-            <Input
-              id="phone"
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="+212 6XX XXX XXX"
-              required
+        <Tabs defaultValue="offer" className="mt-4">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="offer">Faire une offre</TabsTrigger>
+            <TabsTrigger value="visit">Réserver une visite</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="offer" className="mt-4">
+            <OfferForm
+              title={title}
+              price={price}
+              offerAmount={offerAmount}
+              message={message}
+              name={name}
+              email={email}
+              phone={phone}
+              isAuthenticated={isAuthenticated}
+              onOfferAmountChange={setOfferAmount}
+              onMessageChange={setMessage}
+              onNameChange={setName}
+              onEmailChange={setEmail}
+              onPhoneChange={setPhone}
             />
-          </div>
+            <Button onClick={handleOffer} className="w-full mt-4">
+              Envoyer l'offre
+            </Button>
+          </TabsContent>
 
-          <div className="space-y-2">
-            <Label htmlFor="amount">Montant de votre offre (DH) *</Label>
-            <Input
-              id="amount"
-              type="number"
-              value={offerAmount}
-              onChange={(e) => setOfferAmount(Number(e.target.value))}
-              className="mt-1"
+          <TabsContent value="visit" className="mt-4">
+            <VisitBookingForm
+              name={isAuthenticated ? `${user?.firstName} ${user?.lastName}` : name}
+              email={isAuthenticated ? user?.email || "" : email}
+              phone={phone}
+              onSubmit={handleVisitBooking}
             />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="message">Message (optionnel)</Label>
-            <Textarea
-              id="message"
-              placeholder="Expliquez votre offre..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              className="mt-1"
-            />
-          </div>
-
-          <Button onClick={handleOffer} className="w-full">
-            Envoyer l'offre
-          </Button>
-        </div>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
