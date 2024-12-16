@@ -37,20 +37,19 @@ export const LiveInfo = ({ property, viewerCount = 0 }: LiveInfoProps) => {
               <span className="text-sm">{viewerCount}</span>
             </div>
           </div>
-        </div>
-
-        <div className="space-y-2">
           <Button 
             onClick={() => setShowOfferDialog(true)} 
-            className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
+            variant="default" 
+            size="sm"
           >
             Proposer un prix
           </Button>
-          <SubscribeButton 
-            agentId={property.agent.id || "1"} 
-            initialSubscriberCount={125}
-          />
         </div>
+
+        <SubscribeButton 
+          agentId={property.agent.id || "1"} 
+          initialSubscriberCount={125}
+        />
       </div>
 
       <LiveOfferDialog
