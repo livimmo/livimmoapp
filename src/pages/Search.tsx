@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { SearchFilters } from "@/components/search/SearchFilters";
-import { PropertyList } from "@/components/properties/PropertyList";
-import { Button } from "@/components/ui/button";
-import { List, Grid, Map as MapIcon } from "lucide-react";
+import { ViewControls } from "@/components/search/ViewControls";
+import { SearchContent } from "@/components/search/SearchContent";
 import { type Property } from "@/types/property";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
 
@@ -132,7 +131,7 @@ const mockProperties: Property[] = addCoordinatesToProperties([
   }
 ]);
 
-type ViewMode = "list" | "carousel" | "map";
+type ViewMode = "grid" | "map";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -141,17 +140,26 @@ const Search = () => {
   const [surfaceRange, setSurfaceRange] = useState([0, 500]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState<"list" | "grid" | "map">("list");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
 
   const filteredProperties = mockProperties.filter((property) => {
-    const matchesSearch = property.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         property.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      property.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      property.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = propertyType === "all" || property.type === propertyType;
-    const matchesPrice = property.price >= priceRange[0] && property.price <= priceRange[1];
-    const matchesSurface = property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
+    const matchesPrice =
+      property.price >= priceRange[0] && property.price <= priceRange[1];
+    const matchesSurface =
+      property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
     const matchesLive = !showLiveOnly || property.hasLive;
 
-    return matchesSearch && matchesType && matchesPrice && matchesSurface && matchesLive;
+    return (
+      matchesSearch &&
+      matchesType &&
+      matchesPrice &&
+      matchesSurface &&
+      matchesLive
+    );
   });
 
   return (
@@ -172,40 +180,11 @@ const Search = () => {
       />
 
       <div className="pt-[60px] px-3">
-        <div className="flex justify-end mb-3 gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setViewMode("list")}
-            className={viewMode === "list" ? "bg-accent" : ""}
-          >
-            <List className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setViewMode("grid")}
-            className={viewMode === "grid" ? "bg-accent" : ""}
-          >
-            <Grid className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setViewMode("map")}
-            className={viewMode === "map" ? "bg-accent" : ""}
-          >
-            <MapIcon className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <PropertyList properties={filteredProperties} viewMode={viewMode} />
-
-        {filteredProperties.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
-            Aucun bien ne correspond à vos critères
-          </div>
-        )}
+        <ViewControls viewMode={viewMode} setViewMode={setViewMode} />
+        <SearchContent
+          filteredProperties={filteredProperties}
+          viewMode={viewMode}
+        />
       </div>
     </div>
   );
