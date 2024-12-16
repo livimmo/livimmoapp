@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { User, UserRole } from '@/types/user';
+import { User, UserRole, AccountType } from '@/types/user';
 
 interface AuthContextType {
   user: User | null;
@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         firstName: 'John',
         lastName: 'Doe',
         role: role,
+        accountType: role === 'promoter' || role === 'agent' ? 'agent' : 'buyer',
       });
       
       toast({
@@ -60,6 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         firstName,
         lastName,
         role,
+        accountType: role === 'promoter' || role === 'agent' ? 'agent' : 'buyer',
       });
       
       toast({
