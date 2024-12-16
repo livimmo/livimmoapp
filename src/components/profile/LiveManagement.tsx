@@ -57,9 +57,9 @@ export const LiveManagement = () => {
                 <div className="flex justify-between items-start mb-2">
                   <h4 className="font-medium">{live.title}</h4>
                   <Button
-                    variant="outline"
-                    size="sm"
                     onClick={() => setEditingLive(live)}
+                    className="bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
+                    size="sm"
                   >
                     Modifier
                   </Button>
