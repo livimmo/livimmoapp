@@ -1,5 +1,5 @@
 import { LiveEvent } from "@/types/live";
-import { Eye, ChevronRight, Heart } from "lucide-react";
+import { Eye, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
@@ -43,27 +43,12 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
             "h-4 w-4 transition-transform duration-300",
             !isCollapsed && "rotate-180"
           )} />
-          <div className="absolute -top-8 -right-3 flex flex-col items-center gap-1">
-            <Badge 
-              variant="secondary" 
-              className="h-5 min-w-5 p-0 flex items-center justify-center bg-[#ea384c] text-white text-xs"
-            >
-              {otherLives.length}
-            </Badge>
-            <Badge 
-              variant="secondary" 
-              className="h-5 p-1 flex items-center gap-1 bg-[#F97316] text-white text-xs whitespace-nowrap"
-            >
-              12 offres
-            </Badge>
-            <Button
-              size="sm"
-              className="h-7 px-2 text-xs bg-primary hover:bg-primary/90 text-white"
-            >
-              <Heart className="h-3 w-3 mr-1" />
-              Intéressé
-            </Button>
-          </div>
+          <Badge 
+            variant="secondary" 
+            className="absolute -top-3 -right-3 h-5 min-w-5 p-0 flex items-center justify-center bg-[#ea384c] text-white text-xs"
+          >
+            {otherLives.length}
+          </Badge>
         </div>
       </Button>
 
