@@ -28,7 +28,7 @@ export const LiveSlide = ({ live, index }: LiveSlideProps) => {
       case "live":
         return (
           <Button onClick={handleAction} className="w-full bg-green-500 hover:bg-green-600">
-            Rejoindre
+            Rejoindre le live
           </Button>
         );
       case "scheduled":
