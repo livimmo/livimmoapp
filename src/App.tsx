@@ -24,7 +24,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Header />
-        <div className="pt-12">
+        <div className="pt-12 pb-20">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/search" element={<Search />} />
