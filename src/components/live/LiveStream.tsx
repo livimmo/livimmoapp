@@ -1,6 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { type LiveEvent } from "@/types/live";
-import { X, Maximize, Minimize, MonitorPlay } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LiveSidebar } from "./LiveSidebar";
@@ -10,12 +7,13 @@ import { useState } from "react";
 interface LiveStreamProps {
   videoId: string;
   currentLiveId: number;
-  otherLives: LiveEvent[];
-  onLiveChange: (id: number) => void;
+  otherLives: any[];
+  onLiveChange?: (liveId: number) => void;
   isReplay?: boolean;
 }
 
-const REPLAY_IDS = [
+// Liste des timestamps pour les replays
+const replayTimestamps = [
   'VIQpb65HmMs',
   'VIQpb65HmMs?start=300',
   'VIQpb65HmMs?start=600',
@@ -55,7 +53,7 @@ export const LiveStream = ({
   currentLiveId,
   otherLives,
   onLiveChange,
-  isReplay = false
+  isReplay = false,
 }: LiveStreamProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -64,102 +62,69 @@ export const LiveStream = ({
 
   const handleViewModeChange = (mode: 'default' | 'cinema' | 'fullscreen') => {
     if (mode === 'fullscreen') {
-      document.documentElement.requestFullscreen();
-    } else if (document.fullscreenElement) {
-      document.exitFullscreen();
+      const iframe = document.querySelector('iframe');
+      if (iframe) {
+        iframe.requestFullscreen();
+      }
+      return;
     }
     setViewMode(mode);
   };
 
-  const containerClasses = {
-    default: "relative w-full h-full bg-black",
-    cinema: "relative w-full h-[85vh] bg-black",
-    fullscreen: "relative w-full h-screen bg-black"
+  // Fonction pour générer l'URL de l'embed YouTube
+  const getEmbedUrl = () => {
+    const baseUrl = 'https://www.youtube.com/embed/';
+    const videoIdWithTimestamp = isReplay 
+      ? replayTimestamps[Math.floor(Math.random() * replayTimestamps.length)]
+      : videoId;
+    
+    return `${baseUrl}${videoIdWithTimestamp}?autoplay=1&rel=0&modestbranding=1&showinfo=0`;
   };
 
-  // Si c'est un replay, on prend un ID aléatoire parmi les replays
-  const actualVideoId = isReplay ? 
-    REPLAY_IDS[Math.floor(Math.random() * REPLAY_IDS.length)] : 
-    videoId;
+  // Styles conditionnels en fonction du mode de visualisation
+  const containerStyles = {
+    default: 'w-full lg:w-[calc(100%-350px)]',
+    cinema: 'w-full',
+    fullscreen: 'w-full h-screen fixed inset-0 z-50 bg-black',
+  };
+
+  const videoContainerStyles = {
+    default: 'aspect-video w-full relative',
+    cinema: 'aspect-video w-full max-w-[1600px] mx-auto relative',
+    fullscreen: 'w-full h-full',
+  };
 
   return (
-    <div className={containerClasses[viewMode]}>
-      {isMobile && (
-        <div className="absolute top-4 left-0 right-0 z-20 flex items-center justify-between px-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(-1)}
-            className="bg-black/50 text-white hover:bg-black/75 backdrop-blur-sm"
-          >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-      )}
-
-      {!isMobile && (
-        <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-          {viewMode !== 'cinema' && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => handleViewModeChange('cinema')}
-              className="bg-black/50 text-white hover:bg-black/75"
-            >
-              <MonitorPlay className="h-5 w-5" />
-            </Button>
-          )}
-          {viewMode === 'cinema' && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => handleViewModeChange('default')}
-              className="bg-black/50 text-white hover:bg-black/75"
-            >
-              <Minimize className="h-5 w-5" />
-            </Button>
-          )}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => handleViewModeChange(viewMode === 'fullscreen' ? 'default' : 'fullscreen')}
-            className="bg-black/50 text-white hover:bg-black/75"
-          >
-            {viewMode === 'fullscreen' ? (
-              <Minimize className="h-5 w-5" />
-            ) : (
-              <Maximize className="h-5 w-5" />
-            )}
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(-1)}
-            className="bg-black/50 text-white hover:bg-black/75"
-          >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-      )}
-
-      <iframe
-        src={`https://www.youtube.com/embed/${actualVideoId}?autoplay=1&mute=1`}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        className="w-full h-full"
-      />
-
-      {/* Ajout de LiveInfo pour les replays */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <LiveInfo 
-          property={mockProperty}
-          onMakeOffer={() => {}}
-          viewerCount={Math.floor(Math.random() * 1000)}
-          onToggleChat={() => setShowChat(!showChat)}
+    <div 
+      className={`
+        relative flex flex-col lg:flex-row
+        ${containerStyles[viewMode]}
+        ${viewMode === 'cinema' ? 'bg-black' : ''}
+      `}
+    >
+      <div className={videoContainerStyles[viewMode]}>
+        <iframe
+          src={getEmbedUrl()}
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="w-full h-full"
         />
-      </div>
 
-      <LiveSidebar currentLiveId={currentLiveId} lives={otherLives} />
+        {/* Ajout de LiveInfo pour les replays */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <LiveInfo 
+            property={mockProperty}
+            onMakeOffer={() => {}}
+            viewerCount={Math.floor(Math.random() * 1000)}
+            onToggleChat={() => setShowChat(!showChat)}
+            isReplay={isReplay}
+          />
+        </div>
+
+        <LiveSidebar currentLiveId={currentLiveId} lives={otherLives} />
+      </div>
     </div>
   );
 };

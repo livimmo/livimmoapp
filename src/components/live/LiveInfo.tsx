@@ -13,9 +13,10 @@ interface LiveInfoProps {
   onMakeOffer: () => void;
   viewerCount: number;
   onToggleChat?: () => void;
+  isReplay?: boolean;
 }
 
-export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps) => {
+export const LiveInfo = ({ property, viewerCount, onToggleChat, isReplay }: LiveInfoProps) => {
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
   const [offerCount] = useState(12);
   const isMobile = useIsMobile();
@@ -80,10 +81,10 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
               <div className="flex items-center gap-2 mt-1">
                 <Badge 
                   variant="default" 
-                  className="flex items-center gap-1 bg-[#ea384c] hover:bg-[#ea384c]/90 text-white"
+                  className={`flex items-center gap-1 ${isReplay ? 'bg-blue-600' : 'bg-[#ea384c]'} hover:${isReplay ? 'bg-blue-600/90' : 'bg-[#ea384c]/90'} text-white`}
                 >
                   <Radio className="w-3 h-3" />
-                  <span>LIVE</span>
+                  <span>{isReplay ? 'REPLAY' : 'LIVE'}</span>
                 </Badge>
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <Users className="w-3.5 h-3.5" />
@@ -93,44 +94,42 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
             </div>
           </div>
 
-          {!isCollapsed && (
-            <div className="flex items-center gap-4 shrink-0">
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={`bg-primary/10 hover:bg-primary/20 ${isFavorite ? 'text-[#ea384c]' : 'text-primary'}`}
-                  onClick={handleToggleFavorite}
-                >
-                  <Heart className={`h-5 w-5 ${isFavorite ? "fill-[#ea384c]" : ""}`} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="bg-primary/10 text-primary hover:bg-primary/20"
-                  onClick={onToggleChat}
-                >
-                  <MessageSquare className="h-5 w-5" />
-                </Button>
-              </div>
-              <Badge 
-                variant="secondary" 
-                className="bg-accent text-accent-foreground"
+          <div className="flex items-center gap-4 shrink-0">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`bg-primary/10 hover:bg-primary/20 ${isFavorite ? 'text-[#ea384c]' : 'text-primary'}`}
+                onClick={handleToggleFavorite}
               >
-                {offerCount} offres
-              </Badge>
-              <p className="text-lg font-bold whitespace-nowrap">
-                {property.price.toLocaleString()} DH
-              </p>
-              <Button 
-                className="bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap" 
-                onClick={() => setIsOfferDialogOpen(true)}
+                <Heart className={`h-5 w-5 ${isFavorite ? "fill-[#ea384c]" : ""}`} />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="bg-primary/10 text-primary hover:bg-primary/20"
+                onClick={onToggleChat}
               >
-                <Heart className="w-4 h-4 mr-1.5" />
-                Je suis intéressé(e)
+                <MessageSquare className="h-5 w-5" />
               </Button>
             </div>
-          )}
+            <Badge 
+              variant="secondary" 
+              className="bg-accent text-accent-foreground"
+            >
+              {offerCount} offres
+            </Badge>
+            <p className="text-lg font-bold whitespace-nowrap">
+              {property.price.toLocaleString()} DH
+            </p>
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap" 
+              onClick={() => setIsOfferDialogOpen(true)}
+            >
+              <Heart className="w-4 h-4 mr-1.5" />
+              Je suis intéressé(e)
+            </Button>
+          </div>
         </div>
 
         {isCollapsed && (
