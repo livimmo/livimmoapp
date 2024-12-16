@@ -5,6 +5,8 @@ import { PropertyInfo } from "./PropertyInfo";
 import { PropertyActions } from "./property/PropertyActions";
 import { FavoriteButton } from "./property/FavoriteButton";
 import { Badge } from "./ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Check } from "lucide-react";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -28,12 +30,19 @@ export const PropertyCard = ({
   isLiveNow,
   remainingSeats = 15,
   isUserRegistered = false,
+  agent,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
 
   const handleJoinLive = () => {
     navigate(`/live/${id}`);
+  };
+
+  const handleAgentClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/agent/${agent.id}`);
   };
 
   return (
@@ -76,6 +85,21 @@ export const PropertyCard = ({
         remainingSeats={remainingSeats}
         isUserRegistered={isUserRegistered}
       />
+      <div 
+        className="px-4 pb-4 flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+        onClick={handleAgentClick}
+      >
+        <Avatar className="h-8 w-8 border border-primary/10">
+          <AvatarImage src={agent.image} alt={agent.name} />
+          <AvatarFallback>{agent.name.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <div className="flex items-center gap-1">
+          <span className="text-sm text-gray-600">{agent.name}</span>
+          {agent.isVerified && (
+            <Check className="h-4 w-4 text-primary" />
+          )}
+        </div>
+      </div>
     </div>
   );
 };
