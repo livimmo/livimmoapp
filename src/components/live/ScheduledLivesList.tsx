@@ -1,8 +1,8 @@
 import { LiveCard } from "./LiveCard";
 import { PropertyMap } from "../search/PropertyMap";
 import { LiveEvent } from "@/types/live";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Property } from "@/types/property";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateMockCoordinates } from "@/data/mockProperties";
 
 interface ScheduledLivesListProps {
@@ -28,7 +28,8 @@ export const ScheduledLivesList = ({ lives }: ScheduledLivesListProps) => {
       phone: "N/A",
       email: "N/A"
     },
-    coordinates: generateMockCoordinates(live.location)
+    coordinates: generateMockCoordinates(live.location),
+    transactionType: Math.random() > 0.5 ? "Vente" : "Location"
   }));
 
   return (

@@ -34,6 +34,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
     isLiveNow: live.status === "live",
     remainingSeats: live.availableSeats,
     isUserRegistered: false,
+    transactionType: Math.random() > 0.5 ? "Vente" : "Location",
   };
 
   return <PropertyCard {...propertyData} />;

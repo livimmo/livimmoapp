@@ -31,12 +31,13 @@ export const LiveSection = () => {
       email: "",
     },
     coordinates: {
-      lat: 31.7917 + Math.random() * 2 - 1, // Random coordinates for demo
+      lat: 31.7917 + Math.random() * 2 - 1,
       lng: -7.0926 + Math.random() * 2 - 1,
     },
     isLiveNow: live.status === "live",
     viewers: live.viewers,
     remainingSeats: live.availableSeats,
+    transactionType: Math.random() > 0.5 ? "Vente" : "Location",
   }));
 
   if (liveProperties.length === 0) {

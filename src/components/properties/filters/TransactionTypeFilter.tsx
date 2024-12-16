@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface TransactionTypeFilterProps {
-  transactionType: string;
+  transactionType: "Vente" | "Location";
   setTransactionType: (value: "Vente" | "Location") => void;
 }
 
@@ -15,7 +15,7 @@ export const TransactionTypeFilter = ({
       <Label>Type de transaction</Label>
       <RadioGroup
         value={transactionType}
-        onValueChange={(value) => setTransactionType(value as "Vente" | "Location")}
+        onValueChange={(value: "Vente" | "Location") => setTransactionType(value)}
         className="flex gap-4"
       >
         <div className="flex items-center space-x-2">
