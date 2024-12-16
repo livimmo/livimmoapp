@@ -12,6 +12,8 @@ import { CTASection } from "@/components/home/CTASection";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
 import { SmartSearchBar } from "@/components/search/SmartSearchBar";
 import { HomeHeader } from "@/components/home/HomeHeader";
+import { LiveSlider } from "@/components/live/LiveSlider";
+import { liveStreams, scheduledLives } from "@/data/mockLives";
 
 const featuredProperties = addCoordinatesToProperties([
   {
@@ -109,6 +111,8 @@ const Index = () => {
     "Riad",
   ];
 
+  const allLives = [...liveStreams, ...scheduledLives];
+
   return (
     <div className="min-h-screen bg-background">
       <HomeHeader />
@@ -121,6 +125,11 @@ const Index = () => {
             suggestions={suggestions}
           />
         </div>
+
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-4">Lives et Replays</h2>
+          <LiveSlider lives={allLives} />
+        </section>
         
         <FeaturedSection properties={featuredProperties} />
 
