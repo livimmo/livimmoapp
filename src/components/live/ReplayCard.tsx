@@ -7,6 +7,9 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useState } from "react";
+import { LiveStream } from "./LiveStream";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface ReplayCardProps {
   live: LiveEvent;
@@ -14,9 +17,10 @@ interface ReplayCardProps {
 
 export const ReplayCard = ({ live }: ReplayCardProps) => {
   const navigate = useNavigate();
+  const [showReplay, setShowReplay] = useState(false);
 
   const handleWatch = () => {
-    navigate(`/replay/${live.id}`);
+    setShowReplay(true);
   };
 
   const handleAgentClick = () => {
@@ -29,70 +33,84 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
   const isVerified = Math.random() > 0.5;
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      <CardContent className="p-0 relative">
-        <img
-          src={live.thumbnail}
-          alt={live.title}
-          className="w-full h-48 object-cover"
-        />
-        <div className="absolute top-2 left-2 flex gap-2">
-          <Badge variant="secondary" className="bg-black/50 text-white">
-            <Clock className="w-3 h-3 mr-1" />
-            45 min
-          </Badge>
-          {live.viewers && (
-            <Badge variant="secondary" className="bg-black/50 text-white flex items-center gap-1">
-              <Eye className="w-3 h-3" />
-              {live.viewers}
+    <>
+      <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+        <CardContent className="p-0 relative">
+          <img
+            src={live.thumbnail}
+            alt={live.title}
+            className="w-full h-48 object-cover"
+          />
+          <div className="absolute top-2 left-2 flex gap-2">
+            <Badge variant="secondary" className="bg-black/50 text-white">
+              <Clock className="w-3 h-3 mr-1" />
+              45 min
             </Badge>
-          )}
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/30">
-          <Play className="w-12 h-12 text-white" />
-        </div>
-      </CardContent>
-      <CardContent className="p-4">
-        <h3 className="font-semibold mb-2 line-clamp-2">{live.title}</h3>
-        <div className="text-sm text-muted-foreground mb-2">
-          Diffusé le {format(new Date(live.date), "d MMMM yyyy", { locale: fr })}
-        </div>
-        {live.description && (
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {live.description}
-          </p>
-        )}
-      </CardContent>
-      <CardFooter className="p-4 pt-0 flex flex-col gap-4">
-        <Button onClick={handleWatch} variant="secondary" className="w-full">
-          <Play className="w-4 h-4 mr-2" />
-          Visionner
-        </Button>
-        <div 
-          className="flex items-center justify-between w-full pt-3 border-t cursor-pointer hover:bg-gray-50 transition-colors rounded-md"
-          onClick={handleAgentClick}
-        >
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8 border border-gray-200">
-              <AvatarImage 
-                src={`https://i.pravatar.cc/150?u=${live.agent.toLowerCase().replace(/\s/g, '')}`} 
-                alt={live.agent} 
-              />
-              <AvatarFallback>{live.agent.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-gray-900">{live.agent}</span>
-              <span className="text-xs text-gray-500">Livimmo</span>
-            </div>
+            {live.viewers && (
+              <Badge variant="secondary" className="bg-black/50 text-white flex items-center gap-1">
+                <Eye className="w-3 h-3" />
+                {live.viewers}
+              </Badge>
+            )}
           </div>
-          {isVerified && (
-            <div className="flex items-center gap-1 text-primary">
-              <CheckCircle2 className="h-4 w-4" />
-              <span className="text-xs">Vérifié</span>
-            </div>
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/30">
+            <Play className="w-12 h-12 text-white" />
+          </div>
+        </CardContent>
+        <CardContent className="p-4">
+          <h3 className="font-semibold mb-2 line-clamp-2">{live.title}</h3>
+          <div className="text-sm text-muted-foreground mb-2">
+            Diffusé le {format(new Date(live.date), "d MMMM yyyy", { locale: fr })}
+          </div>
+          {live.description && (
+            <p className="text-sm text-muted-foreground line-clamp-2">
+              {live.description}
+            </p>
           )}
-        </div>
-      </CardFooter>
-    </Card>
+        </CardContent>
+        <CardFooter className="p-4 pt-0 flex flex-col gap-4">
+          <Button onClick={handleWatch} variant="secondary" className="w-full">
+            <Play className="w-4 h-4 mr-2" />
+            Visionner
+          </Button>
+          <div 
+            className="flex items-center justify-between w-full pt-3 border-t cursor-pointer hover:bg-gray-50 transition-colors rounded-md"
+            onClick={handleAgentClick}
+          >
+            <div className="flex items-center gap-2">
+              <Avatar className="h-8 w-8 border border-gray-200">
+                <AvatarImage 
+                  src={`https://i.pravatar.cc/150?u=${live.agent.toLowerCase().replace(/\s/g, '')}`} 
+                  alt={live.agent} 
+                />
+                <AvatarFallback>{live.agent.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-gray-900">{live.agent}</span>
+                <span className="text-xs text-gray-500">Livimmo</span>
+              </div>
+            </div>
+            {isVerified && (
+              <div className="flex items-center gap-1 text-primary">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="text-xs">Vérifié</span>
+              </div>
+            )}
+          </div>
+        </CardFooter>
+      </Card>
+
+      <Dialog open={showReplay} onOpenChange={setShowReplay}>
+        <DialogContent className="max-w-6xl h-[80vh] p-0">
+          <LiveStream 
+            videoId="VIQpb65HmMs"
+            currentLiveId={live.id}
+            otherLives={[]}
+            onLiveChange={() => {}}
+            isReplay={true}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
