@@ -161,9 +161,11 @@ export const LiveCalendar = () => {
             <h3 className="text-lg font-semibold text-gray-900">
               {livesForSelectedDate.length} live{livesForSelectedDate.length > 1 ? 's' : ''} programmé{livesForSelectedDate.length > 1 ? 's' : ''} le {selectedDate?.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}
             </h3>
-            {livesForSelectedDate.map((live) => (
-              <LiveCard key={live.id} live={live} />
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {livesForSelectedDate.map((live) => (
+                <LiveCard key={live.id} live={live} />
+              ))}
+            </div>
           </>
         ) : (
           <div className="text-center text-muted-foreground py-8">
