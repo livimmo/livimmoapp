@@ -7,6 +7,7 @@ import { LiveInfo } from "@/components/live/LiveInfo";
 import { useToast } from "@/hooks/use-toast";
 import { type Property } from "@/types/property";
 import { generateMockCoordinates } from "@/data/mockProperties";
+import { useAuth } from "@/contexts/AuthContext";
 
 const mockLiveData = {
   viewerCount: 45,
@@ -20,12 +21,23 @@ export const JoinLive = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [property, setProperty] = useState<Property | null>(null);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Accès refusé",
+        description: "Vous devez être connecté pour accéder à ce live",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+
     // Simulate loading property data
     const timer = setTimeout(() => {
       const location = "Marrakech";
@@ -55,7 +67,7 @@ export const JoinLive = () => {
     }, 1500);
 
     return () => clearTimeout(timer);
-  }, [id]);
+  }, [id, isAuthenticated, navigate, toast]);
 
   const handleMakeOffer = () => {
     toast({

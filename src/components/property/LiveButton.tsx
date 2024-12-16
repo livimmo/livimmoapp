@@ -4,6 +4,8 @@ import { Video } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ReservationForm } from "@/components/home/ReservationForm";
 import { useToast } from "@/components/ui/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useNavigate } from "react-router-dom";
 
 interface LiveButtonProps {
   id: number;
@@ -26,11 +28,13 @@ export const LiveButton = ({
 }: LiveButtonProps) => {
   const { isAuthenticated } = useAuth();
   const [showLeadDialog, setShowLeadDialog] = useState(false);
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleClick = () => {
     if (!isAuthenticated) {
-      setShowLeadDialog(true);
+      setShowLoginDialog(true);
       return;
     }
 
@@ -43,11 +47,7 @@ export const LiveButton = ({
           description: "Vous recevrez un rappel avant le début du live",
         });
       } else {
-        // Si l'utilisateur est connecté, on l'inscrit directement
-        toast({
-          title: "Inscription confirmée !",
-          description: "Vous recevrez un rappel avant le début du live",
-        });
+        setShowLeadDialog(true);
       }
     }
   };
@@ -70,12 +70,41 @@ export const LiveButton = ({
         }
       </Button>
 
-      {!isAuthenticated && showLeadDialog && (
+      {/* Dialog pour utilisateurs non connectés */}
+      <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Connexion requise</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p>Pour accéder à ce live, vous devez avoir un compte Livimmo.</p>
+            <div className="flex gap-4">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => navigate("/signup")}
+              >
+                Créer un compte
+              </Button>
+              <Button 
+                className="w-full"
+                onClick={() => navigate("/login")}
+              >
+                Se connecter
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog pour réservation (utilisateurs connectés) */}
+      {showLeadDialog && (
         <ReservationForm
           live={{
             id,
             title,
             date: liveDate || new Date(),
+            availableSeats: remainingSeats,
           }}
           onClose={() => setShowLeadDialog(false)}
         />
