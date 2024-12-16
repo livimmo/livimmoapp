@@ -7,6 +7,7 @@ import { FavoriteButton } from "./property/FavoriteButton";
 import { Badge } from "./ui/badge";
 import { getRandomTags } from "@/utils/propertyTags";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+import { CheckCircle2 } from "lucide-react";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -82,12 +83,6 @@ export const PropertyCard = ({
             </Badge>
           ))}
         </div>
-        <div className="absolute bottom-2 left-2 z-10">
-          <Avatar className="border-2 border-white">
-            <AvatarImage src={agent.image} alt={agent.name} />
-            <AvatarFallback>{agent.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-          </Avatar>
-        </div>
       </div>
       <PropertyInfo
         id={id}
@@ -104,6 +99,24 @@ export const PropertyCard = ({
         remainingSeats={remainingSeats}
         isUserRegistered={isUserRegistered}
       />
+      <div className="px-4 py-3 border-t flex items-center justify-between bg-gray-50">
+        <div className="flex items-center gap-2">
+          <Avatar className="h-8 w-8 border border-gray-200">
+            <AvatarImage src={agent.image} alt={agent.name} />
+            <AvatarFallback>{agent.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <span className="text-sm font-medium text-gray-900">{agent.name}</span>
+            <span className="text-xs text-gray-500">{agent.company || 'Agent indépendant'}</span>
+          </div>
+        </div>
+        {agent.verified && (
+          <div className="flex items-center gap-1 text-primary">
+            <CheckCircle2 className="h-4 w-4" />
+            <span className="text-xs">Vérifié</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
