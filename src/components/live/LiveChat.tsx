@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send } from "lucide-react";
+import { Send, X } from "lucide-react";
 import { BotMessage } from "./BotMessage";
 import { botQuestions, welcomeMessage, type BotQuestion } from "@/data/botQuestions";
 
@@ -17,9 +17,10 @@ interface Message {
 
 interface LiveChatProps {
   messages: Message[];
+  onClose: () => void;
 }
 
-export const LiveChat = ({ messages: initialMessages }: LiveChatProps) => {
+export const LiveChat = ({ messages: initialMessages, onClose }: LiveChatProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -90,8 +91,11 @@ export const LiveChat = ({ messages: initialMessages }: LiveChatProps) => {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="p-4 border-b">
+      <div className="p-4 border-b flex justify-between items-center">
         <h2 className="font-semibold">Chat en direct</h2>
+        <Button variant="ghost" size="icon" onClick={onClose}>
+          <X className="h-4 w-4" />
+        </Button>
       </div>
 
       <ScrollArea className="flex-1 p-4">

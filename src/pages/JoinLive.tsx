@@ -166,7 +166,10 @@ export const JoinLive = () => {
         {/* Chat sidebar */}
         {showChat && (
           <div className="absolute top-0 right-0 bottom-0 w-80 bg-background border-l">
-            <LiveChat messages={mockLiveData.messages} />
+            <LiveChat 
+              messages={mockLiveData.messages} 
+              onClose={() => setShowChat(false)}
+            />
           </div>
         )}
       </div>
