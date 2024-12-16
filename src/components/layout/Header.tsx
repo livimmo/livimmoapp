@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { AddLiveDialog } from "@/components/AddLiveDialog";
+import { AddPropertyDialog } from "@/components/property/AddPropertyDialog";
 import {
   Tooltip,
   TooltipContent,
@@ -47,16 +48,28 @@ export const Header = () => {
           {isAuthenticated ? (
             <>
               {isAgentOrPromoter && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <AddLiveDialog />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Démarrer ou programmer un live</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <AddPropertyDialog />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Ajouter un bien</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <AddLiveDialog />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Démarrer ou programmer un live</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </>
               )}
               <Button 
                 variant="ghost" 

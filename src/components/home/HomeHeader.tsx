@@ -1,12 +1,13 @@
-import { Video, Bell, User, LogIn, UserPlus } from "lucide-react";
+import { Video, Bell, User, LogIn, UserPlus, Plus, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { AddPropertyDialog } from "@/components/property/AddPropertyDialog";
 
 export const HomeHeader = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { toast } = useToast();
 
   const handleLogoClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -21,6 +22,8 @@ export const HomeHeader = () => {
       navigate('/');
     }
   };
+
+  const isAgentOrPromoter = user?.role === 'agent' || user?.role === 'promoter';
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
@@ -37,6 +40,9 @@ export const HomeHeader = () => {
         <div className="flex items-center gap-3">
           {isAuthenticated ? (
             <>
+              {isAgentOrPromoter && (
+                <AddPropertyDialog />
+              )}
               <Button 
                 variant="ghost" 
                 size="icon"
