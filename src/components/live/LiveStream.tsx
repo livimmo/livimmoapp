@@ -68,15 +68,24 @@ export const LiveStream = ({
     if (mode === 'fullscreen') {
       const element = document.documentElement;
       if (!document.fullscreenElement) {
-        element.requestFullscreen();
+        element.requestFullscreen().catch(err => {
+          console.error(`Erreur lors du passage en plein écran : ${err.message}`);
+        });
       } else {
-        document.exitFullscreen();
+        document.exitFullscreen().catch(err => {
+          console.error(`Erreur lors de la sortie du plein écran : ${err.message}`);
+        });
       }
     }
     setViewMode(mode);
   };
 
   const handleClose = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(err => {
+        console.error(`Erreur lors de la sortie du plein écran : ${err.message}`);
+      });
+    }
     navigate(-1);
   };
 
@@ -123,7 +132,7 @@ export const LiveStream = ({
             src={getEmbedUrl()}
             title="YouTube video player"
             frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
             allowFullScreen
             className="w-full h-full"
           />

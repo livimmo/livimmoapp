@@ -116,9 +116,9 @@ export const LiveInfo = ({
                 onClick={onToggleFullscreen}
               >
                 {isFullscreen ? (
-                  <Minimize2 className="h-6 w-6" />
+                  <Minimize2 className="h-8 w-8" />
                 ) : (
-                  <Maximize2 className="h-6 w-6" />
+                  <Maximize2 className="h-8 w-8" />
                 )}
               </Button>
               <Button
