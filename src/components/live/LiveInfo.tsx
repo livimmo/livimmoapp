@@ -19,6 +19,11 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
   const [offerCount] = useState(12);
   const isMobile = useIsMobile();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleToggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
 
   return (
     <Card className={`
@@ -89,6 +94,14 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
 
           {!isCollapsed && (
             <div className="flex items-center gap-4 shrink-0">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="bg-black/50 text-white hover:bg-black/75"
+                onClick={handleToggleFavorite}
+              >
+                <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+              </Button>
               <Badge 
                 variant="secondary" 
                 className="bg-[#F97316]/90 hover:bg-[#F97316] text-white"
@@ -120,15 +133,25 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
                 {offerCount} offres
               </Badge>
             </div>
-            <Button
-              size="sm"
-              variant="ghost"
-              className="h-8 px-2 hover:bg-accent/50"
-              onClick={() => setIsOfferDialogOpen(true)}
-            >
-              <Heart className="w-4 h-4 mr-1.5" />
-              <span className="text-sm">Intéressé</span>
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 bg-black/50 text-white hover:bg-black/75"
+                onClick={handleToggleFavorite}
+              >
+                <Heart className={`h-4 w-4 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 px-2 hover:bg-accent/50"
+                onClick={() => setIsOfferDialogOpen(true)}
+              >
+                <Heart className="w-4 h-4 mr-1.5" />
+                <span className="text-sm">Intéressé</span>
+              </Button>
+            </div>
           </div>
         )}
       </div>
