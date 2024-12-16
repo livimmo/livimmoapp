@@ -1,31 +1,29 @@
+import { useAuth } from "@/contexts/AuthContext";
+import { Property } from "@/types/property";
 import { PropertyCard } from "@/components/PropertyCard";
-import { PropertyMap } from "@/components/search/PropertyMap";
-import { type Property } from "@/types/property";
+import { AddPropertyDialog } from "@/components/property/AddPropertyDialog";
 
 interface PropertyListProps {
   properties: Property[];
-  viewMode?: "grid" | "list" | "map";
 }
 
-export const PropertyList = ({ 
-  properties, 
-  viewMode = "grid" 
-}: PropertyListProps) => {
-  if (viewMode === "map") {
-    return <PropertyMap properties={properties} />;
-  }
+export const PropertyList = ({ properties }: PropertyListProps) => {
+  const { user } = useAuth();
+  const isAgent = user?.role === "agent" || user?.role === "promoter";
 
   return (
-    <div
-      className={`grid gap-4 ${
-        viewMode === "grid"
-          ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-          : "grid-cols-1"
-      }`}
-    >
-      {properties.map((property) => (
-        <PropertyCard key={property.id} {...property} />
-      ))}
+    <div className="space-y-6">
+      {isAgent && (
+        <div className="flex justify-end">
+          <AddPropertyDialog />
+        </div>
+      )}
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {properties.map((property) => (
+          <PropertyCard key={property.id} {...property} />
+        ))}
+      </div>
     </div>
   );
 };
