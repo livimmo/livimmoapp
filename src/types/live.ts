@@ -7,13 +7,16 @@ export interface LiveEvent {
   location: string;
   type: string;
   price: string;
-  status: 'scheduled' | 'live' | 'ended';
+  status: 'scheduled' | 'live' | 'ended' | 'replay';
   startTime?: string;
   endTime?: string;
   viewers?: number;
   duration?: number;
   viewCount?: number;
   propertyId?: number;
+  date: Date;
+  availableSeats: number;
+  tags?: string[];
 }
 
 export interface LiveStreamConfig {
