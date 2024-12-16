@@ -14,6 +14,8 @@ import PropertyDetail from "./pages/PropertyDetail";
 import JoinLive from "./pages/JoinLive";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Developers from "./pages/Developers";
+import DeveloperDetail from "./pages/DeveloperDetail";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
             <Route path="/live/:id" element={<JoinLive />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/developers" element={<Developers />} />
+            <Route path="/developer/:id" element={<DeveloperDetail />} />
           </Routes>
         </div>
         <BottomNav />
