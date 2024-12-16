@@ -11,13 +11,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { Plus, Video } from "lucide-react";
+import { Plus, Video, Youtube, Facebook, Instagram, MessageCircle } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 export const AddLiveDialog = () => {
   const [date, setDate] = useState<Date>();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [liveType, setLiveType] = useState<"youtube" | "whatsapp">("youtube");
+  const [liveType, setLiveType] = useState<"youtube" | "facebook" | "instagram" | "whatsapp">("youtube");
   const [liveUrl, setLiveUrl] = useState("");
   const { toast } = useToast();
 
@@ -36,6 +38,21 @@ export const AddLiveDialog = () => {
       title: "Live programmé !",
       description: `Votre live "${title}" a été programmé pour le ${date.toLocaleDateString()}`,
     });
+  };
+
+  const getLiveUrlPlaceholder = () => {
+    switch (liveType) {
+      case "youtube":
+        return "https://youtube.com/live/...";
+      case "facebook":
+        return "https://facebook.com/live/...";
+      case "instagram":
+        return "https://instagram.com/live/...";
+      case "whatsapp":
+        return "https://wa.me/...";
+      default:
+        return "";
+    }
   };
 
   return (
@@ -82,39 +99,52 @@ export const AddLiveDialog = () => {
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium">Type de Live*</label>
-            <div className="flex gap-4">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  checked={liveType === "youtube"}
-                  onChange={() => setLiveType("youtube")}
-                  name="liveType"
-                />
-                YouTube Live
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  checked={liveType === "whatsapp"}
-                  onChange={() => setLiveType("whatsapp")}
-                  name="liveType"
-                />
-                WhatsApp Video
-              </label>
-            </div>
+            <RadioGroup
+              value={liveType}
+              onValueChange={(value: "youtube" | "facebook" | "instagram" | "whatsapp") => setLiveType(value)}
+              className="grid grid-cols-2 gap-4"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="youtube" id="youtube" />
+                <Label htmlFor="youtube" className="flex items-center gap-2">
+                  <Youtube className="h-4 w-4" />
+                  YouTube Live
+                </Label>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="facebook" id="facebook" />
+                <Label htmlFor="facebook" className="flex items-center gap-2">
+                  <Facebook className="h-4 w-4" />
+                  Facebook Live
+                </Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="instagram" id="instagram" />
+                <Label htmlFor="instagram" className="flex items-center gap-2">
+                  <Instagram className="h-4 w-4" />
+                  Instagram Live
+                </Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="whatsapp" id="whatsapp" />
+                <Label htmlFor="whatsapp" className="flex items-center gap-2">
+                  <MessageCircle className="h-4 w-4" />
+                  WhatsApp Video
+                </Label>
+              </div>
+            </RadioGroup>
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              {liveType === "youtube" ? "URL YouTube Live*" : "Lien WhatsApp*"}
+              URL du Live*
             </label>
             <Input
               value={liveUrl}
               onChange={(e) => setLiveUrl(e.target.value)}
-              placeholder={
-                liveType === "youtube"
-                  ? "https://youtube.com/live/..."
-                  : "https://wa.me/..."
-              }
+              placeholder={getLiveUrlPlaceholder()}
               required
             />
           </div>
