@@ -1,23 +1,28 @@
-import { type Property } from "@/types/property";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
-import { Search, X } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { SlidersHorizontal } from "lucide-react";
+import { useState } from "react";
+import { SmartSearchBar } from "@/components/search/SmartSearchBar";
+import { Input } from "@/components/ui/input";
+import { TransactionTypeFilter } from "./filters/TransactionTypeFilter";
 
-export interface PropertyFiltersProps {
+interface PropertyFiltersProps {
   searchTerm: string;
   setSearchTerm: (value: string) => void;
   propertyType: string;
   setPropertyType: (value: string) => void;
-  priceRange: [number, number];
-  setPriceRange: (value: [number, number]) => void;
-  surfaceRange: [number, number];
-  setSurfaceRange: (value: [number, number]) => void;
+  priceRange: number[];
+  setPriceRange: (value: number[]) => void;
+  surfaceRange: number[];
+  setSurfaceRange: (value: number[]) => void;
   showLiveOnly: boolean;
   setShowLiveOnly: (value: boolean) => void;
   suggestions?: string[];
@@ -40,165 +45,182 @@ export const PropertyFilters = ({
   transactionType,
   setTransactionType,
 }: PropertyFiltersProps) => {
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [showFilters, setShowFilters] = useState(false);
+  const [manualPrice, setManualPrice] = useState(false);
+  const [manualSurface, setManualSurface] = useState(false);
 
-  useEffect(() => {
-    if (searchTerm) {
-      const filtered = suggestions.filter(suggestion =>
-        suggestion.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredSuggestions(filtered);
-      setShowSuggestions(filtered.length > 0);
-    } else {
-      setShowSuggestions(false);
+  const handlePriceChange = (value: number[]) => {
+    if (value[1] >= 10000000) {
+      setManualPrice(true);
     }
-  }, [searchTerm, suggestions]);
-
-  const handleSuggestionClick = (suggestion: string) => {
-    setSearchTerm(suggestion);
-    setShowSuggestions(false);
+    setPriceRange(value);
   };
 
-  const propertyTypes = [
-    "all",
-    "Appartement",
-    "Villa",
-    "Riad",
-    "Bureau",
-    "Commerce",
-    "Terrain",
-  ];
+  const handleSurfaceChange = (value: number[]) => {
+    if (value[1] >= 10000) {
+      setManualSurface(true);
+    }
+    setSurfaceRange(value);
+  };
+
+  const handleManualPriceChange = (index: number, value: string) => {
+    const newValue = parseInt(value) || 0;
+    const newRange = [...priceRange];
+    newRange[index] = newValue;
+    setPriceRange(newRange);
+  };
+
+  const handleManualSurfaceChange = (index: number, value: string) => {
+    const newValue = parseInt(value) || 0;
+    const newRange = [...surfaceRange];
+    newRange[index] = newValue;
+    setSurfaceRange(newRange);
+  };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Search Input */}
-        <div className="relative">
-          <Label>Rechercher</Label>
-          <div className="relative">
-            <Input
-              ref={inputRef}
-              type="text"
-              placeholder="Ville, quartier, type..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-            {searchTerm && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6"
-                onClick={() => setSearchTerm("")}
-              >
-                <X className="h-4 w-4" />
-              </Button>
+    <div className="space-y-4 mb-6">
+      <div className="flex gap-2">
+        <div className="relative flex-1">
+          <SmartSearchBar
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            suggestions={suggestions}
+          />
+        </div>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setShowFilters(!showFilters)}
+        >
+          <SlidersHorizontal className="h-4 w-4" />
+        </Button>
+      </div>
+
+      {showFilters && (
+        <div className="space-y-4">
+          <TransactionTypeFilter
+            transactionType={transactionType}
+            setTransactionType={setTransactionType}
+          />
+
+          <div className="flex items-center gap-4">
+            <Select value={propertyType} onValueChange={setPropertyType}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Type de bien" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tous les types</SelectItem>
+                <SelectItem value="Villa">Villa</SelectItem>
+                <SelectItem value="Appartement">Appartement</SelectItem>
+                <SelectItem value="Bureau">Bureau</SelectItem>
+                <SelectItem value="Riad">Riad</SelectItem>
+                <SelectItem value="Hôtel">Hôtel</SelectItem>
+                <SelectItem value="Commerce">Commerce</SelectItem>
+                <SelectItem value="Industriel">Industriel</SelectItem>
+                <SelectItem value="Terrain">Terrain</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="live"
+                checked={showLiveOnly}
+                onCheckedChange={(checked) => setShowLiveOnly(checked as boolean)}
+              />
+              <label htmlFor="live" className="text-sm">
+                Live uniquement
+              </label>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Prix (DH)</label>
+            {manualPrice ? (
+              <div className="flex items-center gap-2">
+                <Input
+                  type="number"
+                  value={priceRange[0]}
+                  onChange={(e) => handleManualPriceChange(0, e.target.value)}
+                  className="w-32"
+                  placeholder="Min"
+                />
+                <span>-</span>
+                <Input
+                  type="number"
+                  value={priceRange[1]}
+                  onChange={(e) => handleManualPriceChange(1, e.target.value)}
+                  className="w-32"
+                  placeholder="Max"
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setManualPrice(false)}
+                >
+                  Utiliser le curseur
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>{priceRange[0].toLocaleString()} DH</span>
+                  <span>{priceRange[1].toLocaleString()} DH</span>
+                </div>
+                <Slider
+                  min={0}
+                  max={10000000}
+                  step={100000}
+                  value={priceRange}
+                  onValueChange={handlePriceChange}
+                />
+              </div>
             )}
           </div>
-          {showSuggestions && (
-            <div className="absolute z-10 w-full mt-1">
-              <ScrollArea className="bg-white rounded-md border shadow-lg max-h-[200px]">
-                {filteredSuggestions.map((suggestion, index) => (
-                  <button
-                    key={index}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-                    onClick={() => handleSuggestionClick(suggestion)}
-                  >
-                    {suggestion}
-                  </button>
-                ))}
-              </ScrollArea>
-            </div>
-          )}
-        </div>
 
-        {/* Property Type */}
-        <div>
-          <Label>Type de bien</Label>
-          <div className="flex flex-wrap gap-2">
-            {propertyTypes.map((type) => (
-              <Badge
-                key={type}
-                variant={propertyType === type ? "default" : "outline"}
-                className="cursor-pointer"
-                onClick={() => setPropertyType(type)}
-              >
-                {type === "all" ? "Tous" : type}
-              </Badge>
-            ))}
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Surface (m²)</label>
+            {manualSurface ? (
+              <div className="flex items-center gap-2">
+                <Input
+                  type="number"
+                  value={surfaceRange[0]}
+                  onChange={(e) => handleManualSurfaceChange(0, e.target.value)}
+                  className="w-32"
+                  placeholder="Min"
+                />
+                <span>-</span>
+                <Input
+                  type="number"
+                  value={surfaceRange[1]}
+                  onChange={(e) => handleManualSurfaceChange(1, e.target.value)}
+                  className="w-32"
+                  placeholder="Max"
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setManualSurface(false)}
+                >
+                  Utiliser le curseur
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>{surfaceRange[0]} m²</span>
+                  <span>{surfaceRange[1]} m²</span>
+                </div>
+                <Slider
+                  min={0}
+                  max={10000}
+                  step={10}
+                  value={surfaceRange}
+                  onValueChange={handleSurfaceChange}
+                />
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Transaction Type */}
-        <div>
-          <Label>Type de transaction</Label>
-          <div className="flex gap-2">
-            <Badge
-              variant={transactionType === "Vente" ? "default" : "outline"}
-              className="cursor-pointer"
-              onClick={() => setTransactionType("Vente")}
-            >
-              Vente
-            </Badge>
-            <Badge
-              variant={transactionType === "Location" ? "default" : "outline"}
-              className="cursor-pointer"
-              onClick={() => setTransactionType("Location")}
-            >
-              Location
-            </Badge>
-          </div>
-        </div>
-
-        {/* Price Range */}
-        <div>
-          <Label>Prix (DH)</Label>
-          <Slider
-            defaultValue={priceRange}
-            min={0}
-            max={5000000}
-            step={100000}
-            value={priceRange}
-            onValueChange={(value) => setPriceRange(value as [number, number])}
-            className="mt-2"
-          />
-          <div className="flex justify-between mt-2 text-sm text-gray-500">
-            <span>{priceRange[0].toLocaleString()} DH</span>
-            <span>{priceRange[1].toLocaleString()} DH</span>
-          </div>
-        </div>
-
-        {/* Surface Range */}
-        <div>
-          <Label>Surface (m²)</Label>
-          <Slider
-            defaultValue={surfaceRange}
-            min={0}
-            max={1000}
-            step={10}
-            value={surfaceRange}
-            onValueChange={(value) => setSurfaceRange(value as [number, number])}
-            className="mt-2"
-          />
-          <div className="flex justify-between mt-2 text-sm text-gray-500">
-            <span>{surfaceRange[0]} m²</span>
-            <span>{surfaceRange[1]} m²</span>
-          </div>
-        </div>
-
-        {/* Live Only Switch */}
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="live-mode"
-            checked={showLiveOnly}
-            onCheckedChange={setShowLiveOnly}
-          />
-          <Label htmlFor="live-mode">Visites live uniquement</Label>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
