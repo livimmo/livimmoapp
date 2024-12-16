@@ -1,7 +1,7 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink, Heart, Radio, ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
+import { Users, ExternalLink, Heart, Radio, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
@@ -20,7 +20,6 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat, isReplay }: Live
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
   const [offerCount] = useState(12);
   const isMobile = useIsMobile();
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
 
   const handleToggleFavorite = () => {
@@ -31,7 +30,7 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat, isReplay }: Live
     <Card className={`
       p-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60
       transition-all duration-300
-      ${isCollapsed ? 'h-[56px]' : 'h-auto'}
+      h-auto
       overflow-hidden
       flex flex-col
       fixed bottom-[64px] left-0 right-0
@@ -39,27 +38,6 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat, isReplay }: Live
       z-50
       border-t border-border/50
     `}>
-      <div className="flex items-center justify-end">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="p-1 h-6 hover:bg-primary/10 text-primary flex items-center gap-1 text-xs"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          {isCollapsed ? (
-            <>
-              <span>Afficher</span>
-              <ChevronUp className="h-4 w-4" />
-            </>
-          ) : (
-            <>
-              <span>Réduire</span>
-              <ChevronDown className="h-4 w-4" />
-            </>
-          )}
-        </Button>
-      </div>
-
       <div className="w-full max-w-5xl mx-auto">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -131,46 +109,6 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat, isReplay }: Live
             </Button>
           </div>
         </div>
-
-        {isCollapsed && (
-          <div className="flex items-center justify-between mt-1">
-            <div className="flex items-center gap-4">
-              <p className="font-semibold">{property.price.toLocaleString()} DH</p>
-              <Badge 
-                variant="secondary" 
-                className="bg-accent text-accent-foreground"
-              >
-                {offerCount} offres
-              </Badge>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                className={`h-8 bg-primary/10 hover:bg-primary/20 ${isFavorite ? 'text-[#ea384c]' : 'text-primary'}`}
-                onClick={handleToggleFavorite}
-              >
-                <Heart className={`h-4 w-4 ${isFavorite ? "fill-[#ea384c]" : ""}`} />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 bg-primary/10 text-primary hover:bg-primary/20"
-                onClick={onToggleChat}
-              >
-                <MessageSquare className="h-4 w-4" />
-              </Button>
-              <Button
-                size="sm"
-                className="h-8 px-2 bg-primary hover:bg-primary/90 text-primary-foreground"
-                onClick={() => setIsOfferDialogOpen(true)}
-              >
-                <Heart className="w-4 h-4 mr-1.5" />
-                <span className="text-sm">Intéressé</span>
-              </Button>
-            </div>
-          </div>
-        )}
       </div>
 
       <LiveOfferDialog 
