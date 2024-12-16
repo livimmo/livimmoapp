@@ -24,7 +24,6 @@ export const LiveButton = ({
   const { toast } = useToast();
 
   const handleRegistration = () => {
-    // Cette fonction serait connectée à Supabase dans une future implémentation
     toast({
       title: "Inscription confirmée !",
       description: "Vous recevrez un rappel avant le début du live.",
@@ -35,7 +34,7 @@ export const LiveButton = ({
   if (isLiveNow) {
     return (
       <Button 
-        variant="outline" 
+        variant="default"
         className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90 animate-pulse"
         onClick={onJoinLive}
       >
@@ -50,12 +49,12 @@ export const LiveButton = ({
       return (
         <div className="space-y-2">
           <Button 
-            variant="outline" 
-            className="w-full bg-green-500/20 text-green-700 hover:bg-green-500/30 cursor-default"
+            variant="default"
+            className="w-full bg-green-500 text-white hover:bg-green-500/90"
             disabled
           >
             <Users className="mr-2 h-4 w-4" />
-            Vous êtes inscrit !
+            Inscrit au live
           </Button>
           <p className="text-sm text-muted-foreground text-center">
             Le {new Date(liveDate).toLocaleDateString("fr-FR", {
@@ -72,7 +71,7 @@ export const LiveButton = ({
     return (
       <div className="space-y-2">
         <Button 
-          variant="outline" 
+          variant="default"
           className="w-full bg-primary text-white hover:bg-primary/90"
           onClick={handleRegistration}
         >
