@@ -27,7 +27,7 @@ const Lives = () => {
   const replayLives = liveStreams.map(live => ({
     ...live,
     status: "replay" as const,
-    viewers: Math.floor(Math.random() * 1000) // Random number of views
+    viewers: Math.floor(Math.random() * 1000)
   }));
 
   // Filter function for both current and scheduled lives
@@ -40,9 +40,6 @@ const Lives = () => {
         ? parseInt(live.price.replace(/[^\d]/g, ""))
         : live.price;
       const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
-      
-      // Note: Surface filtering is commented out as it's not available in the mock data
-      // Would need to add surface data to implement this filter
       
       return matchesSearch && matchesType && matchesPrice;
     });
@@ -94,7 +91,7 @@ const Lives = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 mt-12 space-y-8">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <PropertyFilters
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -113,7 +110,7 @@ const Lives = () => {
       </div>
 
       {/* Section des lives en cours */}
-      <section>
+      <section className="bg-white rounded-lg shadow-sm p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <span className="inline-block w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
@@ -141,7 +138,7 @@ const Lives = () => {
         
         {filteredCurrentLives.length > 0 ? (
           currentLivesViewMode === "list" ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {currentLiveProperties.map((property) => (
                 <PropertyCard key={property.id} {...property} />
               ))}
@@ -152,22 +149,22 @@ const Lives = () => {
             </div>
           )
         ) : (
-          <div className="text-center text-muted-foreground">
+          <div className="text-center text-muted-foreground py-12">
             Aucun live en cours pour le moment
           </div>
         )}
       </section>
 
       {/* Section des lives programmés */}
-      <section>
+      <section className="bg-white rounded-lg shadow-sm p-6">
         <h2 className="text-2xl font-bold mb-6">Lives programmés</h2>
         <ScheduledLivesList lives={filteredScheduledLives} />
       </section>
 
       {/* Section des replays */}
-      <section>
+      <section className="bg-white rounded-lg shadow-sm p-6">
         <h2 className="text-2xl font-bold mb-6">Replays disponibles</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredReplayLives.map((live) => (
             <ReplayCard key={live.id} live={live} />
           ))}
