@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { MessageSquare, ThumbsUp, Calendar, Users } from "lucide-react";
+import { MessageSquare, ThumbsUp, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveChat } from "@/components/live/LiveChat";
 import { LiveInfo } from "@/components/live/LiveInfo";
@@ -10,7 +10,6 @@ import { type Property } from "@/types/property";
 import { generateMockCoordinates } from "@/data/mockProperties";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
-import { Badge } from "@/components/ui/badge";
 
 const mockLiveData = {
   viewerCount: 45,
@@ -136,20 +135,10 @@ export const JoinLive = () => {
           onLiveChange={handleLiveChange}
         />
 
-        <div className="absolute top-4 left-4 z-50">
-          <Badge 
-            variant="secondary" 
-            className="bg-black/75 text-white backdrop-blur-sm flex items-center gap-2"
-          >
-            <Users className="w-4 h-4" />
-            {viewerCount} spectateurs
-          </Badge>
-        </div>
-
         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
           <LiveInfo 
             property={property} 
-            onMakeOffer={handleMakeOffer} 
+            onMakeOffer={() => setShowOfferForm(true)} 
             viewerCount={viewerCount}
           />
           <div className="flex flex-col gap-2 ml-4">
@@ -160,14 +149,6 @@ export const JoinLive = () => {
               onClick={() => setShowChat(!showChat)}
             >
               <MessageSquare className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-black/50 text-white hover:bg-black/75"
-              onClick={handleToggleFavorite}
-            >
-              <ThumbsUp className={`h-5 w-5 ${isFavorite ? "text-primary" : ""}`} />
             </Button>
             <Button
               variant="ghost"
