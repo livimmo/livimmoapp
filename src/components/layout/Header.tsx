@@ -1,4 +1,4 @@
-import { Video, Bell, User, LogIn, UserPlus, Play } from "lucide-react";
+import { Video, Bell, User, LogIn, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -29,7 +29,7 @@ export const Header = () => {
     }
   };
 
-  const isAgent = user?.role === 'agent' || user?.role === 'promoter';
+  const isAgentOrPromoter = user?.role === 'agent' || user?.role === 'promoter';
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
@@ -46,7 +46,7 @@ export const Header = () => {
         <div className="flex items-center gap-2">
           {isAuthenticated ? (
             <>
-              {isAgent && (
+              {isAgentOrPromoter && (
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
