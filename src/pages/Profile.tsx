@@ -124,7 +124,7 @@ const Profile = () => {
           <div className="flex flex-col gap-4">
             <Button
               variant="outline"
-              className="w-full"
+              className="w-full bg-white text-primary hover:bg-primary hover:text-white transition-colors"
               onClick={handlePasswordChange}
             >
               <Lock className="mr-2 h-4 w-4" />
@@ -133,7 +133,10 @@ const Profile = () => {
 
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="outline" className="w-full text-destructive">
+                <Button 
+                  variant="outline" 
+                  className="w-full bg-white text-destructive hover:bg-destructive hover:text-white transition-colors"
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   Se déconnecter
                 </Button>
@@ -148,7 +151,7 @@ const Profile = () => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Annuler</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleLogout}>
+                  <AlertDialogAction onClick={handleLogout} className="bg-destructive text-white hover:bg-destructive/90">
                     Se déconnecter
                   </AlertDialogAction>
                 </AlertDialogFooter>
