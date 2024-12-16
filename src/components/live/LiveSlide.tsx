@@ -27,7 +27,7 @@ export const LiveSlide = ({ live, index }: LiveSlideProps) => {
     switch (live.status) {
       case "live":
         return (
-          <Button onClick={handleAction} className="w-full bg-green-500 hover:bg-green-600">
+          <Button onClick={handleAction} className="w-full" style={{ backgroundColor: '#ea384c', borderColor: '#ea384c' }}>
             Rejoindre le live
           </Button>
         );
