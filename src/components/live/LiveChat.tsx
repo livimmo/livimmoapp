@@ -1,3 +1,5 @@
+import { X } from "lucide-react";
+
 interface Message {
   id: number;
   text: string;
