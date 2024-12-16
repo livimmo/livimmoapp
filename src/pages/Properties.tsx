@@ -29,6 +29,7 @@ export const mockProperties: Property[] = addCoordinatesToProperties([
       phone: "+212 6 12 34 56 78",
       email: "sarah.martin@example.com",
     },
+    transactionType: "Vente" as const,
   },
   {
     id: 2,
@@ -52,6 +53,7 @@ export const mockProperties: Property[] = addCoordinatesToProperties([
       phone: "+212 6 23 45 67 89",
       email: "mohammed.alami@example.com",
     },
+    transactionType: "Location" as const,
   },
 ]);
 

@@ -8,7 +8,10 @@ import { mockFavoritesData } from "@/data/mockFavorites";
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState<Property[]>(
-    addCoordinatesToProperties(mockFavoritesData)
+    addCoordinatesToProperties(mockFavoritesData.map(property => ({
+      ...property,
+      transactionType: "Vente" as const
+    })))
   );
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filterType, setFilterType] = useState<string>("all");

@@ -41,6 +41,7 @@ const featuredProperties = addCoordinatesToProperties([
       phone: "+212 6 00 11 22 33",
       email: "karim.benjelloun@example.com",
     },
+    transactionType: "Vente" as const,
   },
   {
     id: 2,
@@ -65,6 +66,7 @@ const featuredProperties = addCoordinatesToProperties([
       phone: "+212 6 11 22 33 44",
       email: "sophia.martinez@example.com",
     },
+    transactionType: "Location" as const,
   },
   {
     id: 3,
@@ -90,6 +92,7 @@ const featuredProperties = addCoordinatesToProperties([
       phone: "+212 6 22 33 44 55",
       email: "yasmine.alaoui@example.com",
     },
+    transactionType: "Vente" as const,
   },
 ]);
 

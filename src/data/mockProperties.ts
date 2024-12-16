@@ -174,7 +174,7 @@ const mockPropertiesBase = [
   }
 ].map(property => ({
   ...property,
-  transactionType: Math.random() > 0.5 ? "Vente" : "Location" as const
+  transactionType: Math.random() > 0.5 ? ("Vente" as const) : ("Location" as const)
 }));
 
 export const addCoordinatesToProperty = (property: Omit<Property, 'coordinates'>): Property => ({

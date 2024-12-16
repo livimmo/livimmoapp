@@ -39,7 +39,8 @@ const mockProperties: Property[] = addCoordinatesToProperties([
       image: "https://i.pravatar.cc/150?u=sarah",
       phone: "+212 6 12 34 56 78",
       email: "sarah.martin@example.com",
-    }
+    },
+    transactionType: "Vente" as const,
   },
   {
     id: 2,
@@ -60,7 +61,8 @@ const mockProperties: Property[] = addCoordinatesToProperties([
       image: "https://i.pravatar.cc/150?u=mohammed",
       phone: "+212 6 23 45 67 89",
       email: "mohammed.alami@example.com",
-    }
+    },
+    transactionType: "Location" as const,
   },
   {
     id: 3,
@@ -81,7 +83,8 @@ const mockProperties: Property[] = addCoordinatesToProperties([
       image: "https://i.pravatar.cc/150?u=fatima",
       phone: "+212 6 34 56 78 90",
       email: "fatima.zahra@example.com",
-    }
+    },
+    transactionType: "Vente" as const,
   },
   {
     id: 4,
@@ -102,7 +105,8 @@ const mockProperties: Property[] = addCoordinatesToProperties([
       image: "https://i.pravatar.cc/150?u=karim",
       phone: "+212 6 45 67 89 01",
       email: "karim.idrissi@example.com",
-    }
+    },
+    transactionType: "Location" as const,
   },
   {
     id: 5,
@@ -123,7 +127,8 @@ const mockProperties: Property[] = addCoordinatesToProperties([
       image: "https://i.pravatar.cc/150?u=yasmine",
       phone: "+212 6 56 78 90 12",
       email: "yasmine.benjelloun@example.com",
-    }
+    },
+    transactionType: "Vente" as const,
   }
 ]);
 
