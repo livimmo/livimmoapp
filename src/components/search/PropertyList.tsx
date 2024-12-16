@@ -1,41 +1,16 @@
 import { PropertyCard } from "@/components/PropertyCard";
 import { Badge } from "@/components/ui/badge";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { type Property } from "@/types/property";
 
 export interface PropertyListProps {
   properties: Property[];
-  viewMode?: "list" | "carousel";
+  viewMode?: "list" | "grid";
 }
 
 export const PropertyList = ({ 
   properties, 
-  viewMode = "list" 
+  viewMode = "grid" 
 }: PropertyListProps) => {
-  if (viewMode === "carousel") {
-    return (
-      <Carousel className="w-full max-w-5xl mx-auto">
-        <CarouselContent>
-          {properties.map((property) => (
-            <CarouselItem key={property.id}>
-              <div className="p-1">
-                <PropertyCard {...property} />
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
-    );
-  }
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {properties.map((property) => (
