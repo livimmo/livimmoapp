@@ -2,6 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface OfferFormProps {
   title: string;
@@ -11,12 +20,14 @@ interface OfferFormProps {
   name: string;
   email: string;
   phone: string;
+  validUntil: Date | undefined;
   isAuthenticated: boolean;
   onOfferAmountChange: (amount: number) => void;
   onMessageChange: (message: string) => void;
   onNameChange: (name: string) => void;
   onEmailChange: (email: string) => void;
   onPhoneChange: (phone: string) => void;
+  onValidUntilChange: (date: Date | undefined) => void;
 }
 
 export const OfferForm = ({
@@ -27,12 +38,14 @@ export const OfferForm = ({
   name,
   email,
   phone,
+  validUntil,
   isAuthenticated,
   onOfferAmountChange,
   onMessageChange,
   onNameChange,
   onEmailChange,
   onPhoneChange,
+  onValidUntilChange,
 }: OfferFormProps) => {
   return (
     <div className="space-y-4">
@@ -87,6 +100,35 @@ export const OfferForm = ({
         <p className="text-sm text-muted-foreground">
           Prix demandé : {price.toLocaleString()} DH
         </p>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Date de validité de l'offre *</Label>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-full justify-start text-left font-normal"
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {validUntil ? (
+                format(validUntil, 'dd MMMM yyyy', { locale: fr })
+              ) : (
+                <span>Sélectionner une date</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0 bg-white" align="start">
+            <Calendar
+              mode="single"
+              selected={validUntil}
+              onSelect={onValidUntilChange}
+              initialFocus
+              disabled={(date) => date < new Date()}
+              className="bg-white rounded-md border"
+            />
+          </PopoverContent>
+        </Popover>
       </div>
 
       <div className="space-y-2">

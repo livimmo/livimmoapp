@@ -14,6 +14,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Euro, HandCoins, UserPlus2 } from "lucide-react";
 import { OfferForm } from "./offer/OfferForm";
 import { VisitBookingForm } from "./offer/VisitBookingForm";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 interface OfferDialogProps {
   title: string;
@@ -26,6 +28,9 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [validUntil, setValidUntil] = useState<Date | undefined>(
+    new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 jours par défaut
+  );
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user } = useAuth();
@@ -67,10 +72,20 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
       return;
     }
 
+    if (!validUntil) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez sélectionner une date de validité",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const offerData = {
       propertyTitle: title,
       amount: offerAmount,
       message,
+      validUntil,
       contact: isAuthenticated
         ? {
             name: `${user?.firstName} ${user?.lastName}`,
@@ -88,7 +103,7 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
 
     toast({
       title: "Offre envoyée !",
-      description: `Votre offre de ${offerAmount.toLocaleString()} DH pour ${title} a été envoyée.`,
+      description: `Votre offre de ${offerAmount.toLocaleString()} DH pour ${title} est valide jusqu'au ${format(validUntil, 'dd MMMM yyyy', { locale: fr })}.`,
     });
     setIsOpen(false);
   };
@@ -136,12 +151,14 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
               name={name}
               email={email}
               phone={phone}
+              validUntil={validUntil}
               isAuthenticated={isAuthenticated}
               onOfferAmountChange={setOfferAmount}
               onMessageChange={setMessage}
               onNameChange={setName}
               onEmailChange={setEmail}
               onPhoneChange={setPhone}
+              onValidUntilChange={setValidUntil}
             />
             <Button onClick={handleOffer} className="w-full mt-4">
               Envoyer l'offre

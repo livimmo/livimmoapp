@@ -2,8 +2,6 @@ import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Users } from "lucide-react";
-import { LiveOfferDialog } from "./LiveOfferDialog";
-import { useState } from "react";
 import { OfferDialog } from "../property/OfferDialog";
 
 interface LiveInfoProps {
@@ -13,8 +11,6 @@ interface LiveInfoProps {
 }
 
 export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
-  const [showOfferDialog, setShowOfferDialog] = useState(false);
-
   return (
     <Card className="p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex items-center justify-between mb-4">
@@ -34,19 +30,7 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 mt-4">
-        <LiveOfferDialog
-          title={property.title}
-          price={property.price}
-          isOpen={showOfferDialog}
-          onClose={() => setShowOfferDialog(false)}
-        />
-        <Button 
-          onClick={() => setShowOfferDialog(true)}
-          className="w-full"
-        >
-          Faire une offre
-        </Button>
+      <div className="mt-4">
         <OfferDialog 
           title={property.title}
           price={property.price}
