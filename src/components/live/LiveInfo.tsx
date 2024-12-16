@@ -1,7 +1,7 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink, Heart, Radio } from "lucide-react";
+import { Users, ExternalLink, Heart, Radio, Euro } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
@@ -16,6 +16,8 @@ interface LiveInfoProps {
 
 export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
+  // Simulons un nombre d'offres pour la démo
+  const [offerCount] = useState(12);
 
   return (
     <Card className="p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -36,9 +38,20 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
             title={property.title}
           />
         </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Users className="w-4 h-4" />
-          <span>{viewerCount} spectateurs</span>
+        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4" />
+            <span>{viewerCount} spectateurs</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Euro className="w-4 h-4" />
+            <Badge 
+              variant="secondary" 
+              className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
+            >
+              {offerCount} offres
+            </Badge>
+          </div>
         </div>
       </div>
       
