@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 
 export const AddLiveDialog = () => {
   const [date, setDate] = useState<Date>();
@@ -51,15 +52,6 @@ export const AddLiveDialog = () => {
       description: `Votre live "${title}" a été programmé pour le ${date.toLocaleDateString()}`,
     });
   };
-
-  const propertyTypes = [
-    "Appartement",
-    "Villa",
-    "Maison",
-    "Terrain",
-    "Local commercial",
-    "Bureau",
-  ];
 
   const availableTags = [
     "Nouveauté",
@@ -181,7 +173,7 @@ export const AddLiveDialog = () => {
                   <SelectValue placeholder="Sélectionner le type" />
                 </SelectTrigger>
                 <SelectContent>
-                  {propertyTypes.map((type) => (
+                  {PROPERTY_TYPES.map((type) => (
                     <SelectItem key={type} value={type}>
                       {type}
                     </SelectItem>

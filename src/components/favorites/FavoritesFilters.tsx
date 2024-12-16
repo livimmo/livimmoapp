@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 
 interface FavoritesFiltersProps {
   filterType: string;
@@ -33,13 +34,9 @@ export const FavoritesFilters = ({
         </SelectTrigger>
         <SelectContent className="bg-white border shadow-lg">
           <SelectItem value="all">Tous les types</SelectItem>
-          <SelectItem value="Villa">Villa</SelectItem>
-          <SelectItem value="Appartement">Appartement</SelectItem>
-          <SelectItem value="Bureau">Bureau</SelectItem>
-          <SelectItem value="Riad">Riad</SelectItem>
-          <SelectItem value="Commerce">Commerce</SelectItem>
-          <SelectItem value="Studio">Studio</SelectItem>
-          <SelectItem value="Loft">Loft</SelectItem>
+          {PROPERTY_TYPES.map((type) => (
+            <SelectItem key={type} value={type}>{type}</SelectItem>
+          ))}
         </SelectContent>
       </Select>
 
