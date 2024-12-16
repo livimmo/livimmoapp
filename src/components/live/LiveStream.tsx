@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { Camera } from "lucide-react";
 import { FavoriteButton } from "@/components/property/FavoriteButton";
 import { LiveCarousel } from "./LiveCarousel";
 import { type LiveEvent } from "@/types/live";
+import { Badge } from "@/components/ui/badge";
 
 interface LiveStreamProps {
   videoId: string;
@@ -40,24 +41,23 @@ export const LiveStream = ({
         </div>
       )}
 
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => setShowCarousel(!showCarousel)}
-        className="absolute top-4 right-4 z-20 bg-black/50 text-white hover:bg-black/75"
-      >
-        {showCarousel ? (
-          <>
-            <ChevronUp className="h-4 w-4 mr-1" />
-            Masquer
-          </>
-        ) : (
-          <>
-            <ChevronDown className="h-4 w-4 mr-1" />
-            Autres lives
-          </>
-        )}
-      </Button>
+      <div className="absolute top-4 right-4 z-20">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowCarousel(!showCarousel)}
+          className="bg-black/50 text-white hover:bg-black/75 relative"
+        >
+          <Camera className="h-4 w-4 mr-1" />
+          {showCarousel ? "Masquer" : "Autres lives"}
+          <Badge 
+            variant="default" 
+            className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
+          >
+            {otherLives.length}
+          </Badge>
+        </Button>
+      </div>
 
       <iframe
         src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
