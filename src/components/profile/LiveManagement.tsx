@@ -1,32 +1,68 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AddLiveDialog } from "@/components/AddLiveDialog";
-import { Calendar, Clock, Video, Users } from "lucide-react";
-
-interface ScheduledLive {
-  id: number;
-  title: string;
-  date: Date;
-  type: "youtube" | "facebook" | "instagram" | "whatsapp";
-  viewers: number;
-}
+import { Video } from "lucide-react";
+import { PropertyCard } from "@/components/PropertyCard";
+import { type Property } from "@/types/property";
 
 export const LiveManagement = () => {
   // Mock data - à remplacer par des vraies données
-  const [scheduledLives] = useState<ScheduledLive[]>([
+  const [scheduledLives] = useState<Property[]>([
     {
       id: 1,
       title: "Visite Villa Moderne Casablanca",
-      date: new Date("2024-03-20T14:00:00"),
-      type: "youtube",
+      price: 2500000,
+      location: "Casablanca",
+      type: "Villa",
+      surface: 250,
+      rooms: 5,
+      bathrooms: 3,
+      description: "Magnifique villa moderne",
+      features: [],
+      images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9"],
+      hasLive: true,
+      liveDate: new Date("2024-03-20T14:00:00"),
+      agent: {
+        name: "John Doe",
+        image: "",
+        phone: "",
+        email: "",
+      },
+      coordinates: {
+        lat: 33.5731104,
+        lng: -7.5898434,
+      },
       viewers: 12,
+      isLiveNow: false,
+      remainingSeats: 15,
     },
     {
       id: 2,
       title: "Appartement Vue Mer - Tanger",
-      date: new Date("2024-03-25T16:30:00"),
-      type: "facebook",
+      price: 1800000,
+      location: "Tanger",
+      type: "Appartement",
+      surface: 120,
+      rooms: 3,
+      bathrooms: 2,
+      description: "Superbe appartement vue mer",
+      features: [],
+      images: ["https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"],
+      hasLive: true,
+      liveDate: new Date("2024-03-25T16:30:00"),
+      agent: {
+        name: "Jane Smith",
+        image: "",
+        phone: "",
+        email: "",
+      },
+      coordinates: {
+        lat: 35.7595,
+        lng: -5.8340,
+      },
       viewers: 8,
+      isLiveNow: false,
+      remainingSeats: 20,
     },
   ]);
 
@@ -45,40 +81,9 @@ export const LiveManagement = () => {
             <p className="text-sm">Commencez par ajouter votre premier live</p>
           </div>
         ) : (
-          <div className="grid gap-4">
-            {scheduledLives.map((live) => (
-              <div
-                key={live.id}
-                className="border rounded-lg p-4 hover:shadow-md transition-shadow"
-              >
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-medium">{live.title}</h4>
-                  <Button variant="outline" size="sm">
-                    Modifier
-                  </Button>
-                </div>
-                <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
-                    {live.date.toLocaleDateString()}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4" />
-                    {live.date.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Video className="h-4 w-4" />
-                    {live.type}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4" />
-                    {live.viewers} inscrits
-                  </div>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {scheduledLives.map((property) => (
+              <PropertyCard key={property.id} {...property} />
             ))}
           </div>
         )}
