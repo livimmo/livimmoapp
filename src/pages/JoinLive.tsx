@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Video, Users, MessageSquare, Heart, X } from "lucide-react";
+import { Video, Users, MessageSquare, Heart, X, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveChat } from "@/components/live/LiveChat";
 import { LiveInfo } from "@/components/live/LiveInfo";
@@ -24,6 +24,7 @@ export const JoinLive = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [property, setProperty] = useState<Property | null>(null);
+  const [showOtherLives, setShowOtherLives] = useState(false);
 
   // Filtrer les autres lives en cours (excluant le live actuel)
   const otherLives = liveStreams.filter(live => live.id !== Number(id));
@@ -153,32 +154,52 @@ export const JoinLive = () => {
           </Button>
         </div>
 
-        {/* Banner des autres lives en cours */}
-        <div className="absolute bottom-24 left-4 right-4 bg-black/75 p-4 rounded-lg">
-          <h3 className="text-white text-sm font-medium mb-2">Autres lives en cours</h3>
-          <div className="flex gap-4 overflow-x-auto pb-2">
-            {otherLives.map((live) => (
-              <div
-                key={live.id}
-                className="flex-shrink-0 cursor-pointer"
-                onClick={() => navigate(`/live/${live.id}`)}
-              >
-                <div className="relative w-48">
-                  <img
-                    src={live.thumbnail}
-                    alt={live.title}
-                    className="w-full h-24 object-cover rounded-lg"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent rounded-b-lg">
-                    <p className="text-white text-xs font-medium truncate">{live.title}</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Video className="w-3 h-3 text-red-500" />
-                      <span className="text-white text-xs">{live.viewers} spectateurs</span>
+        {/* Bannière pliable des autres lives */}
+        <div className={`absolute transition-all duration-300 ease-in-out ${showOtherLives ? 'bottom-24' : '-bottom-32'} left-4 right-4`}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute -top-8 right-4 bg-black/75 text-white hover:bg-black/90"
+            onClick={() => setShowOtherLives(!showOtherLives)}
+          >
+            {showOtherLives ? (
+              <>
+                <ChevronDown className="h-4 w-4 mr-2" />
+                Masquer les autres lives
+              </>
+            ) : (
+              <>
+                <ChevronUp className="h-4 w-4 mr-2" />
+                Voir les autres lives
+              </>
+            )}
+          </Button>
+          <div className="bg-black/75 p-4 rounded-lg">
+            <h3 className="text-white text-sm font-medium mb-2">Autres lives en cours</h3>
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {otherLives.map((live) => (
+                <div
+                  key={live.id}
+                  className="flex-shrink-0 cursor-pointer hover:opacity-75 transition-opacity"
+                  onClick={() => navigate(`/live/${live.id}`)}
+                >
+                  <div className="relative w-48">
+                    <img
+                      src={live.thumbnail}
+                      alt={live.title}
+                      className="w-full h-24 object-cover rounded-lg"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent rounded-b-lg">
+                      <p className="text-white text-xs font-medium truncate">{live.title}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Video className="w-3 h-3 text-red-500" />
+                        <span className="text-white text-xs">{live.viewers} spectateurs</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
