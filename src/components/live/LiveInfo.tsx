@@ -33,14 +33,24 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
       ${isMobile ? 'max-h-[40vh]' : 'max-h-[30vh]'}
       z-50
     `}>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-end mb-2">
         <Button
           variant="ghost"
           size="sm"
-          className="p-1 h-6 hover:bg-transparent absolute right-2 top-2"
+          className="p-1 h-6 hover:bg-accent flex items-center gap-1 text-xs"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          {isCollapsed ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+          {isCollapsed ? (
+            <>
+              <span>Afficher</span>
+              <ChevronUp className="h-4 w-4" />
+            </>
+          ) : (
+            <>
+              <span>Réduire</span>
+              <ChevronDown className="h-4 w-4" />
+            </>
+          )}
         </Button>
       </div>
 
@@ -108,7 +118,7 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         )}
 
         {isCollapsed && (
-          <div className="flex items-center justify-between gap-4 mt-2">
+          <div className="flex items-center justify-between gap-4">
             <p className="font-semibold">{property.price.toLocaleString()} DH</p>
             <div className="flex items-center gap-2">
               <Badge 
