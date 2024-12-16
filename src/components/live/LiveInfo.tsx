@@ -1,7 +1,7 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink, Heart, Radio, ChevronDown, ChevronUp } from "lucide-react";
+import { Users, ExternalLink, Heart, Radio, ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
@@ -12,9 +12,10 @@ interface LiveInfoProps {
   property: Property;
   onMakeOffer: () => void;
   viewerCount: number;
+  onToggleChat?: () => void;
 }
 
-export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
+export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps) => {
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
   const [offerCount] = useState(12);
   const isMobile = useIsMobile();
@@ -94,14 +95,24 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
 
           {!isCollapsed && (
             <div className="flex items-center gap-4 shrink-0">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="bg-black/50 text-white hover:bg-black/75"
-                onClick={handleToggleFavorite}
-              >
-                <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="bg-black/50 text-white hover:bg-black/75"
+                  onClick={handleToggleFavorite}
+                >
+                  <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="bg-black/50 text-white hover:bg-black/75"
+                  onClick={onToggleChat}
+                >
+                  <MessageSquare className="h-5 w-5" />
+                </Button>
+              </div>
               <Badge 
                 variant="secondary" 
                 className="bg-[#F97316]/90 hover:bg-[#F97316] text-white"
@@ -141,6 +152,14 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
                 onClick={handleToggleFavorite}
               >
                 <Heart className={`h-4 w-4 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 bg-black/50 text-white hover:bg-black/75"
+                onClick={onToggleChat}
+              >
+                <MessageSquare className="h-4 w-4" />
               </Button>
               <Button
                 size="sm"

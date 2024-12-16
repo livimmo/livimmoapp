@@ -27,6 +27,7 @@ export const LiveStreamingView = ({
   const [viewerCount, setViewerCount] = useState(0);
   const [showDescription, setShowDescription] = useState(true);
   const [showEndDialog, setShowEndDialog] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export const LiveStreamingView = ({
             property={property}
             onMakeOffer={() => {}}
             viewerCount={viewerCount}
+            onToggleChat={() => setShowChat(!showChat)}
           />
         </div>
       )}
@@ -80,6 +82,15 @@ export const LiveStreamingView = ({
         showDescription={showDescription}
         onToggleDescription={() => setShowDescription(!showDescription)}
       />
+
+      {showChat && (
+        <div className="absolute top-0 right-0 bottom-0 w-80 z-[100]">
+          <LiveChat 
+            messages={[]} 
+            onClose={() => setShowChat(false)}
+          />
+        </div>
+      )}
 
       <AlertDialog open={showEndDialog} onOpenChange={setShowEndDialog}>
         <AlertDialogContent>
