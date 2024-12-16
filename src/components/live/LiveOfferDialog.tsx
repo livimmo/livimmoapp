@@ -114,13 +114,14 @@ export const LiveOfferDialog = ({ title, price, isOpen, onClose }: LiveOfferDial
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
+              <PopoverContent className="w-auto p-0 bg-white" align="start">
                 <Calendar
                   mode="single"
                   selected={validUntil}
                   onSelect={setValidUntil}
                   initialFocus
                   disabled={(date) => date < new Date()}
+                  className="bg-white rounded-md border"
                 />
               </PopoverContent>
             </Popover>
