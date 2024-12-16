@@ -16,6 +16,8 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Developers from "./pages/Developers";
 import DeveloperDetail from "./pages/DeveloperDetail";
+import Agents from "./pages/Agents";
+import AgentDetail from "./pages/AgentDetail";
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/developers" element={<Developers />} />
             <Route path="/developer/:id" element={<DeveloperDetail />} />
+            <Route path="/agents" element={<Agents />} />
+            <Route path="/agent/:id" element={<AgentDetail />} />
           </Routes>
         </div>
         <BottomNav />
