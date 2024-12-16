@@ -9,6 +9,7 @@ import { ReplayCarousel } from "./ReplayCarousel";
 import { liveStreams } from "@/data/mockLives";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { LiveStreamProps, replayTimestamps } from "@/types/live";
 
 const mockProperty = {
   id: 1,
@@ -85,8 +86,7 @@ export const LiveStream = ({
       ? replayTimestamps[Math.floor(Math.random() * replayTimestamps.length)]
       : videoId;
     
-    const autoplayParam = isReplay ? '&autoplay=1' : '';
-    return `${baseUrl}${videoIdWithTimestamp}?rel=0&modestbranding=1&showinfo=0${autoplayParam}`;
+    return `${baseUrl}${videoIdWithTimestamp}?rel=0&modestbranding=1&showinfo=0&autoplay=1&mute=1`;
   };
 
   return (

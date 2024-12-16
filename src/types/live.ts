@@ -26,3 +26,19 @@ export interface LiveStreamConfig {
   estimatedDuration: number;
   autoRecord: boolean;
 }
+
+export interface LiveStreamProps {
+  videoId: string;
+  currentLiveId: number;
+  otherLives: any[];
+  onLiveChange?: (liveId: number) => void;
+  isReplay?: boolean;
+}
+
+export const replayTimestamps = [
+  'VIQpb65HmMs',
+  'VIQpb65HmMs?start=300',
+  'VIQpb65HmMs?start=600',
+  'VIQpb65HmMs?start=900',
+  'VIQpb65HmMs?start=1200',
+];
