@@ -5,8 +5,15 @@ import { AccountTypeSelector, AccountType } from "@/components/profile/AccountTy
 import { PersonalInfo } from "@/components/profile/PersonalInfo";
 import { SocialConnect } from "@/components/profile/SocialConnect";
 import { Button } from "@/components/ui/button";
-import { LogOut, Lock } from "lucide-react";
+import { LogOut, Lock, Languages } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,6 +34,7 @@ interface UserProfile {
   accountType: AccountType;
   avatar?: string;
   isVerified: boolean;
+  language: string;
 }
 
 const Profile = () => {
@@ -39,6 +47,7 @@ const Profile = () => {
     phone: "+212 6XX XXX XXX",
     accountType: "buyer",
     isVerified: false,
+    language: "fr",
   });
 
   const handleAccountTypeChange = (value: AccountType) => {
@@ -48,6 +57,14 @@ const Profile = () => {
       description: `Vous êtes maintenant enregistré en tant que ${
         value === "buyer" ? "acheteur/locataire" : "agent/promoteur"
       }.`,
+    });
+  };
+
+  const handleLanguageChange = (value: string) => {
+    setProfile((prev) => ({ ...prev, language: value }));
+    toast({
+      title: "Langue mise à jour",
+      description: "La langue de l'interface a été modifiée avec succès.",
     });
   };
 
@@ -68,7 +85,6 @@ const Profile = () => {
       title: "Déconnexion réussie",
       description: "À bientôt !",
     });
-    // Redirection vers la page d'accueil après déconnexion
     navigate('/');
   };
 
@@ -82,7 +98,20 @@ const Profile = () => {
   return (
     <div className="min-h-screen pb-20">
       <div className="container px-4 py-8 max-w-2xl mx-auto space-y-8">
-        <h1 className="text-2xl font-bold">Mon Profil</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Mon Profil</h1>
+          <Select value={profile.language} onValueChange={handleLanguageChange}>
+            <SelectTrigger className="w-[140px]">
+              <Languages className="mr-2 h-4 w-4" />
+              <SelectValue placeholder="Langue" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="fr">Français</SelectItem>
+              <SelectItem value="en">English</SelectItem>
+              <SelectItem value="ar">العربية</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         <div className="space-y-8">
           <ProfileAvatar
