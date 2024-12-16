@@ -1,32 +1,66 @@
 import { PropertyCard } from "@/components/PropertyCard";
-import { PropertyMap } from "@/components/search/PropertyMap";
+import { Badge } from "@/components/ui/badge";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { type Property } from "@/types/property";
 
-interface PropertyListProps {
+export interface PropertyListProps {
   properties: Property[];
-  viewMode?: "grid" | "list" | "map" | "carousel";
+  viewMode?: "list" | "carousel";
 }
 
 export const PropertyList = ({ 
   properties, 
-  viewMode = "grid" 
+  viewMode = "list" 
 }: PropertyListProps) => {
-  if (viewMode === "map") {
-    return <PropertyMap properties={properties} />;
+  if (viewMode === "carousel") {
+    return (
+      <Carousel className="w-full max-w-5xl mx-auto">
+        <CarouselContent>
+          {properties.map((property) => (
+            <CarouselItem key={property.id}>
+              <div className="p-1">
+                <PropertyCard {...property} />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+    );
   }
 
   return (
-    <div
-      className={`grid gap-4 ${
-        viewMode === "grid"
-          ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-          : viewMode === "carousel"
-          ? "grid-cols-1"
-          : "grid-cols-1"
-      }`}
-    >
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {properties.map((property) => (
-        <PropertyCard key={property.id} {...property} />
+        <div key={property.id} className="relative">
+          <PropertyCard {...property} />
+          {property.tags && (
+            <div className="absolute top-2 left-2 flex gap-1 flex-wrap max-w-[70%] z-10">
+              {property.tags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant={
+                    tag === "Coup de fusil"
+                      ? "destructive"
+                      : tag === "Nouveauté"
+                      ? "default"
+                      : "secondary"
+                  }
+                  className="text-xs"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          )}
+        </div>
       ))}
     </div>
   );
