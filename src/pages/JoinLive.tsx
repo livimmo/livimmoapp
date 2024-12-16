@@ -121,9 +121,6 @@ export const JoinLive = () => {
             >
               <X className="h-5 w-5" />
             </Button>
-            <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
-              LIVE
-            </div>
           </div>
           <div className="flex items-center gap-2">
             <Button
