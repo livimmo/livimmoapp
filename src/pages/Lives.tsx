@@ -38,9 +38,10 @@ const Lives = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Tous</SelectItem>
-              <SelectItem value="villa">Villa</SelectItem>
-              <SelectItem value="appartement">Appartement</SelectItem>
-              <SelectItem value="bureau">Bureau</SelectItem>
+              <SelectItem value="Villa">Villa</SelectItem>
+              <SelectItem value="Appartement">Appartement</SelectItem>
+              <SelectItem value="Bureau">Bureau</SelectItem>
+              <SelectItem value="Riad">Riad</SelectItem>
             </SelectContent>
           </Select>
           <Select>
