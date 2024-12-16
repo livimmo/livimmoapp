@@ -10,6 +10,6 @@ export interface LiveEvent {
   price: string;
   description?: string;
   viewers?: number;
-  status?: 'live' | 'scheduled';
+  status?: 'live' | 'scheduled' | 'replay';
   tags?: string[];
 }
