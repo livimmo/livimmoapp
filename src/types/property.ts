@@ -28,4 +28,5 @@ export interface Property {
   viewers?: number;
   remainingSeats?: number;
   isUserRegistered?: boolean;
+  tags?: string[];
 }
