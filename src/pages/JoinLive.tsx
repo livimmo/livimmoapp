@@ -6,7 +6,6 @@ import { LiveChat } from "@/components/live/LiveChat";
 import { LiveInfo } from "@/components/live/LiveInfo";
 import { LiveStream } from "@/components/live/LiveStream";
 import { LiveControls } from "@/components/live/LiveControls";
-import { LiveSidebar } from "@/components/live/LiveSidebar";
 import { useToast } from "@/hooks/use-toast";
 import { type Property } from "@/types/property";
 import { generateMockCoordinates } from "@/data/mockProperties";
@@ -27,9 +26,15 @@ export const JoinLive = () => {
   const { toast } = useToast();
   const { isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [property, setProperty] = useState<Property | null>(null);
+
+  const currentLiveId = Number(id);
+  const otherLives = liveStreams.filter(live => live.id !== currentLiveId);
+
+  const handleLiveChange = (newLiveId: number) => {
+    navigate(`/live/${newLiveId}`);
+  };
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -80,14 +85,6 @@ export const JoinLive = () => {
     });
   };
 
-  const handleToggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-    toast({
-      title: isFavorite ? "Retiré des favoris" : "Ajouté aux favoris",
-      description: `${property?.title} a été ${isFavorite ? "retiré de" : "ajouté à"} vos favoris.`,
-    });
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -116,9 +113,13 @@ export const JoinLive = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="relative h-[calc(100vh-4rem)]">
-        <LiveStream videoId="n3wtxcO_0GQ" />
-        <LiveControls isFavorite={isFavorite} onToggleFavorite={handleToggleFavorite} />
-        <LiveSidebar currentLiveId={Number(id)} lives={liveStreams} />
+        <LiveStream 
+          videoId="n3wtxcO_0GQ" 
+          currentLiveId={currentLiveId}
+          otherLives={otherLives}
+          onLiveChange={handleLiveChange}
+        />
+        <LiveControls />
 
         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
           <LiveInfo 
