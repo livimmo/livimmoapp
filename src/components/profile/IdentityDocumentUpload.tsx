@@ -42,7 +42,28 @@ export const IdentityDocumentUpload = () => {
     input.type = 'file';
     input.accept = 'image/*';
     input.capture = 'environment'; // Utilise la caméra arrière par défaut
-    input.onchange = (e) => handleFileUpload(e as React.ChangeEvent<HTMLInputElement>);
+    
+    // Créer une fonction qui convertit l'événement en React.ChangeEvent<HTMLInputElement>
+    input.onchange = (e) => {
+      if (e.target instanceof HTMLInputElement) {
+        const syntheticEvent = {
+          target: e.target,
+          preventDefault: () => {},
+          stopPropagation: () => {},
+          nativeEvent: e,
+          currentTarget: e.currentTarget,
+          bubbles: e.bubbles,
+          cancelable: e.cancelable,
+          defaultPrevented: e.defaultPrevented,
+          eventPhase: e.eventPhase,
+          isTrusted: e.isTrusted,
+          timeStamp: e.timeStamp,
+          type: e.type,
+        } as React.ChangeEvent<HTMLInputElement>;
+        
+        handleFileUpload(syntheticEvent);
+      }
+    };
     input.click();
   };
 
