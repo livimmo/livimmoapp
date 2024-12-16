@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +16,7 @@ import { Plus, Video, Youtube, Facebook, Instagram, MessageCircle, MapPin, Home,
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { GoogleMapInput } from "./GoogleMapInput";
+import { ImageCarousel } from "./property/ImageCarousel";
 import {
   Select,
   SelectContent,
@@ -29,6 +31,7 @@ export const AddLiveDialog = ({ variant = "default" }: { variant?: "default" | "
   const [time, setTime] = useState("12:00");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [images, setImages] = useState<string[]>([]);
   const [liveType, setLiveType] = useState<"youtube" | "facebook" | "instagram" | "whatsapp">("youtube");
   const [liveUrl, setLiveUrl] = useState("");
   const [price, setPrice] = useState("");
@@ -135,15 +138,6 @@ export const AddLiveDialog = ({ variant = "default" }: { variant?: "default" | "
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Description</label>
-              <Input
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description de la visite..."
-              />
-            </div>
-
-            <div className="space-y-2">
               <label className="text-sm font-medium">Prix*</label>
               <div className="relative">
                 <Input
@@ -157,7 +151,36 @@ export const AddLiveDialog = ({ variant = "default" }: { variant?: "default" | "
                 <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">DH</span>
               </div>
             </div>
+          </div>
 
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Photos du bien</label>
+            <ImageCarousel images={images} onImagesChange={setImages} />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Description du bien</label>
+            <div className="relative">
+              <Textarea
+                value={description}
+                onChange={(e) => {
+                  if (e.target.value.length <= 500) {
+                    setDescription(e.target.value);
+                  }
+                }}
+                placeholder="Ajoutez une description du bien (surface, localisation, points forts, etc.)"
+                className="min-h-[100px]"
+              />
+              <div className="absolute bottom-2 right-2 text-sm text-muted-foreground">
+                {description.length}/500
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Astuce : Incluez les points clés comme la surface, le nombre de pièces, et les équipements disponibles.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-medium">Surface*</label>
               <div className="relative">
@@ -170,6 +193,25 @@ export const AddLiveDialog = ({ variant = "default" }: { variant?: "default" | "
                   className="pl-8"
                 />
                 <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">m²</span>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Type de bien*</label>
+              <div className="relative">
+                <Home className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Select value={propertyType} onValueChange={setPropertyType} required>
+                  <SelectTrigger className="pl-8">
+                    <SelectValue placeholder="Sélectionner le type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PROPERTY_TYPES.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
@@ -186,25 +228,6 @@ export const AddLiveDialog = ({ variant = "default" }: { variant?: "default" | "
                 required
                 className="pl-8"
               />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Type de bien*</label>
-            <div className="relative">
-              <Home className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Select value={propertyType} onValueChange={setPropertyType} required>
-                <SelectTrigger className="pl-8">
-                  <SelectValue placeholder="Sélectionner le type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {PROPERTY_TYPES.map((type) => (
-                    <SelectItem key={type} value={type}>
-                      {type}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
             </div>
           </div>
 
