@@ -1,60 +1,73 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { TagSelector } from "../profile/live-edit/TagSelector";
 import { GoogleMapInput } from "../GoogleMapInput";
 import { Upload, X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
-export const PropertyForm = ({ onSubmit, initialData }) => {
+interface PropertyFormProps {
+  onSubmit: (data: any) => void;
+  initialData?: {
+    title?: string;
+    description?: string;
+    location?: string;
+    tags?: string[];
+  };
+}
+
+interface FileWithPreview extends File {
+  type: string;
+}
+
+export const PropertyForm = ({ onSubmit, initialData }: PropertyFormProps) => {
   const [title, setTitle] = useState(initialData?.title || "");
   const [description, setDescription] = useState(initialData?.description || "");
   const [location, setLocation] = useState(initialData?.location || "");
   const [tags, setTags] = useState(initialData?.tags || []);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const { toast } = useToast();
 
   const availableTags = [
     "Luxueux",
     "Vue mer",
-    "Balcon",
     "Piscine",
     "Jardin",
+    "Terrasse",
     "Parking",
     "Meublé",
     "Neuf",
-    "Rénové"
+    "Rénové",
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({
       title,
       description,
       location,
       tags,
-      files
+      files,
     });
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
   };
 
-  const handleDragLeave = (e) => {
+  const handleDragLeave = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
     
-    const droppedFiles = Array.from(e.dataTransfer.files);
+    const droppedFiles = Array.from(e.dataTransfer.files) as FileWithPreview[];
     const validFiles = droppedFiles.filter(file => 
       file.type.startsWith('image/') || file.type.startsWith('video/')
     );
@@ -76,54 +89,49 @@ export const PropertyForm = ({ onSubmit, initialData }) => {
     }
   };
 
-  const removeFile = (index) => {
+  const removeFile = (index: number) => {
     setFiles(prev => prev.filter((_, i) => i !== index));
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="title">Titre du bien*</Label>
+        <Label htmlFor="title">Titre</Label>
         <Input
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Ex: Appartement moderne à Marrakech"
           required
         />
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
-        <Textarea
+        <Input
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Décrivez les caractéristiques et avantages du bien..."
-          className="h-32"
+          required
         />
       </div>
 
       <div className="space-y-2">
-        <Label>Localisation*</Label>
+        <Label htmlFor="location">Localisation</Label>
         <GoogleMapInput
-          onLocationSelect={setLocation}
           value={location}
           onChange={setLocation}
+          required
         />
       </div>
 
-      <TagSelector
-        tags={tags}
-        availableTags={availableTags}
-        onTagToggle={(tag) => {
-          setTags(prev => 
-            prev.includes(tag) 
-              ? prev.filter(t => t !== tag)
-              : [...prev, tag]
-          );
-        }}
-      />
+      <div className="space-y-2">
+        <Label>Tags</Label>
+        <TagSelector
+          selectedTags={tags}
+          availableTags={availableTags}
+          onChange={setTags}
+        />
+      </div>
 
       <div className="space-y-2">
         <Label>Photos/Vidéos</Label>
@@ -146,7 +154,7 @@ export const PropertyForm = ({ onSubmit, initialData }) => {
               <Input
                 type="file"
                 onChange={(e) => {
-                  const newFiles = Array.from(e.target.files);
+                  const newFiles = Array.from(e.target.files || []) as FileWithPreview[];
                   setFiles(prev => [...prev, ...newFiles]);
                 }}
                 multiple
@@ -194,9 +202,7 @@ export const PropertyForm = ({ onSubmit, initialData }) => {
       </div>
 
       <div className="flex justify-end gap-2">
-        <Button type="submit">
-          Suivant
-        </Button>
+        <Button type="submit">Enregistrer</Button>
       </div>
     </form>
   );

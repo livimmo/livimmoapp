@@ -43,7 +43,7 @@ export const LiveSection = () => {
   if (liveProperties.length === 0) {
     return (
       <section className="mb-8">
-        <h2 className="text-lg font-semibold mb-4">Lives en cours</h2>
+        <h2 className="text-2xl font-bold mb-4">Tous nos lives</h2>
         <p className="text-muted-foreground text-center py-8">
           Aucun live en cours pour le moment
         </p>
@@ -54,7 +54,7 @@ export const LiveSection = () => {
   return (
     <section className="mb-8">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Lives en cours</h2>
+        <h2 className="text-2xl font-bold">Tous nos lives</h2>
         <div className="flex gap-2">
           <Button
             variant={viewMode === "list" ? "default" : "outline"}
