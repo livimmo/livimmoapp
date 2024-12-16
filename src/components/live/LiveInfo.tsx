@@ -24,12 +24,14 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
   return (
     <Card className={`
       p-3 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60
-      ${isMobile ? 'w-[calc(100%-2rem)] mx-auto' : 'w-[600px]'}
+      w-full mx-auto
       transition-all duration-300
       ${isCollapsed ? 'h-[72px]' : ''}
       overflow-hidden
       flex flex-col
-      absolute bottom-4 left-1/2 -translate-x-1/2
+      fixed bottom-0 left-0 right-0
+      ${isMobile ? 'max-h-[40vh]' : 'max-h-[30vh]'}
+      z-50
     `}>
       <div className="flex items-center justify-between">
         <Button
@@ -42,7 +44,7 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         </Button>
       </div>
 
-      <div className="space-y-1.5 w-full">
+      <div className="space-y-1.5 w-full max-w-5xl mx-auto">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 min-w-0 flex-1">
             <h2 className="text-base font-semibold truncate">{property.title}</h2>
@@ -62,7 +64,7 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         </div>
         
         {!isCollapsed && (
-          <div className="grid grid-cols-2 gap-4 mt-3">
+          <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-4 mt-3`}>
             <div className="space-y-2">
               <div className="flex items-center gap-4 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
@@ -95,7 +97,7 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
             <div className="flex flex-col justify-between items-end">
               <Button 
                 size="sm"
-                className="w-full md:w-auto" 
+                className="w-full" 
                 onClick={() => setIsOfferDialogOpen(true)}
               >
                 <Heart className="w-4 h-4 mr-1.5" />
