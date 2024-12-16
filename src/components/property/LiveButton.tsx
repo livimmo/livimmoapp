@@ -56,7 +56,7 @@ export const LiveButton = ({
       <Button
         onClick={handleClick}
         variant={isLiveNow ? "destructive" : "default"}
-        className="w-full sm:w-auto"
+        className="w-full"
       >
         <Video className="w-4 h-4 mr-2" />
         {isLiveNow ? "Rejoindre le live" : isUserRegistered ? "Live réservé" : "Réserver le live"}
