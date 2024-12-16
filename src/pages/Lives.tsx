@@ -21,6 +21,13 @@ const Lives = () => {
   const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
   const [showLiveOnly, setShowLiveOnly] = useState(true);
 
+  // Create replay lives from existing lives
+  const replayLives = liveStreams.map(live => ({
+    ...live,
+    status: "replay" as const,
+    viewers: Math.floor(Math.random() * 1000) // Random number of views
+  }));
+
   // Filter function for both current and scheduled lives
   const filterLives = (lives: any[]) => {
     return lives.filter((live) => {
@@ -41,6 +48,7 @@ const Lives = () => {
 
   const filteredCurrentLives = filterLives(liveStreams);
   const filteredScheduledLives = filterLives(scheduledLives);
+  const filteredReplayLives = filterLives(replayLives);
 
   // Convert current lives to Property format for the map
   const currentLiveProperties: Property[] = filteredCurrentLives.map((live) => ({
@@ -153,7 +161,7 @@ const Lives = () => {
       <section>
         <h2 className="text-2xl font-bold mb-6">Replays disponibles</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {replayLives.map((live) => (
+          {filteredReplayLives.map((live) => (
             <ReplayCard key={live.id} live={live} />
           ))}
         </div>
