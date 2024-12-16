@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LiveButton } from "./property/LiveButton";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface PropertyInfoProps {
   id: number;
@@ -10,6 +11,7 @@ interface PropertyInfoProps {
   type: string;
   surface: number;
   rooms: number;
+  description: string;
   hasLive?: boolean;
   liveDate?: Date;
   onJoinLive?: () => void;
@@ -26,6 +28,7 @@ export const PropertyInfo = ({
   type,
   surface,
   rooms,
+  description,
   hasLive,
   onJoinLive,
   isLiveNow,
@@ -49,6 +52,11 @@ export const PropertyInfo = ({
         <span>{surface} m²</span>
         <span>{rooms} pièces</span>
       </div>
+      <ScrollArea className="h-[80px] mb-4 rounded-md">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {description}
+        </p>
+      </ScrollArea>
       <div className="grid grid-cols-1 gap-2">
         {hasLive && onJoinLive && (
           <LiveButton

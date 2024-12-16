@@ -1,5 +1,6 @@
 import { MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface PropertyDetailContentProps {
   property: any;
@@ -29,12 +30,16 @@ export const PropertyDetailContent = ({ property }: PropertyDetailContentProps) 
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-2">Description</h2>
-        <p className="text-muted-foreground">{property.description}</p>
+        <h2 className="text-xl font-semibold mb-4">Description</h2>
+        <ScrollArea className="h-[200px] rounded-md border p-4">
+          <p className="text-muted-foreground leading-relaxed">
+            {property.description}
+          </p>
+        </ScrollArea>
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-2">Équipements</h2>
+        <h2 className="text-xl font-semibold mb-4">Équipements</h2>
         <div className="flex flex-wrap gap-2">
           {property.features.map((feature: string) => (
             <Badge key={feature} variant="secondary">

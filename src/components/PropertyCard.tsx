@@ -20,6 +20,7 @@ export const PropertyCard = ({
   type,
   surface,
   rooms,
+  description,
   hasLive,
   liveDate,
   viewers = 0,
@@ -61,6 +62,7 @@ export const PropertyCard = ({
         type={type}
         surface={surface}
         rooms={rooms}
+        description={description}
         hasLive={hasLive}
         liveDate={liveDate}
         onJoinLive={handleJoinLive}
