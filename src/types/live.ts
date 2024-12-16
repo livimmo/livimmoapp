@@ -12,4 +12,16 @@ export interface LiveEvent {
   viewers?: number;
   status?: 'live' | 'scheduled' | 'replay';
   tags?: string[];
+  streamUrl?: string;
+  recordingUrl?: string;
+  duration?: number;
+  viewCount?: number;
+  propertyId?: number;
+}
+
+export interface LiveStreamConfig {
+  title: string;
+  propertyId: number;
+  estimatedDuration: number;
+  autoRecord: boolean;
 }
