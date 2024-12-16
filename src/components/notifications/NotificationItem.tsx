@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface NotificationItemProps {
   notification: {
@@ -14,7 +13,6 @@ interface NotificationItemProps {
     date: Date;
     read: boolean;
     actionUrl?: string;
-    forUserType?: "buyer" | "agent";
   };
   onMarkAsRead: () => void;
 }
@@ -24,14 +22,6 @@ export const NotificationItem = ({
   onMarkAsRead,
 }: NotificationItemProps) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const userType = user?.accountType || "buyer";
-
-  // Si la notification est spécifique à un type d'utilisateur et que ce n'est pas le bon type,
-  // on ne l'affiche pas
-  if (notification.forUserType && notification.forUserType !== userType) {
-    return null;
-  }
 
   const getIcon = () => {
     switch (notification.type) {
