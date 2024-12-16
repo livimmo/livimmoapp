@@ -2,8 +2,9 @@ import { Agent } from "@/types/agent";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { StarRating } from "@/components/ratings/StarRating";
-import { Building2, Video, Calendar, UserCheck } from "lucide-react";
+import { AgentRating } from "@/components/ratings/AgentRating";
+import { AgentStats } from "@/components/agents/AgentStats";
+import { UserCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface AgentCardProps {
@@ -39,26 +40,21 @@ export const AgentCard = ({ agent }: AgentCardProps) => {
             {agent.type === "agent" ? "Agent" : "Promoteur"}
           </Badge>
         </div>
-        <StarRating rating={agent.rating} totalReviews={agent.totalReviews} />
+        <AgentRating 
+          rating={agent.rating} 
+          totalReviews={agent.totalReviews}
+          showBadge 
+        />
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-sm text-muted-foreground line-clamp-2">
           {agent.description}
         </p>
-        <div className="grid grid-cols-3 gap-2 text-sm">
-          <div className="flex items-center gap-1">
-            <Building2 className="w-4 h-4" />
-            <span>{agent.activeProperties}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Video className="w-4 h-4" />
-            <span>{agent.completedLives}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
-            <span>{agent.scheduledLives}</span>
-          </div>
-        </div>
+        <AgentStats
+          activeProperties={agent.activeProperties}
+          completedLives={agent.completedLives}
+          soldProperties={agent.soldProperties || 0}
+        />
         <Link to={`/agent/${agent.id}`}>
           <Button className="w-full">Voir le profil</Button>
         </Link>

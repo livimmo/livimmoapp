@@ -10,6 +10,7 @@ export interface Agent {
   activeProperties: number;
   completedLives: number;
   scheduledLives: number;
+  soldProperties?: number;
   specialties: string[];
   verified: boolean;
   contact: {

@@ -13,6 +13,7 @@ export const mockAgents: Agent[] = [
     activeProperties: 12,
     completedLives: 45,
     scheduledLives: 3,
+    soldProperties: 89,
     specialties: ["Résidentiel", "Luxe"],
     verified: true,
     contact: {
@@ -37,6 +38,7 @@ export const mockAgents: Agent[] = [
     activeProperties: 25,
     completedLives: 30,
     scheduledLives: 5,
+    soldProperties: 67,
     specialties: ["Résidentiel", "Commercial"],
     verified: true,
     contact: {
@@ -60,6 +62,7 @@ export const mockAgents: Agent[] = [
     activeProperties: 8,
     completedLives: 62,
     scheduledLives: 4,
+    soldProperties: 124,
     specialties: ["Riads", "Villas"],
     verified: true,
     contact: {
