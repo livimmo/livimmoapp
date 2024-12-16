@@ -25,34 +25,45 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#2563EB",
+          DEFAULT: "#6366F1", // Indigo-500
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#F3F4F6",
-          foreground: "#1F2937",
+          DEFAULT: "#F9FAFB", // Gray-50
+          foreground: "#111827", // Gray-900
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "#EF4444", // Red-500
+          foreground: "#FFFFFF",
         },
         muted: {
-          DEFAULT: "#F3F4F6",
-          foreground: "#6B7280",
+          DEFAULT: "#F3F4F6", // Gray-100
+          foreground: "#6B7280", // Gray-500
         },
         accent: {
-          DEFAULT: "#EFF6FF",
-          foreground: "#2563EB",
+          DEFAULT: "#EEF2FF", // Indigo-50
+          foreground: "#6366F1", // Indigo-500
         },
         card: {
           DEFAULT: "#FFFFFF",
-          foreground: "#1F2937",
+          foreground: "#111827", // Gray-900
+        },
+        success: {
+          DEFAULT: "#10B981", // Emerald-500
+          foreground: "#FFFFFF",
+        },
+        warning: {
+          DEFAULT: "#F59E0B", // Amber-500
+          foreground: "#FFFFFF",
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "0.75rem",
+        md: "0.5rem",
+        sm: "0.25rem",
+      },
+      boxShadow: {
+        soft: "0 2px 8px rgba(0, 0, 0, 0.05)",
       },
     },
   },
