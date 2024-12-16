@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { FavoriteButton } from "@/components/property/FavoriteButton";
 import { type LiveEvent } from "@/types/live";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { LiveSidebar } from "./LiveSidebar";
 
 interface LiveStreamProps {
   videoId: string;
@@ -25,11 +25,6 @@ export const LiveStream = ({
     <div className="relative w-full h-full bg-black">
       {isMobile && (
         <div className="absolute top-4 left-0 right-0 z-20 flex items-center justify-between px-4">
-          <FavoriteButton 
-            propertyId={currentLiveId}
-            title="Villa Moderne avec Piscine"
-            className="bg-black/50 backdrop-blur-sm hover:bg-black/75"
-          />
           <Button
             variant="ghost"
             size="icon"
@@ -60,6 +55,8 @@ export const LiveStream = ({
         allowFullScreen
         className="w-full h-full"
       />
+
+      <LiveSidebar currentLiveId={currentLiveId} lives={otherLives} />
     </div>
   );
 };
