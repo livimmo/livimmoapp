@@ -1,4 +1,4 @@
-import { Home, Search, Video, Heart, User } from "lucide-react";
+import { Home, Search, Video, Heart, Building } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export const BottomNav = () => {
@@ -12,8 +12,8 @@ export const BottomNav = () => {
     { icon: Home, label: "Accueil", path: "/" },
     { icon: Search, label: "Recherche", path: "/search" },
     { icon: Video, label: "Lives", path: "/lives" },
+    { icon: Building, label: "Promoteurs", path: "/developers" },
     { icon: Heart, label: "Favoris", path: "/favorites" },
-    { icon: User, label: "Profil", path: "/profile" },
   ];
 
   return (
