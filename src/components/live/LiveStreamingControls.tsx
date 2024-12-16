@@ -1,34 +1,30 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Camera, Mic, PhoneOff, RotateCcw, Users } from "lucide-react";
+import { Camera, Mic, PhoneOff, RotateCcw, Users, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface LiveStreamingControlsProps {
   viewerCount: number;
   onEndStream: () => void;
+  showDescription: boolean;
+  onToggleDescription: () => void;
 }
 
 export const LiveStreamingControls = ({
   viewerCount,
   onEndStream,
+  showDescription,
+  onToggleDescription,
 }: LiveStreamingControlsProps) => {
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [isMicOn, setIsMicOn] = useState(true);
   const { toast } = useToast();
 
-  const handleEndStream = () => {
-    toast({
-      title: "Live terminé",
-      description: "Votre live a été enregistré et sera disponible en replay",
-    });
-    onEndStream();
-  };
-
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-black/75 backdrop-blur-sm rounded-full p-4 flex items-center gap-4">
       <div className="px-4 flex items-center gap-2 text-white">
         <Users className="h-4 w-4" />
-        <span>{viewerCount}</span>
+        <span className="font-medium">{viewerCount}</span>
       </div>
 
       <Button
@@ -59,9 +55,21 @@ export const LiveStreamingControls = ({
       </Button>
 
       <Button
+        variant="outline"
+        size="icon"
+        onClick={onToggleDescription}
+      >
+        {showDescription ? (
+          <EyeOff className="h-4 w-4" />
+        ) : (
+          <Eye className="h-4 w-4" />
+        )}
+      </Button>
+
+      <Button
         variant="destructive"
         size="icon"
-        onClick={handleEndStream}
+        onClick={onEndStream}
       >
         <PhoneOff className="h-4 w-4" />
       </Button>

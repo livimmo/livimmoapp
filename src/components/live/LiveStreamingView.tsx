@@ -4,6 +4,16 @@ import { LiveChat } from "./LiveChat";
 import { LiveInfo } from "./LiveInfo";
 import { Property } from "@/types/property";
 import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface LiveStreamingViewProps {
   property: Property;
@@ -15,6 +25,8 @@ export const LiveStreamingView = ({
   onEndStream,
 }: LiveStreamingViewProps) => {
   const [viewerCount, setViewerCount] = useState(0);
+  const [showDescription, setShowDescription] = useState(true);
+  const [showEndDialog, setShowEndDialog] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -27,10 +39,15 @@ export const LiveStreamingView = ({
   }, []);
 
   const handleEndStream = () => {
+    setShowEndDialog(true);
+  };
+
+  const confirmEndStream = () => {
     toast({
       title: "Live terminé",
       description: "Le replay sera bientôt disponible",
     });
+    setShowEndDialog(false);
     onEndStream();
   };
 
@@ -47,18 +64,39 @@ export const LiveStreamingView = ({
         </div>
       </div>
 
-      <div className="absolute bottom-20 left-4 right-4">
-        <LiveInfo
-          property={property}
-          onMakeOffer={() => {}}
-          viewerCount={viewerCount}
-        />
-      </div>
+      {showDescription && (
+        <div className="absolute bottom-20 left-4 right-4">
+          <LiveInfo
+            property={property}
+            onMakeOffer={() => {}}
+            viewerCount={viewerCount}
+          />
+        </div>
+      )}
 
       <LiveStreamingControls
         viewerCount={viewerCount}
         onEndStream={handleEndStream}
+        showDescription={showDescription}
+        onToggleDescription={() => setShowDescription(!showDescription)}
       />
+
+      <AlertDialog open={showEndDialog} onOpenChange={setShowEndDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Arrêter le live ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Voulez-vous vraiment arrêter le live ? Cette action ne peut pas être annulée.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmEndStream} className="bg-red-500 hover:bg-red-600">
+              Arrêter le live
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

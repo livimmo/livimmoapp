@@ -76,6 +76,7 @@ export const JoinLive = () => {
           email: "karim.benjelloun@example.com",
         },
         coordinates: generateMockCoordinates(location),
+        transactionType: "Vente" as const,
       });
       setIsLoading(false);
     }, 1500);
