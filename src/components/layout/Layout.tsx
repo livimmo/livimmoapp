@@ -7,9 +7,9 @@ export const Layout = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Header />
-      <main className="pb-20">
+      <main className="flex-1 pt-16 pb-20 md:pb-0">
         <Outlet />
       </main>
       {isMobile && <BottomNav />}
