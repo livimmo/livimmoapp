@@ -54,69 +54,64 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
       </div>
 
       <div className="w-full max-w-5xl mx-auto">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="h-8 w-12 bg-gray-200 rounded overflow-hidden shrink-0">
-              <img 
-                src={property.images[0]} 
-                alt={property.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
+        {/* En-tête avec image et titre */}
+        <div className="flex items-start gap-2 min-w-0">
+          <div className="h-12 w-16 bg-gray-200 rounded overflow-hidden shrink-0">
+            <img 
+              src={property.images[0]} 
+              alt={property.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="flex-1 min-w-0">
             <Link 
               to={`/properties/${property.id}`}
               className="hover:underline flex items-center gap-2"
             >
               <h2 className="text-base font-semibold truncate">{property.title}</h2>
-              <ExternalLink className="w-3.5 h-3.5 text-primary" />
+              <ExternalLink className="w-3.5 h-3.5 text-primary shrink-0" />
             </Link>
-            <Badge 
-              variant="default" 
-              className="flex items-center gap-1 bg-[#ea384c]/90 hover:bg-[#ea384c] text-white shrink-0"
-            >
-              <Radio className="w-3 h-3" />
-              <span>LIVE</span>
-            </Badge>
+            <div className="flex items-center gap-2 mt-1">
+              <Badge 
+                variant="default" 
+                className="flex items-center gap-1 bg-[#ea384c]/90 hover:bg-[#ea384c] text-white"
+              >
+                <Radio className="w-3 h-3" />
+                <span>LIVE</span>
+              </Badge>
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Users className="w-3.5 h-3.5" />
+                <span>{viewerCount}</span>
+              </div>
+            </div>
           </div>
         </div>
         
         {!isCollapsed && (
-          <div className="mt-2">
+          <div className="mt-3 flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1.5">
-                  <Users className="w-3.5 h-3.5" />
-                  <span>{viewerCount} spectateurs</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-[#F97316]/90 hover:bg-[#F97316] text-white"
-                  >
-                    {offerCount} offres
-                  </Badge>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <p className="text-lg font-bold">
-                  {property.price.toLocaleString()} DH
-                </p>
-                <Button 
-                  size="sm"
-                  className="bg-primary/90 hover:bg-primary" 
-                  onClick={() => setIsOfferDialogOpen(true)}
-                >
-                  <Heart className="w-4 h-4 mr-1.5" />
-                  Je suis intéressé(e)
-                </Button>
-              </div>
+              <Badge 
+                variant="secondary" 
+                className="bg-[#F97316]/90 hover:bg-[#F97316] text-white"
+              >
+                {offerCount} offres
+              </Badge>
+              <p className="text-lg font-bold">
+                {property.price.toLocaleString()} DH
+              </p>
             </div>
+            <Button 
+              className="w-full bg-primary/90 hover:bg-primary mt-1" 
+              onClick={() => setIsOfferDialogOpen(true)}
+            >
+              <Heart className="w-4 h-4 mr-1.5" />
+              Je suis intéressé(e)
+            </Button>
           </div>
         )}
 
         {isCollapsed && (
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-1">
             <div className="flex items-center gap-4">
               <p className="font-semibold">{property.price.toLocaleString()} DH</p>
               <Badge 
