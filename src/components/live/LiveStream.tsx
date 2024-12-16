@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LiveSidebar } from "./LiveSidebar";
 import { LiveInfo } from "./LiveInfo";
 import { useState } from "react";
 
@@ -122,8 +121,6 @@ export const LiveStream = ({
             isReplay={isReplay}
           />
         </div>
-
-        <LiveSidebar currentLiveId={currentLiveId} lives={otherLives} />
       </div>
     </div>
   );
