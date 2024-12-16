@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { MessageSquare, ChevronUp, ChevronDown } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveChat } from "@/components/live/LiveChat";
 import { LiveInfo } from "@/components/live/LiveInfo";
@@ -11,7 +11,6 @@ import { useToast } from "@/hooks/use-toast";
 import { type Property } from "@/types/property";
 import { generateMockCoordinates } from "@/data/mockProperties";
 import { useAuth } from "@/contexts/AuthContext";
-import { Banner } from "@/components/layout/Banner";
 import { liveStreams } from "@/data/mockLives";
 
 const mockLiveData = {
@@ -31,7 +30,6 @@ export const JoinLive = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [property, setProperty] = useState<Property | null>(null);
-  const [showBanner, setShowBanner] = useState(true);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -118,33 +116,6 @@ export const JoinLive = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="relative h-[calc(100vh-4rem)]">
-        {showBanner && (
-          <div className="absolute top-0 left-0 right-0 z-50">
-            <div className="relative">
-              <Banner />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
-                onClick={() => setShowBanner(false)}
-              >
-                <ChevronUp className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {!showBanner && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-2 right-2 z-50 bg-black/50 text-white hover:bg-black/75"
-            onClick={() => setShowBanner(true)}
-          >
-            <ChevronDown className="h-4 w-4" />
-          </Button>
-        )}
-
         <LiveStream videoId="n3wtxcO_0GQ" />
         <LiveControls isFavorite={isFavorite} onToggleFavorite={handleToggleFavorite} />
         <LiveSidebar currentLiveId={Number(id)} lives={liveStreams} />
