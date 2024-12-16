@@ -11,10 +11,10 @@ import { type Property } from "@/types/property";
 
 interface PropertyListProps {
   properties: Property[];
-  viewMode: "list" | "carousel";
+  viewMode?: "list" | "carousel";
 }
 
-export const PropertyList = ({ properties, viewMode }: PropertyListProps) => {
+export const PropertyList: React.FC<PropertyListProps> = ({ properties, viewMode = "list" }) => {
   if (viewMode === "carousel") {
     return (
       <Carousel className="w-full max-w-5xl mx-auto">
