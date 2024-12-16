@@ -7,6 +7,7 @@ import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { FavoriteButton } from "@/components/property/FavoriteButton";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LiveInfoProps {
   property: Property;
@@ -16,18 +17,22 @@ interface LiveInfoProps {
 
 export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
-  // Simulons un nombre d'offres pour la démo
   const [offerCount] = useState(12);
+  const isMobile = useIsMobile();
 
   return (
-    <Card className="p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <h2 className="text-xl font-semibold line-clamp-1">{property.title}</h2>
+    <Card className={`
+      p-3 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60
+      ${isMobile ? 'max-w-[calc(100%-2rem)] mx-auto' : 'max-w-md'}
+      transition-all duration-300
+    `}>
+      <div className="space-y-1.5">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <h2 className="text-base font-semibold truncate">{property.title}</h2>
             <Badge 
               variant="default" 
-              className="flex items-center gap-1 bg-[#ea384c] hover:bg-[#ea384c]/90"
+              className="flex items-center gap-1 bg-[#ea384c] hover:bg-[#ea384c]/90 shrink-0"
             >
               <Radio className="w-3 h-3" />
               <span>LIVE</span>
@@ -36,15 +41,17 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
           <FavoriteButton 
             propertyId={property.id}
             title={property.title}
+            className="shrink-0"
           />
         </div>
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <Users className="w-4 h-4" />
+        
+        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1.5">
+            <Users className="w-3.5 h-3.5" />
             <span>{viewerCount} spectateurs</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Euro className="w-4 h-4" />
+          <div className="flex items-center gap-1.5">
+            <Euro className="w-3.5 h-3.5" />
             <Badge 
               variant="secondary" 
               className="bg-[#F97316] text-white hover:bg-[#F97316]/90"
@@ -55,39 +62,34 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         </div>
       </div>
       
-      <div className="space-y-2 mt-4">
-        <p className="text-2xl font-bold">
+      <div className="flex items-center justify-between gap-3 mt-3">
+        <p className="text-lg font-bold">
           {property.price.toLocaleString()} DH
         </p>
-        <p className="text-sm text-muted-foreground line-clamp-2">
-          {property.description}
-        </p>
-      </div>
-
-      <div className="mt-4 space-y-3">
         <Button 
-          className="w-full" 
+          size="sm"
+          className="shrink-0" 
           onClick={() => setIsOfferDialogOpen(true)}
         >
-          <Heart className="w-4 h-4 mr-2" />
+          <Heart className="w-4 h-4 mr-1.5" />
           Je suis intéressé(e)
         </Button>
-        
-        <Link 
-          to={`/properties/${property.id}`}
-          className="flex items-center gap-2 text-sm text-primary hover:underline"
-        >
-          <ExternalLink className="w-4 h-4" />
-          Voir plus de détails
-        </Link>
-
-        <LiveOfferDialog 
-          title={property.title}
-          price={property.price}
-          isOpen={isOfferDialogOpen}
-          onClose={() => setIsOfferDialogOpen(false)}
-        />
       </div>
+
+      <Link 
+        to={`/properties/${property.id}`}
+        className="flex items-center gap-1.5 text-xs text-primary hover:underline mt-2"
+      >
+        <ExternalLink className="w-3.5 h-3.5" />
+        Voir plus de détails
+      </Link>
+
+      <LiveOfferDialog 
+        title={property.title}
+        price={property.price}
+        isOpen={isOfferDialogOpen}
+        onClose={() => setIsOfferDialogOpen(false)}
+      />
     </Card>
   );
 };
