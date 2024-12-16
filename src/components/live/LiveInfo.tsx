@@ -60,8 +60,8 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
         </div>
         
         {isCollapsed ? (
-          <>
-            <div className="flex items-center justify-between gap-2 text-sm">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-2">
               <p className="font-semibold">{property.price.toLocaleString()} DH</p>
               <div className="flex items-center gap-1.5">
                 <Badge 
@@ -83,7 +83,7 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
                 <span className="text-sm">Intéressé</span>
               </Button>
             </div>
-          </>
+          </div>
         ) : (
           <>
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
