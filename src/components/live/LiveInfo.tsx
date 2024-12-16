@@ -44,15 +44,18 @@ export const LiveInfo = ({
       "h-auto",
       "overflow-hidden",
       "flex flex-col",
-      "fixed bottom-[64px] left-0 right-0",
-      isMobile ? 'max-h-[30vh]' : 'max-h-[20vh]',
+      "fixed bottom-0 left-0 right-0",
+      isMobile ? 'max-h-[40vh]' : 'max-h-[20vh]',
       "z-50",
       "border-t border-primary/20",
       "hover:bg-background/90 hover:shadow-xl",
       isFullscreen && "z-[9999]"
     )}>
       <div className="w-full max-w-5xl mx-auto">
-        <div className="flex items-center gap-4">
+        <div className={cn(
+          "flex items-center gap-4",
+          isMobile && "flex-col"
+        )}>
           <div className="flex items-center gap-3 min-w-0 flex-1">
             <div className="h-12 w-20 bg-gray-200 rounded-md overflow-hidden shrink-0 flex items-center justify-center shadow-sm">
               <img 
@@ -85,7 +88,10 @@ export const LiveInfo = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-4 shrink-0">
+          <div className={cn(
+            "flex items-center gap-4",
+            isMobile ? "w-full justify-between" : "shrink-0"
+          )}>
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
@@ -93,7 +99,7 @@ export const LiveInfo = ({
                 className={`bg-primary/10 hover:bg-primary/20 ${isFavorite ? 'text-[#ea384c]' : 'text-primary'} transition-colors`}
                 onClick={handleToggleFavorite}
               >
-                <Heart className={`h-5 w-5 ${isFavorite ? "fill-[#ea384c]" : ""} transition-colors`} />
+                <Heart className={`h-6 w-6 ${isFavorite ? "fill-[#ea384c]" : ""} transition-colors`} />
               </Button>
               <Button
                 variant="ghost"
@@ -101,7 +107,7 @@ export const LiveInfo = ({
                 className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                 onClick={onToggleChat}
               >
-                <MessageSquare className="h-5 w-5" />
+                <MessageSquare className="h-6 w-6" />
               </Button>
               <Button
                 variant="ghost"
@@ -110,9 +116,9 @@ export const LiveInfo = ({
                 onClick={onToggleFullscreen}
               >
                 {isFullscreen ? (
-                  <Minimize2 className="h-5 w-5" />
+                  <Minimize2 className="h-6 w-6" />
                 ) : (
-                  <Maximize2 className="h-5 w-5" />
+                  <Maximize2 className="h-6 w-6" />
                 )}
               </Button>
               <Button
@@ -121,26 +127,47 @@ export const LiveInfo = ({
                 className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                 onClick={() => navigate(-1)}
               >
-                <X className="h-5 w-5" />
+                <X className="h-6 w-6" />
               </Button>
             </div>
-            <Badge 
-              variant="secondary" 
-              className="bg-accent text-accent-foreground shadow-sm"
-            >
-              {offerCount} offres
-            </Badge>
-            <p className="text-lg font-bold whitespace-nowrap text-primary">
-              {property.price.toLocaleString()} DH
-            </p>
+            {!isMobile && (
+              <>
+                <Badge 
+                  variant="secondary" 
+                  className="bg-accent text-accent-foreground shadow-sm"
+                >
+                  {offerCount} offres
+                </Badge>
+                <p className="text-lg font-bold whitespace-nowrap text-primary">
+                  {property.price.toLocaleString()} DH
+                </p>
+              </>
+            )}
             <Button 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap shadow-sm transition-all hover:shadow-md" 
+              className={cn(
+                "bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap shadow-sm transition-all hover:shadow-md",
+                isMobile && "w-full"
+              )}
               onClick={() => setIsOfferDialogOpen(true)}
             >
               <Heart className="w-4 h-4 mr-1.5" />
               Je suis intéressé(e)
             </Button>
           </div>
+          
+          {isMobile && (
+            <div className="flex items-center justify-between w-full">
+              <Badge 
+                variant="secondary" 
+                className="bg-accent text-accent-foreground shadow-sm"
+              >
+                {offerCount} offres
+              </Badge>
+              <p className="text-lg font-bold whitespace-nowrap text-primary">
+                {property.price.toLocaleString()} DH
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

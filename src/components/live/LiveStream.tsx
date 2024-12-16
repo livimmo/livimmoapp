@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LiveInfo } from "./LiveInfo";
 import { useState } from "react";
-import { X, Maximize2, Minimize2 } from "lucide-react";
+import { X, Maximize2, Minimize2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveCarousel } from "./LiveCarousel";
 import { ReplayCarousel } from "./ReplayCarousel";
@@ -62,7 +62,7 @@ export const LiveStream = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [viewMode, setViewMode] = useState<'default' | 'cinema' | 'fullscreen'>('default');
-  const [showOtherLives, setShowOtherLives] = useState(true);
+  const [showOtherLives, setShowOtherLives] = useState(!isMobile);
 
   const handleViewModeChange = (mode: 'default' | 'cinema' | 'fullscreen') => {
     if (mode === 'fullscreen') {
@@ -100,6 +100,20 @@ export const LiveStream = ({
       viewMode === 'fullscreen' && 'z-[9999]'
     )}>
       <div className="relative flex-1">
+        {/* Header mobile avec bouton retour */}
+        {isMobile && (
+          <div className="absolute top-0 left-0 right-0 p-4 z-[52] bg-gradient-to-b from-black/70 via-black/40 to-transparent">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/20 transition-colors backdrop-blur-sm"
+              onClick={handleClose}
+            >
+              <ArrowLeft className="h-6 w-6" />
+            </Button>
+          </div>
+        )}
+
         {/* Conteneur vidéo avec overlay */}
         <div className={cn(
           "relative w-full h-full z-[1] group",
@@ -126,9 +140,9 @@ export const LiveStream = ({
             onClick={() => setShowOtherLives(!showOtherLives)}
           >
             {showOtherLives ? (
-              <Minimize2 className="h-5 w-5" />
+              <Minimize2 className="h-6 w-6" />
             ) : (
-              <Maximize2 className="h-5 w-5" />
+              <Maximize2 className="h-6 w-6" />
             )}
           </Button>
         </div>
@@ -137,7 +151,11 @@ export const LiveStream = ({
         <div 
           className={cn(
             "absolute left-0 right-0 z-[51] transition-all duration-300 ease-in-out",
-            showOtherLives ? "bottom-[120px] opacity-100" : "-bottom-full opacity-0"
+            showOtherLives 
+              ? isMobile 
+                ? "bottom-[180px] opacity-100" 
+                : "bottom-[120px] opacity-100" 
+              : "-bottom-full opacity-0"
           )}
         >
           {isReplay ? (
