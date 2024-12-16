@@ -42,7 +42,7 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
         <Button
           variant="ghost"
           size="sm"
-          className="p-1 h-6 hover:bg-[#E5DEFF] text-[#9b87f5] flex items-center gap-1 text-xs"
+          className="p-1 h-6 hover:bg-primary/10 text-primary flex items-center gap-1 text-xs"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
           {isCollapsed ? (
@@ -75,12 +75,12 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
                 className="hover:underline flex items-center gap-2"
               >
                 <h2 className="text-base font-semibold truncate">{property.title}</h2>
-                <ExternalLink className="w-3.5 h-3.5 text-[#9b87f5] shrink-0" />
+                <ExternalLink className="w-3.5 h-3.5 text-primary shrink-0" />
               </Link>
               <div className="flex items-center gap-2 mt-1">
                 <Badge 
                   variant="default" 
-                  className="flex items-center gap-1 bg-[#9b87f5] hover:bg-[#7E69AB] text-white"
+                  className="flex items-center gap-1 bg-primary hover:bg-primary/90 text-white"
                 >
                   <Radio className="w-3 h-3" />
                   <span>LIVE</span>
@@ -99,15 +99,15 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="bg-[#E5DEFF] text-[#9b87f5] hover:bg-[#D3E4FD]"
+                  className="bg-primary/10 text-primary hover:bg-primary/20"
                   onClick={handleToggleFavorite}
                 >
-                  <Heart className={`h-5 w-5 ${isFavorite ? "fill-[#9b87f5] text-[#9b87f5]" : ""}`} />
+                  <Heart className={`h-5 w-5 ${isFavorite ? "fill-primary text-primary" : ""}`} />
                 </Button>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="bg-[#E5DEFF] text-[#9b87f5] hover:bg-[#D3E4FD]"
+                  className="bg-primary/10 text-primary hover:bg-primary/20"
                   onClick={onToggleChat}
                 >
                   <MessageSquare className="h-5 w-5" />
@@ -115,7 +115,7 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
               </div>
               <Badge 
                 variant="secondary" 
-                className="bg-[#FFDEE2] hover:bg-[#FFDEE2] text-[#9b87f5]"
+                className="bg-accent text-accent-foreground"
               >
                 {offerCount} offres
               </Badge>
@@ -123,7 +123,7 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
                 {property.price.toLocaleString()} DH
               </p>
               <Button 
-                className="bg-[#9b87f5] hover:bg-[#7E69AB] text-white whitespace-nowrap" 
+                className="bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap" 
                 onClick={() => setIsOfferDialogOpen(true)}
               >
                 <Heart className="w-4 h-4 mr-1.5" />
@@ -139,7 +139,7 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
               <p className="font-semibold">{property.price.toLocaleString()} DH</p>
               <Badge 
                 variant="secondary" 
-                className="bg-[#FFDEE2] hover:bg-[#FFDEE2] text-[#9b87f5]"
+                className="bg-accent text-accent-foreground"
               >
                 {offerCount} offres
               </Badge>
@@ -148,23 +148,22 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 bg-[#E5DEFF] text-[#9b87f5] hover:bg-[#D3E4FD]"
+                className="h-8 bg-primary/10 text-primary hover:bg-primary/20"
                 onClick={handleToggleFavorite}
               >
-                <Heart className={`h-4 w-4 ${isFavorite ? "fill-[#9b87f5] text-[#9b87f5]" : ""}`} />
+                <Heart className={`h-4 w-4 ${isFavorite ? "fill-primary text-primary" : ""}`} />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 bg-[#E5DEFF] text-[#9b87f5] hover:bg-[#D3E4FD]"
+                className="h-8 bg-primary/10 text-primary hover:bg-primary/20"
                 onClick={onToggleChat}
               >
                 <MessageSquare className="h-4 w-4" />
               </Button>
               <Button
                 size="sm"
-                variant="ghost"
-                className="h-8 px-2 bg-[#9b87f5] hover:bg-[#7E69AB] text-white"
+                className="h-8 px-2 bg-primary hover:bg-primary/90 text-primary-foreground"
                 onClick={() => setIsOfferDialogOpen(true)}
               >
                 <Heart className="w-4 h-4 mr-1.5" />
