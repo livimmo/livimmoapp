@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { PropertyList } from "@/components/properties/PropertyList";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
-import { Button } from "@/components/ui/button";
-import { Grid, List, MapIcon } from "lucide-react";
 import { type Property } from "@/types/property";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
 
@@ -57,10 +55,7 @@ export const mockProperties: Property[] = addCoordinatesToProperties([
   },
 ]);
 
-type ViewMode = "grid" | "list" | "map";
-
 export const Properties = () => {
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
@@ -86,34 +81,8 @@ export const Properties = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
       <div className="container px-4 py-8">
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6">
           <h1 className="text-3xl font-bold">Nos biens</h1>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setViewMode("grid")}
-              className={viewMode === "grid" ? "bg-accent" : ""}
-            >
-              <Grid className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setViewMode("list")}
-              className={viewMode === "list" ? "bg-accent" : ""}
-            >
-              <List className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setViewMode("map")}
-              className={viewMode === "map" ? "bg-accent" : ""}
-            >
-              <MapIcon className="h-4 w-4" />
-            </Button>
-          </div>
         </div>
 
         <PropertyFilters
@@ -129,7 +98,7 @@ export const Properties = () => {
           setShowLiveOnly={setShowLiveOnly}
         />
 
-        <PropertyList properties={filteredProperties} viewMode={viewMode} />
+        <PropertyList properties={filteredProperties} />
       </div>
     </div>
   );
