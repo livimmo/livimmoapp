@@ -14,6 +14,7 @@ import { SmartSearchBar } from "@/components/search/SmartSearchBar";
 import { HomeHeader } from "@/components/home/HomeHeader";
 import { LiveSlider } from "@/components/live/LiveSlider";
 import { liveStreams, scheduledLives } from "@/data/mockLives";
+import { PropertyFilters } from "@/components/properties/PropertyFilters";
 
 const featuredProperties = addCoordinatesToProperties([
   {
@@ -97,6 +98,10 @@ const Index = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [propertyType, setPropertyType] = useState("all");
+  const [priceRange, setPriceRange] = useState([0, 5000000]);
+  const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
+  const [showLiveOnly, setShowLiveOnly] = useState(false);
 
   const suggestions = [
     "Casablanca",
@@ -118,13 +123,19 @@ const Index = () => {
       <HomeHeader />
 
       <main className="container mx-auto px-4 pt-20">
-        <div className="mb-8">
-          <SmartSearchBar
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            suggestions={suggestions}
-          />
-        </div>
+        <PropertyFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          propertyType={propertyType}
+          setPropertyType={setPropertyType}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          surfaceRange={surfaceRange}
+          setSurfaceRange={setSurfaceRange}
+          showLiveOnly={showLiveOnly}
+          setShowLiveOnly={setShowLiveOnly}
+          suggestions={suggestions}
+        />
 
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Lives et Replays</h2>
@@ -134,11 +145,6 @@ const Index = () => {
         <FeaturedSection properties={featuredProperties} />
 
         <LiveSection />
-
-        <HomeFilters 
-          properties={featuredProperties}
-          onFiltersChange={setFilteredProperties}
-        />
 
         <section className="mb-8">
           <div className="flex justify-between items-center mb-4">
