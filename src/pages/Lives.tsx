@@ -1,8 +1,7 @@
-import React from "react";
 import { LiveCalendarView } from "@/components/live/LiveCalendarView";
 import { ScheduledLivesList } from "@/components/live/ScheduledLivesList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { mockLives } from "@/data/mockLives";
+import { scheduledLives } from "@/data/mockLives";
 
 const Lives = () => {
   return (
@@ -17,10 +16,10 @@ const Lives = () => {
           <TabsTrigger value="calendar">Calendrier</TabsTrigger>
         </TabsList>
         <TabsContent value="list">
-          <ScheduledLivesList lives={mockLives} />
+          <ScheduledLivesList lives={scheduledLives} />
         </TabsContent>
         <TabsContent value="calendar">
-          <LiveCalendarView scheduledLives={mockLives} />
+          <LiveCalendarView scheduledLives={scheduledLives} />
         </TabsContent>
       </Tabs>
     </div>
