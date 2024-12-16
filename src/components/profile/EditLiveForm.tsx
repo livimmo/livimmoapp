@@ -1,19 +1,13 @@
 import { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
+import { Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { Plus, Video, Youtube, Facebook, Instagram, MessageCircle, MapPin, Home, Tag, X, Save } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { PROPERTY_TYPES } from "@/constants/propertyTypes";
+import { BasicInfoFields } from "./live-edit/BasicInfoFields";
+import { LocationFields } from "./live-edit/LocationFields";
+import { TagSelector } from "./live-edit/TagSelector";
+import { DateTimeSelector } from "./live-edit/DateTimeSelector";
+import { LiveTypeSelector } from "./live-edit/LiveTypeSelector";
 
 interface EditLiveFormProps {
   live: {
@@ -50,7 +44,6 @@ export const EditLiveForm = ({ live, onClose }: EditLiveFormProps) => {
       return;
     }
 
-    // Combine date and time
     const dateTime = new Date(date);
     const [hours, minutes] = time.split(":");
     dateTime.setHours(parseInt(hours), parseInt(minutes));
@@ -96,170 +89,42 @@ export const EditLiveForm = ({ live, onClose }: EditLiveFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Titre du Live*</label>
-          <Input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Ex: Visite Villa Moderne Casablanca"
-            required
-          />
-        </div>
+      <BasicInfoFields
+        title={title}
+        description={description}
+        price={price}
+        surface={surface}
+        onTitleChange={setTitle}
+        onDescriptionChange={setDescription}
+        onPriceChange={setPrice}
+        onSurfaceChange={setSurface}
+      />
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Description</label>
-          <Input
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description de la visite..."
-          />
-        </div>
+      <LocationFields
+        location={location}
+        propertyType={propertyType}
+        onLocationChange={setLocation}
+        onPropertyTypeChange={setPropertyType}
+      />
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Prix*</label>
-          <div className="relative">
-            <Input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="Prix en DH"
-              required
-              className="pl-8"
-            />
-            <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">DH</span>
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Surface*</label>
-          <div className="relative">
-            <Input
-              type="number"
-              value={surface}
-              onChange={(e) => setSurface(e.target.value)}
-              placeholder="Surface en m²"
-              required
-              className="pl-8"
-            />
-            <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">m²</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Localisation*</label>
-        <div className="relative">
-          <MapPin className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Adresse du bien"
-            required
-            className="pl-8"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Type de bien*</label>
-        <div className="relative">
-          <Home className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Select value={propertyType} onValueChange={setPropertyType} required>
-            <SelectTrigger className="pl-8">
-              <SelectValue placeholder="Sélectionner le type" />
-            </SelectTrigger>
-            <SelectContent>
-              {PROPERTY_TYPES.map((type) => (
-                <SelectItem key={type} value={type}>
-                  {type}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium flex items-center gap-2">
-          <Tag className="h-4 w-4" />
-          Tags
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {availableTags.map((tag) => (
-            <Button
-              key={tag}
-              type="button"
-              variant={tags.includes(tag) ? "default" : "outline"}
-              size="sm"
-              onClick={() => handleTagToggle(tag)}
-            >
-              {tag}
-            </Button>
-          ))}
-        </div>
-      </div>
+      <TagSelector
+        tags={tags}
+        availableTags={availableTags}
+        onTagToggle={handleTagToggle}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Date et heure du Live*</label>
-          <div className="space-y-2">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              className="rounded-md border"
-            />
-            <Input
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              required
-              className="mt-2"
-            />
-          </div>
-        </div>
+        <DateTimeSelector
+          date={date}
+          time={time}
+          onDateChange={setDate}
+          onTimeChange={setTime}
+        />
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Type de Live*</label>
-          <RadioGroup
-            value={liveType}
-            onValueChange={(value: "youtube" | "facebook" | "instagram" | "whatsapp") => setLiveType(value)}
-            className="grid grid-cols-2 gap-4"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="youtube" id="youtube" />
-              <Label htmlFor="youtube" className="flex items-center gap-2">
-                <Youtube className="h-4 w-4" />
-                YouTube Live
-              </Label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="facebook" id="facebook" />
-              <Label htmlFor="facebook" className="flex items-center gap-2">
-                <Facebook className="h-4 w-4" />
-                Facebook Live
-              </Label>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="instagram" id="instagram" />
-              <Label htmlFor="instagram" className="flex items-center gap-2">
-                <Instagram className="h-4 w-4" />
-                Instagram Live
-              </Label>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="whatsapp" id="whatsapp" />
-              <Label htmlFor="whatsapp" className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4" />
-                WhatsApp Video
-              </Label>
-            </div>
-          </RadioGroup>
-        </div>
+        <LiveTypeSelector
+          liveType={liveType}
+          onLiveTypeChange={setLiveType}
+        />
       </div>
 
       <div className="space-y-2">
