@@ -39,8 +39,9 @@ export const LiveInfo = ({ property, viewerCount = 0 }: LiveInfoProps) => {
           onClick={() => setShowOfferDialog(true)} 
           variant="default" 
           size="sm"
+          className="bg-primary hover:bg-primary/90"
         >
-          Proposer un prix
+          Faire une offre
         </Button>
       </div>
 
