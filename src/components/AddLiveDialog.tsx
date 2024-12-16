@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Video } from "lucide-react";
+import { Plus } from "lucide-react";
 import { LiveStreamingSetup } from "./live/LiveStreamingSetup";
 import { LiveStreamingView } from "./live/LiveStreamingView";
 import { mockProperties } from "@/data/mockProperties";
@@ -31,11 +31,13 @@ export const AddLiveDialog = () => {
   return (
     <>
       <Button
-        variant="ghost"
+        variant="default"
         size="sm"
         onClick={() => setIsOpen(true)}
+        className="bg-[#ea384c] hover:bg-[#ea384c]/90 text-white"
       >
-        <Video className="h-4 w-4" />
+        <Plus className="h-4 w-4 mr-2" />
+        Ajouter un live
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { AddPropertyDialog } from "@/components/property/AddPropertyDialog";
 import {
   Tooltip,
   TooltipContent,
@@ -10,7 +9,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { Bell, LogIn, User, UserPlus, Video } from "lucide-react";
+import { Bell, LogIn, User, UserPlus, Video, Plus } from "lucide-react";
+import { AddLiveDialog } from "@/components/AddLiveDialog";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -46,7 +46,6 @@ export const Header = () => {
   };
 
   const isAgentOrPromoter = user?.role === 'agent' || user?.role === 'promoter';
-  const isHomePage = location.pathname === '/';
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
@@ -65,14 +64,22 @@ export const Header = () => {
           <div className="flex items-center gap-3">
             {isAuthenticated ? (
               <>
-                {isAgentOrPromoter && isHomePage && (
+                {isAgentOrPromoter && (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <AddPropertyDialog />
+                        <Button 
+                          variant="default"
+                          size="sm"
+                          onClick={() => {}}
+                          className="bg-[#ea384c] hover:bg-[#ea384c]/90 text-white"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Ajouter un live
+                        </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Ajouter un bien</p>
+                        <p>Démarrer ou programmer un live</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
