@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { MessageSquare, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveChat } from "@/components/live/LiveChat";
 import { LiveInfo } from "@/components/live/LiveInfo";
@@ -142,16 +141,6 @@ export const JoinLive = () => {
             viewerCount={viewerCount}
             onToggleChat={() => setShowChat(!showChat)}
           />
-          <div className="flex flex-col gap-2 ml-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-black/50 text-white hover:bg-black/75"
-              onClick={() => setShowChat(!showChat)}
-            >
-              <MessageSquare className="h-5 w-5" />
-            </Button>
-          </div>
         </div>
 
         {showChat && (
