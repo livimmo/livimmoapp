@@ -1,31 +1,44 @@
 import { useState, useEffect } from "react";
-import { Map, List } from "lucide-react";
+import { Map, List, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PropertyCard } from "@/components/PropertyCard";
 import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 export const LiveSection = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simuler la détection d'un nouveau live
     if (liveStreams.length > 0) {
       const latestLive = liveStreams[0];
       toast({
-        title: "Nouveau live disponible !",
-        description: `"${latestLive.title}" vient de commencer avec ${latestLive.agent}`,
+        title: "🔴 Nouveau live en cours !",
+        description: (
+          <div className="mt-2 space-y-2">
+            <p>"{latestLive.title}" vient de commencer avec {latestLive.agent}</p>
+            <Button 
+              onClick={() => navigate(`/live/${latestLive.id}`)}
+              className="w-full"
+              variant="default"
+            >
+              <Video className="w-4 h-4 mr-2" />
+              Rejoindre le live maintenant
+            </Button>
+          </div>
+        ),
         variant: "default",
         className: "bg-red-500 text-white",
-        duration: 5000,
+        duration: 10000,
       });
     }
-  }, [toast]);
+  }, [toast, navigate]);
 
-  // Convertir les lives en format Property pour les afficher avec PropertyCard
   const liveProperties: Property[] = liveStreams.map((live) => ({
     id: live.id,
     title: live.title,
