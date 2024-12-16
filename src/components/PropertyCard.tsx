@@ -60,7 +60,7 @@ export const PropertyCard = ({
           {!hasLive && (
             <Badge variant="destructive">Vendu</Badge>
           )}
-          <Badge variant={transactionType === "Location" ? "secondary" : "default"}>
+          <Badge variant={transactionType === "Vente" ? "destructive" : "secondary"}>
             {transactionType}
           </Badge>
         </div>
