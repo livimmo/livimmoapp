@@ -80,7 +80,7 @@ export const LiveInfo = ({ property, viewerCount, onToggleChat }: LiveInfoProps)
               <div className="flex items-center gap-2 mt-1">
                 <Badge 
                   variant="default" 
-                  className="flex items-center gap-1 bg-primary hover:bg-primary/90 text-white"
+                  className="flex items-center gap-1 bg-[#ea384c] hover:bg-[#ea384c]/90 text-white"
                 >
                   <Radio className="w-3 h-3" />
                   <span>LIVE</span>
