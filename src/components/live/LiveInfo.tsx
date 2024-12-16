@@ -37,11 +37,6 @@ export const LiveInfo = ({
     setIsFavorite(!isFavorite);
   };
 
-  const handleClose = () => {
-    // Rediriger vers la section replay
-    navigate('/?tab=replay');
-  };
-
   return (
     <Card className={cn(
       "p-2 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60",
@@ -118,7 +113,7 @@ export const LiveInfo = ({
                 variant="ghost"
                 size="icon"
                 className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-                onClick={handleClose}
+                onClick={() => navigate(-1)}
               >
                 <X className="h-6 w-6" />
               </Button>
