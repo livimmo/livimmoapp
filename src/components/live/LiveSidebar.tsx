@@ -1,5 +1,5 @@
 import { LiveEvent } from "@/types/live";
-import { Eye, ChevronRight, PanelRightOpen } from "lucide-react";
+import { Eye, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ interface LiveSidebarProps {
 
 export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
   const navigate = useNavigate();
-  const [isCollapsed, setIsCollapsed] = useState(true); // Changed to true by default
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const otherLives = lives.filter(live => live.id !== currentLiveId && live.status === 'live');
 
   if (otherLives.length === 0) return null;
@@ -30,17 +30,25 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
         variant="ghost"
         size="icon"
         className={cn(
-          "absolute -left-4 top-1/2 -translate-y-1/2 bg-primary hover:bg-primary/90 text-white rounded-full shadow-lg transition-all duration-300",
+          "absolute -left-4 top-1/2 -translate-y-1/2 bg-gradient-to-r from-primary to-[#ea384c] hover:from-primary/90 hover:to-[#ea384c]/90",
+          "text-white rounded-full shadow-lg transition-all duration-300 group",
           "hover:scale-110",
           isCollapsed ? "hover:translate-x-1" : "hover:-translate-x-1"
         )}
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
-        {isCollapsed ? (
-          <PanelRightOpen className="h-4 w-4 animate-pulse" />
-        ) : (
-          <ChevronRight className="h-4 w-4" />
-        )}
+        <div className="relative">
+          <ChevronRight className={cn(
+            "h-4 w-4 transition-transform duration-300",
+            !isCollapsed && "rotate-180"
+          )} />
+          <Badge 
+            variant="secondary" 
+            className="absolute -top-3 -right-3 h-5 min-w-5 p-0 flex items-center justify-center bg-[#ea384c] text-white text-xs"
+          >
+            {otherLives.length}
+          </Badge>
+        </div>
       </Button>
 
       {!isCollapsed && (
