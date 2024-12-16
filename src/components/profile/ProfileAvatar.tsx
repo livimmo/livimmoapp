@@ -2,15 +2,25 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Camera, IdCard } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { StarRating } from "../ratings/StarRating";
 
 interface ProfileAvatarProps {
   firstName: string;
   lastName: string;
   avatar?: string;
   accountType: "buyer" | "agent";
+  rating?: number;
+  totalReviews?: number;
 }
 
-export const ProfileAvatar = ({ firstName, lastName, avatar, accountType }: ProfileAvatarProps) => {
+export const ProfileAvatar = ({ 
+  firstName, 
+  lastName, 
+  avatar, 
+  accountType,
+  rating = 0,
+  totalReviews = 0
+}: ProfileAvatarProps) => {
   const handleIdUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -33,6 +43,13 @@ export const ProfileAvatar = ({ firstName, lastName, avatar, accountType }: Prof
           {lastName[0]}
         </AvatarFallback>
       </Avatar>
+      
+      {accountType === "agent" && rating > 0 && (
+        <div className="text-center">
+          <StarRating rating={rating} totalReviews={totalReviews} />
+        </div>
+      )}
+
       <Button variant="outline" size="sm">
         <Camera className="mr-2 h-4 w-4" />
         Modifier la photo

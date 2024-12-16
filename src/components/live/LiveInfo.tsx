@@ -3,6 +3,7 @@ import { type Property } from "@/types/property";
 import { Users } from "lucide-react";
 import { useState } from "react";
 import { LiveOfferDialog } from "./LiveOfferDialog";
+import { StarRating } from "../ratings/StarRating";
 
 interface LiveInfoProps {
   property: Property;
@@ -24,7 +25,7 @@ export const LiveInfo = ({ property, viewerCount = 0 }: LiveInfoProps) => {
       <p className="text-sm opacity-75">{property.location}</p>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <img
               src={property.agent.image}
@@ -33,6 +34,7 @@ export const LiveInfo = ({ property, viewerCount = 0 }: LiveInfoProps) => {
             />
             <span className="text-sm">{property.agent.name}</span>
           </div>
+          <StarRating rating={4.5} totalReviews={125} size={16} />
           <div className="flex items-center gap-1 bg-black/30 px-2 py-1 rounded">
             <Users className="w-4 h-4" />
             <span className="text-sm">{viewerCount}</span>
