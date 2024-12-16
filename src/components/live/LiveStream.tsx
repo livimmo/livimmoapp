@@ -86,7 +86,7 @@ export const LiveStream = ({
       ? replayTimestamps[Math.floor(Math.random() * replayTimestamps.length)]
       : videoId;
     
-    return `${baseUrl}${videoIdWithTimestamp}?rel=0&modestbranding=1&showinfo=0&autoplay=1&mute=1`;
+    return `${baseUrl}${videoIdWithTimestamp}?rel=0&modestbranding=1&showinfo=0&autoplay=1`;
   };
 
   return (
