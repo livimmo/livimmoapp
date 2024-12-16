@@ -9,9 +9,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { Plus, Video, Youtube, Facebook, Instagram, MessageCircle, MapPin, Home, Tag } from "lucide-react";
+import { Plus, Video, Youtube, Facebook, Instagram, MessageCircle, MapPin, Home, Tag, X, Save } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import {
@@ -35,6 +36,7 @@ export const AddLiveDialog = () => {
   const [propertyType, setPropertyType] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +53,7 @@ export const AddLiveDialog = () => {
       title: "Live programmé !",
       description: `Votre live "${title}" a été programmé pour le ${date.toLocaleDateString()}`,
     });
+    setOpen(false);
   };
 
   const availableTags = [
@@ -86,7 +89,7 @@ export const AddLiveDialog = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="gap-2 bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
           <Plus className="h-4 w-4" />
@@ -94,12 +97,20 @@ export const AddLiveDialog = () => {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Programmer un nouveau Live</DialogTitle>
-          <DialogDescription>
-            Remplissez les informations pour programmer votre visite en direct
-          </DialogDescription>
-        </DialogHeader>
+        <div className="flex justify-between items-center mb-4">
+          <DialogHeader>
+            <DialogTitle>Programmer un nouveau Live</DialogTitle>
+            <DialogDescription>
+              Remplissez les informations pour programmer votre visite en direct
+            </DialogDescription>
+          </DialogHeader>
+          <DialogClose asChild>
+            <Button variant="ghost" size="icon" className="absolute right-4 top-4">
+              <X className="h-4 w-4" />
+            </Button>
+          </DialogClose>
+        </div>
+        
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium">Titre du Live*</label>
@@ -264,10 +275,17 @@ export const AddLiveDialog = () => {
             />
           </div>
 
-          <Button type="submit" className="w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
-            <Video className="mr-2 h-4 w-4" />
-            Programmer le Live
-          </Button>
+          <div className="flex gap-2 justify-end mt-6">
+            <DialogClose asChild>
+              <Button type="button" variant="outline">
+                Annuler
+              </Button>
+            </DialogClose>
+            <Button type="submit" className="bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
+              <Save className="mr-2 h-4 w-4" />
+              Enregistrer
+            </Button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>
