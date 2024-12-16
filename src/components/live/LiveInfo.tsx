@@ -1,61 +1,57 @@
+import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
-import { type Property } from "@/types/property";
+import { Card } from "@/components/ui/card";
 import { Users } from "lucide-react";
-import { useState } from "react";
 import { LiveOfferDialog } from "./LiveOfferDialog";
-import { StarRating } from "../ratings/StarRating";
+import { useState } from "react";
+import { OfferDialog } from "../property/OfferDialog";
 
 interface LiveInfoProps {
   property: Property;
   onMakeOffer: () => void;
-  viewerCount?: number;
+  viewerCount: number;
 }
 
-export const LiveInfo = ({ property, viewerCount = 0 }: LiveInfoProps) => {
+export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
   const [showOfferDialog, setShowOfferDialog] = useState(false);
 
   return (
-    <div className="space-y-4 p-4 bg-black/50 rounded-lg text-white max-w-md">
-      <div className="flex items-center gap-2">
-        <h2 className="text-lg font-semibold">{property.title}</h2>
-        <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
-          LIVE
+    <Card className="p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold line-clamp-1">{property.title}</h2>
+        <div className="flex items-center gap-2 text-sm">
+          <Users className="w-4 h-4" />
+          <span>{viewerCount} spectateurs</span>
         </div>
       </div>
-      <p className="text-sm opacity-75">{property.location}</p>
+      
+      <div className="space-y-2">
+        <p className="text-2xl font-bold">
+          {property.price.toLocaleString()} DH
+        </p>
+        <p className="text-sm text-muted-foreground line-clamp-2">
+          {property.description}
+        </p>
+      </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2">
-            <img
-              src={property.agent.image}
-              alt={property.agent.name}
-              className="w-8 h-8 rounded-full"
-            />
-            <span className="text-sm">{property.agent.name}</span>
-          </div>
-          <StarRating rating={4.5} totalReviews={125} size={16} />
-          <div className="flex items-center gap-1 bg-black/30 px-2 py-1 rounded">
-            <Users className="w-4 h-4" />
-            <span className="text-sm">{viewerCount}</span>
-          </div>
-        </div>
+      <div className="grid grid-cols-2 gap-2 mt-4">
+        <LiveOfferDialog
+          title={property.title}
+          price={property.price}
+          isOpen={showOfferDialog}
+          onClose={() => setShowOfferDialog(false)}
+        />
         <Button 
-          onClick={() => setShowOfferDialog(true)} 
-          variant="default" 
-          size="sm"
-          className="bg-primary hover:bg-primary/90"
+          onClick={() => setShowOfferDialog(true)}
+          className="w-full"
         >
           Faire une offre
         </Button>
+        <OfferDialog 
+          title={property.title}
+          price={property.price}
+        />
       </div>
-
-      <LiveOfferDialog
-        title={property.title}
-        price={property.price}
-        isOpen={showOfferDialog}
-        onClose={() => setShowOfferDialog(false)}
-      />
-    </div>
+    </Card>
   );
 };
