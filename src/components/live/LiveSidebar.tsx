@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface LiveSidebarProps {
   currentLiveId: number;
@@ -15,7 +15,33 @@ interface LiveSidebarProps {
 export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const otherLives = lives.filter(live => live.id !== currentLiveId && live.status === 'live');
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (!isCollapsed && otherLives.length > 1) {
+      interval = setInterval(() => {
+        if (scrollRef.current) {
+          const nextIndex = (currentIndex + 1) % otherLives.length;
+          const cardWidth = 256 + 16; // width of card (256px) + gap (16px)
+          scrollRef.current.scrollTo({
+            left: nextIndex * cardWidth,
+            behavior: 'smooth'
+          });
+          setCurrentIndex(nextIndex);
+        }
+      }, 3000); // Change slide every 3 seconds
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isCollapsed, currentIndex, otherLives.length]);
 
   if (otherLives.length === 0) return null;
 
@@ -57,7 +83,10 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
 
       {!isCollapsed && (
         <ScrollArea className="h-full pt-2 pb-8">
-          <div className="flex gap-4 px-4 overflow-x-auto">
+          <div 
+            ref={scrollRef}
+            className="flex gap-4 px-4 overflow-x-auto scroll-smooth"
+          >
             {otherLives.map(live => (
               <div
                 key={live.id}
