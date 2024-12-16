@@ -9,6 +9,10 @@ interface User {
   lastName?: string;
   avatar?: string;
   accountType: "buyer" | "agent";
+  phone?: string;
+  address?: string;
+  city?: string;
+  country?: string;
 }
 
 interface AuthContextType {
@@ -29,13 +33,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string) => {
     try {
       // TODO: Implement real authentication logic here
-      // Simulation d'une connexion réussie
       setUser({
         id: '1',
         email,
         firstName: 'John',
         lastName: 'Doe',
-        accountType: "buyer", // Par défaut, on met buyer
+        accountType: "buyer",
+        phone: "+1234567890",
+        address: "123 Main St",
+        city: "New York",
+        country: "USA"
       });
       
       toast({
