@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Video } from "lucide-react";
+import { Play, History } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ReservationForm } from "@/components/home/ReservationForm";
 import { useToast } from "@/components/ui/use-toast";
@@ -15,6 +15,7 @@ interface LiveButtonProps {
   isLiveNow?: boolean;
   isUserRegistered?: boolean;
   remainingSeats?: number;
+  isReplay?: boolean;
 }
 
 export const LiveButton = ({
@@ -25,14 +26,14 @@ export const LiveButton = ({
   isLiveNow,
   isUserRegistered,
   remainingSeats,
+  isReplay,
 }: LiveButtonProps) => {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleRegistration = () => {
-    // Simulation d'inscription automatique
     toast({
       title: "Inscription confirmée !",
       description: `Votre place pour "${title}" a été réservée. Vous recevrez un email de confirmation.`,
@@ -47,6 +48,8 @@ export const LiveButton = ({
 
     if (isLiveNow && onJoinLive) {
       onJoinLive();
+    } else if (isReplay) {
+      navigate(`/replay/${id}`);
     } else {
       if (isUserRegistered) {
         toast({
@@ -63,12 +66,18 @@ export const LiveButton = ({
     <>
       <Button
         onClick={handleClick}
-        variant={isLiveNow ? "destructive" : "default"}
+        variant={isLiveNow ? "destructive" : isReplay ? "secondary" : "default"}
         className="w-full"
       >
-        <Video className="w-4 h-4 mr-2" />
+        {isReplay ? (
+          <History className="w-4 h-4 mr-2" />
+        ) : (
+          <Play className="w-4 h-4 mr-2" />
+        )}
         {isLiveNow 
           ? "Rejoindre le live" 
+          : isReplay
+          ? "Voir le replay"
           : isAuthenticated 
             ? isUserRegistered 
               ? "Live réservé" 
@@ -77,7 +86,6 @@ export const LiveButton = ({
         }
       </Button>
 
-      {/* Dialog pour utilisateurs non connectés */}
       <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
         <DialogContent>
           <DialogHeader>
