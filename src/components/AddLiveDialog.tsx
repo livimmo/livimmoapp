@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Video, Camera } from "lucide-react";
+import { Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -43,7 +43,7 @@ export const AddLiveDialog = () => {
           className="relative"
         >
           <div className="relative flex items-center">
-            <Camera className="h-4 w-4 text-[#ea384c]" />
+            <Video className="h-4 w-4 text-[#ea384c]" />
             <div className="absolute -top-1 -right-1 flex items-center justify-center">
               <span className="flex h-2 w-2 rounded-full bg-[#ea384c] animate-pulse" />
               <span className="absolute text-[8px] font-bold text-white -right-4 -top-0.5">
