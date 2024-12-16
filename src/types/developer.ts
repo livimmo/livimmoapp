@@ -4,7 +4,7 @@ export interface Developer {
   logo: string;
   description: string;
   location: string;
-  sector: "residential" | "commercial" | "mixed";
+  sector: "residential" | "mixed";
   activeProjects: number;
   activeLives: number;
   scheduledLives: number;
