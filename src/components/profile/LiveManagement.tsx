@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AddLiveDialog } from "@/components/AddLiveDialog";
-import { Calendar, Clock, Video, Users } from "lucide-react";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Calendar, Clock, Video, Users, X } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { EditLiveForm } from "./EditLiveForm";
 
 interface ScheduledLive {
@@ -92,11 +92,17 @@ export const LiveManagement = () => {
       </div>
 
       <Dialog open={!!editingLive} onOpenChange={() => setEditingLive(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogTitle>Modifier le live</DialogTitle>
-          <DialogDescription>
-            Modifiez les informations de votre live programmé
-          </DialogDescription>
+        <DialogContent className="max-w-2xl">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">Modifier le live</h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setEditingLive(null)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
           {editingLive && (
             <EditLiveForm
               live={editingLive}
