@@ -73,6 +73,10 @@ export const PropertyFilters = ({
                 <SelectItem value="Appartement">Appartement</SelectItem>
                 <SelectItem value="Bureau">Bureau</SelectItem>
                 <SelectItem value="Riad">Riad</SelectItem>
+                <SelectItem value="Hôtel">Hôtel</SelectItem>
+                <SelectItem value="Commerce">Commerce</SelectItem>
+                <SelectItem value="Industriel">Industriel</SelectItem>
+                <SelectItem value="Terrain">Terrain</SelectItem>
               </SelectContent>
             </Select>
             <div className="flex items-center gap-2">
