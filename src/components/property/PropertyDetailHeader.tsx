@@ -42,32 +42,39 @@ export const PropertyDetailHeader = ({
           <CarouselNext />
         </Carousel>
 
-        {property.hasLive && (
-          <div className="absolute top-4 left-4 flex flex-col gap-2">
-            {property.isLiveNow ? (
-              <>
-                <Badge className="bg-[#ea384c]/90 backdrop-blur-sm text-white animate-pulse">
-                  <CircleDot className="w-4 h-4 mr-1" />
-                  Live en cours
+        <div className="absolute top-4 left-4 flex flex-col gap-2">
+          {!property.hasLive && (
+            <Badge variant="destructive" className="bg-white/90 backdrop-blur-sm">
+              Vendu
+            </Badge>
+          )}
+          {property.hasLive && (
+            <>
+              {property.isLiveNow ? (
+                <>
+                  <Badge className="bg-[#ea384c]/90 backdrop-blur-sm text-white animate-pulse">
+                    <CircleDot className="w-4 h-4 mr-1" />
+                    Live en cours
+                  </Badge>
+                  <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                    <Users className="w-4 h-4 mr-1" />
+                    {property.viewers} spectateurs
+                  </Badge>
+                </>
+              ) : (
+                <Badge className="bg-primary/90 backdrop-blur-sm text-white">
+                  <Calendar className="w-4 h-4 mr-1" />
+                  Live le {new Date(property.liveDate).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
                 </Badge>
-                <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
-                  <Users className="w-4 h-4 mr-1" />
-                  {property.viewers} spectateurs
-                </Badge>
-              </>
-            ) : (
-              <Badge className="bg-primary/90 backdrop-blur-sm text-white">
-                <Calendar className="w-4 h-4 mr-1" />
-                Live le {new Date(property.liveDate).toLocaleDateString('fr-FR', {
-                  day: 'numeric',
-                  month: 'long',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}
-              </Badge>
-            )}
-          </div>
-        )}
+              )}
+            </>
+          )}
+        </div>
 
         <div className="absolute top-4 right-4">
           <Button

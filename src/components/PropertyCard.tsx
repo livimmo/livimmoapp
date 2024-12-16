@@ -4,6 +4,7 @@ import { PropertyImage } from "./property/PropertyImage";
 import { PropertyInfo } from "./PropertyInfo";
 import { PropertyActions } from "./property/PropertyActions";
 import { FavoriteButton } from "./property/FavoriteButton";
+import { Badge } from "./ui/badge";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -54,6 +55,11 @@ export const PropertyCard = ({
           <FavoriteButton propertyId={id} title={title} />
           <PropertyActions title={title} currentUrl={currentUrl} />
         </div>
+        {!hasLive && (
+          <div className="absolute top-2 left-2 z-10">
+            <Badge variant="destructive">Vendu</Badge>
+          </div>
+        )}
       </div>
       <PropertyInfo
         id={id}
