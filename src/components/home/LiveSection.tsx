@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Map, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PropertyCard } from "@/components/PropertyCard";
-import { PropertyMap } from "@/components/search/PropertyMap";
+import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 
@@ -82,7 +82,7 @@ export const LiveSection = () => {
         </div>
       ) : (
         <div className="h-[500px] rounded-lg overflow-hidden">
-          <PropertyMap properties={liveProperties} />
+          <LiveGoogleMap properties={liveProperties} />
         </div>
       )}
     </section>
