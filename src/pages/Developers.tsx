@@ -8,14 +8,14 @@ import { Search, Filter } from "lucide-react";
 
 const Developers = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedSector, setSelectedSector] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("all");
+  const [selectedSector, setSelectedSector] = useState("all");
 
   const filteredDevelopers = developers.filter(developer => {
     const matchesSearch = developer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          developer.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesLocation = !selectedLocation || developer.location === selectedLocation;
-    const matchesSector = !selectedSector || developer.sector === selectedSector;
+    const matchesLocation = selectedLocation === "all" || developer.location === selectedLocation;
+    const matchesSector = selectedSector === "all" || developer.sector === selectedSector;
     
     return matchesSearch && matchesLocation && matchesSector;
   });
@@ -50,7 +50,7 @@ const Developers = () => {
                 <SelectValue placeholder="Localisation" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Toutes les localisations</SelectItem>
+                <SelectItem value="all">Toutes les localisations</SelectItem>
                 {locations.map(location => (
                   <SelectItem key={location} value={location}>
                     {location}
@@ -64,7 +64,7 @@ const Developers = () => {
                 <SelectValue placeholder="Secteur" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tous les secteurs</SelectItem>
+                <SelectItem value="all">Tous les secteurs</SelectItem>
                 {sectors.map(sector => (
                   <SelectItem key={sector} value={sector}>
                     {sector}
