@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, Filter, Eye } from "lucide-react";
 import { LiveCalendarView } from "@/components/live/LiveCalendarView";
 import { ScheduledLivesList } from "@/components/live/ScheduledLivesList";
+import { AddLiveDialog } from "@/components/AddLiveDialog";
 
 // Mock data moved to a separate file for better organization
 import { liveStreams, scheduledLives } from "@/data/mockLives";
@@ -14,7 +15,10 @@ const Lives = () => {
   return (
     <div className="pb-20">
       <header className="bg-white shadow-sm p-4 sticky top-0 z-10">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Lives</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold text-gray-900">Lives</h1>
+          <AddLiveDialog />
+        </div>
         <div className="flex gap-2 mb-4">
           <div className="relative flex-1">
             <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
