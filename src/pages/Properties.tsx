@@ -61,6 +61,7 @@ export const Properties = () => {
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 500]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
+  const [transactionType, setTransactionType] = useState("all");
 
   const filteredProperties = mockProperties.filter((property) => {
     const matchesSearch =
@@ -72,9 +73,15 @@ export const Properties = () => {
     const matchesSurface =
       property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
     const matchesLive = !showLiveOnly || property.hasLive;
+    const matchesTransactionType = transactionType === "all" || property.transactionType === transactionType;
 
     return (
-      matchesSearch && matchesType && matchesPrice && matchesSurface && matchesLive
+      matchesSearch &&
+      matchesType &&
+      matchesPrice &&
+      matchesSurface &&
+      matchesLive &&
+      matchesTransactionType
     );
   });
 
@@ -96,6 +103,8 @@ export const Properties = () => {
           setSurfaceRange={setSurfaceRange}
           showLiveOnly={showLiveOnly}
           setShowLiveOnly={setShowLiveOnly}
+          transactionType={transactionType}
+          setTransactionType={setTransactionType}
         />
 
         <PropertyList properties={filteredProperties} />
