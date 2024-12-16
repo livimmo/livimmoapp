@@ -12,7 +12,6 @@ import { CTASection } from "@/components/home/CTASection";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
 import { SmartSearchBar } from "@/components/search/SmartSearchBar";
 import { HomeHeader } from "@/components/home/HomeHeader";
-import { HeroBanner } from "@/components/home/HeroBanner";
 
 const featuredProperties = addCoordinatesToProperties([
   {
@@ -115,8 +114,6 @@ const Index = () => {
       <HomeHeader />
 
       <main className="container mx-auto px-4 pt-20">
-        <HeroBanner properties={featuredProperties} />
-
         <div className="mb-8">
           <SmartSearchBar
             searchTerm={searchTerm}
