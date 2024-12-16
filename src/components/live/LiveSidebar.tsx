@@ -83,7 +83,7 @@ export const LiveSidebar = ({ currentLiveId, lives, onCloseLive }: LiveSidebarPr
           )}
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          <div className="relative flex items-center gap-2">
+          <div className="relative flex items-center gap-2 hover:text-[#ea384c]">
             <Radio className="h-4 w-4" />
             <span className="text-sm font-medium">
               {otherLives.length} lives en cours
