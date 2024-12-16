@@ -16,14 +16,6 @@ interface PersonalInfoProps {
   onChange: (field: string, value: string) => void;
 }
 
-const availableTags = [
-  { id: "new", label: "Nouveauté" },
-  { id: "exclusive", label: "Exclusivité" },
-  { id: "hot", label: "Coup de fusil" },
-  { id: "reduced", label: "Prix réduit" },
-  { id: "urgent", label: "Urgent" },
-];
-
 export const PersonalInfo = ({
   firstName,
   lastName,
@@ -135,20 +127,6 @@ export const PersonalInfo = ({
                   WhatsApp Video
                 </Label>
               </div>
-            </div>
-          </div>
-
-          <div className="space-y-4 border-t pt-4">
-            <h3 className="text-lg font-semibold">
-              Tags pour vos lives
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {availableTags.map((tag) => (
-                <div key={tag.id} className="flex items-center space-x-2">
-                  <Checkbox id={`tag-${tag.id}`} />
-                  <Label htmlFor={`tag-${tag.id}`}>{tag.label}</Label>
-                </div>
-              ))}
             </div>
           </div>
         </>
