@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StarRating } from "@/components/ratings/StarRating";
-import { Building, Video, Calendar, UserCheck } from "lucide-react";
+import { Building2, Video, Calendar, UserCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface AgentCardProps {
@@ -47,7 +47,7 @@ export const AgentCard = ({ agent }: AgentCardProps) => {
         </p>
         <div className="grid grid-cols-3 gap-2 text-sm">
           <div className="flex items-center gap-1">
-            <Building className="w-4 h-4" />
+            <Building2 className="w-4 h-4" />
             <span>{agent.activeProperties}</span>
           </div>
           <div className="flex items-center gap-1">
