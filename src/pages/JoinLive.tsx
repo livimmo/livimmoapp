@@ -26,7 +26,7 @@ export const JoinLive = () => {
   const [showChat, setShowChat] = useState(false);
   const [property, setProperty] = useState<Property | null>(null);
   const [showOtherLives, setShowOtherLives] = useState(false);
-  const [isLiveStarted, setIsLiveStarted] = useState(false);
+  const [isLiveStarted, setIsLiveStarted] = useState(true); // Démarrer le live automatiquement
 
   // Filtrer les autres lives en cours (excluant le live actuel)
   const otherLives = liveStreams.filter(live => live.id !== Number(id));
