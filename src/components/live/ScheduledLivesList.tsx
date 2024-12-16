@@ -32,23 +32,10 @@ export const ScheduledLivesList = ({ lives }: ScheduledLivesListProps) => {
   }));
 
   return (
-    <Tabs defaultValue="grid" className="w-full">
-      <TabsList className="w-full mb-4">
-        <TabsTrigger value="grid" className="flex-1">Grille</TabsTrigger>
-        <TabsTrigger value="map" className="flex-1">Carte</TabsTrigger>
-      </TabsList>
-      
-      <TabsContent value="grid">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {lives.map((live) => (
-            <LiveCard key={live.id} live={live} />
-          ))}
-        </div>
-      </TabsContent>
-      
-      <TabsContent value="map">
-        <PropertyMap properties={locations} />
-      </TabsContent>
-    </Tabs>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {lives.map((live) => (
+        <LiveCard key={live.id} live={live} />
+      ))}
+    </div>
   );
 };
