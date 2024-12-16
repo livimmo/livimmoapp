@@ -94,10 +94,10 @@ export const LiveInfo = ({ property, viewerCount }: LiveInfoProps) => {
               </Link>
             </div>
 
-            <div className="flex flex-col justify-between items-end">
+            <div className="flex justify-end">
               <Button 
                 size="sm"
-                className="w-full" 
+                className="w-auto" 
                 onClick={() => setIsOfferDialogOpen(true)}
               >
                 <Heart className="w-4 h-4 mr-1.5" />
