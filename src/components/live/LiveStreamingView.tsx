@@ -4,6 +4,7 @@ import { LiveChat } from "./LiveChat";
 import { LiveInfo } from "./LiveInfo";
 import { Property } from "@/types/property";
 import { useToast } from "@/hooks/use-toast";
+import { botQuestions, welcomeMessage } from "@/data/botQuestions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,6 +21,15 @@ interface LiveStreamingViewProps {
   onEndStream: () => void;
 }
 
+interface Message {
+  id: number;
+  user: string;
+  message: string;
+  timestamp: Date;
+  isBot?: boolean;
+  questions?: typeof botQuestions;
+}
+
 export const LiveStreamingView = ({
   property,
   onEndStream,
@@ -28,6 +38,7 @@ export const LiveStreamingView = ({
   const [showDescription, setShowDescription] = useState(true);
   const [showEndDialog, setShowEndDialog] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -38,6 +49,18 @@ export const LiveStreamingView = ({
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    // Initialize chat with welcome message when opened
+    if (showChat && messages.length === 0) {
+      setMessages([
+        {
+          ...welcomeMessage,
+          questions: botQuestions,
+        } as Message,
+      ]);
+    }
+  }, [showChat, messages.length]);
 
   const handleEndStream = () => {
     setShowEndDialog(true);
@@ -86,7 +109,7 @@ export const LiveStreamingView = ({
       {showChat && (
         <div className="absolute top-0 right-0 bottom-0 w-80 z-[100]">
           <LiveChat 
-            messages={[]} 
+            messages={messages} 
             onClose={() => setShowChat(false)}
           />
         </div>
