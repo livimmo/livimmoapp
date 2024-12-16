@@ -1,15 +1,11 @@
 import { useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
+import { Plus, Video, Youtube, Facebook, Instagram, MessageCircle, MapPin, Home, Tag, X, Save } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -17,11 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
-import { useForm } from "react-hook-form";
-import { Calendar, Image as ImageIcon, MapPin, Home } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 
 interface EditLiveFormProps {
   live: {
@@ -33,272 +25,262 @@ interface EditLiveFormProps {
   onClose: () => void;
 }
 
-interface FormValues {
-  title: string;
-  date: string;
-  time: string;
-  duration: string;
-  platform: string;
-  propertyTitle: string;
-  propertyDescription: string;
-  propertyType: string;
-  propertySurface: string;
-  propertyPrice: string;
-  propertyLocation: string;
-}
-
 export const EditLiveForm = ({ live, onClose }: EditLiveFormProps) => {
+  const [date, setDate] = useState<Date>(live.date);
+  const [time, setTime] = useState(live.date.toTimeString().slice(0, 5));
+  const [title, setTitle] = useState(live.title);
+  const [description, setDescription] = useState("");
+  const [liveType, setLiveType] = useState<"youtube" | "facebook" | "instagram" | "whatsapp">("youtube");
+  const [liveUrl, setLiveUrl] = useState("");
+  const [price, setPrice] = useState("");
+  const [surface, setSurface] = useState("");
+  const [location, setLocation] = useState("");
+  const [propertyType, setPropertyType] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
   const { toast } = useToast();
-  const [images, setImages] = useState<File[]>([]);
 
-  const form = useForm<FormValues>({
-    defaultValues: {
-      title: live.title,
-      date: live.date.toISOString().split("T")[0],
-      time: live.date.toTimeString().slice(0, 5),
-      duration: "60",
-      platform: live.type,
-      propertyTitle: "",
-      propertyDescription: "",
-      propertyType: "",
-      propertySurface: "",
-      propertyPrice: "",
-      propertyLocation: "",
-    },
-  });
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newImages = Array.from(e.target.files);
-      setImages((prev) => [...prev, ...newImages]);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!date || !time || !title || !liveUrl || !price || !surface || !location || !propertyType) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez remplir tous les champs obligatoires",
+        variant: "destructive",
+      });
+      return;
     }
-  };
 
-  const removeImage = (index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const onSubmit = (data: FormValues) => {
-    // Ici, vous ajouteriez la logique pour sauvegarder les modifications
-    console.log("Form data:", data);
-    console.log("Images:", images);
+    // Combine date and time
+    const dateTime = new Date(date);
+    const [hours, minutes] = time.split(":");
+    dateTime.setHours(parseInt(hours), parseInt(minutes));
 
     toast({
-      title: "Modifications enregistrées",
-      description: "Les informations du live et du bien ont été mises à jour.",
+      title: "Live modifié !",
+      description: `Votre live "${title}" a été mis à jour pour le ${dateTime.toLocaleDateString()} à ${time}`,
     });
     onClose();
   };
 
+  const availableTags = [
+    "Nouveauté",
+    "Coup de cœur",
+    "Vue mer",
+    "Piscine",
+    "Jardin",
+    "Terrasse",
+  ];
+
+  const handleTagToggle = (tag: string) => {
+    setTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  const getLiveUrlPlaceholder = () => {
+    switch (liveType) {
+      case "youtube":
+        return "https://youtube.com/live/...";
+      case "facebook":
+        return "https://facebook.com/live/...";
+      case "instagram":
+        return "https://instagram.com/live/...";
+      case "whatsapp":
+        return "https://wa.me/...";
+      default:
+        return "";
+    }
+  };
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Card className="p-4">
-          <h3 className="text-lg font-semibold mb-4">Informations du live</h3>
-          <div className="grid gap-4">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Titre du live</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Calendar className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input type="date" className="pl-8" {...field} />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="time"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Heure</FormLabel>
-                    <FormControl>
-                      <Input type="time" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-4">
-          <h3 className="text-lg font-semibold mb-4">Informations du bien</h3>
-          <div className="grid gap-4">
-            <FormField
-              control={form.control}
-              name="propertyTitle"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Titre du bien</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Home className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                      <Input className="pl-8" {...field} />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="propertyDescription"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="propertyType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Type de bien</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Sélectionner" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="apartment">Appartement</SelectItem>
-                        <SelectItem value="house">Maison</SelectItem>
-                        <SelectItem value="villa">Villa</SelectItem>
-                        <SelectItem value="land">Terrain</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="propertySurface"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Surface (m²)</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="propertyPrice"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Prix (MAD)</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="propertyLocation"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Localisation</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <MapPin className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input className="pl-8" {...field} />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-4">
-          <h3 className="text-lg font-semibold mb-4">Photos</h3>
-          <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-4">
-              {images.map((image, index) => (
-                <div
-                  key={index}
-                  className="relative aspect-square rounded-lg border bg-muted"
-                >
-                  <img
-                    src={URL.createObjectURL(image)}
-                    alt={`Image ${index + 1}`}
-                    className="h-full w-full object-cover rounded-lg"
-                  />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="icon"
-                    className="absolute -top-2 -right-2 h-6 w-6"
-                    onClick={() => removeImage(index)}
-                  >
-                    ×
-                  </Button>
-                </div>
-              ))}
-              <label className="relative aspect-square rounded-lg border-2 border-dashed border-muted-foreground/25 hover:border-muted-foreground/50 cursor-pointer">
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 text-xs text-muted-foreground">
-                  <ImageIcon className="h-4 w-4" />
-                  <span>Ajouter</span>
-                </div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  className="hidden"
-                  onChange={handleImageUpload}
-                />
-              </label>
-            </div>
-          </div>
-        </Card>
-
-        <div className="flex justify-end gap-4">
-          <Button type="button" variant="outline" onClick={onClose}>
-            Annuler
-          </Button>
-          <Button type="submit">Sauvegarder les modifications</Button>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Titre du Live*</label>
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Ex: Visite Villa Moderne Casablanca"
+            required
+          />
         </div>
-      </form>
-    </Form>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Description</label>
+          <Input
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description de la visite..."
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Prix*</label>
+          <div className="relative">
+            <Input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Prix en DH"
+              required
+              className="pl-8"
+            />
+            <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">DH</span>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Surface*</label>
+          <div className="relative">
+            <Input
+              type="number"
+              value={surface}
+              onChange={(e) => setSurface(e.target.value)}
+              placeholder="Surface en m²"
+              required
+              className="pl-8"
+            />
+            <span className="absolute left-2 top-2.5 text-muted-foreground text-sm">m²</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Localisation*</label>
+        <div className="relative">
+          <MapPin className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Adresse du bien"
+            required
+            className="pl-8"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Type de bien*</label>
+        <div className="relative">
+          <Home className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Select value={propertyType} onValueChange={setPropertyType} required>
+            <SelectTrigger className="pl-8">
+              <SelectValue placeholder="Sélectionner le type" />
+            </SelectTrigger>
+            <SelectContent>
+              {PROPERTY_TYPES.map((type) => (
+                <SelectItem key={type} value={type}>
+                  {type}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium flex items-center gap-2">
+          <Tag className="h-4 w-4" />
+          Tags
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {availableTags.map((tag) => (
+            <Button
+              key={tag}
+              type="button"
+              variant={tags.includes(tag) ? "default" : "outline"}
+              size="sm"
+              onClick={() => handleTagToggle(tag)}
+            >
+              {tag}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Date et heure du Live*</label>
+          <div className="space-y-2">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              className="rounded-md border"
+            />
+            <Input
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              required
+              className="mt-2"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Type de Live*</label>
+          <RadioGroup
+            value={liveType}
+            onValueChange={(value: "youtube" | "facebook" | "instagram" | "whatsapp") => setLiveType(value)}
+            className="grid grid-cols-2 gap-4"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="youtube" id="youtube" />
+              <Label htmlFor="youtube" className="flex items-center gap-2">
+                <Youtube className="h-4 w-4" />
+                YouTube Live
+              </Label>
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="facebook" id="facebook" />
+              <Label htmlFor="facebook" className="flex items-center gap-2">
+                <Facebook className="h-4 w-4" />
+                Facebook Live
+              </Label>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="instagram" id="instagram" />
+              <Label htmlFor="instagram" className="flex items-center gap-2">
+                <Instagram className="h-4 w-4" />
+                Instagram Live
+              </Label>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="whatsapp" id="whatsapp" />
+              <Label htmlFor="whatsapp" className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4" />
+                WhatsApp Video
+              </Label>
+            </div>
+          </RadioGroup>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium">URL du Live*</label>
+        <Input
+          value={liveUrl}
+          onChange={(e) => setLiveUrl(e.target.value)}
+          placeholder={getLiveUrlPlaceholder()}
+          required
+        />
+      </div>
+
+      <div className="flex gap-2 justify-end sticky bottom-0 bg-white pt-2">
+        <Button type="button" variant="outline" onClick={onClose}>
+          Annuler
+        </Button>
+        <Button type="submit" className="bg-[#ea384c] text-white hover:bg-[#ea384c]/90">
+          <Save className="mr-2 h-4 w-4" />
+          Enregistrer
+        </Button>
+      </div>
+    </form>
   );
 };
