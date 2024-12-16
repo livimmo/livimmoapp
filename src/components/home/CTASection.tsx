@@ -8,10 +8,10 @@ export const CTASection = () => {
     <section className="bg-accent rounded-lg p-6 mb-20 mt-8">
       <div className="text-center space-y-4">
         <h2 className="text-2xl font-bold text-primary">
-          Prêt à trouver votre bien idéal ?
+          Prêt à démarrer vos lives immobiliers ?
         </h2>
         <p className="text-muted-foreground">
-          Créez votre compte gratuitement et commencez votre recherche
+          Créez votre compte gratuitement et commencez à présenter vos biens en direct à vos clients.
         </p>
         <Button 
           onClick={() => navigate("/signup")}
