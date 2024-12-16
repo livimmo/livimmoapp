@@ -1,77 +1,35 @@
 import { useState, useEffect } from "react";
-import { LiveStreamingControls } from "./LiveStreamingControls";
+import { LiveStream } from "./LiveStream";
+import { LiveControls } from "./LiveControls";
+import { LiveCarousel } from "./LiveCarousel";
 import { LiveChat } from "./LiveChat";
 import { LiveInfo } from "./LiveInfo";
 import { Property } from "@/types/property";
-import { useToast } from "@/hooks/use-toast";
-import { botQuestions, welcomeMessage } from "@/data/botQuestions";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { LiveEvent } from "@/types/live";
+import { liveStreams } from "@/data/mockLives";
 
 interface LiveStreamingViewProps {
   property: Property;
-  onEndStream: () => void;
-}
-
-interface Message {
-  id: number;
-  user: string;
-  message: string;
-  timestamp: Date;
-  isBot?: boolean;
-  questions?: typeof botQuestions;
+  isHost?: boolean;
+  onEndStream?: () => void;
 }
 
 export const LiveStreamingView = ({
   property,
-  onEndStream,
+  isHost = false,
+  onEndStream = () => {},
 }: LiveStreamingViewProps) => {
-  const [viewerCount, setViewerCount] = useState(0);
-  const [showDescription, setShowDescription] = useState(true);
-  const [showEndDialog, setShowEndDialog] = useState(false);
   const [showChat, setShowChat] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const { toast } = useToast();
+  const [viewerCount, setViewerCount] = useState(0);
+  const [availableLives, setAvailableLives] = useState<LiveEvent[]>(liveStreams);
 
   useEffect(() => {
-    // Simulate viewer count updates
-    const interval = setInterval(() => {
-      setViewerCount((prev) => Math.min(prev + Math.floor(Math.random() * 3), 100));
-    }, 5000);
-
-    return () => clearInterval(interval);
+    // Simuler un nombre aléatoire de spectateurs
+    const randomViewers = Math.floor(Math.random() * 100) + 1;
+    setViewerCount(randomViewers);
   }, []);
 
-  useEffect(() => {
-    // Initialize chat with welcome message when opened
-    if (showChat && messages.length === 0) {
-      setMessages([
-        {
-          ...welcomeMessage,
-          questions: botQuestions,
-        } as Message,
-      ]);
-    }
-  }, [showChat, messages.length]);
-
   const handleEndStream = () => {
-    setShowEndDialog(true);
-  };
-
-  const confirmEndStream = () => {
-    toast({
-      title: "Live terminé",
-      description: "Le replay sera bientôt disponible",
-    });
-    setShowEndDialog(false);
     onEndStream();
   };
 
@@ -79,21 +37,24 @@ export const LiveStreamingView = ({
     setShowChat(!showChat);
   };
 
+  const handleCloseLive = (liveId: number) => {
+    setAvailableLives(prev => prev.filter(live => live.id !== liveId));
+  };
+
   return (
     <div className="relative h-screen bg-black">
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-white text-center">
-          <div className="animate-pulse mb-4">
-            EN DIRECT
-          </div>
-          <p className="text-sm opacity-75">
-            Prévisualisation de la caméra
-          </p>
-        </div>
+        <LiveStream />
       </div>
 
-      {showDescription && (
-        <div className="absolute bottom-20 left-4 right-4">
+      {isHost && (
+        <div className="absolute top-4 right-4">
+          <LiveControls onEndStream={handleEndStream} />
+        </div>
+      )}
+
+      {!isHost && (
+        <div className="absolute bottom-0 left-0 right-0">
           <LiveInfo
             property={property}
             onMakeOffer={() => {}}
@@ -103,38 +64,26 @@ export const LiveStreamingView = ({
         </div>
       )}
 
-      <LiveStreamingControls
-        viewerCount={viewerCount}
-        onEndStream={handleEndStream}
-        showDescription={showDescription}
-        onToggleDescription={() => setShowDescription(!showDescription)}
-      />
+      <div
+        className={cn(
+          "absolute top-0 bottom-[calc(64px+56px)] right-0 w-96 bg-black/75 backdrop-blur-sm transition-transform duration-300",
+          showChat ? "translate-x-0" : "translate-x-full"
+        )}
+      >
+        <LiveChat />
+      </div>
 
-      {showChat && (
-        <div className="absolute top-0 right-0 bottom-0 w-80 z-[100]">
-          <LiveChat 
-            messages={messages} 
-            onClose={() => setShowChat(false)}
-          />
-        </div>
-      )}
-
-      <AlertDialog open={showEndDialog} onOpenChange={setShowEndDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Arrêter le live ?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Voulez-vous vraiment arrêter le live ? Cette action ne peut pas être annulée.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmEndStream} className="bg-red-500 hover:bg-red-600">
-              Arrêter le live
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <div className="absolute bottom-[64px] left-0 right-0">
+        <LiveCarousel
+          lives={availableLives}
+          currentLiveId={property.id}
+          onLiveSelect={(liveId) => {
+            // Navigation vers le nouveau live
+            window.location.href = `/live/${liveId}`;
+          }}
+          onLiveClose={handleCloseLive}
+        />
+      </div>
     </div>
   );
 };

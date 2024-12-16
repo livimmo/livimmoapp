@@ -10,16 +10,27 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Autoplay from "embla-carousel-autoplay";
 
 interface LiveCarouselProps {
   lives: LiveEvent[];
   currentLiveId: number;
   onLiveSelect: (liveId: number) => void;
+  onLiveClose?: (liveId: number) => void;
 }
 
-export const LiveCarousel = ({ lives, currentLiveId, onLiveSelect }: LiveCarouselProps) => {
+export const LiveCarousel = ({ 
+  lives, 
+  currentLiveId, 
+  onLiveSelect,
+  onLiveClose 
+}: LiveCarouselProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const autoplayOptions = {
+    delay: 4000,
+    stopOnInteraction: true,
+  };
 
   return (
     <div className={cn(
@@ -53,6 +64,9 @@ export const LiveCarousel = ({ lives, currentLiveId, onLiveSelect }: LiveCarouse
             align: "start",
             loop: true,
           }}
+          plugins={[
+            Autoplay(autoplayOptions)
+          ]}
           className="w-full"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
@@ -71,6 +85,19 @@ export const LiveCarousel = ({ lives, currentLiveId, onLiveSelect }: LiveCarouse
                     alt={live.title}
                     className="w-full aspect-video object-cover"
                   />
+                  {onLiveClose && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-1 right-1 z-10 bg-black/50 hover:bg-black/75 text-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onLiveClose(live.id);
+                      }}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <Badge variant="secondary" className="bg-primary text-white">
                       Rejoindre
