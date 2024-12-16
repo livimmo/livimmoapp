@@ -1,7 +1,7 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink, Heart, Radio, MessageSquare, X, Maximize2, Minimize2 } from "lucide-react";
+import { Users, ExternalLink, Heart, Radio, MessageSquare, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState } from "react";
@@ -108,18 +108,6 @@ export const LiveInfo = ({
                 onClick={onToggleChat}
               >
                 <MessageSquare className="h-6 w-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-                onClick={onToggleFullscreen}
-              >
-                {isFullscreen ? (
-                  <Minimize2 className="h-8 w-8" />
-                ) : (
-                  <Maximize2 className="h-8 w-8" />
-                )}
               </Button>
               <Button
                 variant="ghost"
