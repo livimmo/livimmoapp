@@ -16,7 +16,10 @@ export const LiveCarouselHeader = ({
   return (
     <div className="flex items-center justify-between mb-4">
       <div className="flex items-center gap-2">
-        <h3 className="text-white font-semibold flex items-center gap-2">
+        <h3 
+          className="text-white font-semibold flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+          onClick={onToggleCollapse}
+        >
           <LiveBadge count={liveCount} />
           Autres lives en cours
         </h3>
