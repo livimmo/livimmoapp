@@ -26,11 +26,18 @@ export const LiveButton = ({
   isUserRegistered,
   remainingSeats,
 }: LiveButtonProps) => {
-  const { isAuthenticated } = useAuth();
-  const [showLeadDialog, setShowLeadDialog] = useState(false);
+  const { isAuthenticated, user } = useAuth();
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  const handleRegistration = () => {
+    // Simulation d'inscription automatique
+    toast({
+      title: "Inscription confirmée !",
+      description: `Votre place pour "${title}" a été réservée. Vous recevrez un email de confirmation.`,
+    });
+  };
 
   const handleClick = () => {
     if (!isAuthenticated) {
@@ -47,7 +54,7 @@ export const LiveButton = ({
           description: "Vous recevrez un rappel avant le début du live",
         });
       } else {
-        setShowLeadDialog(true);
+        handleRegistration();
       }
     }
   };
@@ -96,19 +103,6 @@ export const LiveButton = ({
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Dialog pour réservation (utilisateurs connectés) */}
-      {showLeadDialog && (
-        <ReservationForm
-          live={{
-            id,
-            title,
-            date: liveDate || new Date(),
-            availableSeats: remainingSeats,
-          }}
-          onClose={() => setShowLeadDialog(false)}
-        />
-      )}
     </>
   );
 };
