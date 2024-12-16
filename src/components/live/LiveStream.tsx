@@ -2,28 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LiveInfo } from "./LiveInfo";
 import { useState } from "react";
-import { X, Maximize2, Minimize2, ArrowLeft } from "lucide-react";
+import { X, Maximize2, Minimize2, ArrowLeft, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveCarousel } from "./LiveCarousel";
 import { ReplayCarousel } from "./ReplayCarousel";
 import { liveStreams } from "@/data/mockLives";
 import { cn } from "@/lib/utils";
-
-interface LiveStreamProps {
-  videoId: string;
-  currentLiveId: number;
-  otherLives: any[];
-  onLiveChange?: (liveId: number) => void;
-  isReplay?: boolean;
-}
-
-const replayTimestamps = [
-  'VIQpb65HmMs',
-  'VIQpb65HmMs?start=300',
-  'VIQpb65HmMs?start=600',
-  'VIQpb65HmMs?start=900',
-  'VIQpb65HmMs?start=1200',
-];
+import { Badge } from "@/components/ui/badge";
 
 const mockProperty = {
   id: 1,
@@ -62,7 +47,8 @@ export const LiveStream = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [viewMode, setViewMode] = useState<'default' | 'cinema' | 'fullscreen'>('default');
-  const [showOtherLives, setShowOtherLives] = useState(!isMobile);
+  const [showOtherLives, setShowOtherLives] = useState(false);
+  const otherLivesCount = liveStreams.filter(live => live.id !== currentLiveId).length;
 
   const handleViewModeChange = (mode: 'default' | 'cinema' | 'fullscreen') => {
     if (mode === 'fullscreen') {
@@ -109,9 +95,9 @@ export const LiveStream = ({
       viewMode === 'fullscreen' && 'z-[9999]'
     )}>
       <div className="relative flex-1">
-        {/* Header mobile avec bouton retour */}
-        {isMobile && (
-          <div className="absolute top-0 left-0 right-0 p-4 z-[52] bg-gradient-to-b from-black/70 via-black/40 to-transparent">
+        {/* Header avec badge live */}
+        <div className="absolute top-4 left-4 z-[52] flex items-center gap-2">
+          {isMobile && (
             <Button
               variant="ghost"
               size="icon"
@@ -120,8 +106,20 @@ export const LiveStream = ({
             >
               <ArrowLeft className="h-6 w-6" />
             </Button>
-          </div>
-        )}
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="bg-black/50 hover:bg-black/75 text-white transition-colors backdrop-blur-sm flex items-center gap-2"
+            onClick={() => setShowOtherLives(!showOtherLives)}
+          >
+            <Video className="h-4 w-4" />
+            <Badge variant="destructive" className="relative -top-2 -right-2">
+              {otherLivesCount}
+            </Badge>
+            <span className="text-sm">Lives en cours</span>
+          </Button>
+        </div>
 
         {/* Conteneur vidéo avec overlay */}
         <div className={cn(
