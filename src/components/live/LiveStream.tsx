@@ -88,31 +88,31 @@ export const LiveStream = ({
   return (
     <div className="fixed inset-0 bg-black flex flex-col">
       <div className="relative flex-1">
-        {/* Contrôles vidéo */}
-        <div className="absolute top-4 right-4 flex gap-2 z-50">
+        {/* Contrôles vidéo - Repositionnés et stylisés */}
+        <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent flex justify-end items-center gap-2 z-50">
           <Button
             variant="ghost"
             size="icon"
-            className="text-white hover:bg-white/20"
+            className="text-white hover:bg-white/20 transition-colors"
             onClick={() => handleViewModeChange(viewMode === 'cinema' ? 'default' : 'cinema')}
           >
-            {viewMode === 'cinema' ? <Minimize2 /> : <Maximize2 />}
+            {viewMode === 'cinema' ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="text-white hover:bg-white/20"
+            className="text-white hover:bg-white/20 transition-colors"
             onClick={() => handleViewModeChange('fullscreen')}
           >
-            <Maximize2 />
+            <Maximize2 className="h-5 w-5" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="text-white hover:bg-white/20"
+            className="text-white hover:bg-white/20 transition-colors"
             onClick={handleClose}
           >
-            <X />
+            <X className="h-5 w-5" />
           </Button>
         </div>
 
