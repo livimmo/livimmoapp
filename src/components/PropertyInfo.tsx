@@ -11,12 +11,7 @@ interface PropertyInfoProps {
   type: string;
   surface: number;
   rooms: number;
-</lov-replace>
-
-<lov-search>
-  description,
-</lov-search>
-<lov-replace>
+  description: string;
   hasLive?: boolean;
   liveDate?: Date;
   onJoinLive?: () => void;
