@@ -44,12 +44,6 @@ export const AddLiveDialog = () => {
         >
           <div className="relative flex items-center">
             <Video className="h-4 w-4 text-[#ea384c]" />
-            <div className="absolute -top-1 -right-1 flex items-center justify-center">
-              <span className="flex h-2 w-2 rounded-full bg-[#ea384c] animate-pulse" />
-              <span className="absolute text-[8px] font-bold text-white -right-4 -top-0.5">
-                REC
-              </span>
-            </div>
           </div>
         </Button>
       ) : (
@@ -61,12 +55,6 @@ export const AddLiveDialog = () => {
           <Plus className="h-4 w-4" />
           <div className="relative flex items-center gap-2">
             <Video className="h-4 w-4" />
-            <div className="absolute -top-1 -right-1 flex items-center">
-              <span className="flex h-2 w-2 rounded-full bg-white animate-pulse" />
-              <span className="absolute text-[8px] font-bold text-white -right-4 -top-0.5">
-                REC
-              </span>
-            </div>
           </div>
           Ajouter un Live
         </Button>
