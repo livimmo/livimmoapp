@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { AccountType } from "./AccountTypeSelector";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Facebook, Instagram, Youtube, MessageCircle } from "lucide-react";
+import { AddLiveDialog } from "@/components/AddLiveDialog";
 
 interface PersonalInfoProps {
   firstName: string;
@@ -91,6 +92,15 @@ export const PersonalInfo = ({
                 <Label htmlFor="license">Numéro de licence</Label>
                 <Input id="license" placeholder="XXX-XXX-XXX" />
               </div>
+            </div>
+          </div>
+
+          <div className="space-y-4 border-t pt-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold">
+                Gestion des Lives
+              </h3>
+              <AddLiveDialog />
             </div>
           </div>
 
