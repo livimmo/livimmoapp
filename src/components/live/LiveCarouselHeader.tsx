@@ -1,6 +1,5 @@
 import { Minimize2, Maximize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { LiveBadge } from "./LiveBadge";
 
 interface LiveCarouselHeaderProps {
@@ -21,9 +20,6 @@ export const LiveCarouselHeader = ({
           <LiveBadge count={liveCount} />
           Autres lives en cours
         </h3>
-        <Badge variant="secondary" className="bg-white/10 text-white">
-          {liveCount}
-        </Badge>
       </div>
       <div className="flex items-center gap-2">
         <Button
