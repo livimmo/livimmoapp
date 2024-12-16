@@ -4,10 +4,13 @@ import { type Property } from "@/types/property";
 
 interface PropertyListProps {
   properties: Property[];
-  viewMode: "grid" | "list" | "map";
+  viewMode?: "grid" | "list" | "map";
 }
 
-export const PropertyList = ({ properties, viewMode }: PropertyListProps) => {
+export const PropertyList = ({ 
+  properties, 
+  viewMode = "grid" 
+}: PropertyListProps) => {
   if (viewMode === "map") {
     return <PropertyMap properties={properties} />;
   }
