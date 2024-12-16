@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Video } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -25,7 +25,7 @@ export const LiveButton = ({
   isUserRegistered,
   remainingSeats,
 }: LiveButtonProps) => {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -37,15 +37,7 @@ export const LiveButton = ({
     }
 
     if (isLiveNow) {
-      if (!user?.role) {
-        toast({
-          title: "Sélection du rôle requise",
-          description: "Veuillez sélectionner votre rôle avant de rejoindre le live",
-          variant: "destructive",
-        });
-        navigate('/select-role');
-        return;
-      }
+      // Utilisation de useEffect pour la navigation
       navigate(`/live/${id}`);
     } else {
       if (isUserRegistered) {
@@ -64,7 +56,10 @@ export const LiveButton = ({
 
   const handleAuthSuccess = () => {
     setShowAuthDialog(false);
-    // Suppression de la redirection automatique vers le live
+    if (isLiveNow) {
+      // Utilisation de useEffect pour la navigation
+      navigate(`/live/${id}`);
+    }
   };
 
   return (

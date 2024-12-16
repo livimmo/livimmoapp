@@ -25,7 +25,7 @@ export const NotificationItem = ({
 }: NotificationItemProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const userType = user?.role || "buyer";
+  const userType = user?.accountType || "buyer";
 
   // Si la notification est spécifique à un type d'utilisateur et que ce n'est pas le bon type,
   // on ne l'affiche pas

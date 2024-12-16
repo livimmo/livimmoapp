@@ -5,20 +5,14 @@ import { useState } from "react";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { SubscribeButton } from "../agent/SubscribeButton";
 import { useToast } from "@/hooks/use-toast";
-import { AgentRating } from "./AgentRating";
 
 interface LiveInfoProps {
   property: Property;
   onMakeOffer: () => void;
   viewerCount?: number;
-  showRating?: boolean;
 }
 
-export const LiveInfo = ({ 
-  property, 
-  viewerCount = 0, 
-  showRating = false 
-}: LiveInfoProps) => {
+export const LiveInfo = ({ property, viewerCount = 0 }: LiveInfoProps) => {
   const [showOfferDialog, setShowOfferDialog] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const { toast } = useToast();
@@ -29,11 +23,6 @@ export const LiveInfo = ({
       title: isFavorite ? "Retiré des favoris" : "Ajouté aux favoris",
       description: `${property.title} a été ${isFavorite ? "retiré de" : "ajouté à"} vos favoris.`,
     });
-  };
-
-  const handleRate = (rating: number) => {
-    // Ici vous pouvez ajouter la logique pour sauvegarder la note dans votre backend
-    console.log(`Agent ${property.agent.name} rated: ${rating}/5`);
   };
 
   return (
@@ -85,13 +74,6 @@ export const LiveInfo = ({
           agentId={property.agent.id || "1"} 
           initialSubscriberCount={125}
         />
-
-        {showRating && (
-          <AgentRating 
-            agentName={property.agent.name} 
-            onRate={handleRate}
-          />
-        )}
       </div>
 
       <LiveOfferDialog

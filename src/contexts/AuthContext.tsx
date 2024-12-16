@@ -1,7 +1,23 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { User, UserRole, AuthContextType } from '@/types/auth';
+
+interface User {
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  avatar?: string;
+  accountType: "buyer" | "agent";
+}
+
+interface AuthContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string, firstName: string, lastName: string, accountType: "buyer" | "agent") => Promise<void>;
+  logout: () => void;
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -13,11 +29,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string) => {
     try {
       // TODO: Implement real authentication logic here
+      // Simulation d'une connexion réussie
       setUser({
         id: '1',
         email,
         firstName: 'John',
         lastName: 'Doe',
+        accountType: "buyer", // Par défaut, on met buyer
       });
       
       toast({
@@ -25,12 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         description: "Bienvenue sur Livimmo !",
       });
       
-      // Si l'utilisateur n'a pas de rôle, rediriger vers la sélection de rôle
-      if (!user?.role) {
-        navigate('/select-role');
-      } else {
-        navigate('/');
-      }
+      navigate('/');
     } catch (error) {
       toast({
         title: "Erreur de connexion",
@@ -40,21 +53,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signup = async ({ email, password, firstName, lastName, role }: {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    role?: UserRole;
-  }) => {
+  const signup = async (email: string, password: string, firstName: string, lastName: string, accountType: "buyer" | "agent") => {
     try {
       // TODO: Implement real signup logic here
+      // Simulation d'une inscription réussie
       setUser({
         id: '1',
         email,
         firstName,
         lastName,
-        role,
+        accountType,
       });
       
       toast({
@@ -62,35 +70,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         description: "Bienvenue sur Livimmo !",
       });
       
-      if (!role) {
-        navigate('/select-role');
-      } else {
-        navigate('/');
-      }
+      navigate('/');
     } catch (error) {
       toast({
         title: "Erreur d'inscription",
         description: "Une erreur est survenue lors de l'inscription",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const updateUserRole = async (role: UserRole) => {
-    try {
-      // TODO: Implement real role update logic here
-      setUser(prev => prev ? { ...prev, role } : null);
-      
-      toast({
-        title: "Rôle mis à jour",
-        description: "Votre rôle a été mis à jour avec succès",
-      });
-      
-      navigate('/');
-    } catch (error) {
-      toast({
-        title: "Erreur",
-        description: "Impossible de mettre à jour votre rôle",
         variant: "destructive",
       });
     }
@@ -106,7 +90,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, signup, logout, updateUserRole }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

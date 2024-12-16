@@ -1,15 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Map, List, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PropertyCard } from "@/components/PropertyCard";
 import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
+import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 
 export const LiveSection = () => {
-  const [viewMode, setViewMode] = useState<"list" | "map" | "hybrid">("list");
+  const [viewMode, setViewMode] = useState<"list" | "map" | "hybrid">("list"); // Changement du mode par défaut
+  const [hasShownNotification, setHasShownNotification] = useState(false);
+  const { toast } = useToast();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!hasShownNotification && liveStreams.length > 0) {
+      const latestLive = liveStreams[0];
+      toast({
+        title: "🔴 Nouveau live en cours !",
+        description: (
+          <div className="mt-2 space-y-2">
+            <p>"{latestLive.title}" vient de commencer avec {latestLive.agent}</p>
+            <Button 
+              onClick={() => navigate(`/live/${latestLive.id}`)}
+              className="w-full"
+              variant="default"
+            >
+              <Video className="w-4 h-4 mr-2" />
+              Rejoindre le live maintenant
+            </Button>
+          </div>
+        ),
+        variant: "default",
+        className: "bg-red-500 text-white",
+        duration: 10000,
+      });
+      setHasShownNotification(true);
+    }
+  }, [hasShownNotification, toast, navigate]);
 
   const liveProperties: Property[] = liveStreams.map((live) => ({
     id: live.id,

@@ -25,45 +25,34 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#6366F1", // Indigo-500
+          DEFAULT: "#2563EB",
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#F9FAFB", // Gray-50
-          foreground: "#111827", // Gray-900
+          DEFAULT: "#F3F4F6",
+          foreground: "#1F2937",
         },
         destructive: {
-          DEFAULT: "#EF4444", // Red-500
-          foreground: "#FFFFFF",
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#F3F4F6", // Gray-100
-          foreground: "#6B7280", // Gray-500
+          DEFAULT: "#F3F4F6",
+          foreground: "#6B7280",
         },
         accent: {
-          DEFAULT: "#EEF2FF", // Indigo-50
-          foreground: "#6366F1", // Indigo-500
+          DEFAULT: "#EFF6FF",
+          foreground: "#2563EB",
         },
         card: {
           DEFAULT: "#FFFFFF",
-          foreground: "#111827", // Gray-900
-        },
-        success: {
-          DEFAULT: "#10B981", // Emerald-500
-          foreground: "#FFFFFF",
-        },
-        warning: {
-          DEFAULT: "#F59E0B", // Amber-500
-          foreground: "#FFFFFF",
+          foreground: "#1F2937",
         },
       },
       borderRadius: {
-        lg: "0.75rem",
-        md: "0.5rem",
-        sm: "0.25rem",
-      },
-      boxShadow: {
-        soft: "0 2px 8px rgba(0, 0, 0, 0.05)",
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
     },
   },

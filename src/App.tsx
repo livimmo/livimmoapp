@@ -14,7 +14,6 @@ import PropertyDetail from "./pages/PropertyDetail";
 import JoinLive from "./pages/JoinLive";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import SelectRole from "./pages/SelectRole";
 import Developers from "./pages/Developers";
 
 function App() {
@@ -35,7 +34,6 @@ function App() {
             <Route path="/live/:id" element={<JoinLive />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/select-role" element={<SelectRole />} />
             <Route path="/developers" element={<Developers />} />
           </Routes>
         </div>
