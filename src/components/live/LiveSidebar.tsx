@@ -42,7 +42,9 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
           <div className="relative">
             {isCollapsed ? (
               <>
-                <Radio className="h-4 w-4 animate-pulse text-[#ea384c]" />
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#ea384c] rounded-full animate-ping" />
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#ea384c] rounded-full" />
+                <Radio className="h-4 w-4 text-[#ea384c]" />
                 <Badge 
                   variant="secondary" 
                   className="absolute -top-3 -right-3 h-5 min-w-5 p-0 flex items-center justify-center bg-white text-[#ea384c] text-xs border border-[#ea384c]"
