@@ -1,19 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { MessageSquare, ThumbsUp, Calendar, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { LiveChat } from "@/components/live/LiveChat";
-import { LiveInfo } from "@/components/live/LiveInfo";
 import { LiveStream } from "@/components/live/LiveStream";
 import { useToast } from "@/hooks/use-toast";
 import { type Property } from "@/types/property";
 import { generateMockCoordinates } from "@/data/mockProperties";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
-import { Badge } from "@/components/ui/badge";
+import { LiveStreamControls } from "@/components/live/LiveStreamControls";
 
 const mockLiveData = {
-  viewerCount: 45,
   messages: [
     { id: 1, user: "Sophie Martin", message: "Quelle est la superficie du jardin ?", timestamp: new Date() },
     { id: 2, user: "Agent", message: "Le jardin fait 500m²", timestamp: new Date() },
@@ -29,7 +25,6 @@ export const JoinLive = () => {
   const [showChat, setShowChat] = useState(false);
   const [showOfferForm, setShowOfferForm] = useState(false);
   const [property, setProperty] = useState<Property | null>(null);
-  const [viewerCount, setViewerCount] = useState(mockLiveData.viewerCount);
   const [isFavorite, setIsFavorite] = useState(false);
 
   const currentLiveId = Number(id);
@@ -83,23 +78,10 @@ export const JoinLive = () => {
       setIsLoading(false);
     }, 1500);
 
-    // Simulate viewer count updates
-    const viewerInterval = setInterval(() => {
-      setViewerCount(prev => {
-        const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
-        return Math.max(0, prev + change);
-      });
-    }, 5000);
-
     return () => {
       clearTimeout(timer);
-      clearInterval(viewerInterval);
     };
   }, [id, isAuthenticated, navigate, toast]);
-
-  const handleMakeOffer = () => {
-    setShowOfferForm(true);
-  };
 
   if (isLoading) {
     return (
@@ -136,54 +118,14 @@ export const JoinLive = () => {
           onLiveChange={handleLiveChange}
         />
 
-        <div className="absolute top-4 left-4 z-50">
-          <Badge 
-            variant="secondary" 
-            className="bg-black/75 text-white backdrop-blur-sm flex items-center gap-2"
-          >
-            <Users className="w-4 h-4" />
-            {viewerCount} spectateurs
-          </Badge>
-        </div>
-
-        <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-          <LiveInfo 
-            property={property} 
-            onMakeOffer={handleMakeOffer} 
-            viewerCount={viewerCount}
-          />
-          <div className="flex flex-col gap-2 ml-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-black/50 text-white hover:bg-black/75"
-              onClick={() => setShowChat(!showChat)}
-            >
-              <MessageSquare className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-black/50 text-white hover:bg-black/75"
-              onClick={handleToggleFavorite}
-            >
-              <ThumbsUp className={`h-5 w-5 ${isFavorite ? "text-primary" : ""}`} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-black/50 text-white hover:bg-black/75"
-              onClick={() => {
-                toast({
-                  title: "Visite programmée",
-                  description: "Nous vous contacterons pour confirmer la date",
-                });
-              }}
-            >
-              <Calendar className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
+        <LiveStreamControls 
+          property={property}
+          onMakeOffer={() => setShowOfferForm(true)}
+          showChat={showChat}
+          setShowChat={setShowChat}
+          isFavorite={isFavorite}
+          handleToggleFavorite={handleToggleFavorite}
+        />
 
         {showChat && (
           <div className="absolute top-0 right-0 bottom-0 w-80 z-[100]">
