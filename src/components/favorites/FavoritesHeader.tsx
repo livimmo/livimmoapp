@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Grid, List, Map } from "lucide-react";
+import { Grid, Map } from "lucide-react";
 
 interface FavoritesHeaderProps {
-  viewMode: "grid" | "carousel" | "map";
-  onViewModeChange: (mode: "grid" | "carousel" | "map") => void;
+  viewMode: "grid" | "map";
+  onViewModeChange: (mode: "grid" | "map") => void;
 }
 
 export const FavoritesHeader = ({ viewMode, onViewModeChange }: FavoritesHeaderProps) => {
@@ -17,13 +17,6 @@ export const FavoritesHeader = ({ viewMode, onViewModeChange }: FavoritesHeaderP
           onClick={() => onViewModeChange("grid")}
         >
           <Grid className="h-4 w-4" />
-        </Button>
-        <Button
-          variant={viewMode === "carousel" ? "default" : "outline"}
-          size="icon"
-          onClick={() => onViewModeChange("carousel")}
-        >
-          <List className="h-4 w-4" />
         </Button>
         <Button
           variant={viewMode === "map" ? "default" : "outline"}

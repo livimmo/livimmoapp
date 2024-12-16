@@ -13,7 +13,7 @@ const Favorites = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filterType, setFilterType] = useState<string>("all");
   const [filterCity, setFilterCity] = useState<string>("all");
-  const [viewMode, setViewMode] = useState<"grid" | "carousel" | "map">("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
 
   const handleSort = () => {
     const sorted = [...favorites].sort((a, b) => {

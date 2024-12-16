@@ -1,10 +1,9 @@
 import { Property } from "@/types/property";
 import { FavoritesGrid } from "./FavoritesGrid";
-import { FavoritesCarousel } from "./FavoritesCarousel";
 import { FavoritesMap } from "./FavoritesMap";
 
 interface FavoritesContentProps {
-  viewMode: "grid" | "carousel" | "map";
+  viewMode: "grid" | "map";
   properties: Property[];
 }
 
@@ -18,8 +17,6 @@ export const FavoritesContent = ({ viewMode, properties }: FavoritesContentProps
   }
 
   switch (viewMode) {
-    case "carousel":
-      return <FavoritesCarousel properties={properties} />;
     case "map":
       return <FavoritesMap properties={properties} />;
     default:
