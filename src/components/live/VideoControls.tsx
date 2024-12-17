@@ -17,17 +17,6 @@ export const VideoControls = ({
 }: VideoControlsProps) => {
   return (
     <div className="absolute bottom-[64px] left-0 right-0 p-4 bg-gradient-to-t from-black/70 via-black/40 to-transparent flex justify-between items-center gap-2 z-[51]">
-      <Button
-        variant="default"
-        size="lg"
-        className="bg-[#ea384c]/90 hover:bg-[#ea384c] text-white gap-2 transition-all duration-300 backdrop-blur-sm flex items-center"
-        onClick={onToggleOtherLives}
-      >
-        <LiveBadge count={count} className={isReplay ? "text-[#ea384c]" : ""} />
-        <span className="text-sm">
-          {isReplay ? 'autres replays disponibles' : 'Découvrez d\'autres biens en direct'}
-        </span>
-      </Button>
     </div>
   );
 };
