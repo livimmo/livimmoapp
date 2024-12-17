@@ -47,7 +47,6 @@ export const LiveStream = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [showOtherLives, setShowOtherLives] = useState(false);
-  const otherLivesCount = liveStreams.filter(live => live.id !== currentLiveId).length;
 
   const handleLiveSelect = (liveId: number) => {
     navigate(`/live/${liveId}`);
@@ -66,7 +65,7 @@ export const LiveStream = ({
     <div className="fixed inset-0 bg-black flex flex-col">
       <div className="relative flex-1">
         <LiveHeader 
-          otherLivesCount={otherLivesCount}
+          otherLivesCount={otherLives.length}
           isMobile={isMobile}
           onClose={() => navigate(-1)}
           onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
@@ -88,7 +87,7 @@ export const LiveStream = ({
           showOtherLives={showOtherLives}
           onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
           isReplay={isReplay}
-          count={otherLivesCount}
+          count={otherLives.length}
         />
 
         <div 
