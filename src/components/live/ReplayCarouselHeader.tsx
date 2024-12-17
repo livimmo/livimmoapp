@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Video, ChevronDown, ChevronUp } from "lucide-react";
+import { Minimize2, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LiveBadge } from "./LiveBadge";
 
 interface ReplayCarouselHeaderProps {
   replayCount: number;
@@ -14,24 +15,32 @@ export const ReplayCarouselHeader = ({
   onToggleCollapse,
 }: ReplayCarouselHeaderProps) => {
   return (
-    <div className="absolute inset-x-0 -top-8 flex justify-center">
+    <div className="flex items-center justify-between mb-4">
       <Button
-        variant="ghost"
-        size="sm"
-        className="relative bg-black/50 hover:bg-black/75 px-3 text-white shadow-lg transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+        variant="default"
+        size="lg"
+        className={cn(
+          "bg-blue-600/90 hover:bg-blue-600 text-white gap-2 transition-all duration-300",
+          "group flex items-center shadow-lg hover:shadow-xl",
+          "hover:scale-105 transform",
+          isCollapsed ? "w-auto" : "w-full justify-between"
+        )}
         onClick={onToggleCollapse}
       >
-        <div className="relative flex items-center gap-2">
-          <Video className="h-4 w-4" />
-          <span className="text-sm font-medium">
-            {replayCount} replays disponibles
+        <div className="flex items-center gap-2">
+          <LiveBadge count={replayCount} className="text-blue-600" />
+          <span className="font-medium">
+            {isCollapsed 
+              ? "autres replays disponibles" 
+              : "Découvrez d'autres replays disponibles"
+            }
           </span>
-          {isCollapsed ? (
-            <ChevronUp className="h-4 w-4" />
-          ) : (
-            <ChevronDown className="h-4 w-4" />
-          )}
         </div>
+        {isCollapsed ? (
+          <Maximize2 className="h-5 w-5 group-hover:rotate-45 transition-transform duration-300" />
+        ) : (
+          <Minimize2 className="h-5 w-5 group-hover:-rotate-45 transition-transform duration-300" />
+        )}
       </Button>
     </div>
   );
