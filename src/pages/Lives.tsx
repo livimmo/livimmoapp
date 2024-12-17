@@ -19,7 +19,7 @@ const Lives = () => {
   const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
-  const [showLiveOnly, setShowLiveOnly] = useState(true);
+  const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
   // Create replay lives from existing lives
@@ -101,8 +101,8 @@ const Lives = () => {
         setPriceRange={setPriceRange}
         surfaceRange={surfaceRange}
         setSurfaceRange={setSurfaceRange}
-        showLiveOnly={showLiveOnly}
-        setShowLiveOnly={setShowLiveOnly}
+        viewType={viewType}
+        setViewType={setViewType}
         suggestions={suggestions}
         transactionType={transactionType}
         setTransactionType={setTransactionType}
@@ -174,4 +174,3 @@ const Lives = () => {
 };
 
 export default Lives;
-
