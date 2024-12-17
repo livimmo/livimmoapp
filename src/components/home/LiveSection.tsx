@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { Map, List, Play, History } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Play, History } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PropertyCard } from "@/components/PropertyCard";
+import { LiveCard } from "@/components/live/LiveCard";
 import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { ReplayCard } from "@/components/live/ReplayCard";
 import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
-import { type LiveEvent } from "@/types/live";
 
 export const LiveSection = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
@@ -16,7 +14,7 @@ export const LiveSection = () => {
   const currentLives = liveStreams.filter(live => live.status === "live");
   const replayLives = liveStreams.filter(live => live.status === "replay");
 
-  // Convertir les lives en format Property
+  // Convertir les lives en format Property pour la carte
   const convertToProperty = (live: any): Property => ({
     id: live.id,
     title: live.title,
@@ -78,8 +76,8 @@ export const LiveSection = () => {
         <TabsContent value="live">
           {viewMode === "list" ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {currentProperties.map((property) => (
-                <PropertyCard key={property.id} {...property} />
+              {currentLives.map((live) => (
+                <LiveCard key={live.id} live={live} />
               ))}
             </div>
           ) : (
