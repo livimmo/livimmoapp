@@ -25,7 +25,7 @@ export const VideoControls = ({
       >
         <LiveBadge count={count} className={isReplay ? "text-blue-600" : ""} />
         <span className="text-sm">
-          {isReplay ? 'autres replays disponibles' : 'autres lives en cours'}
+          {isReplay ? 'autres replays disponibles' : 'Découvrez d\'autres biens en direct'}
         </span>
       </Button>
     </div>

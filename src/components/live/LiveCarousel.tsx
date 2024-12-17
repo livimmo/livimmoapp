@@ -117,7 +117,7 @@ export const LiveCarousel = ({
   return (
     <div className={cn(
       "transition-all duration-300 ease-in-out",
-      isCollapsed ? "h-[64px] p-4" : "h-[320px] p-4"
+      isCollapsed ? "h-[64px]" : "h-[320px] p-4"
     )}>
       <LiveCarouselHeader 
         liveCount={allLives.length}
