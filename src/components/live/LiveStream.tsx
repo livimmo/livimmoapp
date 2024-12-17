@@ -82,8 +82,14 @@ export const LiveStream = ({
       )}
 
       <div className="flex-1 flex flex-col relative">
-        <div className="flex-1 relative z-[1] group p-4 pb-20">
-          <div className="relative w-full h-full rounded-xl overflow-hidden border-2 border-primary/20 shadow-lg">
+        <div className={cn(
+          "flex-1 relative z-[1] group",
+          isMobile ? "p-0" : "p-4 pb-20"
+        )}>
+          <div className={cn(
+            "relative w-full h-full overflow-hidden",
+            !isMobile && "rounded-xl border-2 border-primary/20 shadow-lg"
+          )}>
             <iframe
               src={getEmbedUrl()}
               title="YouTube video player"
