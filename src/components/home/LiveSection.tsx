@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { Play, History } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LiveCard } from "@/components/live/LiveCard";
 import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { ReplayCard } from "@/components/live/ReplayCard";
@@ -61,46 +59,22 @@ export const LiveSection = () => {
 
   return (
     <section className="mb-8">
-      <Tabs defaultValue="live" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="live" className="flex items-center gap-2">
-            <Play className="h-4 w-4" />
-            Lives en cours ({currentLives.length})
-          </TabsTrigger>
-          <TabsTrigger value="replay" className="flex items-center gap-2">
-            <History className="h-4 w-4" />
-            Replays ({replayLives.length})
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="live">
-          {viewMode === "list" ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {currentLives.map((live) => (
-                <LiveCard key={live.id} live={live} />
-              ))}
-            </div>
-          ) : (
-            <div className="h-[500px] rounded-lg overflow-hidden">
-              <LiveGoogleMap properties={currentProperties} />
-            </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="replay">
-          {viewMode === "list" ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {replayLives.map((live) => (
-                <ReplayCard key={live.id} live={live} />
-              ))}
-            </div>
-          ) : (
-            <div className="h-[500px] rounded-lg overflow-hidden">
-              <LiveGoogleMap properties={replayProperties} />
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
+      <div className="space-y-4">
+        {viewMode === "list" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {currentLives.map((live) => (
+              <LiveCard key={live.id} live={live} />
+            ))}
+            {replayLives.map((live) => (
+              <ReplayCard key={live.id} live={live} />
+            ))}
+          </div>
+        ) : (
+          <div className="h-[500px] rounded-lg overflow-hidden">
+            <LiveGoogleMap properties={[...currentProperties, ...replayProperties]} />
+          </div>
+        )}
+      </div>
     </section>
   );
 };
