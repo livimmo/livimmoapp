@@ -19,17 +19,19 @@ export const LiveHeader = ({
   className 
 }: LiveHeaderProps) => {
   return (
-    <div className={cn("absolute top-4 left-4 z-[52] flex items-center gap-2", className)}>
+    <div className={cn("absolute top-4 left-4 z-[52] flex flex-col gap-2", className)}>
       {isMobile && (
         <>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/20 transition-colors backdrop-blur-sm"
-            onClick={onClose}
-          >
-            <ArrowLeft className="h-6 w-6" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/20 transition-colors backdrop-blur-sm"
+              onClick={onClose}
+            >
+              <ArrowLeft className="h-6 w-6" />
+            </Button>
+          </div>
           
           <Button
             variant="default"
