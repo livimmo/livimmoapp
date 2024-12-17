@@ -84,6 +84,13 @@ export const LiveStream = ({
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
 
+        <VideoControls 
+          showOtherLives={showOtherLives}
+          onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
+          isReplay={isReplay}
+          count={otherLivesCount}
+        />
+
         <div 
           className={cn(
             "absolute left-0 right-0 z-[51] transition-all duration-300 ease-in-out",
