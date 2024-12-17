@@ -104,7 +104,7 @@ const Index = () => {
   const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
-  const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
+  const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
   const suggestions = [
@@ -122,18 +122,6 @@ const Index = () => {
 
   const allLives = [...liveStreams, ...scheduledLives];
 
-  // Filtrer les propriétés en fonction du viewType
-  const filterPropertiesByViewType = (properties: Property[]) => {
-    switch (viewType) {
-      case "live":
-        return properties.filter(p => p.hasLive && !p.isReplay);
-      case "replay":
-        return properties.filter(p => p.hasLive && p.isReplay);
-      default:
-        return properties;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <HomeHeader />
@@ -148,8 +136,8 @@ const Index = () => {
           setPriceRange={setPriceRange}
           surfaceRange={surfaceRange}
           setSurfaceRange={setSurfaceRange}
-          viewType={viewType}
-          setViewType={setViewType}
+          showLiveOnly={showLiveOnly}
+          setShowLiveOnly={setShowLiveOnly}
           suggestions={suggestions}
           transactionType={transactionType}
           setTransactionType={setTransactionType}
@@ -160,7 +148,7 @@ const Index = () => {
           <LiveSlider lives={allLives} />
         </section>
         
-        <FeaturedSection properties={filterPropertiesByViewType(featuredProperties)} />
+        <FeaturedSection properties={featuredProperties} />
 
         <LiveSection />
 
@@ -194,13 +182,13 @@ const Index = () => {
           
           {viewMode === "list" ? (
             <PropertyList 
-              properties={filterPropertiesByViewType(filteredProperties.length > 0 ? filteredProperties : featuredProperties)}
+              properties={filteredProperties.length > 0 ? filteredProperties : featuredProperties}
               viewMode="grid"
             />
           ) : (
             <div className="h-[500px] rounded-lg overflow-hidden">
               <PropertyMap 
-                properties={filterPropertiesByViewType(filteredProperties.length > 0 ? filteredProperties : featuredProperties)}
+                properties={filteredProperties.length > 0 ? filteredProperties : featuredProperties} 
               />
             </div>
           )}
@@ -213,3 +201,4 @@ const Index = () => {
 };
 
 export default Index;
+

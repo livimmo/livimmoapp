@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Video } from "lucide-react";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { PropertyList } from "@/components/properties/PropertyList";
 import { AddLiveDialog } from "@/components/AddLiveDialog";
@@ -16,7 +16,7 @@ const PropertyManagement = () => {
   const [propertyType, setPropertyType] = useState("");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
-  const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
+  const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
   const [isAddPropertyOpen, setIsAddPropertyOpen] = useState(false);
 
@@ -28,13 +28,10 @@ const PropertyManagement = () => {
     const matchesType = !propertyType || property.type === propertyType;
     const matchesPriceRange = property.price >= priceRange[0] && property.price <= priceRange[1];
     const matchesSurfaceRange = property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
+    const matchesLive = !showLiveOnly || property.hasLive;
     const matchesTransactionType = transactionType.includes(property.transactionType);
-    const matchesViewType = viewType === "all" ? true :
-      viewType === "live" ? (property.hasLive && !property.isReplay) :
-      (property.hasLive && property.isReplay);
 
-    return matchesSearch && matchesType && matchesPriceRange && 
-           matchesSurfaceRange && matchesTransactionType && matchesViewType;
+    return matchesSearch && matchesType && matchesPriceRange && matchesSurfaceRange && matchesLive && matchesTransactionType;
   });
 
   const handleAddProperty = () => {
@@ -73,8 +70,8 @@ const PropertyManagement = () => {
         setPriceRange={setPriceRange}
         surfaceRange={surfaceRange}
         setSurfaceRange={setSurfaceRange}
-        viewType={viewType}
-        setViewType={setViewType}
+        showLiveOnly={showLiveOnly}
+        setShowLiveOnly={setShowLiveOnly}
         transactionType={transactionType}
         setTransactionType={setTransactionType}
       />

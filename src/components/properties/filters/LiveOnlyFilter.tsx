@@ -1,33 +1,25 @@
+import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 interface LiveOnlyFilterProps {
-  viewType: "all" | "live" | "replay";
-  setViewType: (value: "all" | "live" | "replay") => void;
+  showLiveOnly: boolean;
+  setShowLiveOnly: (value: boolean) => void;
 }
 
 export const LiveOnlyFilter = ({
-  viewType,
-  setViewType,
+  showLiveOnly,
+  setShowLiveOnly,
 }: LiveOnlyFilterProps) => {
   return (
     <div className="flex items-center gap-2">
-      <Select value={viewType} onValueChange={setViewType}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Type de visionnage" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Tous les biens</SelectItem>
-          <SelectItem value="live">Lives uniquement</SelectItem>
-          <SelectItem value="replay">Replays uniquement</SelectItem>
-        </SelectContent>
-      </Select>
+      <Switch
+        id="live"
+        checked={showLiveOnly}
+        onCheckedChange={(checked) => setShowLiveOnly(checked as boolean)}
+      />
+      <Label htmlFor="live">
+        Live uniquement
+      </Label>
     </div>
   );
 };
