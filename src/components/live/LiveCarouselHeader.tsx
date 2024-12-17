@@ -20,7 +20,7 @@ export const LiveCarouselHeader = ({
         variant="default"
         size="lg"
         className={cn(
-          "bg-[#ea384c]/90 hover:bg-[#ea384c] text-white gap-2 transition-all duration-300",
+          "bg-primary/90 hover:bg-primary text-white gap-2 transition-all duration-300",
           "group flex items-center shadow-lg hover:shadow-xl",
           "hover:scale-105 transform",
           isCollapsed ? "w-auto" : "w-full justify-between"
