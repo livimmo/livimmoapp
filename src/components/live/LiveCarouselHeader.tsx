@@ -1,6 +1,7 @@
-import { Minimize2, Maximize2 } from "lucide-react";
+import { Minimize2, Maximize2, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiveBadge } from "./LiveBadge";
+import { cn } from "@/lib/utils";
 
 interface LiveCarouselHeaderProps {
   liveCount: number;
@@ -15,29 +16,35 @@ export const LiveCarouselHeader = ({
 }: LiveCarouselHeaderProps) => {
   return (
     <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center gap-2">
-        <h3 
-          className="text-white font-semibold flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
-          onClick={onToggleCollapse}
-        >
+      <Button
+        variant="default"
+        size="lg"
+        className={cn(
+          "bg-primary/90 hover:bg-primary text-white gap-2 transition-all duration-300",
+          "group flex items-center shadow-lg hover:shadow-xl",
+          "hover:scale-105 transform",
+          isCollapsed ? "w-auto" : "w-full justify-between"
+        )}
+        onClick={onToggleCollapse}
+      >
+        <div className="flex items-center gap-2">
+          <Video className="h-5 w-5 animate-pulse" />
+          <span className="font-medium">
+            {isCollapsed 
+              ? `${liveCount} autres visites en direct` 
+              : "Découvrez d'autres biens en direct"
+            }
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
           <LiveBadge count={liveCount} />
-          Autres lives en cours
-        </h3>
-      </div>
-      <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-white hover:bg-white/10"
-          onClick={onToggleCollapse}
-        >
           {isCollapsed ? (
-            <Maximize2 className="h-5 w-5" />
+            <Maximize2 className="h-5 w-5 group-hover:rotate-45 transition-transform duration-300" />
           ) : (
-            <Minimize2 className="h-5 w-5" />
+            <Minimize2 className="h-5 w-5 group-hover:-rotate-45 transition-transform duration-300" />
           )}
-        </Button>
-      </div>
+        </div>
+      </Button>
     </div>
   );
 };
