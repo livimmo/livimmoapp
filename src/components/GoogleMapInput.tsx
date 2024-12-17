@@ -34,12 +34,7 @@ export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: 
 
     try {
       const geocoder = new google.maps.Geocoder();
-      const response = await geocoder.geocode({ 
-        location: { 
-          lat: lat,
-          lng: lng 
-        } 
-      });
+      const response = await geocoder.geocode({ location: { lat, lng } });
       
       if (response.results[0]) {
         const location = response.results[0].formatted_address;
@@ -78,11 +73,6 @@ export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: 
           center={defaultCenter}
           zoom={6}
           onClick={handleMapClick}
-          options={{
-            gestureHandling: 'greedy',
-            disableDoubleClickZoom: true,
-            streetViewControl: false
-          }}
         >
           <Marker position={marker} />
         </GoogleMap>
