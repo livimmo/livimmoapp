@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { LiveStreamProps, replayTimestamps } from "@/types/live";
 import { LiveHeader } from "./LiveHeader";
 import { VideoControls } from "./VideoControls";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 const mockProperty = {
   id: 1,
@@ -49,6 +51,9 @@ export const LiveStream = ({
   const [showOtherLives, setShowOtherLives] = useState(false);
   const otherLivesCount = liveStreams.filter(live => live.id !== currentLiveId).length;
 
+  const currentLive = liveStreams.find(live => live.id === currentLiveId);
+  const startTime = currentLive ? format(currentLive.date, "'En live depuis' HH'h'mm", { locale: fr }) : '';
+
   const handleLiveSelect = (liveId: number) => {
     navigate(`/live/${liveId}`);
   };
@@ -82,6 +87,11 @@ export const LiveStream = ({
             className="w-full h-full"
           />
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {!isReplay && (
+            <div className="absolute top-4 left-4 bg-black/60 text-white px-3 py-1.5 rounded-full text-sm backdrop-blur-sm">
+              {startTime}
+            </div>
+          )}
         </div>
 
         <VideoControls 
