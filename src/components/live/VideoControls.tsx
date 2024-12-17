@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Video } from "lucide-react";
 import { LiveBadge } from "./LiveBadge";
+import { cn } from "@/lib/utils";
 
 interface VideoControlsProps {
   showOtherLives: boolean;
