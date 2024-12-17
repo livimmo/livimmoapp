@@ -69,15 +69,15 @@ export const LiveStream = ({
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col">
-      <div className="relative flex-1">
-        <LiveHeader 
-          otherLivesCount={otherLivesCount}
-          isMobile={isMobile}
-          onClose={() => navigate(-1)}
-          onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
-        />
+      <LiveHeader 
+        otherLivesCount={otherLivesCount}
+        isMobile={isMobile}
+        onClose={() => navigate(-1)}
+        onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
+      />
 
-        <div className="relative w-full h-full z-[1] group p-4">
+      <div className="flex-1 flex flex-col relative">
+        <div className="flex-1 relative z-[1] group p-4 pb-20">
           <div className="relative w-full h-full rounded-xl overflow-hidden border-2 border-primary/20 shadow-lg">
             <iframe
               src={getEmbedUrl()}
