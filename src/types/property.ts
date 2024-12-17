@@ -1,9 +1,9 @@
 export interface Property {
   id: number;
   title: string;
-  type: string;
   price: number;
   location: string;
+  type: string;
   surface: number;
   rooms: number;
   bathrooms: number;
@@ -11,12 +11,8 @@ export interface Property {
   features: string[];
   images: string[];
   hasLive?: boolean;
+  isReplay?: boolean;
   liveDate?: Date;
-  isLiveNow?: boolean;
-  viewers?: number;
-  remainingSeats?: number;
-  tags?: string[];
-  offers?: number;
   agent: {
     id?: number;
     name: string;
@@ -30,5 +26,10 @@ export interface Property {
     lat: number;
     lng: number;
   };
+  viewers?: number;
+  isLiveNow?: boolean;
+  remainingSeats?: number;
+  isUserRegistered?: boolean;
   transactionType: "Vente" | "Location";
+  tags?: string[];
 }

@@ -12,7 +12,7 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
   const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
-  const [showLiveOnly, setShowLiveOnly] = useState(false);
+  const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
   const suggestions = [
@@ -41,7 +41,6 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
       filtered = filtered.filter((property) => property.type === propertyType);
     }
 
-    // Updated transaction type filter to handle multiple selections
     if (transactionType.length > 0) {
       filtered = filtered.filter((property) => 
         transactionType.includes(property.transactionType)
@@ -58,8 +57,11 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
         property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1]
     );
 
-    if (showLiveOnly) {
-      filtered = filtered.filter((property) => property.hasLive);
+    // Nouveau filtre pour le type de visionnage
+    if (viewType === "live") {
+      filtered = filtered.filter((property) => property.hasLive && !property.isReplay);
+    } else if (viewType === "replay") {
+      filtered = filtered.filter((property) => property.hasLive && property.isReplay);
     }
 
     onFiltersChange(filtered);
@@ -67,7 +69,7 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
 
   useEffect(() => {
     applyFilters();
-  }, [searchTerm, propertyType, priceRange, surfaceRange, showLiveOnly, transactionType]);
+  }, [searchTerm, propertyType, priceRange, surfaceRange, viewType, transactionType]);
 
   return (
     <div className="mb-8">
@@ -80,8 +82,8 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
         setPriceRange={setPriceRange}
         surfaceRange={surfaceRange}
         setSurfaceRange={setSurfaceRange}
-        showLiveOnly={showLiveOnly}
-        setShowLiveOnly={setShowLiveOnly}
+        viewType={viewType}
+        setViewType={setViewType}
         suggestions={suggestions}
         transactionType={transactionType}
         setTransactionType={setTransactionType}
