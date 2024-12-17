@@ -10,33 +10,6 @@ import { LiveStreamProps, replayTimestamps } from "@/types/live";
 import { LiveHeader } from "./LiveHeader";
 import { VideoControls } from "./VideoControls";
 
-const mockProperty = {
-  id: 1,
-  title: "Villa Moderne avec Piscine",
-  price: 2500000,
-  location: "Marrakech",
-  type: "Villa",
-  surface: 350,
-  rooms: 5,
-  bathrooms: 3,
-  description: "Magnifique villa moderne avec piscine et jardin paysager",
-  features: ["Piscine", "Jardin", "Garage"],
-  images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9"],
-  hasLive: true,
-  liveDate: new Date(),
-  agent: {
-    name: "Karim Benjelloun",
-    image: "https://i.pravatar.cc/150?u=karim",
-    phone: "+212 6 00 11 22 33",
-    email: "karim.benjelloun@example.com",
-  },
-  coordinates: {
-    lat: 31.7917,
-    lng: -7.0926,
-  },
-  transactionType: "Vente" as const,
-};
-
 export const LiveStream = ({ 
   videoId, 
   currentLiveId,
@@ -47,7 +20,11 @@ export const LiveStream = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [showOtherLives, setShowOtherLives] = useState(false);
-  const otherLivesCount = liveStreams.filter(live => live.id !== currentLiveId).length;
+  const [showChat, setShowChat] = useState(false);
+  const [showOfferForm, setShowOfferForm] = useState(false);
+
+  const currentLiveId = Number(id);
+  const otherLives = liveStreams.filter(live => live.id !== currentLiveId);
 
   const handleLiveSelect = (liveId: number) => {
     navigate(`/live/${liveId}`);
@@ -66,7 +43,7 @@ export const LiveStream = ({
     <div className="fixed inset-0 bg-black flex flex-col">
       <div className="relative flex-1">
         <LiveHeader 
-          otherLivesCount={otherLivesCount}
+          otherLivesCount={otherLives.length}
           isMobile={isMobile}
           onClose={() => navigate(-1)}
           onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
@@ -88,7 +65,7 @@ export const LiveStream = ({
           showOtherLives={showOtherLives}
           onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
           isReplay={isReplay}
-          count={otherLivesCount}
+          count={otherLives.length}
         />
 
         <div 
@@ -119,7 +96,7 @@ export const LiveStream = ({
             property={mockProperty}
             onMakeOffer={() => {}}
             viewerCount={Math.floor(Math.random() * 1000)}
-            onToggleChat={() => {}}
+            onToggleChat={() => setShowChat(!showChat)}
             isReplay={isReplay}
           />
         </div>

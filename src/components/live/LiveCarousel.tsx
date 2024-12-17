@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { getRandomTags } from "@/utils/propertyTags";
-import { LiveCarouselHeader } from "./LiveCarouselHeader";
 
 interface LiveCarouselProps {
   lives: LiveEvent[];
@@ -119,12 +118,6 @@ export const LiveCarousel = ({
       "p-4 transition-all duration-300",
       isCollapsed && "h-16"
     )}>
-      <LiveCarouselHeader 
-        liveCount={allLives.length}
-        isCollapsed={isCollapsed}
-        onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
-      />
-
       {!isCollapsed && (
         <Carousel
           opts={{
