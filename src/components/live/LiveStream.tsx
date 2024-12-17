@@ -8,7 +8,6 @@ import { liveStreams } from "@/data/mockLives";
 import { cn } from "@/lib/utils";
 import { LiveStreamProps, replayTimestamps } from "@/types/live";
 import { LiveHeader } from "./LiveHeader";
-import { VideoControls } from "./VideoControls";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -95,13 +94,6 @@ export const LiveStream = ({
             )}
           </div>
         </div>
-
-        <VideoControls 
-          showOtherLives={showOtherLives}
-          onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
-          isReplay={isReplay}
-          count={otherLivesCount}
-        />
 
         <div 
           className={cn(
