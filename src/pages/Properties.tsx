@@ -8,7 +8,7 @@ export const Properties = () => {
   const [propertyType, setPropertyType] = useState("");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
-  const [showLiveOnly, setShowLiveOnly] = useState(false);
+  const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
   const mockProperties = addCoordinatesToProperties([
@@ -69,10 +69,13 @@ export const Properties = () => {
     const matchesType = !propertyType || property.type === propertyType;
     const matchesPriceRange = property.price >= priceRange[0] && property.price <= priceRange[1];
     const matchesSurfaceRange = property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
-    const matchesLive = !showLiveOnly || property.hasLive;
     const matchesTransactionType = transactionType.includes(property.transactionType);
+    const matchesViewType = viewType === "all" ? true :
+      viewType === "live" ? (property.hasLive && !property.isReplay) :
+      (property.hasLive && property.isReplay);
 
-    return matchesSearch && matchesType && matchesPriceRange && matchesSurfaceRange && matchesLive && matchesTransactionType;
+    return matchesSearch && matchesType && matchesPriceRange && 
+           matchesSurfaceRange && matchesTransactionType && matchesViewType;
   });
 
   return (
@@ -86,8 +89,8 @@ export const Properties = () => {
         setPriceRange={setPriceRange}
         surfaceRange={surfaceRange}
         setSurfaceRange={setSurfaceRange}
-        showLiveOnly={showLiveOnly}
-        setShowLiveOnly={setShowLiveOnly}
+        viewType={viewType}
+        setViewType={setViewType}
         transactionType={transactionType}
         setTransactionType={setTransactionType}
       />
