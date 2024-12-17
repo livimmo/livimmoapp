@@ -9,8 +9,8 @@ interface LiveBadgeProps {
 
 export const LiveBadge = ({ count, className }: LiveBadgeProps) => {
   return (
-    <div className={cn("relative inline-flex", className)}>
-      <Video className="h-4 w-4 text-red-500" />
+    <div className={cn("relative inline-flex items-center", className)}>
+      <Video className="h-5 w-5 text-white" />
       {count > 0 && (
         <Badge 
           variant="destructive" 

@@ -28,22 +28,19 @@ export const LiveCarouselHeader = ({
         onClick={onToggleCollapse}
       >
         <div className="flex items-center gap-2">
-          <Video className="h-5 w-5 animate-pulse" />
+          <LiveBadge count={liveCount} />
           <span className="font-medium">
             {isCollapsed 
-              ? `${liveCount} autres visites en direct` 
+              ? "autres visites en direct" 
               : "Découvrez d'autres biens en direct"
             }
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <LiveBadge count={liveCount} />
-          {isCollapsed ? (
-            <Maximize2 className="h-5 w-5 group-hover:rotate-45 transition-transform duration-300" />
-          ) : (
-            <Minimize2 className="h-5 w-5 group-hover:-rotate-45 transition-transform duration-300" />
-          )}
-        </div>
+        {isCollapsed ? (
+          <Maximize2 className="h-5 w-5 group-hover:rotate-45 transition-transform duration-300" />
+        ) : (
+          <Minimize2 className="h-5 w-5 group-hover:-rotate-45 transition-transform duration-300" />
+        )}
       </Button>
     </div>
   );
