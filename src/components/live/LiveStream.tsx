@@ -75,6 +75,12 @@ export const LiveStream = ({
         onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
       />
 
+      {!isReplay && (
+        <div className="absolute top-20 left-4 z-[52] bg-black/60 text-white px-3 py-1.5 rounded-full text-sm backdrop-blur-sm">
+          {startTime}
+        </div>
+      )}
+
       <div className="flex-1 flex flex-col relative">
         <div className="flex-1 relative z-[1] group p-4 pb-20">
           <div className="relative w-full h-full rounded-xl overflow-hidden border-2 border-primary/20 shadow-lg">
@@ -87,11 +93,6 @@ export const LiveStream = ({
               className="w-full h-full"
             />
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            {!isReplay && (
-              <div className="absolute top-4 left-4 bg-black/60 text-white px-3 py-1.5 rounded-full text-sm backdrop-blur-sm">
-                {startTime}
-              </div>
-            )}
           </div>
         </div>
 
