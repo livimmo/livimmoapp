@@ -38,6 +38,10 @@ export function LiveGoogleMap({ properties }: LiveGoogleMapProps) {
     setIsLoading(false);
   };
 
+  const handleMarkerClick = (property: Property) => {
+    setSelectedProperty(property);
+  };
+
   if (!import.meta.env.VITE_GOOGLE_MAPS_API_KEY) {
     return (
       <div className="p-4 text-center text-muted-foreground">
@@ -61,6 +65,11 @@ export function LiveGoogleMap({ properties }: LiveGoogleMapProps) {
             mapContainerStyle={mapStyles}
             center={center}
             zoom={6}
+            options={{
+              gestureHandling: 'greedy',
+              disableDoubleClickZoom: true,
+              streetViewControl: false
+            }}
           >
             {properties.map((property) => (
               <Marker
@@ -69,7 +78,7 @@ export function LiveGoogleMap({ properties }: LiveGoogleMapProps) {
                   lat: property.coordinates.lat,
                   lng: property.coordinates.lng
                 }}
-                onClick={() => setSelectedProperty(property)}
+                onClick={() => handleMarkerClick(property)}
               />
             ))}
             
