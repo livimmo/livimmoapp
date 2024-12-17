@@ -20,10 +20,10 @@ export const VideoControls = ({
       <Button
         variant="default"
         size="lg"
-        className="bg-blue-600/90 hover:bg-blue-600 text-white gap-2 transition-all duration-300 backdrop-blur-sm flex items-center"
+        className="bg-[#ea384c]/90 hover:bg-[#ea384c] text-white gap-2 transition-all duration-300 backdrop-blur-sm flex items-center"
         onClick={onToggleOtherLives}
       >
-        <LiveBadge count={count} className={isReplay ? "text-blue-600" : ""} />
+        <LiveBadge count={count} className={isReplay ? "text-[#ea384c]" : ""} />
         <span className="text-sm">
           {isReplay ? 'autres replays disponibles' : 'Découvrez d\'autres biens en direct'}
         </span>
