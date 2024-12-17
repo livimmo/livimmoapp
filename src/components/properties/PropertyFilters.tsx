@@ -17,8 +17,8 @@ interface PropertyFiltersProps {
   setPriceRange: (value: number[]) => void;
   surfaceRange: number[];
   setSurfaceRange: (value: number[]) => void;
-  showLiveOnly: boolean;
-  setShowLiveOnly: (value: boolean) => void;
+  viewType: "all" | "live" | "replay";
+  setViewType: (value: "all" | "live" | "replay") => void;
   suggestions?: string[];
   transactionType: string[];
   setTransactionType: (value: string[]) => void;
@@ -33,8 +33,8 @@ export const PropertyFilters = ({
   setPriceRange,
   surfaceRange,
   setSurfaceRange,
-  showLiveOnly,
-  setShowLiveOnly,
+  viewType,
+  setViewType,
   suggestions = [],
   transactionType,
   setTransactionType,
@@ -85,8 +85,8 @@ export const PropertyFilters = ({
               </SelectContent>
             </Select>
             <LiveOnlyFilter 
-              showLiveOnly={showLiveOnly}
-              setShowLiveOnly={setShowLiveOnly}
+              viewType={viewType}
+              setViewType={setViewType}
             />
           </div>
 

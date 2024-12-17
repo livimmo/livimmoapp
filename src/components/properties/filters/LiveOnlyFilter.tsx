@@ -8,8 +8,6 @@ import {
 } from "@/components/ui/select";
 
 interface LiveOnlyFilterProps {
-  showLiveOnly: boolean;
-  setShowLiveOnly: (value: boolean) => void;
   viewType: "all" | "live" | "replay";
   setViewType: (value: "all" | "live" | "replay") => void;
 }
