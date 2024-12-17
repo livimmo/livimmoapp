@@ -77,21 +77,23 @@ export const LiveStream = ({
           onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
         />
 
-        <div className="relative w-full h-full z-[1] group">
-          <iframe
-            src={getEmbedUrl()}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-            allowFullScreen
-            className="w-full h-full"
-          />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          {!isReplay && (
-            <div className="absolute top-4 left-4 bg-black/60 text-white px-3 py-1.5 rounded-full text-sm backdrop-blur-sm">
-              {startTime}
-            </div>
-          )}
+        <div className="relative w-full h-full z-[1] group p-4">
+          <div className="relative w-full h-full rounded-xl overflow-hidden border-2 border-primary/20 shadow-lg">
+            <iframe
+              src={getEmbedUrl()}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              allowFullScreen
+              className="w-full h-full"
+            />
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {!isReplay && (
+              <div className="absolute top-4 left-4 bg-black/60 text-white px-3 py-1.5 rounded-full text-sm backdrop-blur-sm">
+                {startTime}
+              </div>
+            )}
+          </div>
         </div>
 
         <VideoControls 
