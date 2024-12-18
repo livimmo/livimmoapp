@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LiveInfo } from "./LiveInfo";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { LiveCarousel } from "./LiveCarousel";
 import { ReplayCarousel } from "./ReplayCarousel";
 import { liveStreams } from "@/data/mockLives";
@@ -48,6 +48,8 @@ export const LiveStream = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [showOtherLives, setShowOtherLives] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const otherLivesCount = liveStreams.filter(live => live.id !== currentLiveId).length;
 
   const currentLive = liveStreams.find(live => live.id === currentLiveId);
@@ -63,7 +65,31 @@ export const LiveStream = ({
       ? replayTimestamps[Math.floor(Math.random() * replayTimestamps.length)]
       : videoId;
     
-    return `${baseUrl}${videoIdWithTimestamp}?rel=0&modestbranding=1&showinfo=0&autoplay=1`;
+    // Ajout des paramètres pour une meilleure compatibilité mobile
+    const params = new URLSearchParams({
+      rel: '0',
+      modestbranding: '1',
+      showinfo: '0',
+      playsinline: '1', // Important pour iOS
+      enablejsapi: '1',
+      origin: window.location.origin,
+      ...(isPlaying && { autoplay: '1' }),
+    });
+    
+    return `${baseUrl}${videoIdWithTimestamp}?${params.toString()}`;
+  };
+
+  useEffect(() => {
+    // Réinitialiser l'état de lecture lors du changement de vidéo
+    setIsPlaying(false);
+  }, [videoId]);
+
+  const handlePlayClick = () => {
+    setIsPlaying(true);
+    if (iframeRef.current) {
+      // Recharger l'iframe avec autoplay activé
+      iframeRef.current.src = getEmbedUrl();
+    }
   };
 
   return (
@@ -90,7 +116,22 @@ export const LiveStream = ({
             "relative w-full h-full overflow-hidden",
             !isMobile && "rounded-xl border-2 border-primary/20 shadow-lg"
           )}>
+            {!isPlaying && isMobile ? (
+              <div 
+                className="absolute inset-0 bg-black/80 flex items-center justify-center z-10"
+                onClick={handlePlayClick}
+              >
+                <button className="bg-primary text-white px-6 py-3 rounded-full font-medium flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                  Lancer la vidéo
+                </button>
+              </div>
+            ) : null}
+            
             <iframe
+              ref={iframeRef}
               src={getEmbedUrl()}
               title="YouTube video player"
               frameBorder="0"
