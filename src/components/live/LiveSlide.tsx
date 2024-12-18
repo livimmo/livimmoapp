@@ -28,12 +28,14 @@ export const LiveSlide = ({ live, index }: LiveSlideProps) => {
       case "live":
         return (
           <Button onClick={handleAction} className="w-full" style={{ backgroundColor: '#ea384c', borderColor: '#ea384c' }}>
+            <Play className="w-4 h-4 mr-2" />
             Rejoindre le live
           </Button>
         );
       case "scheduled":
         return (
           <Button onClick={handleAction} variant="outline" className="w-full">
+            <Calendar className="w-4 h-4 mr-2" />
             S'inscrire
           </Button>
         );
