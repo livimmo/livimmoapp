@@ -66,8 +66,8 @@ export const LiveButton = ({
     <>
       <Button
         onClick={handleClick}
-        variant={isLiveNow ? "destructive" : isReplay ? "secondary" : "default"}
-        className="w-full"
+        variant={isReplay ? "secondary" : "default"}
+        className={`w-full ${isLiveNow ? "bg-[#ea384c] hover:bg-[#ea384c]/90" : ""}`}
       >
         {isReplay ? (
           <History className="w-4 h-4 mr-2" />
