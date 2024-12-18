@@ -49,6 +49,7 @@ export const LiveStream = ({
   const isMobile = useIsMobile();
   const [showOtherLives, setShowOtherLives] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const otherLivesCount = liveStreams.filter(live => live.id !== currentLiveId).length;
 
@@ -65,14 +66,14 @@ export const LiveStream = ({
       ? replayTimestamps[Math.floor(Math.random() * replayTimestamps.length)]
       : videoId;
     
-    // Ajout des paramètres pour une meilleure compatibilité mobile
     const params = new URLSearchParams({
       rel: '0',
       modestbranding: '1',
       showinfo: '0',
-      playsinline: '1', // Important pour iOS
+      playsinline: '1',
       enablejsapi: '1',
       origin: window.location.origin,
+      controls: '1',
       ...(isPlaying && { autoplay: '1' }),
     });
     
@@ -80,16 +81,20 @@ export const LiveStream = ({
   };
 
   useEffect(() => {
-    // Réinitialiser l'état de lecture lors du changement de vidéo
     setIsPlaying(false);
+    setIframeLoaded(false);
   }, [videoId]);
 
   const handlePlayClick = () => {
     setIsPlaying(true);
     if (iframeRef.current) {
-      // Recharger l'iframe avec autoplay activé
       iframeRef.current.src = getEmbedUrl();
     }
+  };
+
+  const handleIframeLoad = () => {
+    setIframeLoaded(true);
+    console.log("Iframe loaded successfully");
   };
 
   return (
@@ -116,30 +121,30 @@ export const LiveStream = ({
             "relative w-full h-full overflow-hidden",
             !isMobile && "rounded-xl border-2 border-primary/20 shadow-lg"
           )}>
-            {!isPlaying && isMobile ? (
+            {(!isPlaying || !iframeLoaded) && (
               <div 
-                className="absolute inset-0 bg-black/80 flex items-center justify-center z-10"
+                className="absolute inset-0 bg-black/80 flex items-center justify-center z-10 cursor-pointer"
                 onClick={handlePlayClick}
               >
-                <button className="bg-primary text-white px-6 py-3 rounded-full font-medium flex items-center gap-2">
+                <button className="bg-primary text-white px-6 py-3 rounded-full font-medium flex items-center gap-2 hover:bg-primary/90 transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polygon points="5 3 19 12 5 21 5 3" />
                   </svg>
                   Lancer la vidéo
                 </button>
               </div>
-            ) : null}
+            )}
             
             <iframe
               ref={iframeRef}
               src={getEmbedUrl()}
               title="YouTube video player"
               frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
               className="w-full h-full"
+              onLoad={handleIframeLoad}
             />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
         </div>
 
