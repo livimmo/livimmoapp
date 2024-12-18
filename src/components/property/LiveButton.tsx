@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Play, History } from "lucide-react";
+import { Play, History, Calendar } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ReservationForm } from "@/components/home/ReservationForm";
 import { useToast } from "@/components/ui/use-toast";
@@ -71,8 +71,10 @@ export const LiveButton = ({
       >
         {isReplay ? (
           <History className="w-4 h-4 mr-2" />
-        ) : (
+        ) : isLiveNow ? (
           <Play className="w-4 h-4 mr-2" />
+        ) : (
+          <Calendar className="w-4 h-4 mr-2" />
         )}
         {isLiveNow 
           ? "Rejoindre le live" 
