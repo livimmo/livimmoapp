@@ -1,10 +1,10 @@
 export const PROPERTY_TYPES = [
   "Résidentiel",
+  "Commercial",
+  "Terrain",
   "Bureau",
-  "Hôtel",
-  "Commerce", 
-  "Industriel",
-  "Terrain"
+  "Logistique/Industriel",
+  "Autres"
 ] as const;
 
 export type PropertyType = (typeof PROPERTY_TYPES)[number];

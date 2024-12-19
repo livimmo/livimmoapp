@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { TagSelector } from "../profile/live-edit/TagSelector";
 import { GoogleMapInput } from "../GoogleMapInput";
 import { Upload, X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { BasicInfoFields } from "./property/BasicInfoFields";
 
 interface PropertyFormProps {
   onSubmit: (data: any) => void;
@@ -13,6 +12,9 @@ interface PropertyFormProps {
     title?: string;
     description?: string;
     location?: string;
+    propertyType?: string;
+    price?: string;
+    surface?: string;
     tags?: string[];
   };
 }
@@ -25,6 +27,9 @@ export const PropertyForm = ({ onSubmit, initialData }: PropertyFormProps) => {
   const [title, setTitle] = useState(initialData?.title || "");
   const [description, setDescription] = useState(initialData?.description || "");
   const [location, setLocation] = useState(initialData?.location || "");
+  const [propertyType, setPropertyType] = useState(initialData?.propertyType || "");
+  const [price, setPrice] = useState(initialData?.price || "");
+  const [surface, setSurface] = useState(initialData?.surface || "");
   const [tags, setTags] = useState(initialData?.tags || []);
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -48,6 +53,9 @@ export const PropertyForm = ({ onSubmit, initialData }: PropertyFormProps) => {
       title,
       description,
       location,
+      propertyType,
+      price,
+      surface,
       tags,
       files,
     });
@@ -95,28 +103,21 @@ export const PropertyForm = ({ onSubmit, initialData }: PropertyFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="title">Titre</Label>
-        <Input
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-      </div>
+      <BasicInfoFields
+        title={title}
+        description={description}
+        price={price}
+        surface={surface}
+        propertyType={propertyType}
+        onTitleChange={setTitle}
+        onDescriptionChange={setDescription}
+        onPriceChange={setPrice}
+        onSurfaceChange={setSurface}
+        onPropertyTypeChange={setPropertyType}
+      />
 
       <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
-        <Input
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="location">Localisation</Label>
+        <label className="text-sm font-medium">Localisation*</label>
         <GoogleMapInput
           value={location}
           onChange={setLocation}
@@ -125,7 +126,7 @@ export const PropertyForm = ({ onSubmit, initialData }: PropertyFormProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label>Tags</Label>
+        <label className="text-sm font-medium">Tags</label>
         <TagSelector
           selectedTags={tags}
           availableTags={availableTags}
@@ -202,7 +203,7 @@ export const PropertyForm = ({ onSubmit, initialData }: PropertyFormProps) => {
       </div>
 
       <div className="flex justify-end gap-2">
-        <Button type="submit">Enregistrer</Button>
+        <Button type="submit">Suivant</Button>
       </div>
     </form>
   );
