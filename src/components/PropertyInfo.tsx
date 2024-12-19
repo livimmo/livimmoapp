@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { OfferDialog } from "./property/OfferDialog";
 import { LiveButton } from "./property/LiveButton";
+import { ChatButton } from "./chat/ChatButton";
 
 interface PropertyInfoProps {
   id: number;
@@ -15,7 +16,15 @@ interface PropertyInfoProps {
   onJoinLive?: () => void;
   isLiveNow?: boolean;
   remainingSeats?: number;
-  isUserRegistered?: boolean;
+  agent: {
+    id?: number;
+    name: string;
+    image: string;
+    phone: string;
+    email: string;
+    company?: string;
+    verified?: boolean;
+  };
 }
 
 export const PropertyInfo = ({
@@ -27,9 +36,11 @@ export const PropertyInfo = ({
   surface,
   rooms,
   hasLive,
+  liveDate,
   onJoinLive,
   isLiveNow,
-  isUserRegistered,
+  remainingSeats,
+  agent,
 }: PropertyInfoProps) => {
   return (
     <div className="p-4">
@@ -49,14 +60,23 @@ export const PropertyInfo = ({
         <span>{surface} m²</span>
         <span>{rooms} pièces</span>
       </div>
-      <div className="grid grid-cols-1 gap-2">
-        {hasLive && onJoinLive && (
+      <div className="grid grid-cols-2 gap-2">
+        <OfferDialog title={title} price={price} />
+        {hasLive && onJoinLive ? (
           <LiveButton
             id={id}
             title={title}
+            liveDate={liveDate}
             onJoinLive={onJoinLive}
             isLiveNow={isLiveNow}
-            isUserRegistered={isUserRegistered}
+            remainingSeats={remainingSeats}
+          />
+        ) : (
+          <ChatButton
+            agentId={agent.id?.toString() || "0"}
+            agentName={agent.name}
+            propertyId={id}
+            propertyTitle={title}
           />
         )}
       </div>

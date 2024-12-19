@@ -11,6 +11,7 @@ import { CheckCircle2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import { ChatButton } from "./chat/ChatButton";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -125,27 +126,37 @@ export const PropertyCard = ({
           isLiveNow={isLiveNow}
           remainingSeats={remainingSeats}
           isUserRegistered={isUserRegistered}
+          agent={agent}
         />
-        <div 
-          className="px-4 py-3 border-t flex items-center justify-between bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors"
-          onClick={handleAgentClick}
-        >
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8 border border-gray-200">
-              <AvatarImage src={agent.image} alt={agent.name} />
-              <AvatarFallback>{agent.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-gray-900">{agent.name}</span>
-              <span className="text-xs text-gray-500">{agent.company || 'Agent indépendant'}</span>
+        <div className="px-4 py-3 border-t flex flex-col gap-2 bg-gray-50">
+          <div 
+            className="flex items-center justify-between cursor-pointer hover:bg-gray-100 transition-colors p-2 rounded-lg"
+            onClick={handleAgentClick}
+          >
+            <div className="flex items-center gap-2">
+              <Avatar className="h-8 w-8 border border-gray-200">
+                <AvatarImage src={agent.image} alt={agent.name} />
+                <AvatarFallback>{agent.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-gray-900">{agent.name}</span>
+                <span className="text-xs text-gray-500">{agent.company || 'Agent indépendant'}</span>
+              </div>
             </div>
+            {agent.verified && (
+              <div className="flex items-center gap-1 text-primary">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="text-xs">Vérifié</span>
+              </div>
+            )}
           </div>
-          {agent.verified && (
-            <div className="flex items-center gap-1 text-primary">
-              <CheckCircle2 className="h-4 w-4" />
-              <span className="text-xs">Vérifié</span>
-            </div>
-          )}
+          
+          <ChatButton
+            agentId={agent.id?.toString() || "0"}
+            agentName={agent.name}
+            propertyId={id}
+            propertyTitle={title}
+          />
         </div>
       </div>
 
