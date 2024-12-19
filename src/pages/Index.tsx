@@ -1,21 +1,17 @@
-import { Video, List, Map } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { LiveSection } from "@/components/home/LiveSection";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { PropertyMap } from "@/components/search/PropertyMap";
-import { PropertyList } from "@/components/properties/PropertyList";
 import { type Property } from "@/types/property";
-import { FeaturedSection } from "@/components/home/FeaturedSection";
-import { HomeFilters } from "@/components/home/HomeFilters";
-import { CTASection } from "@/components/home/CTASection";
-import { addCoordinatesToProperties } from "@/data/mockProperties";
-import { SmartSearchBar } from "@/components/search/SmartSearchBar";
 import { HomeHeader } from "@/components/home/HomeHeader";
-import { LiveSlider } from "@/components/live/LiveSlider";
-import { liveStreams, scheduledLives } from "@/data/mockLives";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
+import { LiveSection } from "@/components/home/LiveSection";
+import { FeaturedSection } from "@/components/home/FeaturedSection";
+import { CTASection } from "@/components/home/CTASection";
+import { LiveSlider } from "@/components/live/LiveSlider";
+import { VirtualToursSection } from "@/components/home/VirtualToursSection";
+import { SearchSection } from "@/components/home/SearchSection";
+import { addCoordinatesToProperties } from "@/data/mockProperties";
+import { liveStreams, scheduledLives } from "@/data/mockLives";
 
+// Ajout de propriétés avec des visites virtuelles pour l'exemple
 const featuredProperties = addCoordinatesToProperties([
   {
     id: 1,
@@ -42,6 +38,22 @@ const featuredProperties = addCoordinatesToProperties([
       email: "karim.benjelloun@example.com",
     },
     transactionType: "Vente" as const,
+    virtualTour: {
+      enabled: true,
+      url: "https://my.matterport.com/show/?m=SxQL3iGyvQk",
+      type: "360" as const,
+      hotspots: [
+        {
+          title: "Salon",
+          description: "Spacieux salon avec vue sur la piscine",
+          position: { x: 30, y: 40 },
+          details: [
+            { label: "Surface", value: "45m²" },
+            { label: "Exposition", value: "Sud" }
+          ]
+        }
+      ]
+    }
   },
   {
     id: 2,
@@ -67,6 +79,22 @@ const featuredProperties = addCoordinatesToProperties([
       email: "sophia.martinez@example.com",
     },
     transactionType: "Location" as const,
+    virtualTour: {
+      enabled: true,
+      url: "https://my.matterport.com/show/?m=SxQL3iGyvQk",
+      type: "360" as const,
+      hotspots: [
+        {
+          title: "Chambre",
+          description: "Chambre spacieuse avec vue sur la mer",
+          position: { x: 50, y: 50 },
+          details: [
+            { label: "Surface", value: "30m²" },
+            { label: "Exposition", value: "Est" }
+          ]
+        }
+      ]
+    }
   },
   {
     id: 3,
@@ -93,31 +121,37 @@ const featuredProperties = addCoordinatesToProperties([
       email: "yasmine.alaoui@example.com",
     },
     transactionType: "Vente" as const,
+    virtualTour: {
+      enabled: true,
+      url: "https://my.matterport.com/show/?m=SxQL3iGyvQk",
+      type: "360" as const,
+      hotspots: [
+        {
+          title: "Terrasse",
+          description: "Terrasse avec vue imprenable sur la ville",
+          position: { x: 70, y: 30 },
+          details: [
+            { label: "Surface", value: "50m²" },
+            { label: "Exposition", value: "Ouest" }
+          ]
+        }
+      ]
+    }
   },
 ]);
 
 const Index = () => {
-  const navigate = useNavigate();
-  const [viewMode, setViewMode] = useState<"list" | "map">("list");
-  const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
   const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
+  const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
 
   const suggestions = [
-    "Casablanca",
-    "Rabat",
-    "Marrakech",
-    "Tanger",
-    "Agadir",
-    "Fès",
-    "Villa",
-    "Appartement",
-    "Bureau",
-    "Riad",
+    "Casablanca", "Rabat", "Marrakech", "Tanger",
+    "Agadir", "Fès", "Villa", "Appartement", "Bureau", "Riad",
   ];
 
   const allLives = [...liveStreams, ...scheduledLives];
@@ -162,49 +196,14 @@ const Index = () => {
         
         <FeaturedSection properties={filterPropertiesByViewType(featuredProperties)} />
 
+        <VirtualToursSection properties={featuredProperties} />
+
         <LiveSection />
 
-        <section className="mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">
-              {filteredProperties.length > 0 
-                ? `${filteredProperties.length} biens trouvés`
-                : "Tous nos biens"
-              }
-            </h2>
-            <div className="flex gap-2">
-              <Button
-                variant={viewMode === "list" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setViewMode("list")}
-              >
-                <List className="h-4 w-4 mr-2" />
-                Liste
-              </Button>
-              <Button
-                variant={viewMode === "map" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setViewMode("map")}
-              >
-                <Map className="h-4 w-4 mr-2" />
-                Carte
-              </Button>
-            </div>
-          </div>
-          
-          {viewMode === "list" ? (
-            <PropertyList 
-              properties={filterPropertiesByViewType(filteredProperties.length > 0 ? filteredProperties : featuredProperties)}
-              viewMode="grid"
-            />
-          ) : (
-            <div className="h-[500px] rounded-lg overflow-hidden">
-              <PropertyMap 
-                properties={filterPropertiesByViewType(filteredProperties.length > 0 ? filteredProperties : featuredProperties)}
-              />
-            </div>
-          )}
-        </section>
+        <SearchSection 
+          filteredProperties={filterPropertiesByViewType(filteredProperties)} 
+          defaultProperties={filterPropertiesByViewType(featuredProperties)}
+        />
 
         <CTASection />
       </main>
