@@ -219,7 +219,7 @@ export const LiveCarousel = ({
                     </div>
                     <div 
                       className="px-2 py-2 border-t flex items-center justify-between bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors"
-                      onClick={() => handleAgentClick(live.agentId)}
+                      onClick={() => handleAgentClick(live.agentId?.toString())}
                     >
                       <div className="flex items-center gap-2">
                         <Avatar className="h-6 w-6 border border-gray-200">
