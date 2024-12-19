@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { getRandomTags } from "@/utils/propertyTags";
 import { LiveCarouselHeader } from "./LiveCarouselHeader";
@@ -31,6 +31,15 @@ export const LiveCarousel = ({
     delay: 4000,
     stopOnInteraction: true,
   };
+
+  // Ajout de l'effet pour réduire automatiquement après 10 secondes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsCollapsed(true);
+    }, 10000); // 10 secondes
+
+    return () => clearTimeout(timer);
+  }, []); // Se déclenche une seule fois au montage
 
   const demoLives: LiveEvent[] = [
     {
