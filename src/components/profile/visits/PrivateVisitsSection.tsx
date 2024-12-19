@@ -24,40 +24,42 @@ export const PrivateVisitsSection = () => {
         
         <TabsContent value="pending">
           <VisitsList 
-            status="pending" 
+            status="pending"
             onVisitSelect={setSelectedVisit}
           />
         </TabsContent>
         <TabsContent value="confirmed">
           <VisitsList 
-            status="confirmed" 
+            status="confirmed"
             onVisitSelect={setSelectedVisit}
           />
         </TabsContent>
         <TabsContent value="ongoing">
           <VisitsList 
-            status="ongoing" 
+            status="ongoing"
             onVisitSelect={setSelectedVisit}
           />
         </TabsContent>
         <TabsContent value="completed">
           <VisitsList 
-            status="completed" 
+            status="completed"
             onVisitSelect={setSelectedVisit}
           />
         </TabsContent>
         <TabsContent value="cancelled">
           <VisitsList 
-            status="cancelled" 
+            status="cancelled"
             onVisitSelect={setSelectedVisit}
           />
         </TabsContent>
       </Tabs>
 
-      <VisitDetailsDialog
-        visit={selectedVisit}
-        onClose={() => setSelectedVisit(null)}
-      />
+      {selectedVisit && (
+        <VisitDetailsDialog
+          visit={selectedVisit}
+          onClose={() => setSelectedVisit(null)}
+        />
+      )}
     </div>
   );
 };

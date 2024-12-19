@@ -9,11 +9,10 @@ import { useNavigate } from "react-router-dom";
 
 interface VisitCardProps {
   visit: Visit;
-  onCancel: () => void;
-  onReschedule: () => void;
+  onSelect: () => void;
 }
 
-export const VisitCard = ({ visit, onCancel, onReschedule }: VisitCardProps) => {
+export const VisitCard = ({ visit, onSelect }: VisitCardProps) => {
   const navigate = useNavigate();
 
   const getStatusBadge = (status: Visit["status"]) => {
@@ -36,7 +35,7 @@ export const VisitCard = ({ visit, onCancel, onReschedule }: VisitCardProps) => 
   };
 
   return (
-    <Card>
+    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={onSelect}>
       <CardContent className="p-4">
         <div className="flex gap-4">
           <img
@@ -76,37 +75,20 @@ export const VisitCard = ({ visit, onCancel, onReschedule }: VisitCardProps) => 
                 />
                 <span className="text-sm">{visit.agentName}</span>
               </div>
-              <div className="flex gap-2">
-                {visit.status === "pending" && (
-                  <>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={onReschedule}
-                    >
-                      Reprogrammer
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={onCancel}
-                    >
-                      Annuler
-                    </Button>
-                  </>
-                )}
-                {visit.status === "confirmed" && (
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={handleJoinLive}
-                    className="gap-2"
-                  >
-                    <Video className="h-4 w-4" />
-                    Rejoindre le live
-                  </Button>
-                )}
-              </div>
+              {visit.status === "confirmed" && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleJoinLive();
+                  }}
+                  className="gap-2"
+                >
+                  <Video className="h-4 w-4" />
+                  Rejoindre le live
+                </Button>
+              )}
             </div>
           </div>
         </div>
