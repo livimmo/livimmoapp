@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { List, Map } from "lucide-react";
 import { type Property } from "@/types/property";
 import { useState } from "react";
+import { MapView } from "./MapView";
 
 interface SearchSectionProps {
   filteredProperties: Property[];
@@ -55,10 +56,8 @@ export const SearchSection = ({
           viewMode="grid"
         />
       ) : (
-        <div className="h-[500px] rounded-lg overflow-hidden">
-          <PropertyMap 
-            properties={displayProperties}
-          />
+        <div className="rounded-lg overflow-hidden">
+          <MapView properties={displayProperties} />
         </div>
       )}
     </section>

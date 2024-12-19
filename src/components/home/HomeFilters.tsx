@@ -33,7 +33,8 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
 
     if (searchTerm) {
       filtered = filtered.filter((property) =>
-        property.location.toLowerCase().includes(searchTerm.toLowerCase())
+        property.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        property.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -57,7 +58,6 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
         property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1]
     );
 
-    // Nouveau filtre pour le type de visionnage
     if (viewType === "live") {
       filtered = filtered.filter((property) => property.hasLive && !property.isReplay);
     } else if (viewType === "replay") {
