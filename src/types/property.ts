@@ -36,7 +36,7 @@ export interface Property {
     enabled: boolean;
     url?: string;
     type: "360" | "video" | "live";
-    hotspots?: Array<{
+    annotations?: Array<{
       title: string;
       description: string;
       position: { x: number; y: number };
