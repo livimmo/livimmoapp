@@ -3,6 +3,7 @@ import { PropertyCard } from "@/components/PropertyCard";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useState } from "react";
 import { LiveStream } from "./LiveStream";
+import { Radio } from "lucide-react";
 
 interface LiveCardProps {
   live: LiveEvent;
@@ -49,16 +50,13 @@ export const LiveCard = ({ live }: LiveCardProps) => {
     <>
       <div onClick={() => setShowLive(true)} className="cursor-pointer">
         <PropertyCard 
-          {...propertyData} 
-          customButton={
+          {...propertyData}
+          actionButton={
             <button 
               className="w-full bg-[#ea384c] hover:bg-[#ea384c]/90 text-white font-medium px-4 py-2 rounded-md flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-              </span>
-              Rejoindre le live
+              <Radio className="w-4 h-4 animate-pulse" />
+              Live à venir
             </button>
           }
         />
