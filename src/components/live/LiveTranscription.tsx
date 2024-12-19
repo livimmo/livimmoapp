@@ -21,7 +21,7 @@ export const LiveTranscription = ({ isReplay }: LiveTranscriptionProps) => {
         const transcriber = await pipeline(
           "automatic-speech-recognition",
           "Xenova/whisper-tiny",
-          { quantized: true }
+          { revision: "main" }
         );
 
         // For development purposes, we'll simulate transcription
