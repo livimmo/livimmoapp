@@ -11,14 +11,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function AddLiveDialog() {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
-  const [propertyType, setPropertyType] = useState("");
-  const [price, setPrice] = useState("");
-  const [surface, setSurface] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
@@ -27,9 +23,6 @@ export function AddLiveDialog() {
     // Logic for form submission
     console.log({
       title,
-      propertyType,
-      price,
-      surface,
       date,
       time,
     });
@@ -56,42 +49,6 @@ export function AddLiveDialog() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Titre de la visite"
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="propertyType">Type de bien</Label>
-            <Select value={propertyType} onValueChange={setPropertyType}>
-              <SelectTrigger>
-                <SelectValue placeholder="Sélectionnez le type de bien" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="apartment">Appartement</SelectItem>
-                <SelectItem value="house">Maison</SelectItem>
-                <SelectItem value="villa">Villa</SelectItem>
-                <SelectItem value="riad">Riad</SelectItem>
-                <SelectItem value="land">Terrain</SelectItem>
-                <SelectItem value="commercial">Local commercial</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="price">Prix (DH)</Label>
-            <Input
-              id="price"
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="Prix du bien"
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="surface">Superficie (m²)</Label>
-            <Input
-              id="surface"
-              type="number"
-              value={surface}
-              onChange={(e) => setSurface(e.target.value)}
-              placeholder="Superficie du bien"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
