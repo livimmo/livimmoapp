@@ -10,9 +10,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 import { LiveStream } from "./LiveStream";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useAuth } from "@/contexts/AuthContext";
-import { useToast } from "@/hooks/use-toast";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ReplayCardProps {
   live: LiveEvent;
@@ -21,36 +18,23 @@ interface ReplayCardProps {
 export const ReplayCard = ({ live }: ReplayCardProps) => {
   const navigate = useNavigate();
   const [showReplay, setShowReplay] = useState(false);
-  const { isAuthenticated } = useAuth();
-  const { toast } = useToast();
-  const isMobile = useIsMobile();
 
   const handleWatch = () => {
-    if (!isAuthenticated) {
-      toast({
-        title: "Connexion requise",
-        description: "Vous devez être connecté pour accéder au replay",
-        variant: "destructive",
-      });
-      navigate("/login", { state: { from: `/replay/${live.id}` } });
-      return;
-    }
-
     setShowReplay(true);
   };
 
-  const handleAgentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleAgentClick = () => {
     if (live.agentId) {
       navigate(`/agent/${live.agentId}`);
     }
   };
 
+  // Générer aléatoirement le statut vérifié
   const isVerified = Math.random() > 0.5;
 
   return (
     <>
-      <Card className="group cursor-pointer hover:bg-accent rounded-lg overflow-hidden transition-all duration-300" onClick={handleWatch}>
+      <Card className="group cursor-pointer hover:bg-accent rounded-lg overflow-hidden transition-all duration-300">
         <CardContent className="p-0 relative">
           <img
             src={live.thumbnail}
@@ -119,9 +103,9 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
       </Card>
 
       <Dialog open={showReplay} onOpenChange={setShowReplay}>
-        <DialogContent className="max-w-[100vw] h-[100vh] p-0 border-none">
+        <DialogContent className="max-w-6xl h-[80vh] p-0">
           <LiveStream 
-            videoId="wRz1AWOac-8RGhql"
+            videoId="VIQpb65HmMs"
             currentLiveId={live.id}
             otherLives={[]}
             onLiveChange={() => {}}

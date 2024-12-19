@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LiveVideoPlayerProps {
   videoId: string;
@@ -11,7 +10,6 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
   const [isPlaying, setIsPlaying] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const isMobile = useIsMobile();
 
   const getEmbedUrl = () => {
     const baseUrl = 'https://www.youtube.com/embed/';
@@ -23,11 +21,7 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
       enablejsapi: '1',
       origin: window.location.origin,
       controls: '1',
-      autoplay: isPlaying ? '1' : '0',
-      ...(isMobile && {
-        fs: '1',
-        playsinline: '1',
-      }),
+      ...(isPlaying && { autoplay: '1' }),
     });
     
     return `${baseUrl}${videoId}?${params.toString()}`;
@@ -36,8 +30,7 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
   const handlePlayClick = () => {
     setIsPlaying(true);
     if (iframeRef.current) {
-      const newSrc = getEmbedUrl();
-      iframeRef.current.src = newSrc;
+      iframeRef.current.src = getEmbedUrl();
     }
   };
 
@@ -49,13 +42,10 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
   useEffect(() => {
     setIsPlaying(false);
     setIframeLoaded(false);
-    if (iframeRef.current) {
-      iframeRef.current.src = getEmbedUrl();
-    }
   }, [videoId]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-black">
+    <div className="relative w-full h-full overflow-hidden">
       {(!isPlaying || !iframeLoaded) && (
         <div 
           className="absolute inset-0 bg-black/80 flex items-center justify-center z-10 cursor-pointer"
@@ -78,14 +68,10 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
         src={getEmbedUrl()}
         title="YouTube video player"
         frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
         className="w-full h-full"
         onLoad={handleIframeLoad}
-        style={{
-          aspectRatio: isMobile ? "16/9" : undefined,
-          maxHeight: isMobile ? "calc(100vh - 200px)" : undefined,
-        }}
       />
     </div>
   );

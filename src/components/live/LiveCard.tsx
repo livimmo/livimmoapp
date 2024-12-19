@@ -6,7 +6,6 @@ import { LiveStream } from "./LiveStream";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LiveCardProps {
   live: LiveEvent;
@@ -17,7 +16,6 @@ export const LiveCard = ({ live }: LiveCardProps) => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const isMobile = useIsMobile();
 
   const propertyData = {
     id: live.id,
@@ -60,10 +58,9 @@ export const LiveCard = ({ live }: LiveCardProps) => {
         description: "Vous devez être connecté pour accéder au live",
         variant: "destructive",
       });
-      navigate("/login", { state: { from: `/live/${live.id}` } });
+      navigate("/login");
       return;
     }
-
     setShowLive(true);
   };
 
@@ -74,9 +71,9 @@ export const LiveCard = ({ live }: LiveCardProps) => {
       </div>
 
       <Dialog open={showLive} onOpenChange={setShowLive}>
-        <DialogContent className="max-w-[100vw] h-[100vh] p-0 border-none">
+        <DialogContent className="max-w-6xl h-[80vh] p-0">
           <LiveStream 
-            videoId="wRz1AWOac-8RGhql"
+            videoId="n3wtxcO_0GQ"
             currentLiveId={live.id}
             otherLives={[]}
             onLiveChange={() => {}}
