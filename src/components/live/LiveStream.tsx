@@ -10,6 +10,7 @@ import { LiveStreamProps, replayTimestamps } from "@/types/live";
 import { LiveHeader } from "./LiveHeader";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { AIChat } from "./AIChat";
 
 const mockProperty = {
   id: 1,
@@ -50,6 +51,7 @@ export const LiveStream = ({
   const [showOtherLives, setShowOtherLives] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [showAIChat, setShowAIChat] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const otherLivesCount = liveStreams.filter(live => live.id !== currentLiveId).length;
 
@@ -172,10 +174,19 @@ export const LiveStream = ({
             property={mockProperty}
             onMakeOffer={() => {}}
             viewerCount={Math.floor(Math.random() * 1000)}
-            onToggleChat={() => {}}
+            onToggleChat={() => setShowAIChat(!showAIChat)}
             isReplay={isReplay}
           />
         </div>
+
+        {showAIChat && (
+          <div className="absolute top-0 right-0 bottom-0 w-80 z-[100]">
+            <AIChat 
+              property={mockProperty}
+              onClose={() => setShowAIChat(false)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
