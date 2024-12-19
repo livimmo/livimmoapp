@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Facebook, Instagram, Youtube, MessageCircle } from "lucide-react";
 import { LiveManagement } from "./LiveManagement";
 import { PrivateVisitButton } from "./PrivateVisitButton";
+import { PrivateVisitsManagement } from "./PrivateVisitsManagement";
 
 interface PersonalInfoProps {
   firstName: string;
@@ -97,6 +98,10 @@ export const PersonalInfo = ({
 
           <div className="space-y-4 border-t pt-4">
             <LiveManagement />
+          </div>
+
+          <div className="space-y-4 border-t pt-4">
+            <PrivateVisitsManagement />
           </div>
 
           <div className="space-y-4 border-t pt-4">
