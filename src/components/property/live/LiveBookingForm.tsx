@@ -2,86 +2,90 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
-import { fr } from "date-fns/locale";
+import { useToast } from "@/hooks/use-toast";
 
 interface LiveBookingFormProps {
-  name: string;
-  email: string;
-  phone: string;
-  onSubmit: (data: {
-    date: Date | undefined;
-    time: string;
-    message: string;
-  }) => void;
+  propertyId: number;
+  propertyTitle: string;
+  agentId: number;
+  agentName: string;
+  onClose: () => void;
 }
 
 export const LiveBookingForm = ({
-  name,
-  email,
-  phone,
-  onSubmit,
+  propertyId,
+  propertyTitle,
+  agentId,
+  agentName,
+  onClose,
 }: LiveBookingFormProps) => {
-  const [date, setDate] = useState<Date>();
-  const [time, setTime] = useState("");
-  const [message, setMessage] = useState("");
+  const { toast } = useToast();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({
-      date,
-      time,
-      message,
-    });
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      toast({
+        title: "Demande envoyée",
+        description: "Nous vous contacterons bientôt pour confirmer votre réservation.",
+      });
+
+      onClose();
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label>Vos informations</Label>
-        <Input value={name} disabled placeholder="Votre nom" />
-        <Input value={email} disabled placeholder="Votre email" />
+      <div>
+        <Label htmlFor="name">Nom complet</Label>
         <Input
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          placeholder="Votre téléphone (optionnel)"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label>Date souhaitée</Label>
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          locale={fr}
-          className="rounded-md border"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label>Heure souhaitée</Label>
-        <Input
-          type="time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
         />
       </div>
 
-      <div className="space-y-2">
-        <Label>Message (optionnel)</Label>
-        <Textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Avez-vous des questions particulières pour l'agent ?"
-          className="h-24"
+      <div>
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
         />
       </div>
 
-      <Button type="submit" className="w-full">
-        Confirmer la demande
+      <div>
+        <Label htmlFor="phone">Téléphone</Label>
+        <Input
+          id="phone"
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          required
+        />
+      </div>
+
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
+        {isSubmitting ? "Envoi en cours..." : "Réserver"}
       </Button>
     </form>
   );
