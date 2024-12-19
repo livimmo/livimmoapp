@@ -122,7 +122,7 @@ export const LiveInfo = ({
               <>
                 <Badge 
                   variant="secondary" 
-                  className="bg-accent text-accent-foreground shadow-sm"
+                  className="bg-[#ea384c]/10 text-[#ea384c] shadow-sm"
                 >
                   {offerCount} offres
                 </Badge>
