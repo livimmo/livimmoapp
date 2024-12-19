@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Property } from '@/types/property';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Fix for default markers
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -17,16 +17,16 @@ interface HomeMapProps {
 }
 
 export const HomeMap = ({ properties }: HomeMapProps) => {
-  // Calculer le centre de la carte basé sur les propriétés
+  const [isClient, setIsClient] = useState(false);
   const center = { lat: 31.7917, lng: -7.0926 }; // Centre du Maroc
   
   useEffect(() => {
-    // Force une mise à jour de la taille de la carte après le montage
-    const map = document.querySelector('.leaflet-container');
-    if (map) {
-      (window as any).dispatchEvent(new Event('resize'));
-    }
+    setIsClient(true);
   }, []);
+
+  if (!isClient) {
+    return <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-8 bg-gray-100" />;
+  }
 
   return (
     <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-8">
@@ -34,6 +34,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         center={[center.lat, center.lng]}
         zoom={6}
         style={{ height: '100%', width: '100%' }}
+        scrollWheelZoom={false}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
