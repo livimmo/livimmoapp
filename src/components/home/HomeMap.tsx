@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Property } from '@/types/property';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 
 // Fix for default markers
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -15,36 +15,6 @@ L.Icon.Default.mergeOptions({
 interface HomeMapProps {
   properties: Property[];
 }
-
-const MapComponent = ({ properties, center }: HomeMapProps & { center: { lat: number; lng: number } }) => (
-  <MapContainer
-    center={[center.lat, center.lng]}
-    zoom={6}
-    style={{ height: '100%', width: '100%' }}
-    scrollWheelZoom={false}
-  >
-    <TileLayer
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    />
-    {properties.map((property) => (
-      property.coordinates && (
-        <Marker 
-          key={property.id}
-          position={[property.coordinates.lat, property.coordinates.lng]}
-        >
-          <Popup>
-            <div className="p-2">
-              <h3 className="font-semibold">{property.title}</h3>
-              <p className="text-sm">{property.price.toLocaleString()} MAD</p>
-              <p className="text-sm text-gray-600">{property.location}</p>
-            </div>
-          </Popup>
-        </Marker>
-      )
-    ))}
-  </MapContainer>
-);
 
 export const HomeMap = ({ properties }: HomeMapProps) => {
   const [mounted, setMounted] = useState(false);
@@ -60,9 +30,33 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
 
   return (
     <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-8">
-      <Suspense fallback={<div className="w-full h-full bg-gray-100" />}>
-        <MapComponent properties={properties} center={center} />
-      </Suspense>
+      <MapContainer
+        center={[center.lat, center.lng]}
+        zoom={6}
+        style={{ height: '100%', width: '100%' }}
+        scrollWheelZoom={false}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {properties.map((property) => (
+          property.coordinates && (
+            <Marker 
+              key={property.id}
+              position={[property.coordinates.lat, property.coordinates.lng]}
+            >
+              <Popup>
+                <div className="p-2">
+                  <h3 className="font-semibold">{property.title}</h3>
+                  <p className="text-sm">{property.price.toLocaleString()} MAD</p>
+                  <p className="text-sm text-gray-600">{property.location}</p>
+                </div>
+              </Popup>
+            </Marker>
+          )
+        ))}
+      </MapContainer>
     </div>
   );
 };
