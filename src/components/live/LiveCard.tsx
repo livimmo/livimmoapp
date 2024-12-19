@@ -6,6 +6,7 @@ import { LiveStream } from "./LiveStream";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LiveCardProps {
   live: LiveEvent;
@@ -16,6 +17,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const propertyData = {
     id: live.id,
@@ -61,7 +63,12 @@ export const LiveCard = ({ live }: LiveCardProps) => {
       navigate("/login", { state: { from: `/live/${live.id}` } });
       return;
     }
-    setShowLive(true);
+
+    if (isMobile) {
+      setShowLive(true);
+    } else {
+      navigate(`/live/${live.id}`);
+    }
   };
 
   return (
@@ -71,7 +78,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
       </div>
 
       <Dialog open={showLive} onOpenChange={setShowLive}>
-        <DialogContent className="max-w-6xl h-[80vh] p-0">
+        <DialogContent className="max-w-[100vw] h-[100vh] p-0 border-none">
           <LiveStream 
             videoId="n3wtxcO_0GQ"
             currentLiveId={live.id}

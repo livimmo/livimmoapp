@@ -12,6 +12,7 @@ import { LiveStream } from "./LiveStream";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ReplayCardProps {
   live: LiveEvent;
@@ -22,6 +23,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
   const [showReplay, setShowReplay] = useState(false);
   const { isAuthenticated } = useAuth();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const handleWatch = () => {
     if (!isAuthenticated) {
@@ -33,7 +35,12 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
       navigate("/login", { state: { from: `/replay/${live.id}` } });
       return;
     }
-    setShowReplay(true);
+
+    if (isMobile) {
+      setShowReplay(true);
+    } else {
+      navigate(`/replay/${live.id}`);
+    }
   };
 
   const handleAgentClick = (e: React.MouseEvent) => {
@@ -116,7 +123,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
       </Card>
 
       <Dialog open={showReplay} onOpenChange={setShowReplay}>
-        <DialogContent className="max-w-6xl h-[80vh] p-0">
+        <DialogContent className="max-w-[100vw] h-[100vh] p-0 border-none">
           <LiveStream 
             videoId="VIQpb65HmMs"
             currentLiveId={live.id}
