@@ -55,7 +55,11 @@ export const LiveButton = ({
     if (isLiveNow && onJoinLive) {
       onJoinLive();
     } else if (isReplay) {
-      navigate(`/replay/${id}`);
+      setIsClicked(true);
+      setTimeout(() => {
+        navigate(`/replay/${id}`);
+        setIsClicked(false);
+      }, 300);
     } else {
       if (isUserRegistered) {
         toast({
@@ -77,26 +81,42 @@ export const LiveButton = ({
           "w-full transition-all duration-300 transform",
           isLiveNow ? "bg-[#ea384c] hover:bg-[#ea384c]/90" : "",
           isClicked && "scale-95 opacity-80",
-          "hover:scale-105 active:scale-95"
+          "hover:scale-105 active:scale-95",
+          "animate-in fade-in-0 zoom-in-95",
+          isReplay && "hover:bg-gray-200 dark:hover:bg-gray-700"
         )}
       >
         {isReplay ? (
-          <History className={cn("w-4 h-4 mr-2", isClicked && "animate-spin")} />
+          <History className={cn(
+            "w-4 h-4 mr-2 transition-transform duration-300",
+            isClicked && "animate-spin"
+          )} />
         ) : isLiveNow ? (
-          <Play className={cn("w-4 h-4 mr-2", isClicked && "animate-pulse")} />
+          <Play className={cn(
+            "w-4 h-4 mr-2 transition-transform duration-300",
+            isClicked && "animate-pulse"
+          )} />
         ) : (
-          <Calendar className={cn("w-4 h-4 mr-2", isClicked && "animate-bounce")} />
+          <Calendar className={cn(
+            "w-4 h-4 mr-2 transition-transform duration-300",
+            isClicked && "animate-bounce"
+          )} />
         )}
-        {isLiveNow 
-          ? "Rejoindre le live" 
-          : isReplay
-          ? "Voir le replay"
-          : isAuthenticated 
-            ? isUserRegistered 
-              ? "Live réservé" 
-              : "S'inscrire au live"
-            : "Réserver le live"
-        }
+        <span className={cn(
+          "transition-transform duration-300",
+          isClicked && "scale-95"
+        )}>
+          {isLiveNow 
+            ? "Rejoindre le live" 
+            : isReplay
+            ? "Voir le replay"
+            : isAuthenticated 
+              ? isUserRegistered 
+                ? "Live réservé" 
+                : "S'inscrire au live"
+              : "Réserver le live"
+          }
+        </span>
       </Button>
 
       <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
