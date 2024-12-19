@@ -13,6 +13,7 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { ChatButton } from "./chat/ChatButton";
 import { VisitBookingButton } from "./property/VisitBookingButton";
+import { LiveBookingButton } from "./property/LiveBookingButton";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -49,10 +50,6 @@ export const PropertyCard = ({
   const tags = getRandomTags();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
 
-  const handleJoinLive = () => {
-    navigate(`/live/${id}`);
-  };
-
   const handleAgentClick = () => {
     if (agent.id) {
       navigate(`/agent/${agent.id}`);
@@ -64,7 +61,6 @@ export const PropertyCard = ({
     navigate(`/${action}`);
   };
 
-  // Générer aléatoirement le statut vérifié si non défini
   if (agent.verified === undefined) {
     agent.verified = Math.random() > 0.5;
   }
@@ -96,7 +92,7 @@ export const PropertyCard = ({
           </div>
           <div className="absolute top-2 left-2 right-14 z-10">
             <div className="flex flex-wrap gap-1">
-              {!hasLive && (
+              {status === "sold" && (
                 <Badge variant="destructive">Vendu</Badge>
               )}
               {tags.map((tag) => (
@@ -128,7 +124,6 @@ export const PropertyCard = ({
           rooms={rooms}
           hasLive={hasLive}
           liveDate={liveDate}
-          onJoinLive={handleJoinLive}
           isLiveNow={isLiveNow}
           remainingSeats={remainingSeats}
           isUserRegistered={isUserRegistered}
@@ -170,12 +165,20 @@ export const PropertyCard = ({
                   propertyTitle={title}
                 />
                 {status !== "sold" && (
-                  <VisitBookingButton
-                    propertyId={id}
-                    propertyTitle={title}
-                    agentId={agent.id}
-                    agentName={agent.name}
-                  />
+                  <>
+                    <VisitBookingButton
+                      propertyId={id}
+                      propertyTitle={title}
+                      agentId={agent.id}
+                      agentName={agent.name}
+                    />
+                    <LiveBookingButton
+                      propertyId={id}
+                      propertyTitle={title}
+                      agentId={agent.id}
+                      agentName={agent.name}
+                    />
+                  </>
                 )}
               </>
             )}
