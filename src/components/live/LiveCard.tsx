@@ -3,8 +3,6 @@ import { PropertyCard } from "@/components/PropertyCard";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useState } from "react";
 import { LiveStream } from "./LiveStream";
-import { Radio } from "lucide-react";
-import { createDefaultProperty } from "@/types/property";
 
 interface LiveCardProps {
   live: LiveEvent;
@@ -13,10 +11,10 @@ interface LiveCardProps {
 export const LiveCard = ({ live }: LiveCardProps) => {
   const [showLive, setShowLive] = useState(false);
 
-  const propertyData = createDefaultProperty({
+  const propertyData = {
     id: live.id,
     title: live.title,
-    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
+    price: parseInt(live.price.replace(/[^\d]/g, "")),
     location: live.location,
     type: live.type,
     surface: 0,
@@ -45,22 +43,12 @@ export const LiveCard = ({ live }: LiveCardProps) => {
     remainingSeats: live.availableSeats,
     isUserRegistered: false,
     transactionType: "Vente" as const,
-  });
+  };
 
   return (
     <>
-      <div onClick={() => setShowLive(true)} className="cursor-pointer">
-        <PropertyCard 
-          {...propertyData}
-          customButton={
-            <button 
-              className="w-full bg-[#ea384c] hover:bg-[#ea384c]/90 text-white font-medium px-4 py-2 rounded-md flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105"
-            >
-              <Radio className="w-4 h-4 animate-pulse" />
-              Live à venir
-            </button>
-          }
-        />
+      <div onClick={() => setShowLive(true)}>
+        <PropertyCard {...propertyData} />
       </div>
 
       <Dialog open={showLive} onOpenChange={setShowLive}>

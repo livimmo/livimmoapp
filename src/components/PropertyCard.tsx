@@ -11,9 +11,6 @@ import { CheckCircle2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import { ChatButton } from "./chat/ChatButton";
-import { VisitBookingButton } from "./property/VisitBookingButton";
-import { LiveBookingButton } from "./property/LiveBookingButton";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -21,8 +18,6 @@ type PropertyCardProps = Property & {
   remainingSeats?: number;
   isUserRegistered?: boolean;
   offers?: number;
-  customButton?: React.ReactNode;
-  status: "available" | "sold" | "rented";
 };
 
 export const PropertyCard = ({
@@ -42,13 +37,15 @@ export const PropertyCard = ({
   isUserRegistered = false,
   offers = 0,
   agent,
-  customButton,
-  status,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
   const tags = getRandomTags();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
+
+  const handleJoinLive = () => {
+    navigate(`/live/${id}`);
+  };
 
   const handleAgentClick = () => {
     if (agent.id) {
@@ -61,6 +58,7 @@ export const PropertyCard = ({
     navigate(`/${action}`);
   };
 
+  // Générer aléatoirement le statut vérifié si non défini
   if (agent.verified === undefined) {
     agent.verified = Math.random() > 0.5;
   }
@@ -92,7 +90,7 @@ export const PropertyCard = ({
           </div>
           <div className="absolute top-2 left-2 right-14 z-10">
             <div className="flex flex-wrap gap-1">
-              {status === "sold" && (
+              {!hasLive && (
                 <Badge variant="destructive">Vendu</Badge>
               )}
               {tags.map((tag) => (
@@ -113,7 +111,6 @@ export const PropertyCard = ({
             </div>
           </div>
         </div>
-        
         <PropertyInfo
           id={id}
           title={title}
@@ -124,65 +121,31 @@ export const PropertyCard = ({
           rooms={rooms}
           hasLive={hasLive}
           liveDate={liveDate}
+          onJoinLive={handleJoinLive}
           isLiveNow={isLiveNow}
           remainingSeats={remainingSeats}
           isUserRegistered={isUserRegistered}
-          agent={agent}
         />
-        
-        <div className="px-4 py-3 border-t flex flex-col gap-2 bg-gray-50">
-          <div 
-            className="flex items-center justify-between cursor-pointer hover:bg-gray-100 transition-colors p-2 rounded-lg"
-            onClick={handleAgentClick}
-          >
-            <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8 border border-gray-200">
-                <AvatarImage src={agent.image} alt={agent.name} />
-                <AvatarFallback>{agent.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col">
-                <span className="text-sm font-medium text-gray-900">{agent.name}</span>
-                <span className="text-xs text-gray-500">{agent.company || 'Agent indépendant'}</span>
-              </div>
+        <div 
+          className="px-4 py-3 border-t flex items-center justify-between bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors"
+          onClick={handleAgentClick}
+        >
+          <div className="flex items-center gap-2">
+            <Avatar className="h-8 w-8 border border-gray-200">
+              <AvatarImage src={agent.image} alt={agent.name} />
+              <AvatarFallback>{agent.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-900">{agent.name}</span>
+              <span className="text-xs text-gray-500">{agent.company || 'Agent indépendant'}</span>
             </div>
-            {agent.verified && (
-              <div className="flex items-center gap-1 text-primary">
-                <CheckCircle2 className="h-4 w-4" />
-                <span className="text-xs">Vérifié</span>
-              </div>
-            )}
           </div>
-          
-          <div className="flex gap-2">
-            {customButton ? (
-              customButton
-            ) : (
-              <>
-                <ChatButton
-                  agentId={agent.id?.toString() || "0"}
-                  agentName={agent.name}
-                  propertyId={id}
-                  propertyTitle={title}
-                />
-                {status !== "sold" && (
-                  <>
-                    <VisitBookingButton
-                      propertyId={id}
-                      propertyTitle={title}
-                      agentId={agent.id}
-                      agentName={agent.name}
-                    />
-                    <LiveBookingButton
-                      propertyId={id}
-                      propertyTitle={title}
-                      agentId={agent.id}
-                      agentName={agent.name}
-                    />
-                  </>
-                )}
-              </>
-            )}
-          </div>
+          {agent.verified && (
+            <div className="flex items-center gap-1 text-primary">
+              <CheckCircle2 className="h-4 w-4" />
+              <span className="text-xs">Vérifié</span>
+            </div>
+          )}
         </div>
       </div>
 

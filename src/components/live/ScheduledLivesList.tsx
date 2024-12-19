@@ -4,18 +4,17 @@ import { LiveEvent } from "@/types/live";
 import { Property } from "@/types/property";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateMockCoordinates } from "@/data/mockProperties";
-import { createDefaultProperty } from "@/types/property";
 
 interface ScheduledLivesListProps {
   lives: LiveEvent[];
 }
 
 export const ScheduledLivesList = ({ lives }: ScheduledLivesListProps) => {
-  const locations: Property[] = lives.map(live => createDefaultProperty({
+  const locations: Property[] = lives.map(live => ({
     id: live.id,
     title: live.title,
     location: live.location,
-    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
+    price: typeof live.price === 'string' ? parseInt(live.price, 10) : live.price,
     type: live.type,
     surface: 0,
     rooms: 0,

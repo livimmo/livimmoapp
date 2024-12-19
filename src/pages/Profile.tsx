@@ -25,7 +25,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { VisitManagement } from "@/components/profile/VisitManagement";
 
 interface UserProfile {
   firstName: string;
@@ -171,17 +170,10 @@ const Profile = () => {
             onChange={handleProfileChange}
           />
 
-          {profile.accountType === "agent" && (
-            <div className="border-t pt-8">
-              <VisitManagement />
-            </div>
-          )}
-
           <div className="border-t pt-8">
             <h2 className="text-lg font-semibold mb-4">Connexion sociale</h2>
             <SocialConnect />
           </div>
-
         </div>
       </div>
     </div>

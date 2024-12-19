@@ -54,13 +54,9 @@ const mockPropertiesBase = [
     type: "Villa",
     surface: 250,
     rooms: 5,
-    bedrooms: 3,
     bathrooms: 3,
     description: "Magnifique villa moderne avec vue imprenable",
     features: ["Piscine", "Jardin", "Garage"],
-    status: "available" as const,
-    createdAt: new Date(),
-    updatedAt: new Date(),
     hasLive: true,
     tags: ["Coup de fusil", "Nouveauté"],
     offers: 15,
@@ -178,11 +174,7 @@ const mockPropertiesBase = [
   }
 ].map(property => ({
   ...property,
-  transactionType: Math.random() > 0.5 ? ("Vente" as const) : ("Location" as const),
-  status: "available" as const,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  bedrooms: property.rooms - 2 > 0 ? property.rooms - 2 : 1
+  transactionType: Math.random() > 0.5 ? ("Vente" as const) : ("Location" as const)
 }));
 
 export const addCoordinatesToProperty = (property: Omit<Property, 'coordinates'>): Property => ({

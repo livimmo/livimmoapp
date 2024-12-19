@@ -1,7 +1,6 @@
 import { Agent } from "@/types/agent";
 import { Badge } from "@/components/ui/badge";
 import { StarRating } from "@/components/ratings/StarRating";
-import { AgentRatings } from "@/components/ratings/AgentRatings";
 import { MapPin } from "lucide-react";
 
 interface AgentHeaderProps {
@@ -36,11 +35,6 @@ export const AgentHeader = ({ agent }: AgentHeaderProps) => {
         
         <div className="flex items-center gap-2">
           <StarRating rating={agent.rating} totalReviews={agent.totalReviews} />
-        </div>
-
-        <div className="pt-4">
-          <h3 className="text-lg font-semibold mb-3">Évaluations détaillées</h3>
-          <AgentRatings agentId={agent.id.toString()} />
         </div>
       </div>
     </div>

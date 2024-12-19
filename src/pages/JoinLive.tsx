@@ -9,7 +9,6 @@ import { type Property } from "@/types/property";
 import { generateMockCoordinates } from "@/data/mockProperties";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
-import { createDefaultProperty } from "@/types/property";
 
 const mockLiveData = {
   viewerCount: 45,
@@ -56,7 +55,7 @@ export const JoinLive = () => {
     // Simulate loading property data
     const timer = setTimeout(() => {
       const location = "Marrakech";
-      setProperty(createDefaultProperty({
+      setProperty({
         id: 1,
         title: "Villa Moderne avec Piscine",
         price: 2500000,
@@ -78,7 +77,7 @@ export const JoinLive = () => {
         },
         coordinates: generateMockCoordinates(location),
         transactionType: "Vente" as const,
-      }));
+      });
       setIsLoading(false);
     }, 1500);
 

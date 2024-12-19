@@ -9,7 +9,6 @@ import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { scheduledLives, liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
-import { createDefaultProperty } from "@/types/property";
 
 const Lives = () => {
   const [currentLivesViewMode, setCurrentLivesViewMode] = useState<"list" | "map">("list");
@@ -53,37 +52,35 @@ const Lives = () => {
   const filteredReplayLives = filterLives(replayLives);
 
   // Convert current lives to Property format for the map
-  const currentLiveProperties: Property[] = filteredCurrentLives.map((live) => 
-    createDefaultProperty({
-      id: live.id,
-      title: live.title,
-      price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
-      location: live.location,
-      type: live.type,
-      surface: 0,
-      rooms: 0,
-      bathrooms: 0,
-      description: live.description || "",
-      features: [],
-      images: [live.thumbnail],
-      hasLive: true,
-      liveDate: live.date,
-      agent: {
-        name: live.agent,
-        image: "",
-        phone: "",
-        email: "",
-      },
-      coordinates: {
-        lat: 31.7917 + Math.random() * 2 - 1,
-        lng: -7.0926 + Math.random() * 2 - 1,
-      },
-      isLiveNow: true,
-      viewers: live.viewers,
-      remainingSeats: live.availableSeats,
-      transactionType: Math.random() > 0.5 ? "Vente" : "Location"
-    })
-  );
+  const currentLiveProperties: Property[] = filteredCurrentLives.map((live) => ({
+    id: live.id,
+    title: live.title,
+    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
+    location: live.location,
+    type: live.type,
+    surface: 0,
+    rooms: 0,
+    bathrooms: 0,
+    description: live.description || "",
+    features: [],
+    images: [live.thumbnail],
+    hasLive: true,
+    liveDate: live.date,
+    agent: {
+      name: live.agent,
+      image: "",
+      phone: "",
+      email: "",
+    },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2 - 1,
+      lng: -7.0926 + Math.random() * 2 - 1,
+    },
+    isLiveNow: true,
+    viewers: live.viewers,
+    remainingSeats: live.availableSeats,
+    transactionType: Math.random() > 0.5 ? "Vente" : "Location"
+  }));
 
   // Suggestions based on available locations and types
   const suggestions = Array.from(new Set([
