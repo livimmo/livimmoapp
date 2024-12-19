@@ -4,23 +4,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Calendar } from "@/components/ui/calendar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
-import { CalendarIcon, Euro, Video, House } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { OfferTabContent } from "./offer/OfferTabContent";
+import { VisitTabContent } from "./offer/VisitTabContent";
 
 interface LiveOfferDialogProps {
   title: string;
@@ -127,126 +116,27 @@ export const LiveOfferDialog = ({ title, price, isOpen, onClose }: LiveOfferDial
             <TabsTrigger value="visit">Réserver une visite</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="offer" className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="amount">Montant de votre offre (DH)</Label>
-              <Input
-                id="amount"
-                type="number"
-                value={offerAmount}
-                onChange={(e) => setOfferAmount(Number(e.target.value))}
-                className="text-lg"
-              />
-              <p className="text-sm text-muted-foreground">
-                Prix demandé : {price.toLocaleString()} DH
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Date de validité de l'offre</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start text-left font-normal"
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {validUntil ? (
-                      format(validUntil, 'dd MMMM yyyy', { locale: fr })
-                    ) : (
-                      <span>Sélectionner une date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-white" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={validUntil}
-                    onSelect={setValidUntil}
-                    initialFocus
-                    disabled={(date) => date < new Date()}
-                    className="bg-white rounded-md border"
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-
-            <Button onClick={handleOffer} className="w-full">
-              <Euro className="w-4 h-4 mr-2" />
-              Envoyer l'offre
-            </Button>
+          <TabsContent value="offer">
+            <OfferTabContent
+              offerAmount={offerAmount}
+              validUntil={validUntil}
+              price={price}
+              onOfferAmountChange={setOfferAmount}
+              onValidUntilChange={setValidUntil}
+              onSubmit={handleOffer}
+            />
           </TabsContent>
 
-          <TabsContent value="visit" className="space-y-4">
-            <div className="space-y-2">
-              <Label>Type de visite</Label>
-              <Select value={visitType} onValueChange={setVisitType}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="physical">
-                    <div className="flex items-center">
-                      <House className="w-4 h-4 mr-2" />
-                      Visite physique
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="virtual">
-                    <div className="flex items-center">
-                      <Video className="w-4 h-4 mr-2" />
-                      Visite virtuelle
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Date de la visite</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start text-left font-normal"
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {visitDate ? (
-                      format(visitDate, 'dd MMMM yyyy', { locale: fr })
-                    ) : (
-                      <span>Sélectionner une date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-white" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={visitDate}
-                    onSelect={setVisitDate}
-                    initialFocus
-                    disabled={(date) => date < new Date()}
-                    className="bg-white rounded-md border"
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Heure de la visite</Label>
-              <Input
-                type="time"
-                value={visitTime}
-                onChange={(e) => setVisitTime(e.target.value)}
-              />
-            </div>
-
-            <Button onClick={handleVisit} className="w-full">
-              {visitType === 'physical' ? (
-                <House className="w-4 h-4 mr-2" />
-              ) : (
-                <Video className="w-4 h-4 mr-2" />
-              )}
-              Réserver la visite
-            </Button>
+          <TabsContent value="visit">
+            <VisitTabContent
+              visitType={visitType}
+              visitDate={visitDate}
+              visitTime={visitTime}
+              onVisitTypeChange={setVisitType}
+              onVisitDateChange={setVisitDate}
+              onVisitTimeChange={setVisitTime}
+              onSubmit={handleVisit}
+            />
           </TabsContent>
         </Tabs>
       </DialogContent>
