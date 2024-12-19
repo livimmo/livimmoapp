@@ -11,6 +11,8 @@ import { LiveHeader } from "./LiveHeader";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AIChat } from "./AIChat";
+import { LiveTranscription } from "./LiveTranscription";
+import { LiveChapters } from "./LiveChapters";
 
 const mockProperty = {
   id: 1,
@@ -52,6 +54,7 @@ export const LiveStream = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
+  const [showTranscription, setShowTranscription] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const otherLivesCount = liveStreams.filter(live => live.id !== currentLiveId).length;
 
@@ -60,6 +63,11 @@ export const LiveStream = ({
 
   const handleLiveSelect = (liveId: number) => {
     navigate(`/live/${liveId}`);
+  };
+
+  const handleChapterClick = (timestamp: string) => {
+    // Logique pour naviguer vers le timestamp dans la vidéo
+    console.log("Navigation vers le timestamp:", timestamp);
   };
 
   const getEmbedUrl = () => {
@@ -130,7 +138,7 @@ export const LiveStream = ({
               >
                 <button className={cn(
                   "px-6 py-3 rounded-full font-medium flex items-center gap-2 transition-colors",
-                  isReplay ? "bg-primary text-white hover:bg-primary/90" : "bg-red-500 text-white hover:bg-red-600"
+                  isReplay ? "bg-blue-500 text-white hover:bg-blue-600" : "bg-red-500 text-white hover:bg-red-600"
                 )}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polygon points="5 3 19 12 5 21 5 3" />
@@ -187,6 +195,12 @@ export const LiveStream = ({
             />
           </div>
         )}
+
+        {/* Nouvelle section pour la transcription et les chapitres */}
+        <div className="absolute top-20 left-4 bottom-[200px] w-80 space-y-4 z-[51]">
+          <LiveTranscription isReplay={isReplay} />
+          {isReplay && <LiveChapters onChapterClick={handleChapterClick} isReplay={true} />}
+        </div>
       </div>
     </div>
   );
