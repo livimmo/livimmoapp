@@ -6,6 +6,7 @@ import { DateTimeSelection } from "./DateTimeSelection";
 import { VisitConfirmation } from "./VisitConfirmation";
 import { type Property } from "@/types/property";
 import { useToast } from "@/hooks/use-toast";
+import { Calendar } from "lucide-react";
 
 interface PrivateVisitDialogProps {
   isOpen: boolean;
@@ -48,6 +49,7 @@ export const PrivateVisitDialog = ({
     toast({
       title: "Demande envoyée !",
       description: "Votre demande de visite privée a été envoyée. Vous recevrez une confirmation sous peu.",
+      icon: <Calendar className="h-4 w-4" />,
     });
 
     onClose();
