@@ -14,7 +14,7 @@ import { LiveTranscription } from "./LiveTranscription";
 import { LiveChapters } from "./LiveChapters";
 import { LiveVideoPlayer } from "./LiveVideoPlayer";
 
-const mockProperty = {
+const mockProperty = createDefaultProperty({
   id: 1,
   title: "Villa Moderne avec Piscine",
   price: 2500000,
@@ -39,7 +39,7 @@ const mockProperty = {
     lng: -7.0926,
   },
   transactionType: "Vente" as const,
-};
+});
 
 interface LiveStreamProps {
   videoId: string;

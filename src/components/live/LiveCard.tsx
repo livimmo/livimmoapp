@@ -4,6 +4,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useState } from "react";
 import { LiveStream } from "./LiveStream";
 import { Radio } from "lucide-react";
+import { createDefaultProperty } from "@/types/property";
 
 interface LiveCardProps {
   live: LiveEvent;
@@ -12,7 +13,7 @@ interface LiveCardProps {
 export const LiveCard = ({ live }: LiveCardProps) => {
   const [showLive, setShowLive] = useState(false);
 
-  const propertyData = {
+  const propertyData = createDefaultProperty({
     id: live.id,
     title: live.title,
     price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
@@ -44,7 +45,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
     remainingSeats: live.availableSeats,
     isUserRegistered: false,
     transactionType: "Vente" as const,
-  };
+  });
 
   return (
     <>
