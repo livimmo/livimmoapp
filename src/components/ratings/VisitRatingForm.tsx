@@ -11,10 +11,11 @@ type RatingCategory = Database["public"]["Enums"]["rating_category"];
 interface VisitRatingFormProps {
   visitId: string;
   agentId: string;
+  userId: string; // Ajout de userId aux props
   onRatingSubmitted?: () => void;
 }
 
-export const VisitRatingForm = ({ visitId, agentId, onRatingSubmitted }: VisitRatingFormProps) => {
+export const VisitRatingForm = ({ visitId, agentId, userId, onRatingSubmitted }: VisitRatingFormProps) => {
   const { toast } = useToast();
   const [ratings, setRatings] = useState<Record<RatingCategory, number>>({
     communication: 0,
@@ -53,6 +54,7 @@ export const VisitRatingForm = ({ visitId, agentId, onRatingSubmitted }: VisitRa
         supabase.from('visit_ratings').insert({
           visit_id: visitId,
           agent_id: agentId,
+          user_id: userId, // Ajout du user_id
           category,
           rating,
           comment: category === 'overall' ? comment : null,
