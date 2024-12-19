@@ -43,7 +43,6 @@ export const PropertyInfo = ({
   isLiveNow,
   remainingSeats,
   isUserRegistered,
-  agent,
 }: PropertyInfoProps) => {
   return (
     <div className="p-4">
@@ -62,16 +61,6 @@ export const PropertyInfo = ({
           </Button>
         </div>
       )}
-      <div className="mt-4">
-        <h3 className="text-lg font-semibold">Agent</h3>
-        <div className="flex items-center gap-2">
-          <img src={agent.image} alt={agent.name} className="h-10 w-10 rounded-full" />
-          <div>
-            <p className="text-sm font-medium">{agent.name}</p>
-            <p className="text-xs text-gray-500">{agent.company || 'Agent indépendant'}</p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
