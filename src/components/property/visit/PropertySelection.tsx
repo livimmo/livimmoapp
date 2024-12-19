@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { type Property } from "@/types/property";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Search } from "lucide-react";
-import { mockProperties } from "@/data/mockProperties";
+import { type Property } from "@/types/property";
 
 interface PropertySelectionProps {
   selectedProperties: Property[];
@@ -18,11 +17,12 @@ export function PropertySelection({
   initialProperty,
 }: PropertySelectionProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const properties = mockProperties;
+  const [availableProperties] = useState<Property[]>(
+    initialProperty ? [initialProperty] : []
+  );
 
-  const filteredProperties = properties.filter((property) =>
-    property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    property.location.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProperties = availableProperties.filter((property) =>
+    property.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handlePropertyToggle = (property: Property) => {
@@ -37,39 +37,34 @@ export function PropertySelection({
   return (
     <div className="space-y-4">
       <div className="relative">
-        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Rechercher un bien..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-8"
+          className="pl-10"
         />
       </div>
 
-      <ScrollArea className="h-[300px] pr-4">
+      <ScrollArea className="h-[300px] rounded-md border p-4">
         <div className="space-y-4">
           {filteredProperties.map((property) => (
-            <div
-              key={property.id}
-              className="flex items-start space-x-4 rounded-lg border p-4 hover:bg-accent"
-            >
+            <div key={property.id} className="flex items-start space-x-4">
               <Checkbox
+                id={`property-${property.id}`}
                 checked={selectedProperties.some((p) => p.id === property.id)}
                 onCheckedChange={() => handlePropertyToggle(property)}
               />
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center justify-between">
-                  <p className="font-medium">{property.title}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {property.price.toLocaleString()} DH
-                  </p>
-                </div>
-                <p className="text-sm text-muted-foreground">{property.location}</p>
-                <div className="flex text-sm text-muted-foreground">
-                  <span>{property.surface} m²</span>
-                  <span className="mx-2">•</span>
-                  <span>{property.rooms} pièces</span>
-                </div>
+              <div className="grid gap-1.5">
+                <label
+                  htmlFor={`property-${property.id}`}
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  {property.title}
+                </label>
+                <p className="text-sm text-muted-foreground">
+                  {property.location}
+                </p>
               </div>
             </div>
           ))}
