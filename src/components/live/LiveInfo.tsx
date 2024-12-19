@@ -1,19 +1,13 @@
 import { Property } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, ExternalLink, Heart, Radio, MessageSquare, X, ThumbsUp, Smile } from "lucide-react";
+import { Users, ExternalLink, Heart, Radio, MessageSquare, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { LiveOfferDialog } from "./LiveOfferDialog";
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 interface LiveInfoProps {
   property: Property;
@@ -37,8 +31,6 @@ export const LiveInfo = ({
   const [offerCount, setOfferCount] = useState(12);
   const isMobile = useIsMobile();
   const [isFavorite, setIsFavorite] = useState(false);
-  const [reactionCount, setReactionCount] = useState({ heart: 0, like: 0, clap: 0 });
-  const [lastReaction, setLastReaction] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Animation des offres
@@ -51,15 +43,6 @@ export const LiveInfo = ({
     }, 3000);
     return () => clearInterval(interval);
   }, []);
-
-  const handleReaction = (type: 'heart' | 'like' | 'clap') => {
-    setReactionCount(prev => ({
-      ...prev,
-      [type]: prev[type] + 1
-    }));
-    setLastReaction(type);
-    setTimeout(() => setLastReaction(null), 1000);
-  };
 
   return (
     <Card className={cn(
@@ -117,33 +100,17 @@ export const LiveInfo = ({
             isMobile ? "w-full justify-between" : "shrink-0"
           )}>
             <div className="flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="bg-[#ea384c]/10 hover:bg-[#ea384c]/20 text-[#ea384c] relative"
-                  >
-                    <Heart className={`h-6 w-6 ${lastReaction === 'heart' ? 'animate-bounce' : ''}`} />
-                    {reactionCount.heart > 0 && (
-                      <Badge className="absolute -top-2 -right-2 bg-[#ea384c] text-white text-xs">
-                        {reactionCount.heart}
-                      </Badge>
-                    )}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => handleReaction('heart')}>
-                    <Heart className="w-4 h-4 mr-2 text-[#ea384c]" /> Cœur
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleReaction('like')}>
-                    <ThumbsUp className="w-4 h-4 mr-2 text-[#ea384c]" /> Like
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleReaction('clap')}>
-                    <Smile className="w-4 h-4 mr-2 text-[#ea384c]" /> Applaudir
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "bg-[#ea384c]/10 hover:bg-[#ea384c]/20 text-[#ea384c] transition-colors",
+                  isFavorite && "bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
+                )}
+                onClick={() => setIsFavorite(!isFavorite)}
+              >
+                <Heart className="h-6 w-6" />
+              </Button>
               <Button
                 variant="ghost"
                 size="icon"
