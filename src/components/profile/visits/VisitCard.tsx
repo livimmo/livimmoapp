@@ -1,21 +1,18 @@
 import { Visit } from "@/types/visit";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Calendar, Clock, MapPin, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, MapPin, Video } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { useNavigate } from "react-router-dom";
 
 interface VisitCardProps {
   visit: Visit;
-  onSelect: () => void;
+  onCancel: () => void;
+  onReschedule: () => void;
 }
 
-export const VisitCard = ({ visit, onSelect }: VisitCardProps) => {
-  const navigate = useNavigate();
-
-  const getStatusBadge = (status: Visit["status"]) => {
+export const VisitCard = ({ visit, onCancel, onReschedule }: VisitCardProps) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case "pending":
         return <Badge variant="secondary">En attente</Badge>;
@@ -27,72 +24,59 @@ export const VisitCard = ({ visit, onSelect }: VisitCardProps) => {
         return <Badge variant="default" className="bg-green-500">Terminée</Badge>;
       case "cancelled":
         return <Badge variant="destructive">Annulée</Badge>;
+      default:
+        return null;
     }
   };
 
-  const handleJoinLive = () => {
-    navigate(`/join-live/${visit.propertyId}`);
-  };
-
   return (
-    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={onSelect}>
-      <CardContent className="p-4">
-        <div className="flex gap-4">
-          <img
-            src={visit.propertyImage}
-            alt={visit.propertyTitle}
-            className="w-24 h-24 object-cover rounded"
-          />
-          <div className="flex-1 space-y-2">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="font-medium">{visit.propertyTitle}</h3>
-                <p className="text-sm text-muted-foreground flex items-center gap-1">
-                  <MapPin className="h-4 w-4" />
-                  {visit.propertyLocation}
-                </p>
-              </div>
-              {getStatusBadge(visit.status)}
-            </div>
-            
-            <div className="flex items-center gap-4 text-sm">
-              <span className="flex items-center gap-1">
-                <Calendar className="h-4 w-4" />
-                {format(visit.date, "d MMMM yyyy", { locale: fr })}
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock className="h-4 w-4" />
-                {visit.time}
+    <div className="bg-white rounded-lg shadow-md p-4">
+      <div className="flex items-start gap-4">
+        <img
+          src={visit.propertyImage}
+          alt={visit.propertyTitle}
+          className="w-24 h-24 object-cover rounded-lg"
+        />
+        <div className="flex-1">
+          <div className="flex items-start justify-between">
+            <h3 className="font-semibold">{visit.propertyTitle}</h3>
+            {getStatusBadge(visit.status)}
+          </div>
+          
+          <div className="mt-2 space-y-1 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              <span>
+                {format(new Date(visit.date), "EEEE d MMMM yyyy", { locale: fr })}
               </span>
             </div>
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              <span>{visit.time}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <User className="h-4 w-4" />
+              <span>{visit.agent.name}</span>
+            </div>
+          </div>
 
-            <div className="flex items-center justify-between mt-2">
-              <div className="flex items-center gap-2">
-                <img
-                  src={visit.agentImage}
-                  alt={visit.agentName}
-                  className="w-8 h-8 rounded-full"
-                />
-                <span className="text-sm">{visit.agentName}</span>
-              </div>
-              {visit.status === "confirmed" && (
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleJoinLive();
-                  }}
-                  className="gap-2"
-                >
-                  <Video className="h-4 w-4" />
+          {visit.status === "pending" || visit.status === "confirmed" ? (
+            <div className="mt-4 flex gap-2">
+              {visit.status === "confirmed" && visit.isLive && (
+                <Button variant="default" className="w-full" onClick={() => window.location.href = visit.liveUrl || ''}>
                   Rejoindre le live
                 </Button>
               )}
+              <Button variant="outline" className="w-full" onClick={onReschedule}>
+                Reprogrammer
+              </Button>
+              <Button variant="destructive" className="w-full" onClick={onCancel}>
+                Annuler
+              </Button>
             </div>
-          </div>
+          ) : null}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };

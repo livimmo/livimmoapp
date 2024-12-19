@@ -28,7 +28,7 @@ export const PrivateVisitsManagement = () => {
     if (!selectedVisit) return;
 
     setVisits(visits.map(v =>
-      v.id === selectedVisit.id ? { ...v, status: "cancelled" } : v
+      v.id === selectedVisit.id ? { ...v, status: "cancelled" as const } : v
     ));
 
     toast({
@@ -36,6 +36,7 @@ export const PrivateVisitsManagement = () => {
       description: "La visite a été annulée avec succès.",
     });
 
+    setShowCancellationDialog(false);
     setSelectedVisit(null);
   };
 
@@ -44,7 +45,7 @@ export const PrivateVisitsManagement = () => {
 
     setVisits(visits.map(v =>
       v.id === selectedVisit.id
-        ? { ...v, date: newDate, time: newTime, status: "pending" }
+        ? { ...v, date: newDate, time: newTime, status: "pending" as const }
         : v
     ));
 
@@ -53,11 +54,8 @@ export const PrivateVisitsManagement = () => {
       description: "La nouvelle date a été enregistrée avec succès.",
     });
 
+    setShowReschedulingDialog(false);
     setSelectedVisit(null);
-  };
-
-  const getFilteredVisits = (status: Visit["status"]) => {
-    return visits.filter(v => v.status === status);
   };
 
   return (
@@ -73,15 +71,50 @@ export const PrivateVisitsManagement = () => {
           <TabsTrigger value="cancelled">Annulées</TabsTrigger>
         </TabsList>
 
-        {["pending", "confirmed", "ongoing", "completed", "cancelled"].map((status) => (
-          <TabsContent key={status} value={status}>
-            <VisitsList
-              visits={getFilteredVisits(status as Visit["status"])}
-              onCancel={handleCancel}
-              onReschedule={handleReschedule}
-            />
-          </TabsContent>
-        ))}
+        <TabsContent value="pending">
+          <VisitsList
+            visits={visits}
+            status="pending"
+            onCancel={handleCancel}
+            onReschedule={handleReschedule}
+          />
+        </TabsContent>
+
+        <TabsContent value="confirmed">
+          <VisitsList
+            visits={visits}
+            status="confirmed"
+            onCancel={handleCancel}
+            onReschedule={handleReschedule}
+          />
+        </TabsContent>
+
+        <TabsContent value="ongoing">
+          <VisitsList
+            visits={visits}
+            status="ongoing"
+            onCancel={handleCancel}
+            onReschedule={handleReschedule}
+          />
+        </TabsContent>
+
+        <TabsContent value="completed">
+          <VisitsList
+            visits={visits}
+            status="completed"
+            onCancel={handleCancel}
+            onReschedule={handleReschedule}
+          />
+        </TabsContent>
+
+        <TabsContent value="cancelled">
+          <VisitsList
+            visits={visits}
+            status="cancelled"
+            onCancel={handleCancel}
+            onReschedule={handleReschedule}
+          />
+        </TabsContent>
       </Tabs>
 
       {selectedVisit && (

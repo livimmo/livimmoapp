@@ -1,15 +1,20 @@
+export type VisitStatus = "pending" | "confirmed" | "ongoing" | "completed" | "cancelled";
+
 export interface Visit {
-  id: string;
-  propertyId: string;
+  id: number;
+  propertyId: number;
   propertyTitle: string;
   propertyImage: string;
-  propertyLocation: string;
   date: Date;
   time: string;
-  status: "pending" | "confirmed" | "ongoing" | "completed" | "cancelled";
-  agentId: string;
-  agentName: string;
-  agentImage: string;
-  agentPhone: string;
-  agentEmail: string;
+  status: VisitStatus;
+  agent: {
+    id: number;
+    name: string;
+    image: string;
+    phone: string;
+    email: string;
+  };
+  isLive?: boolean;
+  liveUrl?: string;
 }
