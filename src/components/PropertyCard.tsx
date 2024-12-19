@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { ChatButton } from "./chat/ChatButton";
+import { VisitBookingButton } from "./property/VisitBookingButton";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -112,6 +113,7 @@ export const PropertyCard = ({
             </div>
           </div>
         </div>
+        
         <PropertyInfo
           id={id}
           title={title}
@@ -128,6 +130,7 @@ export const PropertyCard = ({
           isUserRegistered={isUserRegistered}
           agent={agent}
         />
+        
         <div className="px-4 py-3 border-t flex flex-col gap-2 bg-gray-50">
           <div 
             className="flex items-center justify-between cursor-pointer hover:bg-gray-100 transition-colors p-2 rounded-lg"
@@ -151,12 +154,20 @@ export const PropertyCard = ({
             )}
           </div>
           
-          <ChatButton
-            agentId={agent.id?.toString() || "0"}
-            agentName={agent.name}
-            propertyId={id}
-            propertyTitle={title}
-          />
+          <div className="flex gap-2">
+            <ChatButton
+              agentId={agent.id?.toString() || "0"}
+              agentName={agent.name}
+              propertyId={id}
+              propertyTitle={title}
+            />
+            <VisitBookingButton
+              propertyId={id}
+              propertyTitle={title}
+              agentId={agent.id}
+              agentName={agent.name}
+            />
+          </div>
         </div>
       </div>
 
