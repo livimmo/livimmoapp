@@ -1,81 +1,80 @@
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Property } from "@/types/property";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { type Property } from "@/types/property";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 interface VisitConfirmationProps {
   selectedProperties: Property[];
   selectedDate: Date | undefined;
-  selectedTime: string;
+  selectedTime: string | undefined;
   comment: string;
-  onCommentChange: (comment: string) => void;
-  onConfirm: () => void;
-  onBack: () => void;
+  setComment: (comment: string) => void;
 }
 
-export const VisitConfirmation = ({
+export function VisitConfirmation({
   selectedProperties,
   selectedDate,
   selectedTime,
   comment,
-  onCommentChange,
-  onConfirm,
-  onBack,
-}: VisitConfirmationProps) => {
-  if (!selectedDate) return null;
+  setComment,
+}: VisitConfirmationProps) {
+  const getTimeLabel = (time: string) => {
+    switch (time) {
+      case "morning":
+        return "Matin (9h-12h)";
+      case "afternoon":
+        return "Après-midi (14h-17h)";
+      case "evening":
+        return "Soir (17h-19h)";
+      default:
+        return "";
+    }
+  };
 
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <h3 className="font-medium">Biens sélectionnés</h3>
+        <h4 className="font-medium">Biens sélectionnés</h4>
         <ScrollArea className="h-[200px] rounded-md border p-4">
-          {selectedProperties.map((property) => (
-            <div
-              key={property.id}
-              className="flex items-center gap-4 py-2 border-b last:border-0"
-            >
-              <img
-                src={property.images[0]}
-                alt={property.title}
-                className="w-16 h-16 object-cover rounded-md"
-              />
-              <div>
-                <h4 className="font-medium">{property.title}</h4>
-                <p className="text-sm text-muted-foreground">
-                  {property.location}
-                </p>
+          <div className="space-y-4">
+            {selectedProperties.map((property) => (
+              <div key={property.id} className="space-y-1">
+                <div className="flex justify-between">
+                  <p className="font-medium">{property.title}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {property.price.toLocaleString()} DH
+                  </p>
+                </div>
+                <p className="text-sm text-muted-foreground">{property.location}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </ScrollArea>
       </div>
 
-      <div>
-        <h3 className="font-medium mb-2">Date et heure</h3>
-        <p>
-          {format(selectedDate, "EEEE d MMMM yyyy", { locale: fr })} à{" "}
-          {selectedTime}
-        </p>
+      <div className="space-y-2">
+        <h4 className="font-medium">Date et heure</h4>
+        <div className="rounded-md border p-4">
+          <p>
+            {selectedDate && format(selectedDate, "EEEE d MMMM yyyy", { locale: fr })}
+          </p>
+          <p className="text-muted-foreground">
+            {selectedTime && getTimeLabel(selectedTime)}
+          </p>
+        </div>
       </div>
 
       <div className="space-y-2">
-        <h3 className="font-medium">Commentaire (optionnel)</h3>
+        <Label htmlFor="comment">Commentaire (facultatif)</Label>
         <Textarea
+          id="comment"
           placeholder="Ajoutez des précisions sur votre visite..."
           value={comment}
-          onChange={(e) => onCommentChange(e.target.value)}
-          className="h-24"
+          onChange={(e) => setComment(e.target.value)}
         />
-      </div>
-
-      <div className="flex justify-between pt-4">
-        <Button variant="outline" onClick={onBack}>
-          Retour
-        </Button>
-        <Button onClick={onConfirm}>Confirmer la visite</Button>
       </div>
     </div>
   );
-};
+}

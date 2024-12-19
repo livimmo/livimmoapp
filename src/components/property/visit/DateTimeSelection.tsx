@@ -1,51 +1,35 @@
 import { Calendar } from "@/components/ui/calendar";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { fr } from "date-fns/locale";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 interface DateTimeSelectionProps {
   selectedDate: Date | undefined;
-  selectedTime: string;
-  onDateChange: (date: Date | undefined) => void;
-  onTimeChange: (time: string) => void;
-  onNext: () => void;
-  onBack: () => void;
-  canProceed: boolean;
+  setSelectedDate: (date: Date | undefined) => void;
+  selectedTime: string | undefined;
+  setSelectedTime: (time: string) => void;
 }
 
-const timeSlots = [
-  "09:00",
-  "10:00",
-  "11:00",
-  "14:00",
-  "15:00",
-  "16:00",
-  "17:00",
-];
-
-export const DateTimeSelection = ({
+export function DateTimeSelection({
   selectedDate,
+  setSelectedDate,
   selectedTime,
-  onDateChange,
-  onTimeChange,
-  onNext,
-  onBack,
-  canProceed,
-}: DateTimeSelectionProps) => {
+  setSelectedTime,
+}: DateTimeSelectionProps) {
+  const timeSlots = [
+    { label: "Matin (9h-12h)", value: "morning" },
+    { label: "Après-midi (14h-17h)", value: "afternoon" },
+    { label: "Soir (17h-19h)", value: "evening" },
+  ];
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <h3 className="font-medium">Sélectionnez une date</h3>
+        <Label>Date de visite</Label>
         <Calendar
           mode="single"
           selected={selectedDate}
-          onSelect={onDateChange}
+          onSelect={setSelectedDate}
           locale={fr}
           disabled={(date) => date < new Date()}
           className="rounded-md border"
@@ -53,29 +37,20 @@ export const DateTimeSelection = ({
       </div>
 
       <div className="space-y-2">
-        <h3 className="font-medium">Sélectionnez une heure</h3>
-        <Select value={selectedTime} onValueChange={onTimeChange}>
-          <SelectTrigger>
-            <SelectValue placeholder="Choisir une heure" />
-          </SelectTrigger>
-          <SelectContent>
-            {timeSlots.map((time) => (
-              <SelectItem key={time} value={time}>
-                {time}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex justify-between pt-4">
-        <Button variant="outline" onClick={onBack}>
-          Retour
-        </Button>
-        <Button onClick={onNext} disabled={!canProceed}>
-          Suivant
-        </Button>
+        <Label>Horaire préféré</Label>
+        <RadioGroup
+          value={selectedTime}
+          onValueChange={setSelectedTime}
+          className="grid gap-4"
+        >
+          {timeSlots.map((slot) => (
+            <div key={slot.value} className="flex items-center space-x-2">
+              <RadioGroupItem value={slot.value} id={slot.value} />
+              <Label htmlFor={slot.value}>{slot.label}</Label>
+            </div>
+          ))}
+        </RadioGroup>
       </div>
     </div>
   );
-};
+}

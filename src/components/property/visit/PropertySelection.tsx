@@ -1,42 +1,36 @@
-import { Property } from "@/types/property";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 import { useState } from "react";
+import { type Property } from "@/types/property";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Search } from "lucide-react";
 import { mockProperties } from "@/data/mockProperties";
 
 interface PropertySelectionProps {
   selectedProperties: Property[];
-  onPropertySelect: (properties: Property[]) => void;
+  setSelectedProperties: (properties: Property[]) => void;
   initialProperty?: Property;
-  onNext: () => void;
-  canProceed: boolean;
 }
 
-export const PropertySelection = ({
+export function PropertySelection({
   selectedProperties,
-  onPropertySelect,
+  setSelectedProperties,
   initialProperty,
-  onNext,
-  canProceed,
-}: PropertySelectionProps) => {
+}: PropertySelectionProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const properties = mockProperties;
 
-  const filteredProperties = mockProperties.filter(
-    (property) =>
-      property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      property.location.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProperties = properties.filter((property) =>
+    property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    property.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const toggleProperty = (property: Property) => {
+  const handlePropertyToggle = (property: Property) => {
     const isSelected = selectedProperties.some((p) => p.id === property.id);
     if (isSelected) {
-      onPropertySelect(selectedProperties.filter((p) => p.id !== property.id));
+      setSelectedProperties(selectedProperties.filter((p) => p.id !== property.id));
     } else {
-      onPropertySelect([...selectedProperties, property]);
+      setSelectedProperties([...selectedProperties, property]);
     }
   };
 
@@ -52,44 +46,35 @@ export const PropertySelection = ({
         />
       </div>
 
-      <ScrollArea className="h-[400px] pr-4">
-        <div className="space-y-2">
+      <ScrollArea className="h-[300px] pr-4">
+        <div className="space-y-4">
           {filteredProperties.map((property) => (
-            <Card
+            <div
               key={property.id}
-              className="p-4 cursor-pointer hover:bg-accent transition-colors"
-              onClick={() => toggleProperty(property)}
+              className="flex items-start space-x-4 rounded-lg border p-4 hover:bg-accent"
             >
-              <div className="flex items-start gap-4">
-                <Checkbox
-                  checked={selectedProperties.some((p) => p.id === property.id)}
-                  onCheckedChange={() => toggleProperty(property)}
-                />
-                <img
-                  src={property.images[0]}
-                  alt={property.title}
-                  className="w-24 h-24 object-cover rounded-md"
-                />
-                <div>
-                  <h3 className="font-medium">{property.title}</h3>
+              <Checkbox
+                checked={selectedProperties.some((p) => p.id === property.id)}
+                onCheckedChange={() => handlePropertyToggle(property)}
+              />
+              <div className="flex-1 space-y-1">
+                <div className="flex items-center justify-between">
+                  <p className="font-medium">{property.title}</p>
                   <p className="text-sm text-muted-foreground">
-                    {property.location}
-                  </p>
-                  <p className="text-sm font-medium">
                     {property.price.toLocaleString()} DH
                   </p>
                 </div>
+                <p className="text-sm text-muted-foreground">{property.location}</p>
+                <div className="flex text-sm text-muted-foreground">
+                  <span>{property.surface} m²</span>
+                  <span className="mx-2">•</span>
+                  <span>{property.rooms} pièces</span>
+                </div>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       </ScrollArea>
-
-      <div className="flex justify-end pt-4">
-        <Button onClick={onNext} disabled={!canProceed}>
-          Suivant
-        </Button>
-      </div>
     </div>
   );
-};
+}
