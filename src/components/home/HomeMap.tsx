@@ -5,10 +5,7 @@ import { Property } from '@/types/property';
 import { liveStreams, scheduledLives } from '@/data/mockLives';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { Clock, Users } from 'lucide-react';
 import { ReservationForm } from './ReservationForm';
-import { Dialog } from '../ui/dialog';
 
 interface HomeMapProps {
   properties: Property[];
@@ -18,50 +15,60 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoibGl2aW1tbyIsImEiOiJjbHRwOWZ2Z2gwMXRqMmlxeDVrOXV
 
 export const HomeMap = ({ properties }: HomeMapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const markersRef = useRef<mapboxgl.Marker[]>([]);
   const [map, setMap] = useState<mapboxgl.Map | null>(null);
+  const markersRef = useRef<mapboxgl.Marker[]>([]);
   const navigate = useNavigate();
   const [selectedLiveType, setSelectedLiveType] = useState<'current' | 'scheduled'>('current');
   const [showReservationDialog, setShowReservationDialog] = useState(false);
   const [selectedLive, setSelectedLive] = useState<any>(null);
 
+  // Initialize map
   useEffect(() => {
     if (!mapContainer.current || map) return;
 
-    mapboxgl.accessToken = MAPBOX_TOKEN;
-    
-    const newMap = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-7.0926, 31.7917],
-      zoom: 5
-    });
+    const initializeMap = () => {
+      mapboxgl.accessToken = MAPBOX_TOKEN;
+      
+      const newMap = new mapboxgl.Map({
+        container: mapContainer.current!,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [-7.0926, 31.7917],
+        zoom: 5
+      });
 
-    newMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
-    setMap(newMap);
+      newMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+      
+      // Only set the map once it's loaded
+      newMap.on('load', () => {
+        setMap(newMap);
+      });
+    };
+
+    initializeMap();
 
     return () => {
-      newMap.remove();
+      if (map) {
+        map.remove();
+        setMap(null);
+      }
     };
   }, []);
 
-  const handleJoinLive = (liveId: number) => {
-    navigate(`/live/${liveId}`);
-  };
-
-  const handleReserveLive = (live: any) => {
-    setSelectedLive(live);
-    setShowReservationDialog(true);
-  };
-
+  // Handle markers
   useEffect(() => {
     if (!map) return;
 
-    markersRef.current.forEach(marker => marker.remove());
-    markersRef.current = [];
+    // Clear existing markers
+    const clearMarkers = () => {
+      markersRef.current.forEach(marker => marker.remove());
+      markersRef.current = [];
+    };
+
+    clearMarkers();
 
     const livesToShow = selectedLiveType === 'current' ? liveStreams : scheduledLives;
 
+    // Add new markers
     livesToShow.forEach(live => {
       const coordinates = {
         lat: 31.7917 + Math.random() * 2 - 1,
@@ -121,32 +128,36 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
       const popup = new mapboxgl.Popup({ offset: 25 })
         .setDOMContent(popupContent);
 
+      const marker = new mapboxgl.Marker(el)
+        .setLngLat([coordinates.lng, coordinates.lat])
+        .setPopup(popup)
+        .addTo(map);
+
       // Add click handlers after popup is added to DOM
       popup.on('open', () => {
         const joinBtn = popupContent.querySelector('.join-live-btn');
         const reserveBtn = popupContent.querySelector('.reserve-live-btn');
 
         if (joinBtn) {
-          joinBtn.addEventListener('click', () => handleJoinLive(live.id));
+          joinBtn.addEventListener('click', () => {
+            navigate(`/live/${live.id}`);
+          });
         }
         if (reserveBtn) {
-          reserveBtn.addEventListener('click', () => handleReserveLive(live));
+          reserveBtn.addEventListener('click', () => {
+            setSelectedLive(live);
+            setShowReservationDialog(true);
+          });
         }
       });
-
-      const marker = new mapboxgl.Marker(el)
-        .setLngLat([coordinates.lng, coordinates.lat])
-        .setPopup(popup)
-        .addTo(map);
 
       markersRef.current.push(marker);
     });
 
     return () => {
-      markersRef.current.forEach(marker => marker.remove());
-      markersRef.current = [];
+      clearMarkers();
     };
-  }, [map, selectedLiveType]);
+  }, [map, selectedLiveType, navigate]);
 
   return (
     <div className="space-y-4">
