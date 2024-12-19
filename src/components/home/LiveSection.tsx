@@ -4,6 +4,7 @@ import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { ReplayCard } from "@/components/live/ReplayCard";
 import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
+import { createDefaultProperty } from "@/types/property";
 
 export const LiveSection = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
@@ -13,35 +14,37 @@ export const LiveSection = () => {
   const replayLives = liveStreams.filter(live => live.status === "replay");
 
   // Convertir les lives en format Property pour la carte
-  const convertToProperty = (live: any): Property => ({
-    id: live.id,
-    title: live.title,
-    price: parseInt(live.price.replace(/[^\d]/g, "")),
-    location: live.location,
-    type: live.type,
-    surface: 0,
-    rooms: 0,
-    bathrooms: 0,
-    description: live.description || "",
-    features: [],
-    images: [live.thumbnail],
-    hasLive: true,
-    liveDate: live.date,
-    agent: {
-      name: live.agent,
-      image: "",
-      phone: "",
-      email: "",
-    },
-    coordinates: {
-      lat: 31.7917 + Math.random() * 2 - 1,
-      lng: -7.0926 + Math.random() * 2 - 1,
-    },
-    isLiveNow: live.status === "live",
-    viewers: live.viewers,
-    remainingSeats: live.availableSeats,
-    transactionType: Math.random() > 0.5 ? "Vente" : "Location",
-  });
+  const convertToProperty = (live: any): Property => {
+    return createDefaultProperty({
+      id: live.id,
+      title: live.title,
+      price: parseInt(live.price.replace(/[^\d]/g, "")),
+      location: live.location,
+      type: live.type,
+      surface: 0,
+      rooms: 0,
+      bathrooms: 0,
+      description: live.description || "",
+      features: [],
+      images: [live.thumbnail],
+      hasLive: true,
+      liveDate: live.date,
+      agent: {
+        name: live.agent,
+        image: "",
+        phone: "",
+        email: "",
+      },
+      coordinates: {
+        lat: 31.7917 + Math.random() * 2 - 1,
+        lng: -7.0926 + Math.random() * 2 - 1,
+      },
+      isLiveNow: live.status === "live",
+      viewers: live.viewers,
+      remainingSeats: live.availableSeats,
+      transactionType: Math.random() > 0.5 ? "Vente" : "Location",
+    });
+  };
 
   const currentProperties = currentLives.map(convertToProperty);
   const replayProperties = replayLives.map(convertToProperty);

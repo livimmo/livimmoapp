@@ -1,7 +1,7 @@
-import { Property } from "@/types/property";
+import { Property, createDefaultProperty } from "@/types/property";
 
 export const featuredProperties: Property[] = [
-  {
+  createDefaultProperty({
     id: 1,
     title: "Villa Moderne avec Piscine",
     price: 2500000,
@@ -78,8 +78,8 @@ export const featuredProperties: Property[] = [
         ]
       }
     }
-  },
-  {
+  }),
+  createDefaultProperty({
     id: 2,
     title: "Appartement Vue Mer",
     price: 1800000,
@@ -153,5 +153,5 @@ export const featuredProperties: Property[] = [
         ]
       }
     }
-  }
+  })
 ];
