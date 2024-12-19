@@ -17,6 +17,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<mapboxgl.Map | null>(null);
   const markersRef = useRef<mapboxgl.Marker[]>([]);
+  const popupsRef = useRef<mapboxgl.Popup[]>([]);
   const navigate = useNavigate();
   const [selectedLiveType, setSelectedLiveType] = useState<'current' | 'scheduled'>('current');
   const [showReservationDialog, setShowReservationDialog] = useState(false);
@@ -26,30 +27,23 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   useEffect(() => {
     if (!mapContainer.current || map) return;
 
-    const initializeMap = () => {
-      mapboxgl.accessToken = MAPBOX_TOKEN;
-      
-      const newMap = new mapboxgl.Map({
-        container: mapContainer.current!,
-        style: 'mapbox://styles/mapbox/streets-v12',
-        center: [-7.0926, 31.7917],
-        zoom: 5
-      });
+    mapboxgl.accessToken = MAPBOX_TOKEN;
+    
+    const newMap = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [-7.0926, 31.7917],
+      zoom: 5
+    });
 
-      newMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
-      
-      newMap.on('load', () => {
-        setMap(newMap);
-      });
-    };
-
-    initializeMap();
+    newMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    
+    newMap.on('load', () => {
+      setMap(newMap);
+    });
 
     return () => {
-      if (map) {
-        map.remove();
-        setMap(null);
-      }
+      newMap.remove();
     };
   }, []);
 
@@ -60,6 +54,17 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
     const clearMarkers = () => {
       markersRef.current.forEach(marker => marker.remove());
       markersRef.current = [];
+      popupsRef.current.forEach(popup => popup.remove());
+      popupsRef.current = [];
+    };
+
+    const handleJoinLive = (liveId: number) => {
+      navigate(`/live/${liveId}`);
+    };
+
+    const handleReserveLive = (live: any) => {
+      setSelectedLive(live);
+      setShowReservationDialog(true);
     };
 
     clearMarkers();
@@ -82,6 +87,17 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
 
       const popupContent = document.createElement('div');
       popupContent.className = 'p-2 max-w-[200px]';
+      
+      const formattedDate = selectedLiveType === 'scheduled' 
+        ? new Date(live.date).toLocaleDateString('fr-FR', {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        : null;
+
       popupContent.innerHTML = `
         <div class="relative mb-2">
           <img src="${live.thumbnail}" alt="${live.title}" class="w-full h-[100px] object-cover rounded"/>
@@ -101,53 +117,53 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         <div class="flex items-center gap-1 text-xs text-gray-500 mb-2">
           ${selectedLiveType === 'current' 
             ? `<span>${live.viewers} 👥</span>`
-            : `<span>${new Date(live.date).toLocaleDateString('fr-FR', {
-                weekday: 'short',
-                day: 'numeric',
-                month: 'short',
-                hour: '2-digit',
-                minute: '2-digit'
-              })}</span>`
+            : `<span>${formattedDate}</span>`
           }
         </div>
         <div class="flex gap-1">
-          ${selectedLiveType === 'current' 
-            ? `<button class="join-live-btn w-full px-2 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90">
-                Rejoindre
-               </button>`
-            : `<button class="reserve-live-btn w-full px-2 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90">
-                Réserver
-               </button>`
-          }
+          <button 
+            class="w-full px-2 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90" 
+            data-live-id="${live.id}"
+            data-action="${selectedLiveType === 'current' ? 'join' : 'reserve'}"
+          >
+            ${selectedLiveType === 'current' ? 'Rejoindre' : 'Réserver'}
+          </button>
         </div>
       `;
 
-      const popup = new mapboxgl.Popup({ offset: 15 })
+      const popup = new mapboxgl.Popup({ offset: 15, closeButton: true })
         .setDOMContent(popupContent);
+
+      popupsRef.current.push(popup);
 
       const marker = new mapboxgl.Marker(el)
         .setLngLat([coordinates.lng, coordinates.lat])
         .setPopup(popup)
         .addTo(map);
 
-      popup.on('open', () => {
-        const joinBtn = popupContent.querySelector('.join-live-btn');
-        const reserveBtn = popupContent.querySelector('.reserve-live-btn');
-
-        if (joinBtn) {
-          joinBtn.addEventListener('click', () => {
-            navigate(`/live/${live.id}`);
-          });
-        }
-        if (reserveBtn) {
-          reserveBtn.addEventListener('click', () => {
-            setSelectedLive(live);
-            setShowReservationDialog(true);
-          });
-        }
-      });
-
       markersRef.current.push(marker);
+
+      // Add event listener to the popup content
+      const handleClick = (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.tagName === 'BUTTON') {
+          const action = target.getAttribute('data-action');
+          const liveId = target.getAttribute('data-live-id');
+          
+          if (action === 'join' && liveId) {
+            handleJoinLive(Number(liveId));
+          } else if (action === 'reserve') {
+            handleReserveLive(live);
+          }
+        }
+      };
+
+      popupContent.addEventListener('click', handleClick);
+
+      // Clean up event listener when popup closes
+      popup.on('close', () => {
+        popupContent.removeEventListener('click', handleClick);
+      });
     });
 
     return () => {
