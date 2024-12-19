@@ -32,4 +32,15 @@ export interface Property {
   isUserRegistered?: boolean;
   transactionType: "Vente" | "Location";
   tags?: string[];
+  virtualTour?: {
+    enabled: boolean;
+    url?: string;
+    type: "360" | "video" | "live";
+    hotspots?: Array<{
+      title: string;
+      description: string;
+      position: { x: number; y: number };
+      details?: Array<{ label: string; value: string }>;
+    }>;
+  };
 }
