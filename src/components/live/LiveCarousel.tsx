@@ -26,20 +26,11 @@ export const LiveCarousel = ({
   onLiveSelect,
   onLiveClose 
 }: LiveCarouselProps) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const autoplayOptions = {
     delay: 4000,
     stopOnInteraction: true,
   };
-
-  // Ajout de l'effet pour réduire automatiquement après 10 secondes
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsCollapsed(true);
-    }, 10000); // 10 secondes
-
-    return () => clearTimeout(timer);
-  }, []); // Se déclenche une seule fois au montage
 
   const demoLives: LiveEvent[] = [
     {
