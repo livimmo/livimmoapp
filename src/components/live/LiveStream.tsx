@@ -126,7 +126,10 @@ export const LiveStream = ({
                 className="absolute inset-0 bg-black/80 flex items-center justify-center z-10 cursor-pointer"
                 onClick={handlePlayClick}
               >
-                <button className="bg-red-500 text-white px-6 py-3 rounded-full font-medium flex items-center gap-2 hover:bg-red-600 transition-colors">
+                <button className={cn(
+                  "px-6 py-3 rounded-full font-medium flex items-center gap-2 transition-colors",
+                  isReplay ? "bg-primary text-white hover:bg-primary/90" : "bg-red-500 text-white hover:bg-red-600"
+                )}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polygon points="5 3 19 12 5 21 5 3" />
                   </svg>
