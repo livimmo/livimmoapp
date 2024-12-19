@@ -1,14 +1,16 @@
 import { Visit } from "@/types/visit";
 import { VisitCard } from "./VisitCard";
+import { Dispatch, SetStateAction } from "react";
 
 export interface VisitsListProps {
   visits: Visit[];
   status: string;
   onCancel: (visit: Visit) => void;
   onReschedule: (visit: Visit) => void;
+  onVisitSelect: Dispatch<SetStateAction<Visit | null>>;
 }
 
-export const VisitsList = ({ visits, status, onCancel, onReschedule }: VisitsListProps) => {
+export const VisitsList = ({ visits, status, onCancel, onReschedule, onVisitSelect }: VisitsListProps) => {
   const filteredVisits = visits.filter(visit => visit.status === status);
 
   if (filteredVisits.length === 0) {
@@ -30,6 +32,7 @@ export const VisitsList = ({ visits, status, onCancel, onReschedule }: VisitsLis
           visit={visit}
           onCancel={() => onCancel(visit)}
           onReschedule={() => onReschedule(visit)}
+          onSelect={() => onVisitSelect(visit)}
         />
       ))}
     </div>

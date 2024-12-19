@@ -5,6 +5,7 @@ export interface Visit {
   propertyId: number;
   propertyTitle: string;
   propertyImage: string;
+  propertyLocation: string;
   date: Date;
   time: string;
   status: VisitStatus;
