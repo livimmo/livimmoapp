@@ -153,9 +153,58 @@ export type Database = {
         }
         Relationships: []
       }
+      visit_ratings: {
+        Row: {
+          agent_id: string
+          category: Database["public"]["Enums"]["rating_category"]
+          comment: string | null
+          created_at: string | null
+          id: string
+          rating: number
+          user_id: string
+          visit_id: string
+        }
+        Insert: {
+          agent_id: string
+          category: Database["public"]["Enums"]["rating_category"]
+          comment?: string | null
+          created_at?: string | null
+          id?: string
+          rating: number
+          user_id: string
+          visit_id: string
+        }
+        Update: {
+          agent_id?: string
+          category?: Database["public"]["Enums"]["rating_category"]
+          comment?: string | null
+          created_at?: string | null
+          id?: string
+          rating?: number
+          user_id?: string
+          visit_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visit_ratings_visit_id_fkey"
+            columns: ["visit_id"]
+            isOneToOne: false
+            referencedRelation: "private_visits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
-      [_ in never]: never
+      agent_ratings: {
+        Row: {
+          agent_id: string | null
+          average_rating: number | null
+          category: Database["public"]["Enums"]["rating_category"] | null
+          total_ratings: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
@@ -167,6 +216,12 @@ export type Database = {
         | "file"
         | "visit_request"
         | "visit_confirmation"
+      rating_category:
+        | "communication"
+        | "punctuality"
+        | "professionalism"
+        | "knowledge"
+        | "overall"
       visit_status: "pending" | "accepted" | "rejected" | "cancelled"
       visit_type: "physical" | "virtual"
     }
