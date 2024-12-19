@@ -1,122 +1,71 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PropertySelection } from "./PropertySelection";
-import { DateTimeSelection } from "./DateTimeSelection";
-import { VisitConfirmation } from "./VisitConfirmation";
-import { type Property } from "@/types/property";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Calendar } from "@/components/ui/calendar";
+import { fr } from "date-fns/locale";
+import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar } from "lucide-react";
 
 interface PrivateVisitDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  initialProperty?: Property;
+  propertyTitle: string;
 }
 
-export const PrivateVisitDialog = ({
-  isOpen,
-  onClose,
-  initialProperty,
-}: PrivateVisitDialogProps) => {
-  const [selectedProperties, setSelectedProperties] = useState<Property[]>(
-    initialProperty ? [initialProperty] : []
-  );
-  const [selectedDate, setSelectedDate] = useState<Date>();
-  const [selectedTime, setSelectedTime] = useState<string>("");
-  const [comment, setComment] = useState("");
-  const [activeTab, setActiveTab] = useState("properties");
+export function PrivateVisitDialog({ propertyTitle }: PrivateVisitDialogProps) {
+  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
   const handleConfirm = () => {
-    if (!selectedDate || !selectedTime || selectedProperties.length === 0) {
-      toast({
-        title: "Information manquante",
-        description: "Veuillez sélectionner une date, une heure et au moins un bien.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // TODO: Implement API call to save visit request
-    console.log("Visit request:", {
-      properties: selectedProperties,
-      date: selectedDate,
-      time: selectedTime,
-      comment,
-    });
-
     toast({
-      title: "Demande envoyée !",
-      description: "Votre demande de visite privée a été envoyée. Vous recevrez une confirmation sous peu.",
-      icon: <Calendar className="h-4 w-4" />,
+      title: "Visite privée confirmée",
+      description: "Votre demande de visite privée a été envoyée avec succès.",
     });
-
-    onClose();
+    setOpen(false);
   };
 
-  const canProceedToDateTime = selectedProperties.length > 0;
-  const canProceedToConfirmation = Boolean(selectedDate && selectedTime);
-
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px]">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="default">Demander une visite privée</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Planifier une visite privée</DialogTitle>
+          <DialogDescription>
+            Choisissez une date pour visiter {propertyTitle}
+          </DialogDescription>
         </DialogHeader>
-
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="properties">Biens</TabsTrigger>
-            <TabsTrigger 
-              value="datetime" 
-              disabled={!canProceedToDateTime}
-            >
-              Date & Heure
-            </TabsTrigger>
-            <TabsTrigger 
-              value="confirmation" 
-              disabled={!canProceedToConfirmation}
-            >
-              Confirmation
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="properties">
-            <PropertySelection
-              selectedProperties={selectedProperties}
-              onPropertySelect={setSelectedProperties}
-              initialProperty={initialProperty}
-              onNext={() => setActiveTab("datetime")}
-              canProceed={canProceedToDateTime}
-            />
-          </TabsContent>
-
-          <TabsContent value="datetime">
-            <DateTimeSelection
-              selectedDate={selectedDate}
-              selectedTime={selectedTime}
-              onDateChange={setSelectedDate}
-              onTimeChange={setSelectedTime}
-              onNext={() => setActiveTab("confirmation")}
-              onBack={() => setActiveTab("properties")}
-              canProceed={canProceedToConfirmation}
-            />
-          </TabsContent>
-
-          <TabsContent value="confirmation">
-            <VisitConfirmation
-              selectedProperties={selectedProperties}
-              selectedDate={selectedDate}
-              selectedTime={selectedTime}
-              comment={comment}
-              onCommentChange={setComment}
-              onConfirm={handleConfirm}
-              onBack={() => setActiveTab("datetime")}
-            />
-          </TabsContent>
-        </Tabs>
+        <div className="py-4">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            locale={fr}
+            disabled={(date) => date < new Date()}
+          />
+        </div>
+        <DialogFooter>
+          <Button
+            type="submit"
+            onClick={handleConfirm}
+            disabled={!date}
+          >
+            {date
+              ? `Confirmer pour le ${format(date, "d MMMM yyyy", {
+                  locale: fr,
+                })}`
+              : "Sélectionnez une date"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-};
+}

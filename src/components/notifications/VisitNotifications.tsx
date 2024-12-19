@@ -21,7 +21,6 @@ export const useVisitNotifications = (visits: Visit[]) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Vérifier les visites à venir et en cours
     const checkVisits = () => {
       const now = new Date();
 
@@ -59,7 +58,10 @@ export const useVisitNotifications = (visits: Visit[]) => {
               </div>
             ),
             action: visit.isLive ? (
-              <ToastAction onClick={() => visit.liveUrl && window.open(visit.liveUrl, "_blank")}>
+              <ToastAction 
+                altText="Rejoindre le live"
+                onClick={() => visit.liveUrl && window.open(visit.liveUrl, "_blank")}
+              >
                 Rejoindre le live
               </ToastAction>
             ) : undefined,
@@ -77,7 +79,10 @@ export const useVisitNotifications = (visits: Visit[]) => {
               </div>
             ),
             action: visit.isLive ? (
-              <ToastAction onClick={() => visit.liveUrl && window.open(visit.liveUrl, "_blank")}>
+              <ToastAction 
+                altText="Rejoindre le live"
+                onClick={() => visit.liveUrl && window.open(visit.liveUrl, "_blank")}
+              >
                 Rejoindre le live
               </ToastAction>
             ) : undefined,
@@ -98,11 +103,17 @@ export const useVisitNotifications = (visits: Visit[]) => {
               </div>
             ),
             action: visit.isLive ? (
-              <ToastAction onClick={() => visit.liveUrl && window.open(visit.liveUrl, "_blank")}>
+              <ToastAction 
+                altText="Rejoindre le live"
+                onClick={() => visit.liveUrl && window.open(visit.liveUrl, "_blank")}
+              >
                 Rejoindre le live
               </ToastAction>
             ) : (
-              <ToastAction onClick={() => navigate(`/property/${visit.propertyId}`)}>
+              <ToastAction 
+                altText="Voir les détails"
+                onClick={() => navigate(`/property/${visit.propertyId}`)}
+              >
                 Voir les détails
               </ToastAction>
             ),

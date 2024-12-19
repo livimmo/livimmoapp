@@ -1,15 +1,15 @@
 import { Routes as RouterRoutes, Route } from "react-router-dom";
-import { Index } from "./pages/Index";
-import { Login } from "./pages/Login";
-import { Signup } from "./pages/Signup";
-import { Properties } from "./pages/Properties";
-import { PropertyDetail } from "./pages/PropertyDetail";
-import { Lives } from "./pages/Lives";
-import { JoinLive } from "./pages/JoinLive";
-import { Profile } from "./pages/Profile";
-import { Search } from "./pages/Search";
-import { Favorites } from "./pages/Favorites";
-import { Notifications } from "./pages/Notifications";
+import Index from "./pages/Index";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Properties from "./pages/Properties";
+import PropertyDetail from "./pages/PropertyDetail";
+import Lives from "./pages/Lives";
+import JoinLive from "./pages/JoinLive";
+import Profile from "./pages/Profile";
+import Search from "./pages/Search";
+import Favorites from "./pages/Favorites";
+import Notifications from "./pages/Notifications";
 
 export const Routes = () => {
   return (
