@@ -17,6 +17,7 @@ interface VirtualTourViewer360Props {
   agentName: string;
   onContactAgent: () => void;
   onBookVisit: () => void;
+  platform?: 'matterport' | 'klapty';
 }
 
 export const VirtualTourViewer360 = ({
@@ -25,7 +26,8 @@ export const VirtualTourViewer360 = ({
   propertyTitle,
   agentName,
   onContactAgent,
-  onBookVisit
+  onBookVisit,
+  platform = 'matterport'
 }: VirtualTourViewer360Props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -42,6 +44,15 @@ export const VirtualTourViewer360 = ({
 
     return () => clearTimeout(timer);
   }, []);
+
+  const getEmbedUrl = () => {
+    if (platform === 'klapty') {
+      // Format Klapty URL
+      return `https://www.klapty.com/tour/${tourUrl}`;
+    }
+    // Format Matterport URL (default)
+    return `https://my.matterport.com/show/?m=${tourUrl}`;
+  };
 
   const toggleFullscreen = async () => {
     if (!document.fullscreenElement) {
@@ -70,15 +81,16 @@ export const VirtualTourViewer360 = ({
         <>
           <iframe
             ref={viewerRef}
-            src={tourUrl}
+            src={getEmbedUrl()}
             className="w-full h-full border-0"
             allowFullScreen
+            allow="xr-spatial-tracking; gyroscope; accelerometer"
           />
           
           <div className="absolute top-4 left-4 flex flex-col gap-2">
             <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
               <Eye className="w-4 h-4 mr-1" />
-              Visite virtuelle Matterport
+              Visite virtuelle {platform === 'klapty' ? 'Klapty' : 'Matterport'}
             </Badge>
           </div>
 
@@ -149,7 +161,6 @@ export const VirtualTourViewer360 = ({
             <p className="text-sm text-muted-foreground">
               Choisissez une date et une heure qui vous conviennent pour visiter ce bien en personne avec {agentName}.
             </p>
-            {/* Ici nous pourrions ajouter un sélecteur de date/heure */}
             <Button onClick={() => {
               setShowBookingDialog(false);
               toast({

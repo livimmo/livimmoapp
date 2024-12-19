@@ -33,7 +33,8 @@ export const featuredProperties: Property[] = [
     },
     virtualTour: {
       enabled: true,
-      url: "https://my.matterport.com/show/?m=SxQL3iGyvQk",
+      url: "VOTRE_ID_KLAPTY",
+      platform: 'klapty',
       type: "360",
       hotspots: [
         {

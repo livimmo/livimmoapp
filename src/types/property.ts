@@ -35,6 +35,7 @@ export interface Property {
   virtualTour?: {
     enabled: boolean;
     url?: string;
+    platform?: 'matterport' | 'klapty';
     type: "360" | "video" | "live";
     hotspots?: Array<{
       title: string;
