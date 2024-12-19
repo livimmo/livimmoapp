@@ -1,5 +1,5 @@
 import { Property } from "@/types/property";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Eye, ArrowRight } from "lucide-react";
@@ -8,6 +8,7 @@ import { ChatButton } from "@/components/chat/ChatButton";
 import { VisitBookingButton } from "@/components/property/VisitBookingButton";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { CheckCircle2 } from "lucide-react";
+import { PrivateVisitButton } from "@/components/property/visit/PrivateVisitButton";
 
 interface VirtualTourCardProps {
   property: Property;
@@ -82,13 +83,10 @@ export const VirtualTourCard = ({ property }: VirtualTourCardProps) => {
             propertyId={property.id}
             propertyTitle={property.title}
           />
-          <Button 
-            variant="default" 
-            className="w-full gap-2"
-            onClick={() => navigate(`/property/${property.id}`)}
-          >
-            Visite privée
-          </Button>
+          <PrivateVisitButton 
+            property={property}
+            className="w-full"
+          />
         </div>
       </div>
     </Card>
