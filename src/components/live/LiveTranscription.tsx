@@ -21,27 +21,31 @@ export const LiveTranscription = ({ isReplay }: LiveTranscriptionProps) => {
         const transcriber = await pipeline(
           "automatic-speech-recognition",
           "Xenova/whisper-tiny",
-          { device: "cpu" }
+          { quantized: true }
         );
 
         // For development purposes, we'll simulate transcription
-        setInterval(() => {
-          const mockTranscriptions = [
-            "Bienvenue dans cette visite virtuelle",
-            "Comme vous pouvez le voir, la pièce est très lumineuse",
-            "La cuisine est entièrement équipée",
-            "Le salon donne directement sur la terrasse",
-          ];
-          
-          setTranscription(mockTranscriptions[Math.floor(Math.random() * mockTranscriptions.length)]);
+        const mockTranscriptions = [
+          "Bienvenue dans cette visite virtuelle",
+          "Comme vous pouvez le voir, la pièce est très lumineuse",
+          "La cuisine est entièrement équipée",
+          "Le salon donne directement sur la terrasse",
+        ];
+
+        let currentIndex = 0;
+        const interval = setInterval(() => {
+          setTranscription(mockTranscriptions[currentIndex]);
+          currentIndex = (currentIndex + 1) % mockTranscriptions.length;
         }, 5000);
 
         setIsLoading(false);
+
+        return () => clearInterval(interval);
       } catch (error) {
         console.error("Erreur lors de l'initialisation de la transcription:", error);
         toast({
           title: "Erreur de transcription",
-          description: "Impossible d'initialiser la transcription audio",
+          description: "Impossible d'initialiser la transcription audio. Veuillez réessayer.",
           variant: "destructive",
         });
         setIsLoading(false);
@@ -53,7 +57,7 @@ export const LiveTranscription = ({ isReplay }: LiveTranscriptionProps) => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center p-4">
+      <div className="flex items-center justify-center p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <Loader2 className="h-4 w-4 animate-spin" />
         <span className="ml-2 text-sm">Chargement de la transcription...</span>
       </div>
