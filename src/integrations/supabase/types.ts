@@ -36,6 +36,84 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_conversations: {
+        Row: {
+          agent_id: string
+          created_at: string | null
+          id: string
+          property_id: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          agent_id: string
+          created_at?: string | null
+          id?: string
+          property_id: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          agent_id?: string
+          created_at?: string | null
+          id?: string
+          property_id?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string | null
+          file_url: string | null
+          id: string
+          message_type: Database["public"]["Enums"]["message_type"]
+          metadata: Json | null
+          read_at: string | null
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string | null
+          file_url?: string | null
+          id?: string
+          message_type?: Database["public"]["Enums"]["message_type"]
+          metadata?: Json | null
+          read_at?: string | null
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string | null
+          file_url?: string | null
+          id?: string
+          message_type?: Database["public"]["Enums"]["message_type"]
+          metadata?: Json | null
+          read_at?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "chat_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_conversation"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "chat_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       private_visits: {
         Row: {
           agent_id: string
@@ -83,6 +161,12 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      message_type:
+        | "text"
+        | "link"
+        | "file"
+        | "visit_request"
+        | "visit_confirmation"
       visit_status: "pending" | "accepted" | "rejected" | "cancelled"
       visit_type: "physical" | "virtual"
     }
