@@ -4,6 +4,9 @@ import { StarRating } from "@/components/ratings/StarRating";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
+
+type RatingCategory = Database["public"]["Enums"]["rating_category"];
 
 interface VisitRatingFormProps {
   visitId: string;
@@ -13,7 +16,7 @@ interface VisitRatingFormProps {
 
 export const VisitRatingForm = ({ visitId, agentId, onRatingSubmitted }: VisitRatingFormProps) => {
   const { toast } = useToast();
-  const [ratings, setRatings] = useState({
+  const [ratings, setRatings] = useState<Record<RatingCategory, number>>({
     communication: 0,
     punctuality: 0,
     professionalism: 0,
@@ -23,7 +26,7 @@ export const VisitRatingForm = ({ visitId, agentId, onRatingSubmitted }: VisitRa
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleRatingChange = (category: string, value: number) => {
+  const handleRatingChange = (category: RatingCategory, value: number) => {
     setRatings(prev => ({
       ...prev,
       [category]: value
@@ -46,7 +49,7 @@ export const VisitRatingForm = ({ visitId, agentId, onRatingSubmitted }: VisitRa
       }
 
       // Insérer les notes pour chaque catégorie
-      const promises = Object.entries(ratings).map(([category, rating]) => 
+      const promises = (Object.entries(ratings) as [RatingCategory, number][]).map(([category, rating]) => 
         supabase.from('visit_ratings').insert({
           visit_id: visitId,
           agent_id: agentId,
