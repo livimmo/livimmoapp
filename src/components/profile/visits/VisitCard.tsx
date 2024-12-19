@@ -9,9 +9,10 @@ interface VisitCardProps {
   visit: Visit;
   onCancel: () => void;
   onReschedule: () => void;
+  onSelect: () => void;
 }
 
-export const VisitCard = ({ visit, onCancel, onReschedule }: VisitCardProps) => {
+export const VisitCard = ({ visit, onCancel, onReschedule, onSelect }: VisitCardProps) => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "pending":
@@ -30,7 +31,7 @@ export const VisitCard = ({ visit, onCancel, onReschedule }: VisitCardProps) => 
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-white rounded-lg shadow-md p-4" onClick={onSelect}>
       <div className="flex items-start gap-4">
         <img
           src={visit.propertyImage}

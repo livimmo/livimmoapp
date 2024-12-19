@@ -9,7 +9,6 @@ import { Calendar, Clock, MapPin, Phone, Mail } from "lucide-react";
 import { Visit } from "@/types/visit";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Badge } from "@/components/ui/badge";
 
 interface VisitDetailsDialogProps {
   visit: Visit | null;
@@ -52,20 +51,20 @@ export const VisitDetailsDialog = ({ visit, onClose }: VisitDetailsDialogProps) 
             <h4 className="font-medium mb-2">Agent immobilier</h4>
             <div className="flex items-center gap-4">
               <img
-                src={visit.agentImage}
-                alt={visit.agentName}
+                src={visit.agent.image}
+                alt={visit.agent.name}
                 className="w-12 h-12 rounded-full"
               />
               <div>
-                <p className="font-medium">{visit.agentName}</p>
+                <p className="font-medium">{visit.agent.name}</p>
                 <div className="flex gap-4 mt-2">
                   <Button variant="outline" size="sm">
                     <Phone className="h-4 w-4 mr-2" />
-                    {visit.agentPhone}
+                    {visit.agent.phone}
                   </Button>
                   <Button variant="outline" size="sm">
                     <Mail className="h-4 w-4 mr-2" />
-                    {visit.agentEmail}
+                    {visit.agent.email}
                   </Button>
                 </div>
               </div>
