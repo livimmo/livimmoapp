@@ -36,12 +36,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         description: "Bienvenue sur Livimmo !",
       });
       
-      // Redirection en fonction du rôle
-      if (role === "promoter" || role === "agent") {
-        navigate('/properties');
-      } else {
-        navigate('/');
-      }
+      // Redirection vers la page d'accueil pour tous les utilisateurs
+      navigate('/');
     } catch (error) {
       toast({
         title: "Erreur de connexion",
@@ -69,12 +65,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         description: "Bienvenue sur Livimmo !",
       });
       
-      // Redirection en fonction du rôle
-      if (role === "promoter" || role === "agent") {
-        navigate('/properties');
-      } else {
-        navigate('/');
-      }
+      // Redirection vers la page d'accueil pour tous les utilisateurs
+      navigate('/');
     } catch (error) {
       toast({
         title: "Erreur d'inscription",
