@@ -2,16 +2,20 @@ import { Visit } from "@/types/visit";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, MapPin } from "lucide-react";
+import { Calendar, Clock, MapPin, Video } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useNavigate } from "react-router-dom";
 
 interface VisitCardProps {
   visit: Visit;
-  onSelect: () => void;
+  onCancel: () => void;
+  onReschedule: () => void;
 }
 
-export const VisitCard = ({ visit, onSelect }: VisitCardProps) => {
+export const VisitCard = ({ visit, onCancel, onReschedule }: VisitCardProps) => {
+  const navigate = useNavigate();
+
   const getStatusBadge = (status: Visit["status"]) => {
     switch (status) {
       case "pending":
@@ -25,6 +29,10 @@ export const VisitCard = ({ visit, onSelect }: VisitCardProps) => {
       case "cancelled":
         return <Badge variant="destructive">Annulée</Badge>;
     }
+  };
+
+  const handleJoinLive = () => {
+    navigate(`/join-live/${visit.propertyId}`);
   };
 
   return (
@@ -68,9 +76,37 @@ export const VisitCard = ({ visit, onSelect }: VisitCardProps) => {
                 />
                 <span className="text-sm">{visit.agentName}</span>
               </div>
-              <Button onClick={onSelect} variant="outline" size="sm">
-                Voir les détails
-              </Button>
+              <div className="flex gap-2">
+                {visit.status === "pending" && (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={onReschedule}
+                    >
+                      Reprogrammer
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={onCancel}
+                    >
+                      Annuler
+                    </Button>
+                  </>
+                )}
+                {visit.status === "confirmed" && (
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={handleJoinLive}
+                    className="gap-2"
+                  >
+                    <Video className="h-4 w-4" />
+                    Rejoindre le live
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
