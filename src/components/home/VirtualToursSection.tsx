@@ -1,63 +1,45 @@
-import { useState } from "react";
+import { Property } from "@/types/property";
+import { VirtualTourCard } from "./VirtualTourCard";
 import { Button } from "@/components/ui/button";
-import { Video, List, Map } from "lucide-react";
-import { PropertyList } from "@/components/properties/PropertyList";
-import { PropertyMap } from "@/components/search/PropertyMap";
-import { type Property } from "@/types/property";
+import { Eye } from "lucide-react";
 
 interface VirtualToursSectionProps {
   properties: Property[];
 }
 
 export const VirtualToursSection = ({ properties }: VirtualToursSectionProps) => {
-  const [viewMode, setViewMode] = useState<"list" | "map">("list");
-
   const propertiesWithVirtualTours = properties.filter(
     (property) => property.virtualTour?.enabled
   );
 
   if (propertiesWithVirtualTours.length === 0) {
     return (
-      <section className="mb-8">
+      <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">Visites Virtuelles</h2>
-        <p className="text-muted-foreground text-center py-8">
-          Aucune visite virtuelle disponible pour le moment
-        </p>
+        <div className="bg-accent rounded-lg p-8 text-center">
+          <Eye className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+          <p className="text-muted-foreground">
+            Aucune visite virtuelle disponible pour le moment
+          </p>
+        </div>
       </section>
     );
   }
 
   return (
-    <section className="mb-8">
-      <div className="flex justify-between items-center mb-4">
+    <section className="mb-12">
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Visites Virtuelles</h2>
-        <div className="flex gap-2">
-          <Button
-            variant={viewMode === "list" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("list")}
-          >
-            <List className="h-4 w-4 mr-2" />
-            Liste
-          </Button>
-          <Button
-            variant={viewMode === "map" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("map")}
-          >
-            <Map className="h-4 w-4 mr-2" />
-            Carte
-          </Button>
-        </div>
+        <Button variant="outline">
+          <Eye className="w-4 h-4 mr-2" />
+          Toutes les visites
+        </Button>
       </div>
-
-      {viewMode === "list" ? (
-        <PropertyList properties={propertiesWithVirtualTours} viewMode="grid" />
-      ) : (
-        <div className="h-[500px] rounded-lg overflow-hidden">
-          <PropertyMap properties={propertiesWithVirtualTours} />
-        </div>
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {propertiesWithVirtualTours.map((property) => (
+          <VirtualTourCard key={property.id} property={property} />
+        ))}
+      </div>
     </section>
   );
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, MessageCircle, Calendar, Info, RotateCw, ArrowLeft, ArrowRight } from "lucide-react";
+import { Eye, MessageCircle, Calendar, Info, RotateCw, ArrowLeft, ArrowRight, Maximize2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface VirtualTourViewer360Props {
@@ -22,12 +22,12 @@ export const VirtualTourViewer360 = ({
   onBookVisit
 }: VirtualTourViewer360Props) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [currentRoom, setCurrentRoom] = useState('Entrée');
-  const { toast } = useToast();
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const viewerRef = useRef<HTMLIFrameElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
-    // Simuler le chargement de la visite virtuelle
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1500);
@@ -35,34 +35,18 @@ export const VirtualTourViewer360 = ({
     return () => clearTimeout(timer);
   }, []);
 
-  const handleRotate = () => {
-    // Cette fonction serait utilisée pour contrôler la rotation de la vue 360°
-    toast({
-      title: "Rotation activée",
-      description: "Utilisez votre souris pour faire pivoter la vue",
-    });
-  };
-
-  const handleRoomChange = (direction: 'next' | 'prev') => {
-    // Simulation du changement de pièce
-    const rooms = ['Entrée', 'Salon', 'Cuisine', 'Chambre 1', 'Salle de bain'];
-    const currentIndex = rooms.indexOf(currentRoom);
-    let newIndex;
-
-    if (direction === 'next') {
-      newIndex = (currentIndex + 1) % rooms.length;
+  const toggleFullscreen = async () => {
+    if (!document.fullscreenElement) {
+      await containerRef.current?.requestFullscreen();
+      setIsFullscreen(true);
     } else {
-      newIndex = currentIndex - 1 < 0 ? rooms.length - 1 : currentIndex - 1;
+      await document.exitFullscreen();
+      setIsFullscreen(false);
     }
-
-    setCurrentRoom(rooms[newIndex]);
-    toast({
-      description: `Vous êtes maintenant dans : ${rooms[newIndex]}`,
-    });
   };
 
   return (
-    <div className="relative w-full h-[600px] bg-background rounded-lg overflow-hidden">
+    <div ref={containerRef} className="relative w-full h-[600px] bg-background rounded-lg overflow-hidden">
       {isLoading ? (
         <div className="absolute inset-0 flex items-center justify-center bg-accent">
           <div className="animate-pulse text-center">
@@ -82,41 +66,23 @@ export const VirtualTourViewer360 = ({
           <div className="absolute top-4 left-4 flex flex-col gap-2">
             <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
               <Eye className="w-4 h-4 mr-1" />
-              {currentRoom}
+              Visite virtuelle Matterport
             </Badge>
+          </div>
+
+          <div className="absolute top-4 right-4">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="bg-background/80 backdrop-blur-sm"
+              onClick={toggleFullscreen}
+            >
+              <Maximize2 className="w-4 h-4" />
+            </Button>
           </div>
 
           <div className="absolute bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-sm">
             <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2"
-                  onClick={() => handleRoomChange('prev')}
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Pièce précédente
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2"
-                  onClick={() => handleRoomChange('next')}
-                >
-                  Pièce suivante
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2"
-                  onClick={handleRotate}
-                >
-                  <RotateCw className="w-4 h-4" />
-                  Rotation
-                </Button>
-              </div>
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
@@ -136,6 +102,9 @@ export const VirtualTourViewer360 = ({
                   <Calendar className="w-4 h-4" />
                   Réserver une visite
                 </Button>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Agent: {agentName}
               </div>
             </div>
           </div>

@@ -11,7 +11,6 @@ import { SearchSection } from "@/components/home/SearchSection";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
 import { liveStreams, scheduledLives } from "@/data/mockLives";
 
-// Ajout de propriétés avec des visites virtuelles pour l'exemple
 const featuredProperties = addCoordinatesToProperties([
   {
     id: 1,
@@ -156,7 +155,6 @@ const Index = () => {
 
   const allLives = [...liveStreams, ...scheduledLives];
 
-  // Filtrer les propriétés en fonction du viewType
   const filterPropertiesByViewType = (properties: Property[]) => {
     switch (viewType) {
       case "live":
@@ -194,11 +192,9 @@ const Index = () => {
           <LiveSlider lives={allLives} />
         </section>
         
-        <FeaturedSection properties={filterPropertiesByViewType(featuredProperties)} />
-
         <VirtualToursSection properties={featuredProperties} />
-
-        <LiveSection />
+        
+        <FeaturedSection properties={filterPropertiesByViewType(featuredProperties)} />
 
         <SearchSection 
           filteredProperties={filterPropertiesByViewType(filteredProperties)} 
