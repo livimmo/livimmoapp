@@ -14,3 +14,18 @@ export interface LiveEvent {
   viewers: number;
   tags?: string[];
 }
+
+export interface LiveStreamProps {
+  videoId: string;
+  currentLiveId: number;
+  otherLives: LiveEvent[];
+  onLiveChange: (liveId: number) => void;
+  isReplay?: boolean;
+}
+
+export const replayTimestamps = [
+  "dQw4w9WgXcQ",
+  "jNQXAC9IVRw",
+  "ZZ5LpwO-An4",
+  "9bZkp7q19f0"
+];
