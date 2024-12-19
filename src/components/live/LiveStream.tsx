@@ -10,7 +10,6 @@ import { LiveHeader } from "./LiveHeader";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AIChat } from "./AIChat";
-import { LiveTranscription } from "./LiveTranscription";
 import { LiveChapters } from "./LiveChapters";
 import { LiveVideoPlayer } from "./LiveVideoPlayer";
 import { useAuth } from "@/contexts/AuthContext";
@@ -62,7 +61,6 @@ export const LiveStream = ({
   const isMobile = useIsMobile();
   const [showOtherLives, setShowOtherLives] = useState(true);
   const [showAIChat, setShowAIChat] = useState(false);
-  const [showTranscription, setShowTranscription] = useState(false);
   const { isAuthenticated } = useAuth();
   const { toast } = useToast();
 
@@ -159,7 +157,6 @@ export const LiveStream = ({
         )}
 
         <div className="absolute top-20 left-4 bottom-[200px] w-80 space-y-4 z-[51]">
-          <LiveTranscription isReplay={isReplay} />
           {isReplay && <LiveChapters onChapterClick={handleChapterClick} isReplay={true} />}
         </div>
       </div>
