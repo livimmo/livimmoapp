@@ -20,6 +20,7 @@ type PropertyCardProps = Property & {
   remainingSeats?: number;
   isUserRegistered?: boolean;
   offers?: number;
+  customButton?: React.ReactNode;
 };
 
 export const PropertyCard = ({
@@ -39,6 +40,7 @@ export const PropertyCard = ({
   isUserRegistered = false,
   offers = 0,
   agent,
+  customButton,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
@@ -155,18 +157,24 @@ export const PropertyCard = ({
           </div>
           
           <div className="flex gap-2">
-            <ChatButton
-              agentId={agent.id?.toString() || "0"}
-              agentName={agent.name}
-              propertyId={id}
-              propertyTitle={title}
-            />
-            <VisitBookingButton
-              propertyId={id}
-              propertyTitle={title}
-              agentId={agent.id}
-              agentName={agent.name}
-            />
+            {customButton ? (
+              customButton
+            ) : (
+              <>
+                <ChatButton
+                  agentId={agent.id?.toString() || "0"}
+                  agentName={agent.name}
+                  propertyId={id}
+                  propertyTitle={title}
+                />
+                <VisitBookingButton
+                  propertyId={id}
+                  propertyTitle={title}
+                  agentId={agent.id}
+                  agentName={agent.name}
+                />
+              </>
+            )}
           </div>
         </div>
       </div>
