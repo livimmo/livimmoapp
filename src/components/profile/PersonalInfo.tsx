@@ -5,6 +5,7 @@ import { AccountType } from "./AccountTypeSelector";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Facebook, Instagram, Youtube, MessageCircle } from "lucide-react";
 import { LiveManagement } from "./LiveManagement";
+import { PrivateVisitButton } from "./PrivateVisitButton";
 
 interface PersonalInfoProps {
   firstName: string;
@@ -68,6 +69,13 @@ export const PersonalInfo = ({
           />
         </div>
       </div>
+
+      {accountType === "buyer" && (
+        <div className="space-y-4 border-t pt-4">
+          <h3 className="text-lg font-semibold">Visites privées</h3>
+          <PrivateVisitButton />
+        </div>
+      )}
 
       {accountType === "agent" && (
         <>
