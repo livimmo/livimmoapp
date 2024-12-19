@@ -9,7 +9,72 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      agent_availability: {
+        Row: {
+          agent_id: string
+          created_at: string | null
+          day_of_week: number
+          end_time: string
+          id: string
+          start_time: string
+        }
+        Insert: {
+          agent_id: string
+          created_at?: string | null
+          day_of_week: number
+          end_time: string
+          id?: string
+          start_time: string
+        }
+        Update: {
+          agent_id?: string
+          created_at?: string | null
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          start_time?: string
+        }
+        Relationships: []
+      }
+      private_visits: {
+        Row: {
+          agent_id: string
+          created_at: string | null
+          id: string
+          message: string | null
+          property_id: number
+          requested_date: string
+          status: Database["public"]["Enums"]["visit_status"]
+          updated_at: string | null
+          user_id: string
+          visit_type: Database["public"]["Enums"]["visit_type"]
+        }
+        Insert: {
+          agent_id: string
+          created_at?: string | null
+          id?: string
+          message?: string | null
+          property_id: number
+          requested_date: string
+          status?: Database["public"]["Enums"]["visit_status"]
+          updated_at?: string | null
+          user_id: string
+          visit_type?: Database["public"]["Enums"]["visit_type"]
+        }
+        Update: {
+          agent_id?: string
+          created_at?: string | null
+          id?: string
+          message?: string | null
+          property_id?: number
+          requested_date?: string
+          status?: Database["public"]["Enums"]["visit_status"]
+          updated_at?: string | null
+          user_id?: string
+          visit_type?: Database["public"]["Enums"]["visit_type"]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +83,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      visit_status: "pending" | "accepted" | "rejected" | "cancelled"
+      visit_type: "physical" | "virtual"
     }
     CompositeTypes: {
       [_ in never]: never
