@@ -7,20 +7,21 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import { fr } from "date-fns/locale";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import { type Property } from "@/types/property";
 
 interface PrivateVisitDialogProps {
-  propertyTitle: string;
+  isOpen: boolean;
+  onClose: () => void;
+  initialProperty?: Property;
 }
 
-export function PrivateVisitDialog({ propertyTitle }: PrivateVisitDialogProps) {
+export function PrivateVisitDialog({ isOpen, onClose, initialProperty }: PrivateVisitDialogProps) {
   const [date, setDate] = useState<Date | undefined>(undefined);
-  const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
   const handleConfirm = () => {
@@ -28,19 +29,16 @@ export function PrivateVisitDialog({ propertyTitle }: PrivateVisitDialogProps) {
       title: "Visite privée confirmée",
       description: "Votre demande de visite privée a été envoyée avec succès.",
     });
-    setOpen(false);
+    onClose();
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="default">Demander une visite privée</Button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Planifier une visite privée</DialogTitle>
           <DialogDescription>
-            Choisissez une date pour visiter {propertyTitle}
+            Choisissez une date pour visiter {initialProperty?.title || "ce bien"}
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
