@@ -8,6 +8,7 @@ import { CTASection } from "@/components/home/CTASection";
 import { LiveSlider } from "@/components/live/LiveSlider";
 import { VirtualToursSection } from "@/components/home/VirtualToursSection";
 import { SearchSection } from "@/components/home/SearchSection";
+import { HomeMap } from "@/components/home/HomeMap";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
 import { liveStreams, scheduledLives } from "@/data/mockLives";
 import { featuredProperties } from "@/data/featuredProperties";
@@ -59,6 +60,8 @@ const Index = () => {
           transactionType={transactionType}
           setTransactionType={setTransactionType}
         />
+
+        <HomeMap properties={featuredProperties} />
 
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Lives et Replays</h2>
