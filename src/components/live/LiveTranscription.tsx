@@ -3,6 +3,7 @@ import { pipeline } from "@huggingface/transformers";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface LiveTranscriptionProps {
   isReplay?: boolean;
@@ -11,17 +12,19 @@ interface LiveTranscriptionProps {
 export const LiveTranscription = ({ isReplay }: LiveTranscriptionProps) => {
   const [transcription, setTranscription] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const initTranscription = async () => {
       try {
+        // Using a public model that doesn't require authentication
         const transcriber = await pipeline(
           "automatic-speech-recognition",
-          "onnx-community/whisper-tiny.fr",
+          "Xenova/whisper-tiny",
           { device: "cpu" }
         );
 
-        // Simulation de transcription pour le moment
+        // For development purposes, we'll simulate transcription
         setInterval(() => {
           const mockTranscriptions = [
             "Bienvenue dans cette visite virtuelle",
@@ -36,12 +39,17 @@ export const LiveTranscription = ({ isReplay }: LiveTranscriptionProps) => {
         setIsLoading(false);
       } catch (error) {
         console.error("Erreur lors de l'initialisation de la transcription:", error);
+        toast({
+          title: "Erreur de transcription",
+          description: "Impossible d'initialiser la transcription audio",
+          variant: "destructive",
+        });
         setIsLoading(false);
       }
     };
 
     initTranscription();
-  }, []);
+  }, [toast]);
 
   if (isLoading) {
     return (
