@@ -50,52 +50,54 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
       }
     }));
 
-    // Ajouter les marqueurs pour les lives en cours
-    currentLiveProperties.forEach(live => {
-      const el = document.createElement('div');
-      el.className = 'flex items-center justify-center w-8 h-8 bg-red-500 rounded-full border-2 border-white shadow-lg animate-pulse';
-      el.innerHTML = '🔴';
+    map.current.on('load', () => {
+      // Ajouter les marqueurs pour les lives en cours
+      currentLiveProperties.forEach(live => {
+        const el = document.createElement('div');
+        el.className = 'flex items-center justify-center w-8 h-8 bg-red-500 rounded-full border-2 border-white shadow-lg animate-pulse';
+        el.innerHTML = '🔴';
 
-      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <div class="p-2">
-          <h3 class="font-semibold">${live.title}</h3>
-          <p class="text-sm">${live.price}</p>
-          <p class="text-sm text-red-500">Live en cours</p>
-          <p class="text-sm">${live.viewers} spectateurs</p>
-        </div>
-      `);
+        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+          <div class="p-2">
+            <h3 class="font-semibold">${live.title}</h3>
+            <p class="text-sm">${live.price}</p>
+            <p class="text-sm text-red-500">Live en cours</p>
+            <p class="text-sm">${live.viewers} spectateurs</p>
+          </div>
+        `);
 
-      new mapboxgl.Marker(el)
-        .setLngLat([live.coordinates.lng, live.coordinates.lat])
-        .setPopup(popup)
-        .addTo(map.current!);
-    });
+        new mapboxgl.Marker(el)
+          .setLngLat([live.coordinates.lng, live.coordinates.lat])
+          .setPopup(popup)
+          .addTo(map.current!);
+      });
 
-    // Ajouter les marqueurs pour les lives programmés
-    scheduledLiveProperties.forEach(live => {
-      const el = document.createElement('div');
-      el.className = 'flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-lg';
-      el.innerHTML = '📅';
+      // Ajouter les marqueurs pour les lives programmés
+      scheduledLiveProperties.forEach(live => {
+        const el = document.createElement('div');
+        el.className = 'flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-lg';
+        el.innerHTML = '📅';
 
-      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <div class="p-2">
-          <h3 class="font-semibold">${live.title}</h3>
-          <p class="text-sm">${live.price}</p>
-          <p class="text-sm text-blue-500">Live programmé</p>
-          <p class="text-sm">Le ${new Date(live.date).toLocaleDateString('fr-FR', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-            hour: '2-digit',
-            minute: '2-digit'
-          })}</p>
-        </div>
-      `);
+        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+          <div class="p-2">
+            <h3 class="font-semibold">${live.title}</h3>
+            <p class="text-sm">${live.price}</p>
+            <p class="text-sm text-blue-500">Live programmé</p>
+            <p class="text-sm">Le ${new Date(live.date).toLocaleDateString('fr-FR', {
+              weekday: 'long',
+              day: 'numeric',
+              month: 'long',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}</p>
+          </div>
+        `);
 
-      new mapboxgl.Marker(el)
-        .setLngLat([live.coordinates.lng, live.coordinates.lat])
-        .setPopup(popup)
-        .addTo(map.current!);
+        new mapboxgl.Marker(el)
+          .setLngLat([live.coordinates.lng, live.coordinates.lat])
+          .setPopup(popup)
+          .addTo(map.current!);
+      });
     });
 
     setMounted(true);
@@ -108,14 +110,8 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
     };
   }, [properties]);
 
-  if (!mounted) {
-    return (
-      <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-8 bg-gray-100" />
-    );
-  }
-
   return (
-    <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-8">
+    <div className="relative w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-8">
       <div ref={mapContainer} className="w-full h-full" />
       <div className="absolute bottom-4 right-4 bg-white p-2 rounded-lg shadow-lg">
         <div className="flex items-center gap-2 text-sm">
