@@ -73,16 +73,20 @@ export const LiveStream = ({
         description: "Vous devez être connecté pour accéder au live",
         variant: "destructive",
       });
-      navigate("/login");
+      navigate("/login", { 
+        state: { 
+          from: isReplay ? `/replay/${currentLiveId}` : `/live/${currentLiveId}` 
+        } 
+      });
       return;
     }
-  }, [isAuthenticated, navigate, toast]);
+  }, [isAuthenticated, navigate, toast, currentLiveId, isReplay]);
 
   const currentLive = liveStreams.find(live => live.id === currentLiveId);
   const startTime = currentLive ? format(currentLive.date, "'En live depuis' HH'h'mm", { locale: fr }) : '';
 
   const handleLiveSelect = (liveId: number) => {
-    navigate(`/live/${liveId}`);
+    navigate(isReplay ? `/replay/${liveId}` : `/live/${liveId}`);
   };
 
   const handleChapterClick = (timestamp: string) => {

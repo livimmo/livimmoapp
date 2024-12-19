@@ -55,7 +55,7 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
   }, [videoId]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="relative w-full h-full overflow-hidden bg-black">
       {(!isPlaying || !iframeLoaded) && (
         <div 
           className="absolute inset-0 bg-black/80 flex items-center justify-center z-10 cursor-pointer"

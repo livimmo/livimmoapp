@@ -47,7 +47,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
 
   return (
     <>
-      <Card className="group cursor-pointer hover:bg-accent rounded-lg overflow-hidden transition-all duration-300">
+      <Card className="group cursor-pointer hover:bg-accent rounded-lg overflow-hidden transition-all duration-300" onClick={handleWatch}>
         <CardContent className="p-0 relative">
           <img
             src={live.thumbnail}
