@@ -1,18 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LiveInfo } from "./LiveInfo";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { LiveCarousel } from "./LiveCarousel";
 import { ReplayCarousel } from "./ReplayCarousel";
 import { liveStreams } from "@/data/mockLives";
 import { cn } from "@/lib/utils";
-import { LiveStreamProps, replayTimestamps } from "@/types/live";
 import { LiveHeader } from "./LiveHeader";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AIChat } from "./AIChat";
 import { LiveTranscription } from "./LiveTranscription";
 import { LiveChapters } from "./LiveChapters";
+import { LiveVideoPlayer } from "./LiveVideoPlayer";
 
 const mockProperty = {
   id: 1,
@@ -41,6 +41,14 @@ const mockProperty = {
   transactionType: "Vente" as const,
 };
 
+interface LiveStreamProps {
+  videoId: string;
+  currentLiveId: number;
+  otherLives: any[];
+  onLiveChange: (liveId: number) => void;
+  isReplay?: boolean;
+}
+
 export const LiveStream = ({ 
   videoId, 
   currentLiveId,
@@ -51,12 +59,8 @@ export const LiveStream = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [showOtherLives, setShowOtherLives] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [iframeLoaded, setIframeLoaded] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
   const [showTranscription, setShowTranscription] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const otherLivesCount = liveStreams.filter(live => live.id !== currentLiveId).length;
 
   const currentLive = liveStreams.find(live => live.id === currentLiveId);
   const startTime = currentLive ? format(currentLive.date, "'En live depuis' HH'h'mm", { locale: fr }) : '';
@@ -66,51 +70,13 @@ export const LiveStream = ({
   };
 
   const handleChapterClick = (timestamp: string) => {
-    // Logique pour naviguer vers le timestamp dans la vidéo
     console.log("Navigation vers le timestamp:", timestamp);
-  };
-
-  const getEmbedUrl = () => {
-    const baseUrl = 'https://www.youtube.com/embed/';
-    const videoIdWithTimestamp = isReplay 
-      ? replayTimestamps[Math.floor(Math.random() * replayTimestamps.length)]
-      : videoId;
-    
-    const params = new URLSearchParams({
-      rel: '0',
-      modestbranding: '1',
-      showinfo: '0',
-      playsinline: '1',
-      enablejsapi: '1',
-      origin: window.location.origin,
-      controls: '1',
-      ...(isPlaying && { autoplay: '1' }),
-    });
-    
-    return `${baseUrl}${videoIdWithTimestamp}?${params.toString()}`;
-  };
-
-  useEffect(() => {
-    setIsPlaying(false);
-    setIframeLoaded(false);
-  }, [videoId]);
-
-  const handlePlayClick = () => {
-    setIsPlaying(true);
-    if (iframeRef.current) {
-      iframeRef.current.src = getEmbedUrl();
-    }
-  };
-
-  const handleIframeLoad = () => {
-    setIframeLoaded(true);
-    console.log("Iframe loaded successfully");
   };
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col">
       <LiveHeader 
-        otherLivesCount={otherLivesCount}
+        otherLivesCount={otherLives.length}
         isMobile={isMobile}
         onClose={() => navigate(-1)}
         onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
@@ -131,32 +97,9 @@ export const LiveStream = ({
             "relative w-full h-full overflow-hidden",
             !isMobile && "rounded-xl border-2 border-primary/20 shadow-lg"
           )}>
-            {(!isPlaying || !iframeLoaded) && (
-              <div 
-                className="absolute inset-0 bg-black/80 flex items-center justify-center z-10 cursor-pointer"
-                onClick={handlePlayClick}
-              >
-                <button className={cn(
-                  "px-6 py-3 rounded-full font-medium flex items-center gap-2 transition-colors",
-                  isReplay ? "bg-blue-500 text-white hover:bg-blue-600" : "bg-red-500 text-white hover:bg-red-600"
-                )}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3" />
-                  </svg>
-                  {isReplay ? "Lancer le replay" : "Lancer le live"}
-                </button>
-              </div>
-            )}
-            
-            <iframe
-              ref={iframeRef}
-              src={getEmbedUrl()}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              className="w-full h-full"
-              onLoad={handleIframeLoad}
+            <LiveVideoPlayer 
+              videoId={videoId} 
+              isReplay={isReplay}
             />
           </div>
         </div>
@@ -196,7 +139,6 @@ export const LiveStream = ({
           </div>
         )}
 
-        {/* Nouvelle section pour la transcription et les chapitres */}
         <div className="absolute top-20 left-4 bottom-[200px] w-80 space-y-4 z-[51]">
           <LiveTranscription isReplay={isReplay} />
           {isReplay && <LiveChapters onChapterClick={handleChapterClick} isReplay={true} />}

@@ -13,12 +13,16 @@ interface LiveSidebarProps {
   lives: LiveEvent[];
 }
 
+const AUTO_COLLAPSE_DELAY = 5000; // 5 secondes
+
 export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const collapseTimerRef = useRef<NodeJS.Timeout>();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Filtrer les lives qui ne sont pas le live actuel et qui sont en direct
   const otherLives = lives.filter(live => live.id !== currentLiveId && live.status === 'live');
@@ -34,6 +38,30 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
     );
   });
 
+  // Fonction pour démarrer le timer de réduction automatique
+  const startCollapseTimer = () => {
+    if (collapseTimerRef.current) {
+      clearTimeout(collapseTimerRef.current);
+    }
+    collapseTimerRef.current = setTimeout(() => {
+      setIsCollapsed(true);
+    }, AUTO_COLLAPSE_DELAY);
+  };
+
+  // Gestionnaire d'événements pour la souris
+  const handleMouseEnter = () => {
+    if (collapseTimerRef.current) {
+      clearTimeout(collapseTimerRef.current);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isCollapsed) {
+      startCollapseTimer();
+    }
+  };
+
+  // Effet pour le carrousel automatique
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
@@ -58,10 +86,24 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
     };
   }, [isCollapsed, currentIndex, filteredLives.length]);
 
+  // Effet pour le timer de réduction automatique
+  useEffect(() => {
+    if (!isCollapsed) {
+      startCollapseTimer();
+    }
+
+    return () => {
+      if (collapseTimerRef.current) {
+        clearTimeout(collapseTimerRef.current);
+      }
+    };
+  }, [isCollapsed]);
+
   if (otherLives.length === 0) return null;
 
   return (
     <div
+      ref={containerRef}
       className={cn(
         "fixed left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
         "border-b shadow-lg transition-all duration-300 z-40",
@@ -70,6 +112,8 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
       style={{
         bottom: "calc(64px + 56px)",
       }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="absolute inset-x-0 -top-8 flex justify-center">
         <Button
