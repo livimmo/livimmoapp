@@ -9,6 +9,7 @@ import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { scheduledLives, liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
+import { HomeMap } from "@/components/home/HomeMap";
 
 const Lives = () => {
   const [currentLivesViewMode, setCurrentLivesViewMode] = useState<"list" | "map">("list");
@@ -107,6 +108,8 @@ const Lives = () => {
         transactionType={transactionType}
         setTransactionType={setTransactionType}
       />
+
+      <HomeMap properties={currentLiveProperties} />
 
       {/* Section des lives en cours */}
       <section>

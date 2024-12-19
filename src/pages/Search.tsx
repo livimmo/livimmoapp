@@ -4,6 +4,7 @@ import { ViewControls } from "@/components/search/ViewControls";
 import { SearchContent } from "@/components/search/SearchContent";
 import { type Property } from "@/types/property";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
+import { HomeMap } from "@/components/home/HomeMap";
 
 const placeholderImages = [
   "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
@@ -180,6 +181,7 @@ const Search = () => {
       />
 
       <div className="pt-[60px] px-3">
+        <HomeMap properties={filteredProperties} />
         <ViewControls viewMode={viewMode} setViewMode={setViewMode} />
         <SearchContent
           filteredProperties={filteredProperties}
