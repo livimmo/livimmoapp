@@ -14,7 +14,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
   const propertyData = {
     id: live.id,
     title: live.title,
-    price: parseInt(live.price.replace(/[^\d]/g, "")),
+    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
     location: live.location,
     type: live.type,
     surface: 0,
@@ -47,8 +47,21 @@ export const LiveCard = ({ live }: LiveCardProps) => {
 
   return (
     <>
-      <div onClick={() => setShowLive(true)}>
-        <PropertyCard {...propertyData} />
+      <div onClick={() => setShowLive(true)} className="cursor-pointer">
+        <PropertyCard 
+          {...propertyData} 
+          customButton={
+            <button 
+              className="w-full bg-[#ea384c] hover:bg-[#ea384c]/90 text-white font-medium px-4 py-2 rounded-md flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+              </span>
+              Rejoindre le live
+            </button>
+          }
+        />
       </div>
 
       <Dialog open={showLive} onOpenChange={setShowLive}>
