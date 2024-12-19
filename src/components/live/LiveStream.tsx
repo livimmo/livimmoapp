@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LiveInfo } from "./LiveInfo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LiveCarousel } from "./LiveCarousel";
 import { ReplayCarousel } from "./ReplayCarousel";
 import { liveStreams } from "@/data/mockLives";
@@ -13,6 +13,8 @@ import { AIChat } from "./AIChat";
 import { LiveTranscription } from "./LiveTranscription";
 import { LiveChapters } from "./LiveChapters";
 import { LiveVideoPlayer } from "./LiveVideoPlayer";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const mockProperty = {
   id: 1,
@@ -61,6 +63,19 @@ export const LiveStream = ({
   const [showOtherLives, setShowOtherLives] = useState(true);
   const [showAIChat, setShowAIChat] = useState(false);
   const [showTranscription, setShowTranscription] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Connexion requise",
+        description: "Vous devez être connecté pour accéder au live",
+        variant: "destructive",
+      });
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate, toast]);
 
   const currentLive = liveStreams.find(live => live.id === currentLiveId);
   const startTime = currentLive ? format(currentLive.date, "'En live depuis' HH'h'mm", { locale: fr }) : '';
@@ -72,6 +87,10 @@ export const LiveStream = ({
   const handleChapterClick = (timestamp: string) => {
     console.log("Navigation vers le timestamp:", timestamp);
   };
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col">

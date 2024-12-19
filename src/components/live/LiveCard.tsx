@@ -3,6 +3,9 @@ import { PropertyCard } from "@/components/PropertyCard";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useState } from "react";
 import { LiveStream } from "./LiveStream";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 interface LiveCardProps {
   live: LiveEvent;
@@ -10,6 +13,9 @@ interface LiveCardProps {
 
 export const LiveCard = ({ live }: LiveCardProps) => {
   const [showLive, setShowLive] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const propertyData = {
     id: live.id,
@@ -45,9 +51,22 @@ export const LiveCard = ({ live }: LiveCardProps) => {
     transactionType: "Vente" as const,
   };
 
+  const handleClick = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Connexion requise",
+        description: "Vous devez être connecté pour accéder au live",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+    setShowLive(true);
+  };
+
   return (
     <>
-      <div onClick={() => setShowLive(true)}>
+      <div onClick={handleClick}>
         <PropertyCard {...propertyData} />
       </div>
 
