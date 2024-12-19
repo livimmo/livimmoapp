@@ -10,6 +10,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { OfferTabContent } from "./offer/OfferTabContent";
 import { VisitTabContent } from "./offer/VisitTabContent";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 interface LiveOfferDialogProps {
   title: string;
