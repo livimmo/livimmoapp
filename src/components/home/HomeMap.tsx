@@ -1,62 +1,74 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { useEffect, useRef, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { Property } from '@/types/property';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import { useEffect, useState } from 'react';
-
-// Fix for default markers
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
 
 interface HomeMapProps {
   properties: Property[];
 }
 
-export const HomeMap = ({ properties }: HomeMapProps) => {
-  const [mounted, setMounted] = useState(false);
-  const center = { lat: 31.7917, lng: -7.0926 }; // Centre du Maroc
-  
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+// Temporary public token - should be moved to environment variables
+const MAPBOX_TOKEN = 'pk.eyJ1IjoibGl2aW1tbyIsImEiOiJjbHRwOWZ2Z2gwMXRqMmlxeDVrOXV4ZWd2In0.tHvZ6BrWHPRfZYrLHT_bwg';
 
-  if (typeof window === 'undefined' || !mounted) {
-    return <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-8 bg-gray-100" />;
+export const HomeMap = ({ properties }: HomeMapProps) => {
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    if (!mapContainer.current || map.current) return;
+
+    mapboxgl.accessToken = MAPBOX_TOKEN;
+    
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [-7.0926, 31.7917], // Centre du Maroc
+      zoom: 5
+    });
+
+    // Add navigation controls
+    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+    // Add markers for properties
+    properties.forEach((property) => {
+      if (!property.coordinates) return;
+
+      // Create popup
+      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+        <div class="p-2">
+          <h3 class="font-semibold">${property.title}</h3>
+          <p class="text-sm">${property.price.toLocaleString()} MAD</p>
+          <p class="text-sm text-gray-600">${property.location}</p>
+        </div>
+      `);
+
+      // Create marker
+      new mapboxgl.Marker()
+        .setLngLat([property.coordinates.lng, property.coordinates.lat])
+        .setPopup(popup)
+        .addTo(map.current!);
+    });
+
+    setMounted(true);
+
+    return () => {
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
+    };
+  }, [properties]);
+
+  if (!mounted) {
+    return (
+      <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-8 bg-gray-100" />
+    );
   }
 
   return (
     <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-8">
-      <MapContainer
-        center={[center.lat, center.lng]}
-        zoom={6}
-        style={{ height: '100%', width: '100%' }}
-        scrollWheelZoom={false}
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {properties.map((property) => (
-          property.coordinates && (
-            <Marker 
-              key={property.id}
-              position={[property.coordinates.lat, property.coordinates.lng]}
-            >
-              <Popup>
-                <div className="p-2">
-                  <h3 className="font-semibold">{property.title}</h3>
-                  <p className="text-sm">{property.price.toLocaleString()} MAD</p>
-                  <p className="text-sm text-gray-600">{property.location}</p>
-                </div>
-              </Popup>
-            </Marker>
-          )
-        ))}
-      </MapContainer>
+      <div ref={mapContainer} className="w-full h-full" />
     </div>
   );
 };

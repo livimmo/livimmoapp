@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { useEffect, useRef, useState } from "react";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 import { Skeleton } from "./ui/skeleton";
 
 interface GoogleMapInputProps {
@@ -9,35 +10,71 @@ interface GoogleMapInputProps {
   required?: boolean;
 }
 
+const MAPBOX_TOKEN = 'pk.eyJ1IjoibGl2aW1tbyIsImEiOiJjbHRwOWZ2Z2gwMXRqMmlxeDVrOXV4ZWd2In0.tHvZ6BrWHPRfZYrLHT_bwg';
+
 const defaultCenter = {
-  lat: 31.7917,
-  lng: -7.0926
+  lng: -7.0926,
+  lat: 31.7917
 };
-
-const containerStyle = {
-  width: '100%',
-  height: '300px'
-};
-
-const libraries: ("places" | "geometry" | "drawing" | "visualization")[] = ["places"];
 
 export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: GoogleMapInputProps) => {
-  const [marker, setMarker] = useState(defaultCenter);
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
+  const marker = useRef<mapboxgl.Marker | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleMapClick = async (e: google.maps.MapMouseEvent) => {
-    if (!e.latLng) return;
-    
-    const lat = e.latLng.lat();
-    const lng = e.latLng.lng();
-    setMarker({ lat, lng });
+  useEffect(() => {
+    if (!mapContainer.current || map.current) return;
 
+    mapboxgl.accessToken = MAPBOX_TOKEN;
+    
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [defaultCenter.lng, defaultCenter.lat],
+      zoom: 5
+    });
+
+    marker.current = new mapboxgl.Marker({
+      draggable: true
+    })
+      .setLngLat([defaultCenter.lng, defaultCenter.lat])
+      .addTo(map.current);
+
+    map.current.addControl(new mapboxgl.NavigationControl());
+
+    map.current.on('click', (e) => {
+      const { lng, lat } = e.lngLat;
+      marker.current?.setLngLat([lng, lat]);
+      handleLocationUpdate(lng, lat);
+    });
+
+    marker.current.on('dragend', () => {
+      const { lng, lat } = marker.current!.getLngLat();
+      handleLocationUpdate(lng, lat);
+    });
+
+    map.current.on('load', () => {
+      setIsLoading(false);
+    });
+
+    return () => {
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
+    };
+  }, []);
+
+  const handleLocationUpdate = async (lng: number, lat: number) => {
     try {
-      const geocoder = new google.maps.Geocoder();
-      const response = await geocoder.geocode({ location: { lat, lng } });
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${MAPBOX_TOKEN}`
+      );
+      const data = await response.json();
       
-      if (response.results[0]) {
-        const location = response.results[0].formatted_address;
+      if (data.features && data.features.length > 0) {
+        const location = data.features[0].place_name;
         onLocationSelect?.(location);
         onChange?.(location);
       }
@@ -46,37 +83,12 @@ export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: 
     }
   };
 
-  const handleLoad = () => {
-    setIsLoading(false);
-  };
-
-  if (!import.meta.env.VITE_GOOGLE_MAPS_API_KEY) {
-    return (
-      <div className="p-4 text-center text-muted-foreground">
-        Clé API Google Maps manquante. Veuillez configurer VITE_GOOGLE_MAPS_API_KEY.
-      </div>
-    );
-  }
-
   return (
     <>
       {isLoading && (
         <Skeleton className="w-full h-[300px] rounded-lg" />
       )}
-      <LoadScript 
-        googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-        libraries={libraries}
-        onLoad={handleLoad}
-      >
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={defaultCenter}
-          zoom={6}
-          onClick={handleMapClick}
-        >
-          <Marker position={marker} />
-        </GoogleMap>
-      </LoadScript>
+      <div ref={mapContainer} className="w-full h-[300px] rounded-lg" />
     </>
   );
 };
