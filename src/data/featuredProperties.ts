@@ -26,11 +26,11 @@ export const featuredProperties: Property[] = [
       phone: "+212 6 00 11 22 33",
       email: "karim.benjelloun@example.com",
     },
-    transactionType: "Vente",
     coordinates: {
       lat: 31.6295,
       lng: -7.9811
     },
+    transactionType: "Vente",
     virtualTour: {
       enabled: true,
       url: "VOTRE_ID_KLAPTY",
@@ -103,11 +103,11 @@ export const featuredProperties: Property[] = [
       phone: "+212 6 11 22 33 44",
       email: "sophia.martinez@example.com",
     },
-    transactionType: "Location",
     coordinates: {
       lat: 35.7595,
       lng: -5.8340
     },
+    transactionType: "Location",
     virtualTour: {
       enabled: true,
       url: "https://my.matterport.com/show/?m=SxQL3iGyvQk",
