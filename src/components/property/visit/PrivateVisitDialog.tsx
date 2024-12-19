@@ -54,7 +54,7 @@ export const PrivateVisitDialog = ({
   };
 
   const canProceedToDateTime = selectedProperties.length > 0;
-  const canProceedToConfirmation = selectedDate && selectedTime;
+  const canProceedToConfirmation = Boolean(selectedDate && selectedTime);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

@@ -51,7 +51,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
       <div onClick={() => setShowLive(true)} className="cursor-pointer">
         <PropertyCard 
           {...propertyData}
-          actionButton={
+          customButton={
             <button 
               className="w-full bg-[#ea384c] hover:bg-[#ea384c]/90 text-white font-medium px-4 py-2 rounded-md flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105"
             >
