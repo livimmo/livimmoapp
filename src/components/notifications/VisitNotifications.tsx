@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Calendar, Clock, Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { ToastAction } from "@/components/ui/toast";
 
 interface Visit {
   id: string;
@@ -33,12 +34,15 @@ export const useVisitNotifications = (visits: Visit[]) => {
         if (hoursDiff <= 24 && hoursDiff > 23) {
           toast({
             title: "Rappel de visite privée",
-            description: `Votre visite pour "${visit.propertyTitle}" est prévue demain à ${format(
-              visitDate,
-              "HH'h'mm",
-              { locale: fr }
-            )}`,
-            icon: <Calendar className="h-4 w-4" />,
+            description: (
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                <span>
+                  Votre visite pour "{visit.propertyTitle}" est prévue demain à{" "}
+                  {format(visitDate, "HH'h'mm", { locale: fr })}
+                </span>
+              </div>
+            ),
           });
         }
 
@@ -46,12 +50,19 @@ export const useVisitNotifications = (visits: Visit[]) => {
         if (hoursDiff <= 1 && hoursDiff > 0.9) {
           toast({
             title: "Visite privée imminente",
-            description: `Votre visite pour "${visit.propertyTitle}" commence dans 1 heure`,
-            icon: <Clock className="h-4 w-4" />,
-            action: visit.isLive ? {
-              label: "Rejoindre le live",
-              onClick: () => visit.liveUrl && window.open(visit.liveUrl, "_blank"),
-            } : undefined,
+            description: (
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                <span>
+                  Votre visite pour "{visit.propertyTitle}" commence dans 1 heure
+                </span>
+              </div>
+            ),
+            action: visit.isLive ? (
+              <ToastAction onClick={() => visit.liveUrl && window.open(visit.liveUrl, "_blank")}>
+                Rejoindre le live
+              </ToastAction>
+            ) : undefined,
           });
         }
 
@@ -59,12 +70,17 @@ export const useVisitNotifications = (visits: Visit[]) => {
         if (hoursDiff <= 0.083 && hoursDiff > 0) {
           toast({
             title: "Visite privée dans 5 minutes",
-            description: `Préparez-vous pour la visite de "${visit.propertyTitle}"`,
-            icon: <Home className="h-4 w-4" />,
-            action: visit.isLive ? {
-              label: "Rejoindre le live",
-              onClick: () => visit.liveUrl && window.open(visit.liveUrl, "_blank"),
-            } : undefined,
+            description: (
+              <div className="flex items-center gap-2">
+                <Home className="h-4 w-4" />
+                <span>Préparez-vous pour la visite de "{visit.propertyTitle}"</span>
+              </div>
+            ),
+            action: visit.isLive ? (
+              <ToastAction onClick={() => visit.liveUrl && window.open(visit.liveUrl, "_blank")}>
+                Rejoindre le live
+              </ToastAction>
+            ) : undefined,
           });
         }
 
@@ -75,15 +91,21 @@ export const useVisitNotifications = (visits: Visit[]) => {
         ) {
           toast({
             title: "Visite privée en cours",
-            description: `Votre visite pour "${visit.propertyTitle}" a commencé`,
-            icon: <Home className="h-4 w-4" />,
-            action: visit.isLive ? {
-              label: "Rejoindre le live",
-              onClick: () => visit.liveUrl && window.open(visit.liveUrl, "_blank"),
-            } : {
-              label: "Voir les détails",
-              onClick: () => navigate(`/property/${visit.propertyId}`),
-            },
+            description: (
+              <div className="flex items-center gap-2">
+                <Home className="h-4 w-4" />
+                <span>Votre visite pour "{visit.propertyTitle}" a commencé</span>
+              </div>
+            ),
+            action: visit.isLive ? (
+              <ToastAction onClick={() => visit.liveUrl && window.open(visit.liveUrl, "_blank")}>
+                Rejoindre le live
+              </ToastAction>
+            ) : (
+              <ToastAction onClick={() => navigate(`/property/${visit.propertyId}`)}>
+                Voir les détails
+              </ToastAction>
+            ),
           });
         }
       });
