@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LiveVideoPlayerProps {
   videoId: string;
@@ -10,6 +11,7 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
   const [isPlaying, setIsPlaying] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const isMobile = useIsMobile();
 
   const getEmbedUrl = () => {
     const baseUrl = 'https://www.youtube.com/embed/';
@@ -22,6 +24,11 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
       origin: window.location.origin,
       controls: '1',
       ...(isPlaying && { autoplay: '1' }),
+      // Ajout des paramètres spécifiques pour mobile
+      ...(isMobile && {
+        fs: '1', // Active le mode plein écran
+        playsinline: '1', // Permet la lecture en ligne sur iOS
+      }),
     });
     
     return `${baseUrl}${videoId}?${params.toString()}`;
@@ -68,10 +75,14 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
         src={getEmbedUrl()}
         title="YouTube video player"
         frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
         allowFullScreen
         className="w-full h-full"
         onLoad={handleIframeLoad}
+        style={{
+          aspectRatio: isMobile ? "16/9" : undefined,
+          maxHeight: isMobile ? "calc(100vh - 200px)" : undefined,
+        }}
       />
     </div>
   );
