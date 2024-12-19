@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { UserRole } from "@/types/user";
 import { Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface ConfirmationStepProps {
   role: UserRole;
@@ -13,6 +14,8 @@ export const ConfirmationStep = ({
   onConfirm,
   onBack,
 }: ConfirmationStepProps) => {
+  const navigate = useNavigate();
+
   const getRoleMessage = () => {
     switch (role) {
       case "promoter":
@@ -26,6 +29,11 @@ export const ConfirmationStep = ({
       default:
         return "Bienvenue sur Livimmo !";
     }
+  };
+
+  const handleConfirm = async () => {
+    await onConfirm();
+    navigate('/');
   };
 
   return (
@@ -43,7 +51,7 @@ export const ConfirmationStep = ({
         <Button type="button" variant="outline" onClick={onBack} className="flex-1">
           Retour
         </Button>
-        <Button onClick={onConfirm} className="flex-1">
+        <Button onClick={handleConfirm} className="flex-1">
           Commencer
         </Button>
       </div>
