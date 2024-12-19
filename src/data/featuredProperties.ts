@@ -20,6 +20,7 @@ export const featuredProperties: Property[] = [
     hasLive: true,
     liveDate: new Date("2024-03-15"),
     agent: {
+      id: 1,
       name: "Karim Benjelloun",
       image: "https://i.pravatar.cc/150?u=karim",
       phone: "+212 6 00 11 22 33",
@@ -44,7 +45,37 @@ export const featuredProperties: Property[] = [
             { label: "Exposition", value: "Sud" }
           ]
         }
-      ]
+      ],
+      floorPlan: {
+        url: "https://example.com/floorplan.svg",
+        rooms: [
+          {
+            id: "salon",
+            name: "Salon",
+            area: 45,
+            coordinates: { x: 30, y: 40 }
+          },
+          {
+            id: "cuisine",
+            name: "Cuisine",
+            area: 20,
+            coordinates: { x: 60, y: 40 }
+          }
+        ]
+      },
+      statistics: {
+        totalVisits: 245,
+        averageTime: "8:30",
+        popularRooms: [
+          { name: "Salon", visits: 180 },
+          { name: "Cuisine", visits: 150 },
+          { name: "Chambre principale", visits: 120 }
+        ],
+        lastVisits: [
+          { date: "2024-03-10", duration: "10:15" },
+          { date: "2024-03-09", duration: "7:45" }
+        ]
+      }
     }
   },
   {
@@ -65,16 +96,21 @@ export const featuredProperties: Property[] = [
     ],
     hasLive: false,
     agent: {
+      id: 2,
       name: "Sophia Martinez",
       image: "https://i.pravatar.cc/150?u=sophia",
       phone: "+212 6 11 22 33 44",
       email: "sophia.martinez@example.com",
     },
-    transactionType: "Location" as const,
+    transactionType: "Location",
+    coordinates: {
+      lat: 35.7595,
+      lng: -5.8340
+    },
     virtualTour: {
       enabled: true,
       url: "https://my.matterport.com/show/?m=SxQL3iGyvQk",
-      type: "360" as const,
+      type: "360",
       hotspots: [
         {
           title: "Chambre",
@@ -85,49 +121,36 @@ export const featuredProperties: Property[] = [
             { label: "Exposition", value: "Est" }
           ]
         }
-      ]
+      ],
+      floorPlan: {
+        url: "https://example.com/floorplan2.svg",
+        rooms: [
+          {
+            id: "salon",
+            name: "Salon",
+            area: 35,
+            coordinates: { x: 30, y: 40 }
+          },
+          {
+            id: "chambre",
+            name: "Chambre principale",
+            area: 20,
+            coordinates: { x: 60, y: 40 }
+          }
+        ]
+      },
+      statistics: {
+        totalVisits: 180,
+        averageTime: "6:45",
+        popularRooms: [
+          { name: "Salon", visits: 150 },
+          { name: "Chambre principale", visits: 120 }
+        ],
+        lastVisits: [
+          { date: "2024-03-10", duration: "7:15" },
+          { date: "2024-03-09", duration: "6:30" }
+        ]
+      }
     }
-  },
-  {
-    id: 3,
-    title: "Penthouse Luxueux",
-    price: 3200000,
-    location: "Casablanca",
-    type: "Appartement",
-    surface: 200,
-    rooms: 4,
-    bathrooms: 3,
-    description: "Penthouse de luxe avec terrasse panoramique",
-    features: ["Terrasse", "Vue panoramique", "Parking", "Salle de sport", "Spa"],
-    images: [
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-      "https://images.unsplash.com/photo-1613977257363-707ba9348227",
-    ],
-    hasLive: true,
-    liveDate: new Date("2024-03-20"),
-    agent: {
-      name: "Yasmine Alaoui",
-      image: "https://i.pravatar.cc/150?u=yasmine",
-      phone: "+212 6 22 33 44 55",
-      email: "yasmine.alaoui@example.com",
-    },
-    transactionType: "Vente" as const,
-    virtualTour: {
-      enabled: true,
-      url: "https://my.matterport.com/show/?m=SxQL3iGyvQk",
-      type: "360" as const,
-      hotspots: [
-        {
-          title: "Terrasse",
-          description: "Terrasse avec vue imprenable sur la ville",
-          position: { x: 70, y: 30 },
-          details: [
-            { label: "Surface", value: "50m²" },
-            { label: "Exposition", value: "Ouest" }
-          ]
-        }
-      ]
-    }
-  },
+  }
 ];

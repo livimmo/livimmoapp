@@ -1,6 +1,8 @@
 import { MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { type Property } from "@/types/property";
+import { PropertyVirtualTourStats } from "./PropertyVirtualTourStats";
+import { PropertyFloorPlan } from "./PropertyFloorPlan";
 
 interface PropertyDetailContentProps {
   property: Property;
@@ -28,6 +30,13 @@ export const PropertyDetailContent = ({ property }: PropertyDetailContentProps) 
           <div className="text-sm text-muted-foreground">Salle de bains</div>
         </div>
       </div>
+
+      {property.virtualTour?.enabled && (
+        <>
+          <PropertyFloorPlan property={property} />
+          <PropertyVirtualTourStats property={property} />
+        </>
+      )}
 
       <div>
         <h2 className="text-xl font-semibold mb-2">Description</h2>
