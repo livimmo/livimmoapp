@@ -10,6 +10,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 import { LiveStream } from "./LiveStream";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface ReplayCardProps {
   live: LiveEvent;
@@ -18,18 +20,29 @@ interface ReplayCardProps {
 export const ReplayCard = ({ live }: ReplayCardProps) => {
   const navigate = useNavigate();
   const [showReplay, setShowReplay] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
 
   const handleWatch = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Connexion requise",
+        description: "Vous devez être connecté pour accéder au replay",
+        variant: "destructive",
+      });
+      navigate("/login", { state: { from: `/replay/${live.id}` } });
+      return;
+    }
     setShowReplay(true);
   };
 
-  const handleAgentClick = () => {
+  const handleAgentClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (live.agentId) {
       navigate(`/agent/${live.agentId}`);
     }
   };
 
-  // Générer aléatoirement le statut vérifié
   const isVerified = Math.random() > 0.5;
 
   return (

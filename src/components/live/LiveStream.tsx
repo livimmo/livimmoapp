@@ -74,6 +74,7 @@ export const LiveStream = ({
         variant: "destructive",
       });
       navigate("/login");
+      return;
     }
   }, [isAuthenticated, navigate, toast]);
 

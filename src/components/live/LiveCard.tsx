@@ -58,7 +58,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
         description: "Vous devez être connecté pour accéder au live",
         variant: "destructive",
       });
-      navigate("/login");
+      navigate("/login", { state: { from: `/live/${live.id}` } });
       return;
     }
     setShowLive(true);
