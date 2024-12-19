@@ -1,75 +1,65 @@
-import { useState, useCallback, useRef } from 'react';
-import Map, { Marker, Popup, NavigationControl } from 'react-map-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import { useState, useCallback } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 import { Property } from '@/types/property';
 import { PropertyCard } from '../PropertyCard';
 import { Button } from '../ui/button';
 import { MapPin } from 'lucide-react';
+import L from 'leaflet';
+
+// Fix for default marker icons in Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 interface MapViewProps {
   properties: Property[];
 }
 
 export const MapView = ({ properties }: MapViewProps) => {
-  const [popupInfo, setPopupInfo] = useState<Property | null>(null);
-  const mapRef = useRef(null);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
-  const [viewState, setViewState] = useState({
-    latitude: 31.7917,
-    longitude: -7.0926,
-    zoom: 5
-  });
-
-  const onMarkerClick = useCallback((property: Property) => {
-    setPopupInfo(property);
+  const handleMarkerClick = useCallback((property: Property) => {
+    setSelectedProperty(property);
   }, []);
+
+  // Centre de la carte sur le Maroc
+  const center: [number, number] = [31.7917, -7.0926];
 
   return (
     <div className="w-full h-[600px] relative rounded-lg overflow-hidden">
-      <Map
-        ref={mapRef}
-        {...viewState}
-        onMove={evt => setViewState(evt.viewState)}
-        mapStyle="mapbox://styles/mapbox/light-v11"
-        mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
-        style={{ width: '100%', height: '100%' }}
+      <MapContainer
+        center={center}
+        zoom={5}
+        className="w-full h-full"
+        scrollWheelZoom={true}
       >
-        <NavigationControl position="top-right" />
-
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        
         {properties.map((property) => (
           <Marker
             key={property.id}
-            latitude={property.coordinates.lat}
-            longitude={property.coordinates.lng}
-            anchor="bottom"
-            onClick={e => {
-              e.originalEvent.stopPropagation();
-              onMarkerClick(property);
+            position={[property.coordinates.lat, property.coordinates.lng]}
+            eventHandlers={{
+              click: () => handleMarkerClick(property),
             }}
           >
-            <Button
-              variant="outline"
-              size="icon"
-              className="bg-white hover:bg-primary hover:text-white transition-colors"
-            >
-              <MapPin className="h-4 w-4" />
-            </Button>
+            {selectedProperty?.id === property.id && (
+              <Popup>
+                <div className="w-[300px]">
+                  <PropertyCard {...property} />
+                </div>
+              </Popup>
+            )}
           </Marker>
         ))}
-
-        {popupInfo && (
-          <Popup
-            anchor="bottom"
-            latitude={popupInfo.coordinates.lat}
-            longitude={popupInfo.coordinates.lng}
-            closeOnClick={false}
-            onClose={() => setPopupInfo(null)}
-            className="w-[300px]"
-          >
-            <PropertyCard {...popupInfo} />
-          </Popup>
-        )}
-      </Map>
+      </MapContainer>
     </div>
   );
 };
