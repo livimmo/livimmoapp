@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Clock, Home, UtensilsCrossed, PalmTree } from "lucide-react";
+import { Clock, Home, UtensilsCrossed, Palmtree } from "lucide-react";
 
 interface Chapter {
   id: number;
@@ -20,7 +20,7 @@ export const LiveChapters = ({ onChapterClick, isReplay }: LiveChaptersProps) =>
     { id: 1, title: "Introduction du bien", timestamp: "00:00", icon: <Home className="h-4 w-4" /> },
     { id: 2, title: "Visite du salon", timestamp: "02:30", icon: <Home className="h-4 w-4" /> },
     { id: 3, title: "Cuisine équipée", timestamp: "05:45", icon: <UtensilsCrossed className="h-4 w-4" /> },
-    { id: 4, title: "Jardin et extérieurs", timestamp: "08:20", icon: <PalmTree className="h-4 w-4" /> },
+    { id: 4, title: "Jardin et extérieurs", timestamp: "08:20", icon: <Palmtree className="h-4 w-4" /> },
   ]);
 
   return (
