@@ -1,10 +1,10 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
 import { Property } from '@/types/property';
-import { PropertyCard } from '../PropertyCard';
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { useEffect } from 'react';
 
-// Fix for default marker icons in Leaflet
+// Fix for default markers
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -17,32 +17,43 @@ interface HomeMapProps {
 }
 
 export const HomeMap = ({ properties }: HomeMapProps) => {
-  // Centre de la carte sur le Maroc
-  const center: [number, number] = [31.7917, -7.0926];
+  // Calculer le centre de la carte basé sur les propriétés
+  const center = { lat: 31.7917, lng: -7.0926 }; // Centre du Maroc
+  
+  useEffect(() => {
+    // Force une mise à jour de la taille de la carte après le montage
+    const map = document.querySelector('.leaflet-container');
+    if (map) {
+      (window as any).dispatchEvent(new Event('resize'));
+    }
+  }, []);
 
   return (
     <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg mb-8">
       <MapContainer
-        center={center}
-        zoom={5}
-        className="w-full h-full"
-        scrollWheelZoom={false}
+        center={[center.lat, center.lng]}
+        zoom={6}
+        style={{ height: '100%', width: '100%' }}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         {properties.map((property) => (
-          <Marker
-            key={property.id}
-            position={[property.coordinates.lat, property.coordinates.lng]}
-          >
-            <Popup>
-              <div className="w-[300px]">
-                <PropertyCard {...property} />
-              </div>
-            </Popup>
-          </Marker>
+          property.coordinates && (
+            <Marker 
+              key={property.id}
+              position={[property.coordinates.lat, property.coordinates.lng]}
+            >
+              <Popup>
+                <div className="p-2">
+                  <h3 className="font-semibold">{property.title}</h3>
+                  <p className="text-sm">{property.price.toLocaleString()} MAD</p>
+                  <p className="text-sm text-gray-600">{property.location}</p>
+                </div>
+              </Popup>
+            </Marker>
+          )
         ))}
       </MapContainer>
     </div>
