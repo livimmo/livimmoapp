@@ -1,4 +1,4 @@
-import { Video, Bell, User, LogIn, UserPlus, House } from "lucide-react";
+import { Video, Bell, User, LogIn, UserPlus, House, Headset } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -12,6 +12,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -34,6 +40,14 @@ export const Header = () => {
 
   const isAgentOrPromoter = user?.role === 'agent' || user?.role === 'promoter';
   const isBuyerOrTenant = user?.role === 'buyer' || user?.role === 'tenant';
+
+  const handleCallClick = (type: 'phone' | 'email') => {
+    if (type === 'phone') {
+      window.location.href = 'tel:+212123456789';
+    } else {
+      window.location.href = 'mailto:support@livimmo.com';
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
@@ -81,6 +95,47 @@ export const Header = () => {
                   </Tooltip>
                 </TooltipProvider>
               )}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="relative"
+                          aria-label="Contactez notre support client"
+                        >
+                          <Headset className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-[280px] p-4">
+                        <div className="space-y-4">
+                          <div className="text-sm font-medium">Support Client</div>
+                          <div className="space-y-2">
+                            <DropdownMenuItem onClick={() => handleCallClick('phone')} className="cursor-pointer">
+                              <span className="font-medium">Téléphone:</span>
+                              <span className="ml-2">+212 123 456 789</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleCallClick('email')} className="cursor-pointer">
+                              <span className="font-medium">Email:</span>
+                              <span className="ml-2">support@livimmo.com</span>
+                            </DropdownMenuItem>
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            <div>Horaires d'ouverture:</div>
+                            <div>Lun-Ven: 8h00 - 18h00</div>
+                            <div>Sam: 9h00 - 13h00</div>
+                          </div>
+                        </div>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Contacter le support</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               <Button 
                 variant="ghost" 
                 size="sm"
