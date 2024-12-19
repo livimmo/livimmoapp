@@ -23,11 +23,10 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
       enablejsapi: '1',
       origin: window.location.origin,
       controls: '1',
-      ...(isPlaying && { autoplay: '1' }),
-      // Ajout des paramètres spécifiques pour mobile
+      autoplay: isPlaying ? '1' : '0',
       ...(isMobile && {
-        fs: '1', // Active le mode plein écran
-        playsinline: '1', // Permet la lecture en ligne sur iOS
+        fs: '1',
+        playsinline: '1',
       }),
     });
     
@@ -37,7 +36,8 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
   const handlePlayClick = () => {
     setIsPlaying(true);
     if (iframeRef.current) {
-      iframeRef.current.src = getEmbedUrl();
+      const newSrc = getEmbedUrl();
+      iframeRef.current.src = newSrc;
     }
   };
 
@@ -49,6 +49,9 @@ export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideo
   useEffect(() => {
     setIsPlaying(false);
     setIframeLoaded(false);
+    if (iframeRef.current) {
+      iframeRef.current.src = getEmbedUrl();
+    }
   }, [videoId]);
 
   return (
