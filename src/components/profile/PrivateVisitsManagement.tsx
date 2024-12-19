@@ -5,6 +5,7 @@ import { Visit } from "@/types/visit";
 import { VisitsList } from "./visits/VisitsList";
 import { VisitCancellationDialog } from "./visits/VisitCancellationDialog";
 import { VisitReschedulingDialog } from "./visits/VisitReschedulingDialog";
+import { VisitDetailsDialog } from "./visits/VisitDetailsDialog";
 import { mockVisits } from "@/data/mockVisits";
 
 export const PrivateVisitsManagement = () => {
@@ -77,6 +78,7 @@ export const PrivateVisitsManagement = () => {
             status="pending"
             onCancel={handleCancel}
             onReschedule={handleReschedule}
+            onVisitSelect={setSelectedVisit}
           />
         </TabsContent>
 
@@ -86,6 +88,7 @@ export const PrivateVisitsManagement = () => {
             status="confirmed"
             onCancel={handleCancel}
             onReschedule={handleReschedule}
+            onVisitSelect={setSelectedVisit}
           />
         </TabsContent>
 
@@ -95,6 +98,7 @@ export const PrivateVisitsManagement = () => {
             status="ongoing"
             onCancel={handleCancel}
             onReschedule={handleReschedule}
+            onVisitSelect={setSelectedVisit}
           />
         </TabsContent>
 
@@ -104,6 +108,7 @@ export const PrivateVisitsManagement = () => {
             status="completed"
             onCancel={handleCancel}
             onReschedule={handleReschedule}
+            onVisitSelect={setSelectedVisit}
           />
         </TabsContent>
 
@@ -113,6 +118,7 @@ export const PrivateVisitsManagement = () => {
             status="cancelled"
             onCancel={handleCancel}
             onReschedule={handleReschedule}
+            onVisitSelect={setSelectedVisit}
           />
         </TabsContent>
       </Tabs>
@@ -132,6 +138,10 @@ export const PrivateVisitsManagement = () => {
             visitTitle={selectedVisit.propertyTitle}
             currentDate={selectedVisit.date}
             currentTime={selectedVisit.time}
+          />
+          <VisitDetailsDialog
+            visit={selectedVisit}
+            onClose={() => setSelectedVisit(null)}
           />
         </>
       )}
