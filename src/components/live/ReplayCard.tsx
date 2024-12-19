@@ -121,7 +121,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
       <Dialog open={showReplay} onOpenChange={setShowReplay}>
         <DialogContent className="max-w-[100vw] h-[100vh] p-0 border-none">
           <LiveStream 
-            videoId="VIQpb65HmMs"
+            videoId="wRz1AWOac-8RGhql"
             currentLiveId={live.id}
             otherLives={[]}
             onLiveChange={() => {}}

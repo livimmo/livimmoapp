@@ -76,7 +76,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
       <Dialog open={showLive} onOpenChange={setShowLive}>
         <DialogContent className="max-w-[100vw] h-[100vh] p-0 border-none">
           <LiveStream 
-            videoId="n3wtxcO_0GQ"
+            videoId="wRz1AWOac-8RGhql"
             currentLiveId={live.id}
             otherLives={[]}
             onLiveChange={() => {}}
