@@ -96,7 +96,7 @@ export const LiveInfo = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className={`bg-primary/10 hover:bg-primary/20 ${isFavorite ? 'text-[#ea384c]' : 'text-primary'} transition-colors`}
+                className={`bg-[#ea384c]/10 hover:bg-[#ea384c]/20 ${isFavorite ? 'text-[#ea384c]' : 'text-[#ea384c]'} transition-colors`}
                 onClick={handleToggleFavorite}
               >
                 <Heart className={`h-6 w-6 ${isFavorite ? "fill-[#ea384c]" : ""} transition-colors`} />
@@ -104,7 +104,7 @@ export const LiveInfo = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                className="bg-[#ea384c]/10 text-[#ea384c] hover:bg-[#ea384c]/20 transition-colors"
                 onClick={onToggleChat}
               >
                 <MessageSquare className="h-6 w-6" />
@@ -112,7 +112,7 @@ export const LiveInfo = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                className="bg-[#ea384c]/10 text-[#ea384c] hover:bg-[#ea384c]/20 transition-colors"
                 onClick={() => navigate(-1)}
               >
                 <X className="h-6 w-6" />
@@ -126,14 +126,14 @@ export const LiveInfo = ({
                 >
                   {offerCount} offres
                 </Badge>
-                <p className="text-lg font-bold whitespace-nowrap text-primary">
+                <p className="text-lg font-bold whitespace-nowrap text-[#ea384c]">
                   {property.price.toLocaleString()} DH
                 </p>
               </>
             )}
             <Button 
               className={cn(
-                "bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap shadow-sm transition-all hover:shadow-md",
+                "bg-[#ea384c] hover:bg-[#ea384c]/90 text-white whitespace-nowrap shadow-sm transition-all hover:shadow-md",
                 isMobile && "w-full"
               )}
               onClick={() => setIsOfferDialogOpen(true)}
@@ -151,7 +151,7 @@ export const LiveInfo = ({
               >
                 {offerCount} offres
               </Badge>
-              <p className="text-lg font-bold whitespace-nowrap text-primary">
+              <p className="text-lg font-bold whitespace-nowrap text-[#ea384c]">
                 {property.price.toLocaleString()} DH
               </p>
             </div>
