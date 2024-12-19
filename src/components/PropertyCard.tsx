@@ -21,6 +21,7 @@ type PropertyCardProps = Property & {
   isUserRegistered?: boolean;
   offers?: number;
   customButton?: React.ReactNode;
+  status: "available" | "sold" | "rented";
 };
 
 export const PropertyCard = ({
@@ -41,6 +42,7 @@ export const PropertyCard = ({
   offers = 0,
   agent,
   customButton,
+  status,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
@@ -167,12 +169,14 @@ export const PropertyCard = ({
                   propertyId={id}
                   propertyTitle={title}
                 />
-                <VisitBookingButton
-                  propertyId={id}
-                  propertyTitle={title}
-                  agentId={agent.id}
-                  agentName={agent.name}
-                />
+                {status !== "sold" && (
+                  <VisitBookingButton
+                    propertyId={id}
+                    propertyTitle={title}
+                    agentId={agent.id}
+                    agentName={agent.name}
+                  />
+                )}
               </>
             )}
           </div>

@@ -17,6 +17,11 @@ export const PrivateVisitButton = ({
 }: PrivateVisitButtonProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  // Ne pas afficher le bouton si le bien est vendu
+  if (property?.status === "sold") {
+    return null;
+  }
+
   return (
     <>
       <Button
