@@ -83,7 +83,7 @@ export const LiveStream = ({
       />
 
       {!isReplay && (
-        <div className="absolute top-20 left-4 z-[52] bg-black/60 text-white px-3 py-1.5 rounded-full text-sm backdrop-blur-sm">
+        <div className="absolute top-20 right-4 z-[52] bg-black/60 text-white px-3 py-1.5 rounded-full text-sm backdrop-blur-sm">
           {startTime}
         </div>
       )}
