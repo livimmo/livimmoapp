@@ -38,7 +38,6 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
 
       newMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
       
-      // Only set the map once it's loaded
       newMap.on('load', () => {
         setMap(newMap);
       });
@@ -58,7 +57,6 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   useEffect(() => {
     if (!map) return;
 
-    // Clear existing markers
     const clearMarkers = () => {
       markersRef.current.forEach(marker => marker.remove());
       markersRef.current = [];
@@ -68,7 +66,6 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
 
     const livesToShow = selectedLiveType === 'current' ? liveStreams : scheduledLives;
 
-    // Add new markers
     livesToShow.forEach(live => {
       const coordinates = {
         lat: 31.7917 + Math.random() * 2 - 1,
@@ -76,56 +73,56 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
       };
 
       const el = document.createElement('div');
-      el.className = `flex items-center justify-center w-8 h-8 ${
+      el.className = `flex items-center justify-center w-6 h-6 ${
         selectedLiveType === 'current' 
           ? 'bg-red-500 animate-pulse' 
           : 'bg-blue-500'
-      } rounded-full border-2 border-white shadow-lg`;
+      } rounded-full border border-white shadow-lg cursor-pointer hover:scale-110 transition-transform`;
       el.innerHTML = selectedLiveType === 'current' ? '🔴' : '📅';
 
       const popupContent = document.createElement('div');
-      popupContent.className = 'p-4 max-w-[300px]';
+      popupContent.className = 'p-2 max-w-[200px]';
       popupContent.innerHTML = `
-        <div class="relative mb-4">
-          <img src="${live.thumbnail}" alt="${live.title}" class="w-full h-[150px] object-cover rounded-lg"/>
-          <div class="absolute bottom-2 left-2">
-            <span class="px-2 py-1 rounded-full text-xs font-semibold ${
+        <div class="relative mb-2">
+          <img src="${live.thumbnail}" alt="${live.title}" class="w-full h-[100px] object-cover rounded"/>
+          <div class="absolute bottom-1 left-1">
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-medium ${
               selectedLiveType === 'current'
                 ? 'bg-red-500 text-white'
                 : 'bg-blue-500 text-white'
             }">
-              ${selectedLiveType === 'current' ? 'Live en cours' : 'Live programmé'}
+              ${selectedLiveType === 'current' ? 'Live' : 'Programmé'}
             </span>
           </div>
         </div>
-        <h3 class="font-semibold text-lg mb-2">${live.title}</h3>
-        <p class="text-primary font-bold mb-2">${live.price}</p>
-        <p class="text-sm text-gray-600 mb-2">${live.location}</p>
-        <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+        <h3 class="font-medium text-sm mb-1 line-clamp-1">${live.title}</h3>
+        <p class="text-primary font-medium text-xs mb-1">${live.price}</p>
+        <p class="text-xs text-gray-600 mb-1 line-clamp-1">${live.location}</p>
+        <div class="flex items-center gap-1 text-xs text-gray-500 mb-2">
           ${selectedLiveType === 'current' 
-            ? `<span>${live.viewers} spectateurs</span>`
+            ? `<span>${live.viewers} 👥</span>`
             : `<span>${new Date(live.date).toLocaleDateString('fr-FR', {
-                weekday: 'long',
+                weekday: 'short',
                 day: 'numeric',
-                month: 'long',
+                month: 'short',
                 hour: '2-digit',
                 minute: '2-digit'
               })}</span>`
           }
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-1">
           ${selectedLiveType === 'current' 
-            ? `<button class="join-live-btn w-full px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90">
-                Rejoindre le live
+            ? `<button class="join-live-btn w-full px-2 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90">
+                Rejoindre
                </button>`
-            : `<button class="reserve-live-btn w-full px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90">
-                Réserver ma place
+            : `<button class="reserve-live-btn w-full px-2 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90">
+                Réserver
                </button>`
           }
         </div>
       `;
 
-      const popup = new mapboxgl.Popup({ offset: 25 })
+      const popup = new mapboxgl.Popup({ offset: 15 })
         .setDOMContent(popupContent);
 
       const marker = new mapboxgl.Marker(el)
@@ -133,7 +130,6 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         .setPopup(popup)
         .addTo(map);
 
-      // Add click handlers after popup is added to DOM
       popup.on('open', () => {
         const joinBtn = popupContent.querySelector('.join-live-btn');
         const reserveBtn = popupContent.querySelector('.reserve-live-btn');
