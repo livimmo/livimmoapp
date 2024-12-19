@@ -47,7 +47,7 @@ export const LiveStream = ({
 }: LiveStreamProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const [showOtherLives, setShowOtherLives] = useState(false);
+  const [showOtherLives, setShowOtherLives] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -148,14 +148,7 @@ export const LiveStream = ({
           </div>
         </div>
 
-        <div 
-          className={cn(
-            "absolute left-0 right-0 z-[51] transition-all duration-300 ease-in-out",
-            showOtherLives 
-              ? "bottom-[64px] opacity-100" 
-              : "-bottom-full opacity-0"
-          )}
-        >
+        <div className="absolute bottom-[64px] left-0 right-0 z-[51]">
           {isReplay ? (
             <ReplayCarousel
               replays={liveStreams}
