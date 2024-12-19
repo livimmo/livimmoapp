@@ -1,9 +1,11 @@
-import { Video, Bell, User, LogIn, UserPlus } from "lucide-react";
+import { Video, Bell, User, LogIn, UserPlus, House } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { AddLiveDialog } from "@/components/AddLiveDialog";
+import { useState } from "react";
+import { ReservationForm } from "@/components/home/ReservationForm";
 import {
   Tooltip,
   TooltipContent,
@@ -15,6 +17,7 @@ export const Header = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
   const { toast } = useToast();
+  const [showVisitDialog, setShowVisitDialog] = useState(false);
 
   const handleLogoClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
@@ -30,6 +33,7 @@ export const Header = () => {
   };
 
   const isAgentOrPromoter = user?.role === 'agent' || user?.role === 'promoter';
+  const isBuyerOrTenant = user?.role === 'buyer' || user?.role === 'tenant';
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
@@ -54,6 +58,25 @@ export const Header = () => {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Démarrer ou programmer un live</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+              {isBuyerOrTenant && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowVisitDialog(true)}
+                        className="relative"
+                      >
+                        <House className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Planifier une visite privée</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -101,6 +124,13 @@ export const Header = () => {
           )}
         </div>
       </div>
+
+      {showVisitDialog && (
+        <ReservationForm
+          live={{ id: 0, title: "", date: new Date() }}
+          onClose={() => setShowVisitDialog(false)}
+        />
+      )}
     </header>
   );
 };
