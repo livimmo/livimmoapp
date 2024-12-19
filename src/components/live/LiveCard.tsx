@@ -64,11 +64,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
       return;
     }
 
-    if (isMobile) {
-      setShowLive(true);
-    } else {
-      navigate(`/live/${live.id}`);
-    }
+    setShowLive(true);
   };
 
   return (

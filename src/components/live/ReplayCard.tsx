@@ -36,11 +36,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
       return;
     }
 
-    if (isMobile) {
-      setShowReplay(true);
-    } else {
-      navigate(`/replay/${live.id}`);
-    }
+    setShowReplay(true);
   };
 
   const handleAgentClick = (e: React.MouseEvent) => {
