@@ -104,7 +104,7 @@ export const LiveStream = ({
           </div>
         </div>
 
-        <div className="absolute bottom-[64px] left-4 w-80 z-[51]">
+        <div className="absolute bottom-[64px] left-0 right-0 z-[51]">
           {isReplay ? (
             <ReplayCarousel
               replays={liveStreams}
