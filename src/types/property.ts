@@ -84,3 +84,34 @@ export type PropertyCardProps = Property & {
   offers?: number;
   customButton?: React.ReactNode;
 };
+
+// Helper function to create a default property with required fields
+export const createDefaultProperty = (partial: Partial<Property>): Property => ({
+  id: 0,
+  title: "",
+  description: "",
+  price: 0,
+  location: "",
+  surface: 0,
+  rooms: 0,
+  bedrooms: 0,
+  bathrooms: 0,
+  type: "",
+  status: "available",
+  images: [],
+  features: [],
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  agent: {
+    name: "",
+    image: "",
+    phone: "",
+    email: "",
+  },
+  coordinates: {
+    lat: 0,
+    lng: 0,
+  },
+  transactionType: "Vente",
+  ...partial,
+});

@@ -29,13 +29,7 @@ export const LiveBookingButton = ({
   const { user } = useAuth();
   const { toast } = useToast();
 
-  const handleLiveRequest = (liveData: {
-    date: Date | undefined;
-    time: string;
-    message: string;
-  }) => {
-    console.log("Live request:", liveData);
-    
+  const handleLiveRequest = () => {
     toast({
       title: "Demande envoyée",
       description: "Votre demande de live a été envoyée à l'agent.",
@@ -58,10 +52,11 @@ export const LiveBookingButton = ({
         </DialogHeader>
         {user ? (
           <LiveBookingForm
-            name={`${user.firstName} ${user.lastName}`}
-            email={user.email}
-            phone=""
-            onSubmit={handleLiveRequest}
+            propertyId={propertyId}
+            propertyTitle={propertyTitle}
+            agentId={agentId || 0}
+            agentName={agentName}
+            onClose={() => setOpen(false)}
           />
         ) : (
           <div className="text-center py-4">
