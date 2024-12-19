@@ -15,8 +15,7 @@ interface LiveSidebarProps {
 
 export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
   const navigate = useNavigate();
-  // Changement ici : isCollapsed est true par défaut
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(true); // Toujours démarrer en mode réduit
   const [currentIndex, setCurrentIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -60,6 +59,11 @@ export const LiveSidebar = ({ currentLiveId, lives }: LiveSidebarProps) => {
       }
     };
   }, [isCollapsed, currentIndex, filteredLives.length]);
+
+  // Réduire automatiquement la barre latérale au montage du composant
+  useEffect(() => {
+    setIsCollapsed(true);
+  }, [currentLiveId]); // Se déclenche quand on change de live
 
   if (otherLives.length === 0) return null;
 
