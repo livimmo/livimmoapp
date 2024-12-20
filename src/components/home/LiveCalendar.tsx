@@ -3,6 +3,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { LiveCalendarHeader } from "./calendar/LiveCalendarHeader";
 import { LiveCalendarContent } from "./calendar/LiveCalendarContent";
 import { scheduledLives } from "@/data/mockLives";
+import { cn } from "@/lib/utils";
 
 export const LiveCalendar = ({ defaultDate }: { defaultDate: Date }) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(defaultDate);
@@ -12,6 +13,14 @@ export const LiveCalendar = ({ defaultDate }: { defaultDate: Date }) => {
     const liveDate = live.date instanceof Date ? live.date : new Date(live.date);
     return selectedDate && liveDate.toDateString() === selectedDate.toDateString();
   });
+
+  // Fonction pour compter les lives pour une date donnée
+  const getLiveCountForDate = (date: Date) => {
+    return scheduledLives.filter(live => {
+      const liveDate = live.date instanceof Date ? live.date : new Date(live.date);
+      return liveDate.toDateString() === date.toDateString();
+    }).length;
+  };
 
   return (
     <div className="space-y-4">
@@ -26,6 +35,28 @@ export const LiveCalendar = ({ defaultDate }: { defaultDate: Date }) => {
           selected={selectedDate}
           onSelect={setSelectedDate}
           className="rounded-md border"
+          components={{
+            Day: ({ date, ...props }) => {
+              const liveCount = getLiveCountForDate(date);
+              return (
+                <div className="relative">
+                  <div
+                    {...props}
+                    className={cn(
+                      props.className,
+                      "relative",
+                      liveCount > 0 && "font-bold text-red-500"
+                    )}
+                  />
+                  {liveCount > 0 && (
+                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs font-medium text-red-500">
+                      {liveCount}
+                    </div>
+                  )}
+                </div>
+              );
+            },
+          }}
         />
         <LiveCalendarContent
           selectedDate={selectedDate}
