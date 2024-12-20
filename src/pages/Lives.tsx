@@ -115,6 +115,9 @@ const Lives = () => {
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <span className="inline-block w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
             Lives en cours
+            <span className="ml-2 text-sm font-normal text-muted-foreground">
+              ({filteredCurrentLives.length})
+            </span>
           </h2>
           <div className="flex gap-2">
             <Button
@@ -157,7 +160,12 @@ const Lives = () => {
 
       {/* Section des lives programmés */}
       <section>
-        <h2 className="text-2xl font-bold mb-6">Lives programmés</h2>
+        <h2 className="text-2xl font-bold mb-6">
+          Lives programmés
+          <span className="ml-2 text-sm font-normal text-muted-foreground">
+            ({filteredScheduledLives.length})
+          </span>
+        </h2>
         <ScheduledLivesList lives={filteredScheduledLives} />
       </section>
 
