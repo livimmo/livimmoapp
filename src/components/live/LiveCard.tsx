@@ -30,11 +30,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
 
   const handleReservationClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (isAuthenticated) {
-      setShowReservation(true);
-    } else {
-      setShowReservation(true);
-    }
+    setShowReservation(true);
   };
 
   return (
@@ -127,7 +123,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
             Réserver
           </Button>
 
-          {showReservation && (
+          {showReservation && !isAuthenticated && (
             <ReservationForm
               live={{
                 id: live.id,
@@ -137,6 +133,20 @@ export const LiveCard = ({ live }: LiveCardProps) => {
               }}
               onClose={() => setShowReservation(false)}
             />
+          )}
+
+          {showReservation && isAuthenticated && (
+            <div className="mt-4 p-4 border-t">
+              <ReservationForm
+                live={{
+                  id: live.id,
+                  title: live.title,
+                  date: new Date(live.date),
+                  availableSeats: live.availableSeats,
+                }}
+                onClose={() => setShowReservation(false)}
+              />
+            </div>
           )}
         </>
       )}
