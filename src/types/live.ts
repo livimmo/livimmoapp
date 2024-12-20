@@ -7,7 +7,7 @@ export interface BaseLive {
   location: string;
   type: string;
   price: string;
-  date: Date;
+  date: Date | string;  // Allow both Date and string
   availableSeats: number;
   viewers: number;
   tags?: string[];
