@@ -109,20 +109,23 @@ export const Header = () => {
                           <Headset className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-[280px] p-4">
+                      <DropdownMenuContent 
+                        align="end" 
+                        className="w-[280px] p-4 bg-white border border-gray-200 shadow-lg rounded-lg"
+                      >
                         <div className="space-y-4">
-                          <div className="text-sm font-medium">Support Client</div>
+                          <div className="text-sm font-medium text-gray-900">Support Client</div>
                           <div className="space-y-2">
-                            <DropdownMenuItem onClick={() => handleCallClick('phone')} className="cursor-pointer">
+                            <DropdownMenuItem onClick={() => handleCallClick('phone')} className="cursor-pointer hover:bg-gray-100">
                               <span className="font-medium">Téléphone:</span>
                               <span className="ml-2">+212 123 456 789</span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleCallClick('email')} className="cursor-pointer">
+                            <DropdownMenuItem onClick={() => handleCallClick('email')} className="cursor-pointer hover:bg-gray-100">
                               <span className="font-medium">Email:</span>
                               <span className="ml-2">support@livimmo.com</span>
                             </DropdownMenuItem>
                           </div>
-                          <div className="text-xs text-muted-foreground">
+                          <div className="text-xs text-gray-500">
                             <div>Horaires d'ouverture:</div>
                             <div>Lun-Ven: 8h00 - 18h00</div>
                             <div>Sam: 9h00 - 13h00</div>
