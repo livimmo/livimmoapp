@@ -12,7 +12,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { AgentCertificationBadge } from "./agent/AgentCertificationBadge";
-import { cn } from "@/lib/utils";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -20,7 +19,6 @@ type PropertyCardProps = Property & {
   remainingSeats?: number;
   isUserRegistered?: boolean;
   offers?: number;
-  className?: string;
 };
 
 export const PropertyCard = ({
@@ -41,7 +39,6 @@ export const PropertyCard = ({
   offers = 0,
   agent,
   virtualTour,
-  className,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
@@ -70,7 +67,7 @@ export const PropertyCard = ({
 
   return (
     <>
-      <div className={cn("bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300", className)}>
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
         <div className="relative">
           <PropertyImage
             id={id}

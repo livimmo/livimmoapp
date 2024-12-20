@@ -6,8 +6,6 @@ import { useState } from "react";
 import { MapView } from "./MapView";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
-import { MapPin } from "lucide-react";
 
 interface SearchSectionProps {
   filteredProperties: Property[];
@@ -57,22 +55,10 @@ export const SearchSection = ({
       </div>
       
       {viewMode === "list" ? (
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {displayProperties.map(property => (
-              <div key={property.id} className="relative">
-                <PropertyList properties={[property]} viewMode="grid" />
-                <Badge 
-                  variant="secondary" 
-                  className="absolute top-2 left-2 z-20 bg-white/90 backdrop-blur-sm flex items-center gap-1"
-                >
-                  <MapPin className="h-3 w-3" />
-                  {property.location}
-                </Badge>
-              </div>
-            ))}
-          </div>
-        </div>
+        <PropertyList 
+          properties={displayProperties}
+          viewMode="grid"
+        />
       ) : (
         <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-2 gap-8'} h-[600px]`}>
           <div className="rounded-lg overflow-hidden border border-gray-200 h-full">
