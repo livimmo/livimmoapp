@@ -16,6 +16,8 @@ import { HeroBanner } from "@/components/home/HeroBanner";
 import { LiveCalendar } from "@/components/home/LiveCalendar";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
+import { GoogleMapContainer } from "@/components/home/map/GoogleMapContainer";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,6 +27,7 @@ const Index = () => {
   const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
+  const [currentLiveViewMode, setCurrentLiveViewMode] = useState<"grid" | "map">("grid");
 
   const suggestions = [
     "Casablanca", "Rabat", "Marrakech", "Tanger",
@@ -45,6 +48,37 @@ const Index = () => {
   // Filtrer les lives par statut
   const currentLives = liveStreams.filter(live => live.status === "live");
   const replayLives = liveStreams.filter(live => live.status === "replay");
+
+  // Convertir les lives en format Property pour la carte
+  const currentLiveProperties = currentLives.map(live => ({
+    id: live.id,
+    title: live.title,
+    price: parseInt(live.price.replace(/[^\d]/g, "")),
+    location: live.location,
+    type: live.type,
+    surface: 0,
+    rooms: 0,
+    bathrooms: 0,
+    description: live.description || "",
+    features: [],
+    images: [live.thumbnail],
+    hasLive: true,
+    liveDate: live.date,
+    agent: {
+      name: live.agent,
+      image: "",
+      phone: "",
+      email: "",
+    },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2 - 1,
+      lng: -7.0926 + Math.random() * 2 - 1,
+    },
+    isLiveNow: true,
+    viewers: live.viewers,
+    remainingSeats: live.availableSeats,
+    transactionType: "Vente",
+  }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -85,11 +119,27 @@ const Index = () => {
                       Découvrez les visites en direct disponibles
                     </p>
                   </div>
-                  <Badge variant="secondary" className="px-4 py-1.5">
-                    {currentLives.length} live{currentLives.length > 1 ? 's' : ''} en cours
-                  </Badge>
+                  <div className="flex items-center gap-4">
+                    <Badge variant="secondary" className="px-4 py-1.5">
+                      {currentLives.length} live{currentLives.length > 1 ? 's' : ''} en cours
+                    </Badge>
+                    <PropertyViewToggle
+                      view={currentLiveViewMode}
+                      onViewChange={setCurrentLiveViewMode}
+                    />
+                  </div>
                 </div>
-                <LiveSlider lives={currentLives} />
+                {currentLiveViewMode === "grid" ? (
+                  <LiveSlider lives={currentLives} />
+                ) : (
+                  <div className="h-[600px] rounded-lg overflow-hidden">
+                    <GoogleMapContainer
+                      properties={currentLiveProperties}
+                      selectedLive={null}
+                      onMarkerClick={() => {}}
+                    />
+                  </div>
+                )}
               </section>
             )}
 
