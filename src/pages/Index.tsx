@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { type Property } from "@/types/property";
 import { HomeHeader } from "@/components/home/HomeHeader";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
@@ -35,6 +35,53 @@ const Index = () => {
   // Filtrer les lives par statut
   const currentLives = liveStreams.filter(live => live.status === "live");
   const replayLives = liveStreams.filter(live => live.status === "replay");
+
+  // Effet pour filtrer les propriétés en fonction des critères de recherche
+  useEffect(() => {
+    const filterProperties = () => {
+      let filtered = [...featuredProperties];
+
+      // Filtre par terme de recherche (ville, type de bien, etc.)
+      if (searchTerm) {
+        const searchLower = searchTerm.toLowerCase();
+        filtered = filtered.filter(property => 
+          property.location.toLowerCase().includes(searchLower) ||
+          property.type.toLowerCase().includes(searchLower) ||
+          property.title.toLowerCase().includes(searchLower)
+        );
+      }
+
+      // Filtre par type de bien
+      if (propertyType !== "all") {
+        filtered = filtered.filter(property => 
+          property.type.toLowerCase() === propertyType.toLowerCase()
+        );
+      }
+
+      // Filtre par plage de prix
+      filtered = filtered.filter(property => 
+        property.price >= priceRange[0] && 
+        property.price <= priceRange[1]
+      );
+
+      // Filtre par surface
+      filtered = filtered.filter(property => 
+        property.surface >= surfaceRange[0] && 
+        property.surface <= surfaceRange[1]
+      );
+
+      // Filtre par type de transaction
+      if (transactionType.length > 0) {
+        filtered = filtered.filter(property => 
+          transactionType.includes(property.transactionType)
+        );
+      }
+
+      setFilteredProperties(filtered);
+    };
+
+    filterProperties();
+  }, [searchTerm, propertyType, priceRange, surfaceRange, transactionType]);
 
   // Convertir les lives en format Property pour la carte
   const currentLiveProperties: Property[] = currentLives.map(live => ({
