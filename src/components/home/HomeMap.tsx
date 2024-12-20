@@ -107,40 +107,35 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         minute: '2-digit'
       }) : '';
 
-      // Create popup content
+      // Create popup content with horizontal layout
       const popupContent = document.createElement('div');
-      popupContent.className = 'p-2 max-w-[200px]';
+      popupContent.className = 'p-2 max-w-[300px]';
       popupContent.innerHTML = `
-        <div class="mb-2 relative">
-          <img src="${live.thumbnail}" alt="${live.title}" class="w-full h-[100px] object-cover rounded"/>
-          ${selectedLiveType === 'current' ? `
-            <div class="absolute top-1 left-1">
-              <div class="flex items-center justify-center w-6 h-6 bg-red-500 rounded-full animate-pulse">
-                <span class="text-white text-xs">🔴</span>
+        <div class="flex gap-3">
+          <div class="relative flex-shrink-0" style="width: 80px;">
+            <img src="${live.thumbnail}" alt="${live.title}" class="w-[80px] h-[60px] object-cover rounded"/>
+            ${selectedLiveType === 'current' ? `
+              <div class="absolute top-1 left-1">
+                <div class="flex items-center justify-center w-4 h-4 bg-red-500 rounded-full animate-pulse">
+                  <span class="text-white text-[10px]">🔴</span>
+                </div>
               </div>
+            ` : ''}
+          </div>
+          <div class="flex-grow min-w-0">
+            <h3 class="font-medium text-sm mb-1 truncate">${live.title}</h3>
+            <p class="text-primary font-medium text-xs mb-1">${live.price}</p>
+            <p class="text-xs text-gray-600 mb-1 truncate">${live.location}</p>
+            <div class="text-xs text-gray-500 mb-2">
+              ${selectedLiveType === 'current' 
+                ? `${live.viewers} spectateurs`
+                : formattedDate
+              }
             </div>
-          ` : ''}
-          <div class="absolute bottom-1 left-1">
-            <span class="px-2 py-0.5 rounded-full text-xs font-medium ${
-              selectedLiveType === 'current'
-                ? 'bg-red-500 text-white'
-                : 'bg-blue-500 text-white'
-            }">
-              ${selectedLiveType === 'current' ? 'Live en cours' : 'Live programmé'}
-            </span>
           </div>
         </div>
-        <h3 class="font-medium text-sm mb-1">${live.title}</h3>
-        <p class="text-primary font-medium text-sm mb-1">${live.price}</p>
-        <p class="text-xs text-gray-600 mb-1">${live.location}</p>
-        <div class="text-xs text-gray-500 mb-2">
-          ${selectedLiveType === 'current' 
-            ? `${live.viewers} spectateurs`
-            : formattedDate
-          }
-        </div>
         <button 
-          class="w-full px-2 py-1 text-xs bg-primary text-white rounded hover:bg-primary/90 transition-colors"
+          class="w-full mt-2 px-2 py-1 text-xs bg-primary text-white rounded hover:bg-primary/90 transition-colors"
           data-live-id="${live.id}"
           data-action="${selectedLiveType === 'current' ? 'join' : 'reserve'}"
         >
