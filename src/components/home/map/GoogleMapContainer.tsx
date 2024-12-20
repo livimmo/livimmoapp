@@ -22,6 +22,18 @@ const defaultCenter = {
   lng: -7.0926
 };
 
+const createMarkerIcon = (type: 'current' | 'scheduled') => {
+  const color = type === 'current' ? '#ea384c' : '#0ea5e9';
+  return {
+    path: google.maps.SymbolPath.CIRCLE,
+    fillColor: color,
+    fillOpacity: 0.9,
+    strokeWeight: 2,
+    strokeColor: 'white',
+    scale: 10,
+  };
+};
+
 export const GoogleMapContainer = ({
   selectedLiveType,
   livesToShow,
@@ -29,6 +41,7 @@ export const GoogleMapContainer = ({
   selectedLive
 }: GoogleMapContainerProps) => {
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
+  const [hoveredMarkerId, setHoveredMarkerId] = useState<number | null>(null);
 
   const onLoad = (map: google.maps.Map) => {
     setMapRef(map);
@@ -54,6 +67,20 @@ export const GoogleMapContainer = ({
         center={defaultCenter}
         zoom={5}
         onLoad={onLoad}
+        options={{
+          styles: [
+            {
+              featureType: "all",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#6c7280" }]
+            },
+            {
+              featureType: "water",
+              elementType: "geometry",
+              stylers: [{ color: "#e2e8f0" }]
+            }
+          ]
+        }}
       >
         {livesToShow.map(live => {
           const position = {
@@ -61,17 +88,24 @@ export const GoogleMapContainer = ({
             lng: -7.0926 + Math.random() * 2 - 1,
           };
 
+          const isHovered = hoveredMarkerId === live.id;
+          const isSelected = selectedLive?.id === live.id;
+          const scale = isHovered || isSelected ? 12 : 10;
+
           return (
             <Marker
               key={live.id}
               position={position}
               onClick={() => onMarkerClick(live)}
+              onMouseOver={() => setHoveredMarkerId(live.id)}
+              onMouseOut={() => setHoveredMarkerId(null)}
               icon={{
-                url: selectedLiveType === 'current' ? '🔴' : '📅',
-                scaledSize: new window.google.maps.Size(30, 30)
+                ...createMarkerIcon(selectedLiveType),
+                scale: scale,
               }}
+              animation={isHovered ? google.maps.Animation.BOUNCE : undefined}
             >
-              {selectedLive?.id === live.id && (
+              {(isSelected || isHovered) && (
                 <InfoWindow onCloseClick={() => onMarkerClick(null)}>
                   <MapMarkerContent live={live} selectedLiveType={selectedLiveType} />
                 </InfoWindow>
