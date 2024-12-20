@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { getRandomTags } from "@/utils/propertyTags";
 import { LiveCarouselHeader } from "./LiveCarouselHeader";
@@ -39,7 +39,6 @@ export const LiveCarousel = ({
       description: "Magnifique villa avec vue panoramique",
       thumbnail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
       agent: "Sarah Martin",
-      agentId: 1,
       location: "Marrakech",
       type: "Villa",
       price: "4,500,000 DH",
@@ -55,7 +54,6 @@ export const LiveCarousel = ({
       description: "Superbe appartement en front de mer",
       thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
       agent: "Mohammed Alami",
-      agentId: 2,
       location: "Tanger",
       type: "Appartement",
       price: "2,800,000 DH",
@@ -71,7 +69,6 @@ export const LiveCarousel = ({
       description: "Authentique riad dans la médina",
       thumbnail: "https://images.unsplash.com/photo-1590059390047-f5e617b6cbc7",
       agent: "Yasmine Idrissi",
-      agentId: 3,
       location: "Fès",
       type: "Riad",
       price: "3,200,000 DH",
@@ -87,7 +84,6 @@ export const LiveCarousel = ({
       description: "Penthouse avec terrasse privée",
       thumbnail: "https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e",
       agent: "Karim Benjelloun",
-      agentId: 4,
       location: "Casablanca",
       type: "Appartement",
       price: "5,900,000 DH",
@@ -103,7 +99,6 @@ export const LiveCarousel = ({
       description: "Villa moderne avec jardin",
       thumbnail: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
       agent: "Leila Amrani",
-      agentId: 5,
       location: "Rabat",
       type: "Villa",
       price: "6,200,000 DH",

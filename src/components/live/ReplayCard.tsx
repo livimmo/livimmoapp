@@ -24,9 +24,23 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
   };
 
   const handleAgentClick = () => {
-    if (live.agentId) {
-      navigate(`/agent/${live.agentId}`);
+    // Get agent ID from the agent name
+    const agentNumber = getAgentIdByName(live.agent);
+    if (agentNumber) {
+      navigate(`/agent/${agentNumber}`);
     }
+  };
+
+  // Helper function to get agent ID from name
+  const getAgentIdByName = (name: string): number => {
+    const agentMap: Record<string, number> = {
+      "Sarah Martin": 1,
+      "Mohammed Alami": 2,
+      "Yasmine Idrissi": 3,
+      "Karim Benjelloun": 4,
+      "Leila Amrani": 5,
+    };
+    return agentMap[name] || 1;
   };
 
   // Générer aléatoirement le statut vérifié

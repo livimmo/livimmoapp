@@ -24,10 +24,10 @@ export const LiveCarouselCard = ({
 
   const handleAgentClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // Utilisation de l'ID de l'agent depuis les données mockées
-    const agentId = live.agentId || getAgentIdByName(live.agent);
-    if (agentId) {
-      navigate(`/agent/${agentId}`);
+    // Get agent ID from the agent name
+    const agentNumber = getAgentIdByName(live.agent);
+    if (agentNumber) {
+      navigate(`/agent/${agentNumber}`);
     }
   };
 
