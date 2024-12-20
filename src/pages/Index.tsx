@@ -105,8 +105,9 @@ const Index = () => {
             <ReplayLivesSection replayLives={replayLives} />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 my-12">
-            <VirtualToursSection properties={featuredProperties} />
+          <VirtualToursSection properties={featuredProperties} />
+
+          <div className="mt-12">
             <FeaturedSection properties={featuredProperties} />
           </div>
 
