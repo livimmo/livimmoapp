@@ -7,6 +7,7 @@ import { SocialConnect } from "@/components/profile/SocialConnect";
 import { Button } from "@/components/ui/button";
 import { LogOut, Lock, Languages } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { HomeMap } from "@/components/home/HomeMap";
 import {
   Select,
   SelectContent,
@@ -112,6 +113,8 @@ const Profile = () => {
             </SelectContent>
           </Select>
         </div>
+
+        <HomeMap properties={[]} />
 
         <div className="space-y-8">
           <ProfileAvatar
