@@ -9,6 +9,7 @@ import { TermsDialog } from "./TermsDialog";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from "@/components/ui/alert-dialog";
 
 interface ReservationFormProps {
   live: {
@@ -25,6 +26,7 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   const [showTerms, setShowTerms] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [formData, setFormData] = useState({
     name: user ? `${user.firstName} ${user.lastName}` : "",
     email: user?.email || "",
@@ -75,6 +77,10 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
       return;
     }
 
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmReservation = async () => {
     setIsSubmitting(true);
 
     try {
@@ -97,104 +103,138 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
       });
     } finally {
       setIsSubmitting(false);
+      setShowConfirmation(false);
     }
   };
 
   return (
-    <Dialog open onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Réserver votre place pour le live</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Nom complet *</Label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="pl-10"
-                  required
-                  placeholder="Votre nom complet"
-                />
+    <>
+      <Dialog open onOpenChange={onClose}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Réserver votre place pour le live</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Nom complet *</Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="pl-10"
+                    required
+                    placeholder="Votre nom complet"
+                  />
+                </div>
               </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="email">Email *</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="pl-10"
-                  required
-                  placeholder="votre@email.com"
-                />
+              
+              <div className="space-y-2">
+                <Label htmlFor="email">Email *</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="pl-10"
+                    required
+                    placeholder="votre@email.com"
+                  />
+                </div>
               </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="phone">Téléphone (optionnel)</Label>
-              <div className="relative">
-                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
-                <Input
-                  id="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="pl-10"
-                  placeholder="+212 6XX XXX XXX"
-                />
+              
+              <div className="space-y-2">
+                <Label htmlFor="phone">Téléphone (optionnel)</Label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="pl-10"
+                    placeholder="+212 6XX XXX XXX"
+                  />
+                </div>
               </div>
-            </div>
 
-            {live.availableSeats && live.availableSeats > 0 && (
-              <p className="text-sm text-muted-foreground">
-                {live.availableSeats} places disponibles
-              </p>
-            )}
+              {live.availableSeats && live.availableSeats > 0 && (
+                <p className="text-sm text-muted-foreground">
+                  {live.availableSeats} places disponibles
+                </p>
+              )}
 
-            <div className="flex items-start space-x-2">
-              <Checkbox
-                id="terms"
-                checked={formData.acceptTerms}
-                onCheckedChange={(checked) => 
-                  setFormData({ ...formData, acceptTerms: checked as boolean })
-                }
-              />
-              <Label 
-                htmlFor="terms" 
-                className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                En m'inscrivant, j'accepte de recevoir des rappels pour ce live et j'accepte les{" "}
-                <button
-                  type="button"
-                  onClick={() => setShowTerms(true)}
-                  className="text-primary hover:underline"
+              <div className="flex items-start space-x-2">
+                <Checkbox
+                  id="terms"
+                  checked={formData.acceptTerms}
+                  onCheckedChange={(checked) => 
+                    setFormData({ ...formData, acceptTerms: checked as boolean })
+                  }
+                />
+                <Label 
+                  htmlFor="terms" 
+                  className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  conditions d'utilisation
-                </button>
-              </Label>
+                  En m'inscrivant, j'accepte de recevoir des rappels pour ce live et j'accepte les{" "}
+                  <button
+                    type="button"
+                    onClick={() => setShowTerms(true)}
+                    className="text-primary hover:underline"
+                  >
+                    conditions d'utilisation
+                  </button>
+                </Label>
+              </div>
             </div>
-          </div>
 
-          <Button 
-            type="submit" 
-            className="w-full" 
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Inscription en cours..." : "Confirmer mon inscription"}
-          </Button>
-        </form>
-      </DialogContent>
+            <Button 
+              type="submit" 
+              className="w-full" 
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Inscription en cours..." : "Confirmer mon inscription"}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer votre inscription</AlertDialogTitle>
+            <AlertDialogDescription>
+              Vous êtes sur le point de réserver une place pour le live "{live.title}".
+              {live.availableSeats && live.availableSeats > 0 && (
+                <p className="mt-2">
+                  Il reste actuellement {live.availableSeats} places disponibles.
+                </p>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowConfirmation(false)}
+              disabled={isSubmitting}
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleConfirmReservation}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Confirmation en cours..." : "Confirmer"}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <TermsDialog open={showTerms} onOpenChange={setShowTerms} />
-    </Dialog>
+    </>
   );
 };

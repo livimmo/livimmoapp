@@ -44,9 +44,11 @@ export const LiveInfo = ({
     return () => clearInterval(interval);
   }, []);
 
+  const themeColor = isReplay ? '#33C3F0' : '#ea384c';
+
   return (
     <Card className={cn(
-      "p-2 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60",
+      "p-2 backdrop-blur-md",
       "transition-all duration-300 shadow-lg",
       "h-auto",
       "overflow-hidden",
@@ -54,8 +56,10 @@ export const LiveInfo = ({
       "fixed bottom-0 left-0 right-0",
       isMobile ? 'max-h-[40vh]' : 'max-h-[20vh]',
       "z-50",
-      "border-t border-primary/20",
-      "hover:bg-background/90 hover:shadow-xl",
+      "bg-white", // Changed to white background
+      isReplay ? 'border-[#33C3F0]/20' : 'border-[#ea384c]/20',
+      "border-t",
+      "hover:bg-white hover:shadow-xl", // Changed hover state to stay white
       isFullscreen && "z-[9999]"
     )}>
       <div className="w-full max-w-5xl mx-auto">
@@ -82,12 +86,16 @@ export const LiveInfo = ({
               <div className="flex items-center gap-2 mt-1">
                 <Badge 
                   variant="default" 
-                  className={`flex items-center gap-1 ${isReplay ? 'bg-[#33C3F0]' : 'bg-[#ea384c]'} hover:${isReplay ? 'bg-[#33C3F0]/90' : 'bg-[#ea384c]/90'} text-white shadow-sm`}
+                  className={cn(
+                    "flex items-center gap-1",
+                    isReplay ? 'bg-[#33C3F0] hover:bg-[#33C3F0]/90' : 'bg-[#ea384c] hover:bg-[#ea384c]/90',
+                    "text-white shadow-sm"
+                  )}
                 >
                   <Radio className="w-3 h-3 animate-pulse" />
                   <span>{isReplay ? 'REPLAY' : 'LIVE'}</span>
                 </Badge>
-                <div className="flex items-center gap-1.5 text-xs text-[#ea384c]">
+                <div className="flex items-center gap-1.5 text-xs" style={{ color: themeColor }}>
                   <Users className="w-3.5 h-3.5" />
                   <span className="font-semibold">{viewerCount}</span>
                 </div>
@@ -104,8 +112,10 @@ export const LiveInfo = ({
                 variant="ghost"
                 size="icon"
                 className={cn(
-                  "bg-[#ea384c]/10 hover:bg-[#ea384c]/20 text-[#ea384c] transition-colors",
-                  isFavorite && "bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
+                  isReplay ? 'bg-[#33C3F0]/10 hover:bg-[#33C3F0]/20' : 'bg-[#ea384c]/10 hover:bg-[#ea384c]/20',
+                  isReplay ? 'text-[#33C3F0]' : 'text-[#ea384c]',
+                  "transition-colors",
+                  isFavorite && (isReplay ? 'bg-[#33C3F0] text-white hover:bg-[#33C3F0]/90' : 'bg-[#ea384c] text-white hover:bg-[#ea384c]/90')
                 )}
                 onClick={() => setIsFavorite(!isFavorite)}
               >
@@ -114,7 +124,10 @@ export const LiveInfo = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="bg-[#ea384c]/10 text-[#ea384c] hover:bg-[#ea384c]/20 transition-colors"
+                className={cn(
+                  isReplay ? 'bg-[#33C3F0]/10 hover:bg-[#33C3F0]/20 text-[#33C3F0]' : 'bg-[#ea384c]/10 hover:bg-[#ea384c]/20 text-[#ea384c]',
+                  "transition-colors"
+                )}
                 onClick={onToggleChat}
               >
                 <MessageSquare className="h-6 w-6" />
@@ -122,7 +135,10 @@ export const LiveInfo = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="bg-[#ea384c]/10 text-[#ea384c] hover:bg-[#ea384c]/20 transition-colors"
+                className={cn(
+                  isReplay ? 'bg-[#33C3F0]/10 hover:bg-[#33C3F0]/20 text-[#33C3F0]' : 'bg-[#ea384c]/10 hover:bg-[#ea384c]/20 text-[#ea384c]',
+                  "transition-colors"
+                )}
                 onClick={() => navigate(-1)}
               >
                 <X className="h-6 w-6" />
@@ -133,21 +149,23 @@ export const LiveInfo = ({
                 <Badge 
                   variant="secondary" 
                   className={cn(
-                    "bg-[#ea384c]/10 text-[#ea384c] shadow-sm",
+                    isReplay ? 'bg-[#33C3F0]/10 text-[#33C3F0]' : 'bg-[#ea384c]/10 text-[#ea384c]',
+                    "shadow-sm",
                     "transition-all duration-300 ease-in-out",
                     "hover:scale-105"
                   )}
                 >
                   {offerCount} offres
                 </Badge>
-                <p className="text-lg font-bold whitespace-nowrap text-[#ea384c]">
+                <p className="text-lg font-bold whitespace-nowrap" style={{ color: themeColor }}>
                   {property.price.toLocaleString()} DH
                 </p>
               </>
             )}
             <Button 
               className={cn(
-                "bg-[#ea384c] hover:bg-[#ea384c]/90 text-white whitespace-nowrap shadow-sm transition-all hover:shadow-md",
+                isReplay ? 'bg-[#33C3F0] hover:bg-[#33C3F0]/90' : 'bg-[#ea384c] hover:bg-[#ea384c]/90',
+                "text-white whitespace-nowrap shadow-sm transition-all hover:shadow-md",
                 isMobile && "w-full"
               )}
               onClick={() => setIsOfferDialogOpen(true)}
@@ -162,14 +180,15 @@ export const LiveInfo = ({
               <Badge 
                 variant="secondary" 
                 className={cn(
-                  "bg-[#ea384c]/10 text-[#ea384c] shadow-sm",
+                  isReplay ? 'bg-[#33C3F0]/10 text-[#33C3F0]' : 'bg-[#ea384c]/10 text-[#ea384c]',
+                  "shadow-sm",
                   "transition-all duration-300 ease-in-out",
                   "hover:scale-105"
                 )}
               >
                 {offerCount} offres
               </Badge>
-              <p className="text-lg font-bold whitespace-nowrap text-[#ea384c]">
+              <p className="text-lg font-bold whitespace-nowrap" style={{ color: themeColor }}>
                 {property.price.toLocaleString()} DH
               </p>
             </div>

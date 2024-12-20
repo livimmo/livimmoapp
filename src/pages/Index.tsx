@@ -5,13 +5,14 @@ import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { LiveSection } from "@/components/home/LiveSection";
 import { FeaturedSection } from "@/components/home/FeaturedSection";
 import { CTASection } from "@/components/home/CTASection";
-import { LiveSlider } from "@/components/live/LiveSlider";
 import { VirtualToursSection } from "@/components/home/VirtualToursSection";
 import { SearchSection } from "@/components/home/SearchSection";
-import { HomeMap } from "@/components/home/HomeMap";
-import { addCoordinatesToProperties } from "@/data/mockProperties";
-import { liveStreams, scheduledLives } from "@/data/mockLives";
 import { featuredProperties } from "@/data/featuredProperties";
+import { liveStreams, scheduledLives } from "@/data/mockLives";
+import { HeroBanner } from "@/components/home/HeroBanner";
+import { CurrentLivesSection } from "@/components/home/sections/CurrentLivesSection";
+import { ScheduledLivesSection } from "@/components/home/sections/ScheduledLivesSection";
+import { ReplayLivesSection } from "@/components/home/sections/ReplayLivesSection";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,63 +22,101 @@ const Index = () => {
   const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
+  const [currentLiveViewMode, setCurrentLiveViewMode] = useState<"list" | "map">("list");
 
   const suggestions = [
     "Casablanca", "Rabat", "Marrakech", "Tanger",
     "Agadir", "Fès", "Villa", "Appartement", "Bureau", "Riad",
   ];
 
-  const allLives = [...liveStreams, ...scheduledLives];
+  // Filtrer les lives par statut
+  const currentLives = liveStreams.filter(live => live.status === "live");
+  const replayLives = liveStreams.filter(live => live.status === "replay");
 
-  const filterPropertiesByViewType = (properties: Property[]) => {
-    switch (viewType) {
-      case "live":
-        return properties.filter(p => p.hasLive && !p.isReplay);
-      case "replay":
-        return properties.filter(p => p.hasLive && p.isReplay);
-      default:
-        return properties;
-    }
-  };
+  // Convertir les lives en format Property pour la carte
+  const currentLiveProperties: Property[] = currentLives.map(live => ({
+    id: live.id,
+    title: live.title,
+    price: parseInt(live.price.replace(/[^\d]/g, "")),
+    location: live.location,
+    type: live.type,
+    surface: 0,
+    rooms: 0,
+    bathrooms: 0,
+    description: live.description || "",
+    features: [],
+    images: [live.thumbnail],
+    hasLive: true,
+    liveDate: live.date,
+    agent: {
+      name: live.agent,
+      image: "",
+      phone: "",
+      email: "",
+    },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2 - 1,
+      lng: -7.0926 + Math.random() * 2 - 1,
+    },
+    isLiveNow: true,
+    viewers: live.viewers,
+    remainingSeats: live.availableSeats,
+    transactionType: "Vente",
+  }));
 
   return (
     <div className="min-h-screen bg-background">
       <HomeHeader />
 
-      <main className="container mx-auto px-4 pt-20">
-        <PropertyFilters
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          propertyType={propertyType}
-          setPropertyType={setPropertyType}
-          priceRange={priceRange}
-          setPriceRange={setPriceRange}
-          surfaceRange={surfaceRange}
-          setSurfaceRange={setSurfaceRange}
-          viewType={viewType}
-          setViewType={setViewType}
-          suggestions={suggestions}
-          transactionType={transactionType}
-          setTransactionType={setTransactionType}
-        />
+      <main className="container mx-auto pt-20">
+        <div className="max-w-full mx-auto px-4">
+          <HeroBanner 
+            properties={featuredProperties}
+            currentLives={currentLives}
+            replays={replayLives}
+          />
 
-        <HomeMap properties={featuredProperties} />
+          <PropertyFilters
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            propertyType={propertyType}
+            setPropertyType={setPropertyType}
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+            surfaceRange={surfaceRange}
+            setSurfaceRange={setSurfaceRange}
+            viewType={viewType}
+            setViewType={setViewType}
+            suggestions={suggestions}
+            transactionType={transactionType}
+            setTransactionType={setTransactionType}
+          />
 
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">Lives et Replays</h2>
-          <LiveSlider lives={allLives} />
-        </section>
-        
-        <VirtualToursSection properties={featuredProperties} />
-        
-        <FeaturedSection properties={filterPropertiesByViewType(featuredProperties)} />
+          <SearchSection 
+            filteredProperties={filteredProperties} 
+            defaultProperties={featuredProperties}
+          />
 
-        <SearchSection 
-          filteredProperties={filterPropertiesByViewType(filteredProperties)} 
-          defaultProperties={filterPropertiesByViewType(featuredProperties)}
-        />
+          <div className="my-12 space-y-12">
+            <CurrentLivesSection
+              currentLives={currentLives}
+              currentLiveProperties={currentLiveProperties}
+              currentLiveViewMode={currentLiveViewMode}
+              setCurrentLiveViewMode={setCurrentLiveViewMode}
+            />
 
-        <CTASection />
+            <ScheduledLivesSection scheduledLives={scheduledLives} />
+
+            <ReplayLivesSection replayLives={replayLives} />
+          </div>
+
+          <div className="grid grid-cols-1 gap-12 my-12">
+            <FeaturedSection properties={featuredProperties} />
+            <VirtualToursSection properties={featuredProperties} />
+          </div>
+
+          <CTASection />
+        </div>
       </main>
     </div>
   );

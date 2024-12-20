@@ -5,6 +5,7 @@ import { type Property } from "@/types/property";
 import { useState } from "react";
 import { MapView } from "./MapView";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { GoogleMapContainer } from "./map/GoogleMapContainer";
 
 interface SearchSectionProps {
   filteredProperties: Property[];
@@ -54,13 +55,22 @@ export const SearchSection = ({
       </div>
       
       {viewMode === "list" ? (
-        <PropertyList 
-          properties={displayProperties}
-          viewMode="grid"
-        />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <PropertyList 
+              properties={displayProperties}
+              viewMode="grid"
+            />
+          </div>
+          <div className="hidden lg:block h-[calc(100vh-200px)] sticky top-24">
+            <div className="rounded-lg overflow-hidden h-full border border-gray-200">
+              <GoogleMapContainer properties={displayProperties} />
+            </div>
+          </div>
+        </div>
       ) : (
         <div className="rounded-lg overflow-hidden h-[50vh] md:h-[600px] border border-gray-200">
-          <MapView properties={displayProperties} />
+          <GoogleMapContainer properties={displayProperties} />
         </div>
       )}
     </section>
