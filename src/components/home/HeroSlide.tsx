@@ -1,7 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Eye, Clock, Users } from "lucide-react";
+import { Eye, Clock, Users, Share2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { FavoriteButton } from "../property/FavoriteButton";
+import { ShareButtons } from "../properties/ShareButtons";
+import { useState } from "react";
 
 interface SlideContent {
   image: string;
@@ -12,6 +15,8 @@ interface SlideContent {
   viewers?: number;
   duration?: string;
   agent?: string;
+  price?: string | number;
+  location?: string;
 }
 
 interface HeroSlideProps {
@@ -21,6 +26,7 @@ interface HeroSlideProps {
 
 export const HeroSlide = ({ type, content }: HeroSlideProps) => {
   const navigate = useNavigate();
+  const [showShare, setShowShare] = useState(false);
 
   const getBadgeContent = () => {
     switch (type) {
@@ -74,6 +80,27 @@ export const HeroSlide = ({ type, content }: HeroSlideProps) => {
           )}
         </div>
 
+        {type !== "ad" && (
+          <div className="absolute top-4 right-4 flex flex-col gap-2">
+            <FavoriteButton
+              propertyId={parseInt(content.link.split('/').pop() || '0')}
+              title={content.title}
+              className="bg-white/80 backdrop-blur-sm hover:bg-white/90"
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white/90"
+              onClick={(e) => {
+                e.preventDefault();
+                setShowShare(!showShare);
+              }}
+            >
+              <Share2 className="h-5 w-5" />
+            </Button>
+          </div>
+        )}
+
         <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col items-start">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
             {content.title}
@@ -103,6 +130,21 @@ export const HeroSlide = ({ type, content }: HeroSlideProps) => {
           </Button>
         </div>
       </div>
+
+      {showShare && type !== "ad" && (
+        <div className="absolute top-16 right-4 z-10">
+          <ShareButtons
+            property={{
+              title: content.title,
+              price: typeof content.price === 'string' 
+                ? parseInt(content.price.replace(/[^\d]/g, ""))
+                : content.price || 0,
+              location: content.location || '',
+            }}
+            currentUrl={window.location.href}
+          />
+        </div>
+      )}
     </div>
   );
 };
