@@ -1,45 +1,26 @@
-import { type Property } from "@/types/property";
-import { PropertyCard } from "@/components/PropertyCard";
-import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
-import { GoogleMapContainer } from "./map/GoogleMapContainer";
-import { useState } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Property } from "@/types/property";
+import { PropertyCard } from "../PropertyCard";
 
 interface FeaturedSectionProps {
   properties: Property[];
+  onPropertyHover?: (property: Property | null) => void;
 }
 
-export const FeaturedSection = ({ properties }: FeaturedSectionProps) => {
-  const [viewMode, setViewMode] = useState<"list" | "map">("list");
-  const isMobile = useIsMobile();
-
-  const sortedProperties = [...properties].sort((a, b) => {
-    const viewersA = a.viewers || 0;
-    const viewersB = b.viewers || 0;
-    return viewersB - viewersA;
-  });
-
+export const FeaturedSection = ({ properties, onPropertyHover }: FeaturedSectionProps) => {
   return (
-    <section>
-      <div className="flex justify-between items-center mb-6 sticky top-16 bg-background/95 backdrop-blur-sm z-10 py-2">
-        <PropertyViewToggle view={viewMode} onViewChange={setViewMode} />
+    <div className="space-y-4">
+      <h2 className="text-2xl font-semibold">Biens en vedette</h2>
+      <div className="grid grid-cols-1 gap-4">
+        {properties.map((property) => (
+          <div 
+            key={property.id}
+            onMouseEnter={() => onPropertyHover?.(property)}
+            onMouseLeave={() => onPropertyHover?.(null)}
+          >
+            <PropertyCard {...property} />
+          </div>
+        ))}
       </div>
-
-      {viewMode === "list" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {sortedProperties.map((property) => (
-            <PropertyCard 
-              key={property.id} 
-              {...property} 
-              offers={!property.hasLive ? Math.floor(Math.random() * 20) : undefined}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className={`rounded-lg overflow-hidden border border-gray-200 ${isMobile ? 'h-[calc(100vh-200px)]' : 'h-[600px]'}`}>
-          <GoogleMapContainer properties={sortedProperties} />
-        </div>
-      )}
-    </section>
+    </div>
   );
 };
