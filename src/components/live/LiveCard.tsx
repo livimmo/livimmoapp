@@ -7,6 +7,7 @@ import { useState } from "react";
 import { ReservationForm } from "../home/ReservationForm";
 import { FavoriteButton } from "../property/FavoriteButton";
 import { ShareButtons } from "../properties/ShareButtons";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface LiveCardProps {
   live: LiveEvent;
@@ -15,6 +16,8 @@ interface LiveCardProps {
 export const LiveCard = ({ live }: LiveCardProps) => {
   const [showReservation, setShowReservation] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const { isAuthenticated } = useAuth();
+  
   const formattedDate = live.date
     ? new Date(live.date).toLocaleDateString("fr-FR", {
         weekday: "long",
@@ -24,6 +27,17 @@ export const LiveCard = ({ live }: LiveCardProps) => {
         minute: "2-digit",
       })
     : "";
+
+  const handleReservationClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isAuthenticated) {
+      // Si l'utilisateur est connecté, on affiche directement le formulaire de réservation
+      setShowReservation(true);
+    } else {
+      // Si l'utilisateur n'est pas connecté, on affiche la popup de connexion via ReservationForm
+      setShowReservation(true);
+    }
+  };
 
   return (
     <div className="group relative overflow-hidden rounded-lg border bg-background p-2">
@@ -108,10 +122,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
           <Button 
             className="w-full mt-4"
             style={{ backgroundColor: '#2563EB', borderColor: '#2563EB' }}
-            onClick={(e) => {
-              e.preventDefault();
-              setShowReservation(true);
-            }}
+            onClick={handleReservationClick}
           >
             <Calendar className="w-4 h-4 mr-2" />
             Réserver
