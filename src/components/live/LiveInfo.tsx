@@ -82,12 +82,12 @@ export const LiveInfo = ({
               <div className="flex items-center gap-2 mt-1">
                 <Badge 
                   variant="default" 
-                  className={`flex items-center gap-1 ${isReplay ? 'bg-[#33C3F0]' : 'bg-[#ea384c]'} hover:${isReplay ? 'bg-[#33C3F0]/90' : 'bg-[#ea384c]/90'} text-white shadow-sm`}
+                  className={`flex items-center gap-1 ${isReplay ? 'bg-[#33C3F0]' : 'bg-[#33C3F0]'} hover:${isReplay ? 'bg-[#33C3F0]/90' : 'bg-[#33C3F0]/90'} text-white shadow-sm`}
                 >
                   <Radio className="w-3 h-3 animate-pulse" />
                   <span>{isReplay ? 'REPLAY' : 'LIVE'}</span>
                 </Badge>
-                <div className="flex items-center gap-1.5 text-xs text-[#ea384c]">
+                <div className="flex items-center gap-1.5 text-xs text-[#33C3F0]">
                   <Users className="w-3.5 h-3.5" />
                   <span className="font-semibold">{viewerCount}</span>
                 </div>
@@ -104,8 +104,8 @@ export const LiveInfo = ({
                 variant="ghost"
                 size="icon"
                 className={cn(
-                  "bg-[#ea384c]/10 hover:bg-[#ea384c]/20 text-[#ea384c] transition-colors",
-                  isFavorite && "bg-[#ea384c] text-white hover:bg-[#ea384c]/90"
+                  "bg-[#33C3F0]/10 hover:bg-[#33C3F0]/20 text-[#33C3F0] transition-colors",
+                  isFavorite && "bg-[#33C3F0] text-white hover:bg-[#33C3F0]/90"
                 )}
                 onClick={() => setIsFavorite(!isFavorite)}
               >
@@ -114,7 +114,7 @@ export const LiveInfo = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="bg-[#ea384c]/10 text-[#ea384c] hover:bg-[#ea384c]/20 transition-colors"
+                className="bg-[#33C3F0]/10 text-[#33C3F0] hover:bg-[#33C3F0]/20 transition-colors"
                 onClick={onToggleChat}
               >
                 <MessageSquare className="h-6 w-6" />
@@ -122,7 +122,7 @@ export const LiveInfo = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="bg-[#ea384c]/10 text-[#ea384c] hover:bg-[#ea384c]/20 transition-colors"
+                className="bg-[#33C3F0]/10 text-[#33C3F0] hover:bg-[#33C3F0]/20 transition-colors"
                 onClick={() => navigate(-1)}
               >
                 <X className="h-6 w-6" />
@@ -133,21 +133,21 @@ export const LiveInfo = ({
                 <Badge 
                   variant="secondary" 
                   className={cn(
-                    "bg-[#ea384c]/10 text-[#ea384c] shadow-sm",
+                    "bg-[#33C3F0]/10 text-[#33C3F0] shadow-sm",
                     "transition-all duration-300 ease-in-out",
                     "hover:scale-105"
                   )}
                 >
                   {offerCount} offres
                 </Badge>
-                <p className="text-lg font-bold whitespace-nowrap text-[#ea384c]">
+                <p className="text-lg font-bold whitespace-nowrap text-[#33C3F0]">
                   {property.price.toLocaleString()} DH
                 </p>
               </>
             )}
             <Button 
               className={cn(
-                "bg-[#ea384c] hover:bg-[#ea384c]/90 text-white whitespace-nowrap shadow-sm transition-all hover:shadow-md",
+                "bg-[#33C3F0] hover:bg-[#33C3F0]/90 text-white whitespace-nowrap shadow-sm transition-all hover:shadow-md",
                 isMobile && "w-full"
               )}
               onClick={() => setIsOfferDialogOpen(true)}
@@ -162,14 +162,14 @@ export const LiveInfo = ({
               <Badge 
                 variant="secondary" 
                 className={cn(
-                  "bg-[#ea384c]/10 text-[#ea384c] shadow-sm",
+                  "bg-[#33C3F0]/10 text-[#33C3F0] shadow-sm",
                   "transition-all duration-300 ease-in-out",
                   "hover:scale-105"
                 )}
               >
                 {offerCount} offres
               </Badge>
-              <p className="text-lg font-bold whitespace-nowrap text-[#ea384c]">
+              <p className="text-lg font-bold whitespace-nowrap text-[#33C3F0]">
                 {property.price.toLocaleString()} DH
               </p>
             </div>
