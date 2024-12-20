@@ -20,7 +20,7 @@ const liveMarkerIcon = {
   fillOpacity: 0.9,
   strokeWeight: 2,
   strokeColor: 'white',
-  scale: 10,
+  scale: 8,
 };
 
 const scheduledMarkerIcon = {
@@ -44,27 +44,27 @@ const getMarkerIcon = (property: Property) => {
 };
 
 const MarkerBadge = ({ property }: { property: Property }) => (
-  <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
     <Badge 
       variant={property.isLiveNow ? "destructive" : "default"}
       className={`
         ${property.isLiveNow ? 'bg-red-500' : property.liveDate ? 'bg-blue-500' : 'bg-violet-500'} 
-        text-white flex items-center gap-1
+        text-white flex items-center gap-1 text-xs
       `}
     >
       {property.isLiveNow ? (
         <>
-          <Circle className="w-2 h-2 fill-white animate-pulse" />
+          <Circle className="w-1.5 h-1.5 fill-white animate-pulse" />
           En direct
         </>
       ) : property.liveDate ? (
         <>
-          <Calendar className="w-3 h-3" />
+          <Calendar className="w-2.5 h-2.5" />
           Programmé
         </>
       ) : (
         <>
-          <PlayCircle className="w-3 h-3" />
+          <PlayCircle className="w-2.5 h-2.5" />
           Replay
         </>
       )}
@@ -99,8 +99,12 @@ export const MapMarker = ({
             lng: property.coordinates.lng,
           }}
           onCloseClick={onInfoWindowClose}
+          options={{
+            maxWidth: window.innerWidth < 768 ? 200 : 280,
+            pixelOffset: new google.maps.Size(0, -20)
+          }}
         >
-          <div className="relative max-w-sm">
+          <div className="relative max-w-[280px] scale-90 origin-top">
             <MarkerBadge property={property} />
             <PropertyCard {...property} />
           </div>
