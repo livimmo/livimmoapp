@@ -68,8 +68,8 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <HomeHeader />
 
-      <main className="container mx-auto px-4 pt-20 max-w-7xl">
-        <div className="max-w-[1400px] mx-auto">
+      <main className="container mx-auto pt-20">
+        <div className="max-w-full mx-auto px-4">
           <HeroBanner 
             properties={featuredProperties}
             currentLives={currentLives}
@@ -92,6 +92,11 @@ const Index = () => {
             setTransactionType={setTransactionType}
           />
 
+          <SearchSection 
+            filteredProperties={filteredProperties} 
+            defaultProperties={featuredProperties}
+          />
+
           <div className="my-12 space-y-12">
             <CurrentLivesSection
               currentLives={currentLives}
@@ -105,15 +110,10 @@ const Index = () => {
             <ReplayLivesSection replayLives={replayLives} />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 my-12">
-            <VirtualToursSection properties={featuredProperties} />
+          <div className="grid grid-cols-1 gap-12 my-12">
             <FeaturedSection properties={featuredProperties} />
+            <VirtualToursSection properties={featuredProperties} />
           </div>
-
-          <SearchSection 
-            filteredProperties={filteredProperties} 
-            defaultProperties={featuredProperties}
-          />
 
           <CTASection />
         </div>
