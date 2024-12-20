@@ -13,6 +13,7 @@ export interface Property {
   hasLive?: boolean;
   isReplay?: boolean;
   liveDate?: Date;
+  status?: 'live' | 'scheduled' | null;
   agent: {
     id?: number;
     name: string;

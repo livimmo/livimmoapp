@@ -15,7 +15,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   const [selectedLive, setSelectedLive] = useState<LiveStream | ScheduledLive | null>(null);
 
   const currentLives: LiveStream[] = properties
-    .filter((p): p is Property & { status: 'live' } => p.hasLive && p.status === 'live')
+    .filter((p) => p.hasLive && p.status === 'live')
     .map(p => ({
       id: p.id,
       title: p.title,
@@ -32,7 +32,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
     }));
 
   const scheduledLives: ScheduledLive[] = properties
-    .filter((p): p is Property & { status: 'scheduled' } => p.hasLive && p.status === 'scheduled')
+    .filter((p) => p.hasLive && p.status === 'scheduled')
     .map(p => ({
       id: p.id,
       title: p.title,
