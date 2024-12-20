@@ -11,15 +11,20 @@ import {
 import { useRef } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { LiveSlide } from "@/components/live/LiveSlide";
+import { Dispatch, SetStateAction } from "react";
 
 interface CurrentLivesSectionProps {
   currentLives: LiveEvent[];
   currentLiveProperties: Property[];
+  currentLiveViewMode: "map" | "list";
+  setCurrentLiveViewMode: Dispatch<SetStateAction<"map" | "list">>;
 }
 
 export const CurrentLivesSection = ({
   currentLives,
   currentLiveProperties,
+  currentLiveViewMode,
+  setCurrentLiveViewMode,
 }: CurrentLivesSectionProps) => {
   const isMobile = useIsMobile();
   const plugin = useRef(
