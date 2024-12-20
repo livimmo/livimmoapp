@@ -36,7 +36,7 @@ export const LiveSlide = ({ live, index }: LiveSlideProps) => {
         return (
           <Button onClick={handleAction} variant="outline" className="w-full">
             <Calendar className="w-4 h-4 mr-2" />
-            S'inscrire au live
+            Réserver
           </Button>
         );
       default:

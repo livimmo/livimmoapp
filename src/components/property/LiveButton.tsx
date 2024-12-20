@@ -113,8 +113,8 @@ export const LiveButton = ({
             : isAuthenticated 
               ? isUserRegistered 
                 ? "Live réservé" 
-                : "S'inscrire au live"
-              : "Réserver le live"
+                : "Réserver"
+              : "Réserver"
           }
         </span>
       </Button>
