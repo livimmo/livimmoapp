@@ -31,25 +31,23 @@ export const LiveCard = ({ live }: LiveCardProps) => {
   const handleReservationClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (isAuthenticated) {
-      // Si l'utilisateur est connecté, on affiche directement le formulaire de réservation
       setShowReservation(true);
     } else {
-      // Si l'utilisateur n'est pas connecté, on affiche la popup de connexion via ReservationForm
       setShowReservation(true);
     }
   };
 
   return (
-    <div className="group relative overflow-hidden rounded-lg border bg-background p-2">
+    <div className="group relative overflow-hidden rounded-lg border bg-background">
       <Link
         to={live.status === "live" ? `/live/${live.id}` : `/live/schedule/${live.id}`}
         className="block"
       >
-        <div className="relative aspect-video overflow-hidden rounded-md">
+        <div className="relative aspect-[4/3] overflow-hidden">
           <img
             src={live.thumbnail}
             alt={live.title}
-            className="object-cover transition-transform group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform group-hover:scale-105"
           />
           <div className="absolute top-2 left-2 flex flex-wrap gap-2 max-w-[80%]">
             {live.status === "live" && (
@@ -96,8 +94,10 @@ export const LiveCard = ({ live }: LiveCardProps) => {
             </Button>
           </div>
         </div>
-        <div className="p-2">
-          <h3 className="font-semibold line-clamp-2">{live.title}</h3>
+        <div className="p-4">
+          <h3 className="font-semibold line-clamp-2 group-hover:text-primary transition-colors">
+            {live.title}
+          </h3>
           <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4" />
             <span>{formattedDate}</span>
