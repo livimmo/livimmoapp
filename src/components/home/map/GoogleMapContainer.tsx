@@ -5,42 +5,40 @@ import { LiveEvent } from "@/types/live";
 import { PropertyCard } from "@/components/PropertyCard";
 
 interface GoogleMapContainerProps {
-  selectedLiveType: "current" | "scheduled";
-  livesToShow: LiveEvent[];
-  onMarkerClick: (live: LiveEvent | null) => void;
-  selectedLive: LiveEvent | null;
   properties: Property[];
+  selectedLive?: LiveEvent | null;
+  onMarkerClick?: (live: LiveEvent | null) => void;
 }
 
-const center = {
+const containerStyle = {
+  width: "100%",
+  height: "100%",
+  minHeight: "400px",
+};
+
+const defaultCenter = {
   lat: 31.7917,
   lng: -7.0926,
 };
 
-const mapStyles = {
-  width: "100%",
-  height: "600px",
-};
-
 export const GoogleMapContainer = ({
-  selectedLiveType,
-  livesToShow,
-  onMarkerClick,
-  selectedLive,
   properties,
 }: GoogleMapContainerProps) => {
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [hoveredMarkerId, setHoveredMarkerId] = useState<number | null>(null);
 
+  // Filtrer pour ne garder que les propriétés avec des lives en cours
+  const liveProperties = properties.filter(property => property.hasLive && property.isLiveNow);
+
   const onLoad = useCallback((map: google.maps.Map) => {
     setMapRef(map);
   }, []);
 
   useEffect(() => {
-    if (mapRef && properties.length > 0) {
+    if (mapRef && liveProperties.length > 0) {
       const bounds = new google.maps.LatLngBounds();
-      properties.forEach((property) => {
+      liveProperties.forEach((property) => {
         bounds.extend({
           lat: property.coordinates.lat,
           lng: property.coordinates.lng,
@@ -48,28 +46,28 @@ export const GoogleMapContainer = ({
       });
       mapRef.fitBounds(bounds);
     }
-  }, [mapRef, properties]);
+  }, [mapRef, liveProperties]);
 
   return (
     <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
       <GoogleMap
-        mapContainerStyle={mapStyles}
-        center={center}
+        mapContainerStyle={containerStyle}
+        center={
+          liveProperties.length > 0
+            ? {
+                lat: liveProperties[0].coordinates.lat,
+                lng: liveProperties[0].coordinates.lng,
+              }
+            : defaultCenter
+        }
         zoom={6}
         onLoad={onLoad}
         options={{
-          styles: [
-            {
-              featureType: "poi",
-              elementType: "labels",
-              stylers: [{ visibility: "off" }],
-            },
-          ],
-          disableDefaultUI: true,
+          disableDefaultUI: false,
           zoomControl: true,
         }}
       >
-        {properties.map((property) => (
+        {liveProperties.map((property) => (
           <Marker
             key={property.id}
             position={{
@@ -81,7 +79,7 @@ export const GoogleMapContainer = ({
             onMouseOut={() => setHoveredMarkerId(null)}
             icon={{
               path: google.maps.SymbolPath.CIRCLE,
-              fillColor: property.hasLive ? '#ea384c' : '#0ea5e9',
+              fillColor: '#ea384c',
               fillOpacity: 0.9,
               strokeWeight: 2,
               strokeColor: 'white',
