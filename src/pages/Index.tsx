@@ -13,6 +13,9 @@ import { addCoordinatesToProperties } from "@/data/mockProperties";
 import { liveStreams, scheduledLives } from "@/data/mockLives";
 import { featuredProperties } from "@/data/featuredProperties";
 import { HeroBanner } from "@/components/home/HeroBanner";
+import { LiveCalendar } from "@/components/home/LiveCalendar";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -39,13 +42,9 @@ const Index = () => {
     }
   };
 
-  const allLives = [...liveStreams, ...scheduledLives];
-
-  // Sélectionner quelques replays pour le slider
-  const replayLives = liveStreams.slice(0, 3).map(live => ({
-    ...live,
-    status: "replay" as const
-  }));
+  // Filtrer les lives par statut
+  const currentLives = liveStreams.filter(live => live.status === "live");
+  const replayLives = liveStreams.filter(live => live.status === "replay");
 
   return (
     <div className="min-h-screen bg-background">
@@ -54,7 +53,7 @@ const Index = () => {
       <main className="container mx-auto px-4 pt-20">
         <HeroBanner 
           properties={featuredProperties}
-          currentLives={liveStreams.slice(0, 2)}
+          currentLives={currentLives}
           replays={replayLives}
         />
 
@@ -73,6 +72,34 @@ const Index = () => {
           transactionType={transactionType}
           setTransactionType={setTransactionType}
         />
+
+        <div className="my-12 space-y-8">
+          {/* Section Lives en cours */}
+          {currentLives.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-bold mb-6">Lives en cours</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <LiveSlider lives={currentLives} />
+              </div>
+            </section>
+          )}
+
+          {/* Section Lives programmés */}
+          <section>
+            <h2 className="text-2xl font-bold mb-6">Lives programmés</h2>
+            <LiveCalendar />
+          </section>
+
+          {/* Section Replays */}
+          {replayLives.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-bold mb-6">Replays disponibles</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <LiveSlider lives={replayLives} />
+              </div>
+            </section>
+          )}
+        </div>
 
         <VirtualToursSection properties={featuredProperties} />
         
