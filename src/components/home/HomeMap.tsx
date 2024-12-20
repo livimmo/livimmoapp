@@ -4,8 +4,13 @@ import { Button } from '../ui/button';
 import { ReservationForm } from './ReservationForm';
 import { GoogleMapContainer } from './map/GoogleMapContainer';
 import { liveStreams, scheduledLives } from '@/data/mockLives';
+import { Property } from '@/types/property';
 
-export const HomeMap = () => {
+interface HomeMapProps {
+  properties: Property[];
+}
+
+export const HomeMap = ({ properties }: HomeMapProps) => {
   const [selectedLiveType, setSelectedLiveType] = useState<'current' | 'scheduled'>('current');
   const [showReservationDialog, setShowReservationDialog] = useState(false);
   const [selectedLive, setSelectedLive] = useState<LiveStream | ScheduledLive | null>(null);

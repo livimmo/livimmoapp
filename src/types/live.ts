@@ -1,18 +1,37 @@
-export interface LiveEvent {
+export interface LiveStream {
   id: number;
   title: string;
   description: string;
   thumbnail: string;
   agent: string;
-  agentId?: number;
   location: string;
   type: string;
   price: string;
-  status: "live" | "replay" | "scheduled";
+  status: "live";
   date: Date;
   availableSeats: number;
   viewers: number;
   tags?: string[];
+}
+
+export interface ScheduledLive {
+  id: number;
+  title: string;
+  description: string;
+  thumbnail: string;
+  agent: string;
+  location: string;
+  type: string;
+  price: string;
+  status: "scheduled";
+  date: Date;
+  availableSeats: number;
+  viewers: number;
+  tags?: string[];
+}
+
+export interface LiveEvent extends LiveStream {
+  status: "live" | "replay" | "scheduled";
 }
 
 export interface LiveStreamProps {
