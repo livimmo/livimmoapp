@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Property } from '@/types/property';
@@ -29,7 +29,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   const [selectedLive, setSelectedLive] = useState<LiveEvent | null>(null);
   const [mapElement, setMapElement] = useState<HTMLElement | null>(null);
 
-  const handlePopupClick = (e: MouseEvent) => {
+  const handlePopupClick = useCallback((e: MouseEvent) => {
     const target = e.target as HTMLElement;
     if (target.tagName === 'BUTTON') {
       const liveId = target.getAttribute('data-live-id');
@@ -46,7 +46,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         }
       }
     }
-  };
+  }, [navigate, selectedLiveType]);
 
   useEffect(() => {
     if (mapElement) {
@@ -55,7 +55,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         mapElement.removeEventListener('click', handlePopupClick);
       };
     }
-  }, [mapElement]);
+  }, [mapElement, handlePopupClick]);
 
   // Centre de la carte sur le Maroc
   const center: [number, number] = [31.7917, -7.0926];
