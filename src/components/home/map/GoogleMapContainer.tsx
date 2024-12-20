@@ -41,33 +41,64 @@ export const GoogleMapContainer = ({
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [hoveredMarkerId, setHoveredMarkerId] = useState<number | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Filtrer pour ne garder que les propriétés avec des lives en cours
-  const liveProperties = properties.filter(property => property.hasLive && property.isLiveNow);
+  // Filter properties with valid coordinates and live status
+  const liveProperties = properties.filter(property => 
+    property.hasLive && 
+    property.isLiveNow && 
+    property.coordinates && 
+    typeof property.coordinates.lat === 'number' && 
+    typeof property.coordinates.lng === 'number'
+  );
 
   const onLoad = useCallback((map: google.maps.Map) => {
     setMapRef(map);
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (mapRef && liveProperties.length > 0) {
-      const bounds = new google.maps.LatLngBounds();
-      liveProperties.forEach((property) => {
-        bounds.extend({
-          lat: property.coordinates.lat,
-          lng: property.coordinates.lng,
+    if (mapRef && isLoaded && liveProperties.length > 0) {
+      try {
+        const bounds = new window.google.maps.LatLngBounds();
+        liveProperties.forEach((property) => {
+          if (property.coordinates && 
+              typeof property.coordinates.lat === 'number' && 
+              typeof property.coordinates.lng === 'number') {
+            bounds.extend({
+              lat: property.coordinates.lat,
+              lng: property.coordinates.lng,
+            });
+          }
         });
-      });
-      mapRef.fitBounds(bounds);
+        mapRef.fitBounds(bounds);
+      } catch (error) {
+        console.error("Error adjusting map bounds:", error);
+      }
     }
-  }, [mapRef, liveProperties]);
+  }, [mapRef, liveProperties, isLoaded]);
+
+  const handlePropertySelect = (property: Property) => {
+    // Create a serializable copy of the property object
+    const serializableProperty = {
+      ...property,
+      coordinates: {
+        lat: property.coordinates.lat,
+        lng: property.coordinates.lng,
+      }
+    };
+    setSelectedProperty(serializableProperty);
+  };
 
   return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+    <LoadScript 
+      googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+      onLoad={() => setIsLoaded(true)}
+    >
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={
-          liveProperties.length > 0
+          liveProperties.length > 0 && liveProperties[0].coordinates
             ? {
                 lat: liveProperties[0].coordinates.lat,
                 lng: liveProperties[0].coordinates.lng,
@@ -81,14 +112,14 @@ export const GoogleMapContainer = ({
           zoomControl: true,
         }}
       >
-        {liveProperties.map((property) => (
+        {isLoaded && liveProperties.map((property) => (
           <Marker
             key={property.id}
             position={{
               lat: property.coordinates.lat,
               lng: property.coordinates.lng,
             }}
-            onClick={() => setSelectedProperty(property)}
+            onClick={() => handlePropertySelect(property)}
             onMouseOver={() => setHoveredMarkerId(property.id)}
             onMouseOut={() => setHoveredMarkerId(null)}
             icon={hoveredMarkerId === property.id ? hoverMarkerIcon : markerIcon}
