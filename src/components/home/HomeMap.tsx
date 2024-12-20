@@ -64,8 +64,12 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
           zoom={5}
           className="w-full h-full"
           scrollWheelZoom={true}
-          whenReady={({ target }) => {
-            target.getContainer().addEventListener('click', handlePopupClick);
+          whenCreated={(mapInstance) => {
+            const container = mapInstance.getContainer();
+            container.addEventListener('click', handlePopupClick);
+            return () => {
+              container.removeEventListener('click', handlePopupClick);
+            };
           }}
         >
           <TileLayer
