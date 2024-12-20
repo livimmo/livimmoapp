@@ -15,6 +15,14 @@ export interface LiveEvent {
   tags?: string[];
 }
 
+export type LiveStream = LiveEvent & {
+  status: "live";
+};
+
+export type ScheduledLive = LiveEvent & {
+  status: "scheduled";
+};
+
 export interface LiveStreamProps {
   videoId: string;
   currentLiveId: number;
