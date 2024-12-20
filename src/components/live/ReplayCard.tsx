@@ -118,7 +118,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
           )}
         </CardContent>
         <CardFooter className="p-4 pt-0 flex flex-col gap-4">
-          <Button onClick={handleWatch} variant="secondary" className="w-full group-hover:bg-primary group-hover:text-white transition-colors">
+          <Button onClick={handleWatch} variant="default" className="w-full">
             <Play className="w-4 h-4 mr-2" />
             Visionner
           </Button>

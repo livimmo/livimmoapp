@@ -121,7 +121,6 @@ export const LiveCard = ({ live }: LiveCardProps) => {
         <>
           <Button 
             className="w-full mt-4"
-            style={{ backgroundColor: '#2563EB', borderColor: '#2563EB' }}
             onClick={handleReservationClick}
           >
             <Calendar className="w-4 h-4 mr-2" />
