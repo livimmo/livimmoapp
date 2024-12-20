@@ -14,25 +14,33 @@ interface MapMarkerProps {
   onInfoWindowClose: () => void;
 }
 
-const getMarkerIcon = (property: Property) => {
-  const baseIcon = {
-    path: "M -1, -1 1, -1 1, 1 -1, 1",
-    fillOpacity: 0.9,
-    strokeWeight: 2,
-    strokeColor: 'white',
-    scale: 10,
-  };
+const liveMarkerIcon = {
+  path: "M -1, -1 1, -1 1, 1 -1, 1",
+  fillColor: '#ea384c',
+  fillOpacity: 0.9,
+  strokeWeight: 2,
+  strokeColor: 'white',
+  scale: 10,
+};
 
+const scheduledMarkerIcon = {
+  ...liveMarkerIcon,
+  fillColor: '#3b82f6',
+};
+
+const replayMarkerIcon = {
+  ...liveMarkerIcon,
+  fillColor: '#8b5cf6',
+};
+
+const getMarkerIcon = (property: Property) => {
   if (property.isLiveNow) {
-    return { ...baseIcon, fillColor: '#ea384c' }; // Rouge pour les lives en cours
+    return liveMarkerIcon;
   }
   if (property.liveDate && new Date(property.liveDate) > new Date()) {
-    return { ...baseIcon, fillColor: '#3b82f6' }; // Bleu pour les lives programmés
+    return scheduledMarkerIcon;
   }
-  if (property.virtualTour?.enabled) {
-    return { ...baseIcon, fillColor: '#8b5cf6' }; // Violet pour les visites virtuelles
-  }
-  return { ...baseIcon, fillColor: '#6b7280' }; // Gris par défaut
+  return replayMarkerIcon;
 };
 
 const MarkerBadge = ({ property }: { property: Property }) => (
