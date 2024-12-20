@@ -7,7 +7,7 @@ import { FavoriteButton } from "./property/FavoriteButton";
 import { Badge } from "./ui/badge";
 import { getRandomTags } from "@/utils/propertyTags";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, View360 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { useState } from "react";
@@ -37,6 +37,7 @@ export const PropertyCard = ({
   isUserRegistered = false,
   offers = 0,
   agent,
+  virtualTour,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
@@ -92,6 +93,12 @@ export const PropertyCard = ({
             <div className="flex flex-wrap gap-1">
               {!hasLive && (
                 <Badge variant="destructive">Vendu</Badge>
+              )}
+              {virtualTour?.enabled && (
+                <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm flex items-center gap-1">
+                  <View360 className="w-3 h-3" />
+                  360°
+                </Badge>
               )}
               {tags.map((tag) => (
                 <Badge
