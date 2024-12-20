@@ -7,6 +7,7 @@ import { AddLiveDialog } from "@/components/AddLiveDialog";
 import { useState } from "react";
 import { ReservationForm } from "@/components/home/ReservationForm";
 import { AIChat } from "@/components/live/AIChat";
+import { type Property } from "@/types/property"; // Ajout de l'import manquant
 import {
   Tooltip,
   TooltipContent,
@@ -19,6 +20,34 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+const mockProperty: Property = {
+  id: 0,
+  title: "Support Client",
+  price: 0,
+  location: "",
+  type: "Support",
+  surface: 0,
+  rooms: 0,
+  bathrooms: 0,
+  description: "Service client Livimmo",
+  features: [],
+  images: ["/placeholder.svg"],
+  agent: {
+    id: 0,
+    name: "Support",
+    email: "support@livimmo.com",
+    phone: "+212 123 456 789",
+    image: "/placeholder.svg",
+    verified: true,
+    company: "Livimmo Support"
+  },
+  coordinates: {
+    lat: 0,
+    lng: 0
+  },
+  transactionType: "Vente"
+};
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -49,34 +78,6 @@ export const Header = () => {
     } else {
       window.location.href = 'mailto:support@livimmo.com';
     }
-  };
-
-  const mockProperty: Property = {
-    id: 0,
-    title: "Support Client",
-    price: 0,
-    location: "",
-    type: "Support",
-    surface: 0,
-    rooms: 0,
-    bathrooms: 0,
-    description: "Service client Livimmo",
-    features: [],
-    images: ["/placeholder.svg"],
-    agent: {
-      id: 0,
-      name: "Support",
-      email: "support@livimmo.com",
-      phone: "+212 123 456 789",
-      image: "/placeholder.svg",
-      verified: true,
-      company: "Livimmo Support"
-    },
-    coordinates: {
-      lat: 0,
-      lng: 0
-    },
-    transactionType: "Vente"
   };
 
   return (
