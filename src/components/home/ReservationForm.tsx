@@ -9,7 +9,6 @@ import { TermsDialog } from "./TermsDialog";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from "@/components/ui/alert-dialog";
 
 interface ReservationFormProps {
   live: {
@@ -26,7 +25,6 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   const [showTerms, setShowTerms] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
   const [formData, setFormData] = useState({
     name: user ? `${user.firstName} ${user.lastName}` : "",
     email: user?.email || "",
@@ -77,15 +75,11 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
       return;
     }
 
-    setShowConfirmation(true);
-  };
-
-  const handleConfirmReservation = async () => {
     setIsSubmitting(true);
 
     try {
-      // Ici, vous ajouteriez l'appel API pour enregistrer l'inscription
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulation d'appel API
+      // Simulation d'appel API
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       toast({
         title: "Inscription confirmée !",
@@ -103,7 +97,6 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
       });
     } finally {
       setIsSubmitting(false);
-      setShowConfirmation(false);
     }
   };
 
@@ -202,37 +195,6 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
           </form>
         </DialogContent>
       </Dialog>
-
-      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirmer votre inscription</AlertDialogTitle>
-            <AlertDialogDescription>
-              Vous êtes sur le point de réserver une place pour le live "{live.title}".
-              {live.availableSeats && live.availableSeats > 0 && (
-                <p className="mt-2">
-                  Il reste actuellement {live.availableSeats} places disponibles.
-                </p>
-              )}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setShowConfirmation(false)}
-              disabled={isSubmitting}
-            >
-              Annuler
-            </Button>
-            <Button
-              onClick={handleConfirmReservation}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Confirmation en cours..." : "Confirmer"}
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
 
       <TermsDialog open={showTerms} onOpenChange={setShowTerms} />
     </>
