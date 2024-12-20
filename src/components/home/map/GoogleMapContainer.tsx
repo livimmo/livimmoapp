@@ -12,6 +12,16 @@ interface GoogleMapContainerProps {
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyBpyx3FTnDuj6a2XEKerIKFt87wxQYRov8';
 
+const mapStyles = {
+  width: '100%',
+  height: '400px'
+};
+
+const defaultCenter = {
+  lat: 31.7917,
+  lng: -7.0926
+};
+
 export const GoogleMapContainer = ({
   selectedLiveType,
   livesToShow,
@@ -20,23 +30,13 @@ export const GoogleMapContainer = ({
 }: GoogleMapContainerProps) => {
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
 
-  const center = {
-    lat: 31.7917,
-    lng: -7.0926
-  };
-
-  const mapStyles = {
-    width: '100%',
-    height: '400px'
-  };
-
   const onLoad = (map: google.maps.Map) => {
     setMapRef(map);
   };
 
   useEffect(() => {
-    if (mapRef) {
-      const bounds = new google.maps.LatLngBounds();
+    if (mapRef && livesToShow.length > 0) {
+      const bounds = new window.google.maps.LatLngBounds();
       livesToShow.forEach(live => {
         bounds.extend({
           lat: 31.7917 + Math.random() * 2 - 1,
@@ -51,7 +51,7 @@ export const GoogleMapContainer = ({
     <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
       <GoogleMap
         mapContainerStyle={mapStyles}
-        center={center}
+        center={defaultCenter}
         zoom={5}
         onLoad={onLoad}
       >
@@ -68,7 +68,7 @@ export const GoogleMapContainer = ({
               onClick={() => onMarkerClick(live)}
               icon={{
                 url: selectedLiveType === 'current' ? '🔴' : '📅',
-                scaledSize: new google.maps.Size(30, 30)
+                scaledSize: new window.google.maps.Size(30, 30)
               }}
             >
               {selectedLive?.id === live.id && (

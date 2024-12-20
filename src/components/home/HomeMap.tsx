@@ -3,7 +3,6 @@ import { LiveStream, ScheduledLive } from '@/types/live';
 import { Button } from '../ui/button';
 import { ReservationForm } from './ReservationForm';
 import { GoogleMapContainer } from './map/GoogleMapContainer';
-import { liveStreams, scheduledLives } from '@/data/mockLives';
 import { Property } from '@/types/property';
 
 interface HomeMapProps {
@@ -15,7 +14,41 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   const [showReservationDialog, setShowReservationDialog] = useState(false);
   const [selectedLive, setSelectedLive] = useState<LiveStream | ScheduledLive | null>(null);
 
-  const livesToShow = selectedLiveType === 'current' ? liveStreams : scheduledLives;
+  const currentLives: LiveStream[] = properties
+    .filter((p): p is Property & { status: 'live' } => p.hasLive && p.status === 'live')
+    .map(p => ({
+      id: p.id,
+      title: p.title,
+      description: p.description,
+      thumbnail: p.images[0],
+      agent: p.agent.name,
+      location: p.location,
+      type: p.type,
+      price: p.price.toString(),
+      status: 'live' as const,
+      date: new Date(),
+      availableSeats: 20,
+      viewers: Math.floor(Math.random() * 100)
+    }));
+
+  const scheduledLives: ScheduledLive[] = properties
+    .filter((p): p is Property & { status: 'scheduled' } => p.hasLive && p.status === 'scheduled')
+    .map(p => ({
+      id: p.id,
+      title: p.title,
+      description: p.description,
+      thumbnail: p.images[0],
+      agent: p.agent.name,
+      location: p.location,
+      type: p.type,
+      price: p.price.toString(),
+      status: 'scheduled' as const,
+      date: new Date(Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000),
+      availableSeats: 20,
+      viewers: 0
+    }));
+
+  const livesToShow = selectedLiveType === 'current' ? currentLives : scheduledLives;
 
   const handleMarkerClick = (live: LiveStream | ScheduledLive | null) => {
     setSelectedLive(live);
