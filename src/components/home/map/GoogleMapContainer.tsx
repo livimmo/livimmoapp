@@ -47,7 +47,9 @@ export const GoogleMapContainer = ({
   }, []);
 
   useEffect(() => {
-    if (mapRef && properties.length > 0 && isLoaded) {
+    if (!mapRef || !properties.length || !isLoaded) return;
+
+    try {
       const bounds = new window.google.maps.LatLngBounds();
       let hasValidCoordinates = false;
 
@@ -71,6 +73,8 @@ export const GoogleMapContainer = ({
         mapRef.setCenter(defaultCenter);
         mapRef.setZoom(6);
       }
+    } catch (error) {
+      console.error("Error adjusting map bounds:", error);
     }
   }, [mapRef, properties, isLoaded]);
 
@@ -84,7 +88,18 @@ export const GoogleMapContainer = ({
   }, []);
 
   const handleMarkerClick = useCallback((property: Property) => {
-    setSelectedProperty(property);
+    const serializedProperty = {
+      ...property,
+      agent: {
+        ...property.agent,
+      },
+      coordinates: {
+        ...property.coordinates,
+      }
+    };
+    
+    setSelectedProperty(serializedProperty);
+    
     if (onMarkerClick && property.isLiveNow) {
       onMarkerClick({
         id: property.id,
@@ -103,6 +118,10 @@ export const GoogleMapContainer = ({
     }
   }, [onMarkerClick]);
 
+  if (!isLoaded) {
+    return <div className="w-full h-full flex items-center justify-center">Chargement de la carte...</div>;
+  }
+
   return (
     <LoadScript 
       googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
@@ -115,7 +134,7 @@ export const GoogleMapContainer = ({
         onLoad={onLoad}
         options={mapOptions}
       >
-        {isLoaded && properties.map((property) => (
+        {properties.map((property) => (
           property.coordinates && (
             <Marker
               key={property.id}
@@ -129,7 +148,7 @@ export const GoogleMapContainer = ({
             />
           )
         ))}
-        {selectedProperty && (
+        {selectedProperty && selectedProperty.coordinates && (
           <InfoWindow
             position={{
               lat: selectedProperty.coordinates.lat,
