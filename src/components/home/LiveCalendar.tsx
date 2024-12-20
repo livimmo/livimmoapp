@@ -3,6 +3,13 @@ import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
 import { LiveCard } from "../live/LiveCard";
 import type { LiveEvent } from "@/types/live";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 // Mock data for scheduled lives with multiple events per day
 const scheduledLives: LiveEvent[] = [
@@ -127,7 +134,7 @@ export const LiveCalendar = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <Card className="p-4">
         <Calendar
           mode="single"
@@ -168,11 +175,26 @@ export const LiveCalendar = () => {
             <h3 className="text-lg font-semibold text-gray-900">
               {livesForSelectedDate.length} live{livesForSelectedDate.length > 1 ? 's' : ''} programmé{livesForSelectedDate.length > 1 ? 's' : ''} le {selectedDate?.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {livesForSelectedDate.map((live) => (
-                <LiveCard key={live.id} live={live} />
-              ))}
-            </div>
+            <Carousel
+              opts={{
+                align: "start",
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {livesForSelectedDate.map((live) => (
+                  <CarouselItem key={live.id} className="pl-2 md:pl-4 basis-full">
+                    <LiveCard live={live} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              {livesForSelectedDate.length > 1 && (
+                <>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </>
+              )}
+            </Carousel>
           </>
         ) : (
           <div className="text-center text-muted-foreground py-8">
