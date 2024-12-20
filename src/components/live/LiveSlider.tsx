@@ -1,4 +1,3 @@
-import { Card } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -34,12 +33,14 @@ export const LiveSlider = ({ lives, className }: LiveSliderProps) => {
       <CarouselContent className="-ml-2 md:-ml-4">
         {lives.map((live, index) => (
           <CarouselItem key={live.id} className="pl-2 md:pl-4 basis-full">
-            <LiveSlide live={live} index={index} />
+            <div className="p-1">
+              <LiveSlide live={live} index={index} />
+            </div>
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="-left-12 h-12 w-12" />
+      <CarouselNext className="-right-12 h-12 w-12" />
     </Carousel>
   );
 };

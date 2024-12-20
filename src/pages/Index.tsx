@@ -77,28 +77,48 @@ const Index = () => {
           <div className="my-12 space-y-12">
             {/* Section Lives en cours */}
             {currentLives.length > 0 && (
-              <section className="bg-white rounded-xl p-6 shadow-sm">
-                <h2 className="text-2xl font-bold mb-8">Lives en cours</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <LiveSlider lives={currentLives} />
+              <section className="bg-white rounded-xl p-6 shadow-lg">
+                <div className="flex items-center justify-between mb-8">
+                  <div>
+                    <h2 className="text-2xl font-bold">Lives en cours</h2>
+                    <p className="text-muted-foreground mt-1">
+                      Découvrez les visites en direct disponibles
+                    </p>
+                  </div>
+                  <Badge variant="secondary" className="px-4 py-1.5">
+                    {currentLives.length} live{currentLives.length > 1 ? 's' : ''} en cours
+                  </Badge>
                 </div>
+                <LiveSlider lives={currentLives} />
               </section>
             )}
 
             {/* Section Lives programmés */}
-            <section className="bg-white rounded-xl p-6 shadow-sm">
-              <h2 className="text-2xl font-bold mb-8">Lives programmés</h2>
+            <section className="bg-white rounded-xl p-6 shadow-lg">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-2xl font-bold">Lives programmés</h2>
+                  <p className="text-muted-foreground mt-1">
+                    Réservez votre place pour les prochaines visites
+                  </p>
+                </div>
+              </div>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2">
                   <LiveCalendar />
                 </div>
                 <div className="space-y-4">
                   <Card className="p-4">
-                    <h3 className="font-semibold mb-2">Prochains lives</h3>
+                    <h3 className="font-semibold mb-4">Prochains lives</h3>
                     {scheduledLives.slice(0, 3).map((live) => (
-                      <div key={live.id} className="p-2 hover:bg-accent rounded-lg transition-colors">
-                        <p className="font-medium">{live.title}</p>
-                        <p className="text-sm text-muted-foreground">
+                      <div 
+                        key={live.id} 
+                        className="p-3 hover:bg-accent rounded-lg transition-colors cursor-pointer group"
+                      >
+                        <p className="font-medium group-hover:text-primary transition-colors">
+                          {live.title}
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-1">
                           {new Date(live.date).toLocaleDateString('fr-FR', {
                             day: 'numeric',
                             month: 'long',
@@ -115,11 +135,19 @@ const Index = () => {
 
             {/* Section Replays */}
             {replayLives.length > 0 && (
-              <section className="bg-white rounded-xl p-6 shadow-sm">
-                <h2 className="text-2xl font-bold mb-8">Replays disponibles</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <LiveSlider lives={replayLives} />
+              <section className="bg-white rounded-xl p-6 shadow-lg">
+                <div className="flex items-center justify-between mb-8">
+                  <div>
+                    <h2 className="text-2xl font-bold">Replays disponibles</h2>
+                    <p className="text-muted-foreground mt-1">
+                      Revivez les visites passées
+                    </p>
+                  </div>
+                  <Badge variant="secondary" className="px-4 py-1.5">
+                    {replayLives.length} replay{replayLives.length > 1 ? 's' : ''} disponible{replayLives.length > 1 ? 's' : ''}
+                  </Badge>
                 </div>
+                <LiveSlider lives={replayLives} />
               </section>
             )}
           </div>
