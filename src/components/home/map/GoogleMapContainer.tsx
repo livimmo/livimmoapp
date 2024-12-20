@@ -4,7 +4,7 @@ import { Property } from "@/types/property";
 import { LiveEvent } from "@/types/live";
 import { PropertyCard } from "@/components/PropertyCard";
 import { Badge } from "@/components/ui/badge";
-import { Circle, Calendar } from "lucide-react";
+import { Circle, Calendar, PlayCircle } from "lucide-react";
 
 interface GoogleMapContainerProps {
   properties: Property[];
@@ -23,7 +23,8 @@ const defaultCenter = {
   lng: -7.0926,
 };
 
-const markerIcon = {
+// Icônes personnalisées pour chaque type de live
+const liveMarkerIcon = {
   path: "M -1, -1 1, -1 1, 1 -1, 1",
   fillColor: '#ea384c',
   fillOpacity: 0.9,
@@ -33,8 +34,13 @@ const markerIcon = {
 };
 
 const scheduledMarkerIcon = {
-  ...markerIcon,
+  ...liveMarkerIcon,
   fillColor: '#3b82f6', // blue-500
+};
+
+const replayMarkerIcon = {
+  ...liveMarkerIcon,
+  fillColor: '#8b5cf6', // violet-500
 };
 
 export const GoogleMapContainer = ({
@@ -61,21 +67,39 @@ export const GoogleMapContainer = ({
     }
   }, [mapRef, properties]);
 
-  const MarkerBadge = ({ isLive }: { isLive: boolean }) => (
+  const getMarkerIcon = (property: Property) => {
+    if (property.isLiveNow) {
+      return liveMarkerIcon;
+    }
+    if (property.liveDate && new Date(property.liveDate) > new Date()) {
+      return scheduledMarkerIcon;
+    }
+    return replayMarkerIcon;
+  };
+
+  const MarkerBadge = ({ property }: { property: Property }) => (
     <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
       <Badge 
-        variant={isLive ? "destructive" : "default"}
-        className={`${isLive ? 'bg-red-500' : 'bg-blue-500'} text-white flex items-center gap-1`}
+        variant={property.isLiveNow ? "destructive" : "default"}
+        className={`
+          ${property.isLiveNow ? 'bg-red-500' : property.liveDate ? 'bg-blue-500' : 'bg-violet-500'} 
+          text-white flex items-center gap-1
+        `}
       >
-        {isLive ? (
+        {property.isLiveNow ? (
           <>
             <Circle className="w-2 h-2 fill-white animate-pulse" />
             En direct
           </>
-        ) : (
+        ) : property.liveDate ? (
           <>
             <Calendar className="w-3 h-3" />
             Programmé
+          </>
+        ) : (
+          <>
+            <PlayCircle className="w-3 h-3" />
+            Replay
           </>
         )}
       </Badge>
@@ -114,7 +138,7 @@ export const GoogleMapContainer = ({
               onClick={() => setSelectedProperty(property)}
               onMouseOver={() => setHoveredMarkerId(property.id)}
               onMouseOut={() => setHoveredMarkerId(null)}
-              icon={property.isLiveNow ? markerIcon : scheduledMarkerIcon}
+              icon={getMarkerIcon(property)}
             >
               {(selectedProperty?.id === property.id || hoveredMarkerId === property.id) && (
                 <InfoWindow
@@ -128,7 +152,7 @@ export const GoogleMapContainer = ({
                   }}
                 >
                   <div className="relative max-w-sm">
-                    <MarkerBadge isLive={property.isLiveNow} />
+                    <MarkerBadge property={property} />
                     <PropertyCard {...property} />
                   </div>
                 </InfoWindow>
