@@ -2,15 +2,17 @@ import { useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { LiveStream, ScheduledLive } from '@/types/live';
 import { MapMarkerContent } from './MapMarkerContent';
+import { Property } from '@/types/property';
 
 interface GoogleMapContainerProps {
   selectedLiveType: 'current' | 'scheduled';
   livesToShow: (LiveStream | ScheduledLive)[];
   onMarkerClick: (live: LiveStream | ScheduledLive) => void;
   selectedLive: LiveStream | ScheduledLive | null;
+  properties: Property[];
 }
 
-const GOOGLE_MAPS_API_KEY = 'AIzaSyBpyx3FTnDuj6a2XEKerIKFt87wxQYRov8';
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const mapStyles = {
   width: '100%',
@@ -38,7 +40,8 @@ export const GoogleMapContainer = ({
   selectedLiveType,
   livesToShow,
   onMarkerClick,
-  selectedLive
+  selectedLive,
+  properties
 }: GoogleMapContainerProps) => {
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [hoveredMarkerId, setHoveredMarkerId] = useState<number | null>(null);
@@ -47,18 +50,21 @@ export const GoogleMapContainer = ({
     setMapRef(map);
   };
 
+  // Filtrer les propriétés avec des lives
+  const liveProperties = properties.filter(property => property.hasLive);
+
   useEffect(() => {
-    if (mapRef && livesToShow.length > 0) {
+    if (mapRef && liveProperties.length > 0) {
       const bounds = new window.google.maps.LatLngBounds();
-      livesToShow.forEach(live => {
+      liveProperties.forEach(property => {
         bounds.extend({
-          lat: 31.7917 + Math.random() * 2 - 1,
-          lng: -7.0926 + Math.random() * 2 - 1,
+          lat: property.coordinates.lat,
+          lng: property.coordinates.lng,
         });
       });
       mapRef.fitBounds(bounds);
     }
-  }, [mapRef, livesToShow]);
+  }, [mapRef, liveProperties]);
 
   return (
     <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
@@ -82,32 +88,31 @@ export const GoogleMapContainer = ({
           ]
         }}
       >
-        {livesToShow.map(live => {
-          const position = {
-            lat: 31.7917 + Math.random() * 2 - 1,
-            lng: -7.0926 + Math.random() * 2 - 1,
-          };
-
-          const isHovered = hoveredMarkerId === live.id;
-          const isSelected = selectedLive?.id === live.id;
+        {liveProperties.map(property => {
+          const isHovered = hoveredMarkerId === property.id;
+          const isSelected = selectedLive?.id === property.id;
           const scale = isHovered || isSelected ? 12 : 10;
+          const type = property.isLiveNow ? 'current' : 'scheduled';
 
           return (
             <Marker
-              key={live.id}
-              position={position}
-              onClick={() => onMarkerClick(live)}
-              onMouseOver={() => setHoveredMarkerId(live.id)}
+              key={property.id}
+              position={{
+                lat: property.coordinates.lat,
+                lng: property.coordinates.lng
+              }}
+              onClick={() => onMarkerClick(property as any)}
+              onMouseOver={() => setHoveredMarkerId(property.id)}
               onMouseOut={() => setHoveredMarkerId(null)}
               icon={{
-                ...createMarkerIcon(selectedLiveType),
+                ...createMarkerIcon(type),
                 scale: scale,
               }}
               animation={isHovered ? google.maps.Animation.BOUNCE : undefined}
             >
               {(isSelected || isHovered) && (
                 <InfoWindow onCloseClick={() => onMarkerClick(null)}>
-                  <MapMarkerContent live={live} selectedLiveType={selectedLiveType} />
+                  <MapMarkerContent property={property} selectedLiveType={type} />
                 </InfoWindow>
               )}
             </Marker>

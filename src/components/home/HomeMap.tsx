@@ -14,42 +14,6 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   const [showReservationDialog, setShowReservationDialog] = useState(false);
   const [selectedLive, setSelectedLive] = useState<LiveStream | ScheduledLive | null>(null);
 
-  const currentLives: LiveStream[] = properties
-    .filter((p) => p.hasLive && p.status === 'live')
-    .map(p => ({
-      id: p.id,
-      title: p.title,
-      description: p.description,
-      thumbnail: p.images[0],
-      agent: p.agent.name,
-      location: p.location,
-      type: p.type,
-      price: p.price.toString(),
-      status: 'live' as const,
-      date: new Date(),
-      availableSeats: 20,
-      viewers: Math.floor(Math.random() * 100)
-    }));
-
-  const scheduledLives: ScheduledLive[] = properties
-    .filter((p) => p.hasLive && p.status === 'scheduled')
-    .map(p => ({
-      id: p.id,
-      title: p.title,
-      description: p.description,
-      thumbnail: p.images[0],
-      agent: p.agent.name,
-      location: p.location,
-      type: p.type,
-      price: p.price.toString(),
-      status: 'scheduled' as const,
-      date: new Date(Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000),
-      availableSeats: 20,
-      viewers: 0
-    }));
-
-  const livesToShow = selectedLiveType === 'current' ? currentLives : scheduledLives;
-
   const handleMarkerClick = (live: LiveStream | ScheduledLive | null) => {
     setSelectedLive(live);
     if (selectedLiveType === 'scheduled' && live) {
@@ -81,9 +45,10 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
       <div className="relative w-full rounded-lg overflow-hidden shadow-lg">
         <GoogleMapContainer
           selectedLiveType={selectedLiveType}
-          livesToShow={livesToShow}
+          livesToShow={[]}
           onMarkerClick={handleMarkerClick}
           selectedLive={selectedLive}
+          properties={properties}
         />
       </div>
 
