@@ -98,7 +98,7 @@ const Index = () => {
             <Tabs defaultValue="lives" className="w-full">
               <TabsList className={`mb-8 ${isMobile ? 'w-full grid grid-cols-3' : ''}`}>
                 <TabsTrigger value="lives" className={isMobile ? 'flex-1' : ''}>Lives</TabsTrigger>
-                <TabsTrigger value="properties" className={isMobile ? 'flex-1' : ''}>À vendre</TabsTrigger>
+                <TabsTrigger value="properties" className={isMobile ? 'flex-1' : ''}>Biens</TabsTrigger>
                 <TabsTrigger value="virtual" className={isMobile ? 'flex-1' : ''}>Visites 360°</TabsTrigger>
               </TabsList>
 
