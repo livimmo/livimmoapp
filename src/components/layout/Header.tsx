@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AddLiveDialog } from "@/components/AddLiveDialog";
 import { useState } from "react";
 import { ReservationForm } from "@/components/home/ReservationForm";
+import { AIChat } from "@/components/live/AIChat";
 import {
   Tooltip,
   TooltipContent,
@@ -24,6 +25,7 @@ export const Header = () => {
   const { isAuthenticated, user } = useAuth();
   const { toast } = useToast();
   const [showVisitDialog, setShowVisitDialog] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(false);
 
   const handleLogoClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
@@ -98,7 +100,7 @@ export const Header = () => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <DropdownMenu>
+                    <DropdownMenu open={showChatbot} onOpenChange={setShowChatbot}>
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="ghost"
@@ -111,26 +113,48 @@ export const Header = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent 
                         align="end" 
-                        className="w-[280px] p-4 bg-white border border-gray-200 shadow-lg rounded-lg"
+                        className="w-[350px] h-[500px] p-0 bg-white border border-gray-200 shadow-lg rounded-lg"
                       >
-                        <div className="space-y-4">
-                          <div className="text-sm font-medium text-gray-900">Support Client</div>
-                          <div className="space-y-2">
-                            <DropdownMenuItem onClick={() => handleCallClick('phone')} className="cursor-pointer hover:bg-gray-100">
-                              <span className="font-medium">Téléphone:</span>
-                              <span className="ml-2">+212 123 456 789</span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleCallClick('email')} className="cursor-pointer hover:bg-gray-100">
-                              <span className="font-medium">Email:</span>
-                              <span className="ml-2">support@livimmo.com</span>
-                            </DropdownMenuItem>
+                        {showChatbot ? (
+                          <AIChat 
+                            property={{
+                              id: 0,
+                              title: "Support Client",
+                              price: 0,
+                              location: "",
+                              surface: 0,
+                              rooms: 0,
+                              bathrooms: 0,
+                              agent: {
+                                id: 0,
+                                name: "Support",
+                                email: "support@livimmo.com",
+                                phone: "+212 123 456 789",
+                                role: "agent"
+                              }
+                            }}
+                            onClose={() => setShowChatbot(false)}
+                          />
+                        ) : (
+                          <div className="space-y-4 p-4">
+                            <div className="text-sm font-medium text-gray-900">Support Client</div>
+                            <div className="space-y-2">
+                              <DropdownMenuItem onClick={() => handleCallClick('phone')} className="cursor-pointer hover:bg-gray-100">
+                                <span className="font-medium">Téléphone:</span>
+                                <span className="ml-2">+212 123 456 789</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleCallClick('email')} className="cursor-pointer hover:bg-gray-100">
+                                <span className="font-medium">Email:</span>
+                                <span className="ml-2">support@livimmo.com</span>
+                              </DropdownMenuItem>
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              <div>Horaires d'ouverture:</div>
+                              <div>Lun-Ven: 8h00 - 18h00</div>
+                              <div>Sam: 9h00 - 13h00</div>
+                            </div>
                           </div>
-                          <div className="text-xs text-gray-500">
-                            <div>Horaires d'ouverture:</div>
-                            <div>Lun-Ven: 8h00 - 18h00</div>
-                            <div>Sam: 9h00 - 13h00</div>
-                          </div>
-                        </div>
+                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TooltipTrigger>
