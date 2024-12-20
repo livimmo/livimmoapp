@@ -5,6 +5,7 @@ import { type Property } from "@/types/property";
 import { useState } from "react";
 import { MapView } from "./MapView";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface SearchSectionProps {
   filteredProperties: Property[];
@@ -59,8 +60,16 @@ export const SearchSection = ({
           viewMode="grid"
         />
       ) : (
-        <div className="rounded-lg overflow-hidden h-[50vh] md:h-[600px] border border-gray-200">
-          <MapView properties={displayProperties} />
+        <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-2 gap-8'} h-[600px]`}>
+          <div className="rounded-lg overflow-hidden border border-gray-200 h-full">
+            <MapView properties={displayProperties} />
+          </div>
+          <ScrollArea className="h-full bg-white rounded-lg shadow p-4">
+            <PropertyList 
+              properties={displayProperties}
+              viewMode="list"
+            />
+          </ScrollArea>
         </div>
       )}
     </section>

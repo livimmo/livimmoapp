@@ -13,6 +13,8 @@ import { HeroBanner } from "@/components/home/HeroBanner";
 import { CurrentLivesSection } from "@/components/home/sections/CurrentLivesSection";
 import { ScheduledLivesSection } from "@/components/home/sections/ScheduledLivesSection";
 import { ReplayLivesSection } from "@/components/home/sections/ReplayLivesSection";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,6 +25,7 @@ const Index = () => {
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [currentLiveViewMode, setCurrentLiveViewMode] = useState<"list" | "map">("list");
+  const isMobile = useIsMobile();
 
   const suggestions = [
     "Casablanca", "Rabat", "Marrakech", "Tanger",
@@ -69,7 +72,7 @@ const Index = () => {
       <HomeHeader />
 
       <main className="container mx-auto px-4 pt-20 max-w-7xl">
-        <div className="max-w-[1400px] mx-auto">
+        <div className="max-w-[1400px] mx-auto space-y-12">
           <HeroBanner 
             properties={featuredProperties}
             currentLives={currentLives}
@@ -92,7 +95,7 @@ const Index = () => {
             setTransactionType={setTransactionType}
           />
 
-          <div className="my-12 space-y-12">
+          <div className="space-y-12">
             <CurrentLivesSection
               currentLives={currentLives}
               currentLiveProperties={currentLiveProperties}
@@ -105,9 +108,11 @@ const Index = () => {
             <ReplayLivesSection replayLives={replayLives} />
           </div>
 
-          <VirtualToursSection properties={featuredProperties} />
+          <ScrollArea className="h-full pb-8">
+            <VirtualToursSection properties={featuredProperties} />
+          </ScrollArea>
 
-          <div className="mt-12">
+          <div className="pb-12">
             <FeaturedSection properties={featuredProperties} />
           </div>
 
