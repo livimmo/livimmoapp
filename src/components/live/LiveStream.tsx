@@ -28,7 +28,7 @@ const mockProperty = {
   features: ["Piscine", "Jardin", "Garage"],
   images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9"],
   hasLive: true,
-  liveDate: new Date(),
+  liveDate: new Date().toISOString(), // Convert Date to string
   agent: {
     name: "Karim Benjelloun",
     image: "https://i.pravatar.cc/150?u=karim",
@@ -76,7 +76,7 @@ export const LiveStream = ({
   }, [isAuthenticated, navigate, toast]);
 
   const currentLive = liveStreams.find(live => live.id === currentLiveId);
-  const startTime = currentLive ? format(currentLive.date, "'En live depuis' HH'h'mm", { locale: fr }) : '';
+  const startTime = currentLive ? format(new Date(currentLive.date), "'En live depuis' HH'h'mm", { locale: fr }) : '';
 
   const handleLiveSelect = (liveId: number) => {
     navigate(`/live/${liveId}`);
@@ -124,13 +124,19 @@ export const LiveStream = ({
         <div className="absolute bottom-[64px] left-0 right-0 z-[51]">
           {isReplay ? (
             <ReplayCarousel
-              replays={liveStreams}
+              replays={liveStreams.map(live => ({
+                ...live,
+                date: new Date(live.date).toISOString() // Convert Date to string
+              }))}
               currentReplayId={currentLiveId}
               onReplaySelect={handleLiveSelect}
             />
           ) : (
             <LiveCarousel
-              lives={liveStreams}
+              lives={liveStreams.map(live => ({
+                ...live,
+                date: new Date(live.date).toISOString() // Convert Date to string
+              }))}
               currentLiveId={currentLiveId}
               onLiveSelect={handleLiveSelect}
             />
