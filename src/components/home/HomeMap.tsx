@@ -5,6 +5,8 @@ import { ReservationForm } from './ReservationForm';
 import { GoogleMapContainer } from './map/GoogleMapContainer';
 import { Property } from '@/types/property';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { LiveSlider } from '../live/LiveSlider';
+import { liveStreams } from '@/data/mockLives';
 
 interface HomeMapProps {
   properties: Property[];
@@ -16,6 +18,8 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   const [selectedLive, setSelectedLive] = useState<LiveStream | ScheduledLive | null>(null);
   const isMobile = useIsMobile();
 
+  const currentLives = liveStreams.filter(live => live.status === "live");
+
   const handleMarkerClick = (live: LiveStream | ScheduledLive | null) => {
     setSelectedLive(live);
     if (selectedLiveType === 'scheduled' && live) {
@@ -24,7 +28,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   };
 
   return (
-    <div className="space-y-4">
+    <section className="space-y-8">
       <div className="flex justify-end gap-2 flex-wrap">
         <Button
           variant={selectedLiveType === 'current' ? 'default' : 'outline'}
@@ -46,12 +50,23 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         </Button>
       </div>
 
-      <div className="w-full h-[70vh] md:h-[600px] rounded-lg overflow-hidden shadow-lg">
-        <GoogleMapContainer
-          properties={properties}
-          selectedLive={selectedLive}
-          onMarkerClick={handleMarkerClick}
-        />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Map Section */}
+        <div className="w-full h-[500px] rounded-lg overflow-hidden shadow-lg">
+          <GoogleMapContainer
+            properties={properties}
+            selectedLive={selectedLive}
+            onMarkerClick={handleMarkerClick}
+          />
+        </div>
+
+        {/* Live Slider Section */}
+        <div className="w-full h-[500px] bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-semibold mb-4">Lives en cours</h3>
+          <div className="h-[calc(100%-2rem)]">
+            <LiveSlider lives={currentLives} />
+          </div>
+        </div>
       </div>
 
       {selectedLive && showReservationDialog && (
@@ -63,6 +78,6 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
           }}
         />
       )}
-    </div>
+    </section>
   );
 };
