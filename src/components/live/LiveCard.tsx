@@ -1,14 +1,17 @@
 import { LiveEvent } from "@/types/live";
 import { Badge } from "../ui/badge";
 import { Link } from "react-router-dom";
-import { Calendar } from "lucide-react";
+import { Calendar, Play } from "lucide-react";
 import { Button } from "../ui/button";
+import { useState } from "react";
+import { ReservationForm } from "../home/ReservationForm";
 
 interface LiveCardProps {
   live: LiveEvent;
 }
 
 export const LiveCard = ({ live }: LiveCardProps) => {
+  const [showReservation, setShowReservation] = useState(false);
   const formattedDate = live.date
     ? new Date(live.date).toLocaleDateString("fr-FR", {
         weekday: "long",
@@ -55,17 +58,35 @@ export const LiveCard = ({ live }: LiveCardProps) => {
             />
             <span>{live.agent}</span>
           </div>
-          {live.status !== "live" && (
-            <Button 
-              className="w-full mt-4"
-              variant="outline"
-            >
-              <Calendar className="w-4 h-4 mr-2" />
-              Réserver
-            </Button>
-          )}
         </div>
       </Link>
+      {live.status !== "live" && (
+        <>
+          <Button 
+            className="w-full mt-4"
+            variant="outline"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowReservation(true);
+            }}
+          >
+            <Calendar className="w-4 h-4 mr-2" />
+            Réserver
+          </Button>
+
+          {showReservation && (
+            <ReservationForm
+              live={{
+                id: live.id,
+                title: live.title,
+                date: new Date(live.date),
+                availableSeats: live.availableSeats,
+              }}
+              onClose={() => setShowReservation(false)}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 };
