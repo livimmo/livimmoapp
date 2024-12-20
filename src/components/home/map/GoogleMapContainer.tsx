@@ -21,6 +21,20 @@ const defaultCenter = {
   lng: -7.0926,
 };
 
+const markerIcon = {
+  path: "M -1, -1 1, -1 1, 1 -1, 1",
+  fillColor: '#ea384c',
+  fillOpacity: 0.9,
+  strokeWeight: 2,
+  strokeColor: 'white',
+  scale: 10,
+};
+
+const hoverMarkerIcon = {
+  ...markerIcon,
+  scale: 12,
+};
+
 export const GoogleMapContainer = ({
   properties,
 }: GoogleMapContainerProps) => {
@@ -77,14 +91,7 @@ export const GoogleMapContainer = ({
             onClick={() => setSelectedProperty(property)}
             onMouseOver={() => setHoveredMarkerId(property.id)}
             onMouseOut={() => setHoveredMarkerId(null)}
-            icon={{
-              path: google.maps.SymbolPath.CIRCLE,
-              fillColor: '#ea384c',
-              fillOpacity: 0.9,
-              strokeWeight: 2,
-              strokeColor: 'white',
-              scale: hoveredMarkerId === property.id ? 12 : 10,
-            }}
+            icon={hoveredMarkerId === property.id ? hoverMarkerIcon : markerIcon}
           >
             {(selectedProperty?.id === property.id || hoveredMarkerId === property.id) && (
               <InfoWindow
