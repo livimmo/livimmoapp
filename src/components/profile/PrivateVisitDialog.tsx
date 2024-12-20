@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Property } from "@/types/property";
 import { mockProperties } from "@/data/mockProperties";
+import { VisitTypeSelector, VisitType } from "./visits/VisitTypeSelector";
 
 interface PrivateVisitDialogProps {
   open: boolean;
@@ -19,6 +19,7 @@ interface PrivateVisitDialogProps {
 export const PrivateVisitDialog = ({ open, onOpenChange }: PrivateVisitDialogProps) => {
   const { toast } = useToast();
   const [step, setStep] = useState(1);
+  const [visitType, setVisitType] = useState<VisitType | null>(null);
   const [selectedProperties, setSelectedProperties] = useState<number[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState("");
@@ -29,6 +30,11 @@ export const PrivateVisitDialog = ({ open, onOpenChange }: PrivateVisitDialogPro
     property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     property.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleVisitTypeSelect = (type: VisitType) => {
+    setVisitType(type);
+    setStep(2);
+  };
 
   const handlePropertyToggle = (propertyId: number) => {
     setSelectedProperties(prev => 
@@ -50,10 +56,11 @@ export const PrivateVisitDialog = ({ open, onOpenChange }: PrivateVisitDialogPro
 
     toast({
       title: "Demande envoyée !",
-      description: `Votre demande de visite pour ${selectedProperties.length} bien${selectedProperties.length > 1 ? 's' : ''} a été envoyée.`,
+      description: `Votre demande de visite ${visitType === 'remote' ? 'à distance' : 'physique'} pour ${selectedProperties.length} bien${selectedProperties.length > 1 ? 's' : ''} a été envoyée.`,
     });
     onOpenChange(false);
     setStep(1);
+    setVisitType(null);
     setSelectedProperties([]);
     setSelectedDate(undefined);
     setSelectedTime("");
@@ -63,6 +70,8 @@ export const PrivateVisitDialog = ({ open, onOpenChange }: PrivateVisitDialogPro
   const renderStep = () => {
     switch (step) {
       case 1:
+        return <VisitTypeSelector onSelect={handleVisitTypeSelect} />;
+      case 2:
         return (
           <div className="space-y-4">
             <Input
@@ -97,7 +106,7 @@ export const PrivateVisitDialog = ({ open, onOpenChange }: PrivateVisitDialogPro
             </div>
           </div>
         );
-      case 2:
+      case 3:
         return (
           <div className="space-y-4">
             <div className="space-y-2">
@@ -118,34 +127,16 @@ export const PrivateVisitDialog = ({ open, onOpenChange }: PrivateVisitDialogPro
                 onChange={(e) => setSelectedTime(e.target.value)}
               />
             </div>
-          </div>
-        );
-      case 3:
-        return (
-          <div className="space-y-4">
-            <div className="rounded-lg border p-4 space-y-2">
-              <h4 className="font-medium">Biens sélectionnés :</h4>
-              {selectedProperties.map(id => {
-                const property = mockProperties.find(p => p.id === id);
-                return (
-                  <div key={id} className="text-sm">
-                    • {property?.title}
-                  </div>
-                );
-              })}
-            </div>
-            <div className="space-y-2">
-              <Label>Date et heure :</Label>
-              <p className="text-sm">
-                {selectedDate && format(selectedDate, 'dd MMMM yyyy', { locale: fr })} à {selectedTime}
-              </p>
-            </div>
             <div className="space-y-2">
               <Label>Commentaire (optionnel)</Label>
               <Input
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                placeholder="Ajoutez un commentaire ou une demande spécifique..."
+                placeholder={
+                  visitType === 'remote' 
+                    ? "Précisez vos préférences pour la visite à distance..."
+                    : "Ajoutez des informations pour la visite physique..."
+                }
               />
             </div>
           </div>
@@ -158,9 +149,9 @@ export const PrivateVisitDialog = ({ open, onOpenChange }: PrivateVisitDialogPro
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>
-            {step === 1 && "Sélectionner les biens à visiter"}
-            {step === 2 && "Choisir la date et l'heure"}
-            {step === 3 && "Confirmer la visite"}
+            {step === 1 && "Choisir le type de visite"}
+            {step === 2 && "Sélectionner les biens à visiter"}
+            {step === 3 && `Planifier la visite ${visitType === 'remote' ? 'à distance' : 'physique'}`}
           </DialogTitle>
         </DialogHeader>
 
@@ -179,7 +170,7 @@ export const PrivateVisitDialog = ({ open, onOpenChange }: PrivateVisitDialogPro
             {step < 3 ? (
               <Button
                 onClick={() => setStep(step + 1)}
-                disabled={step === 1 && selectedProperties.length === 0}
+                disabled={step === 1 ? !visitType : selectedProperties.length === 0}
               >
                 Suivant
               </Button>
