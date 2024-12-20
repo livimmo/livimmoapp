@@ -1,6 +1,8 @@
 import { LiveEvent } from "@/types/live";
 import { Badge } from "../ui/badge";
 import { Link } from "react-router-dom";
+import { Calendar } from "lucide-react";
+import { Button } from "../ui/button";
 
 interface LiveCardProps {
   live: LiveEvent;
@@ -53,6 +55,15 @@ export const LiveCard = ({ live }: LiveCardProps) => {
             />
             <span>{live.agent}</span>
           </div>
+          {live.status !== "live" && (
+            <Button 
+              className="w-full mt-4"
+              variant="outline"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              Réserver
+            </Button>
+          )}
         </div>
       </Link>
     </div>
