@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import { type Property } from "@/types/property";
 import { MapMarkerContent } from "./MapMarkerContent";
 import { LiveStream, ScheduledLive } from "@/types/live";
@@ -12,6 +12,18 @@ const mapContainerStyle = {
 const defaultCenter = {
   lat: 31.7917,
   lng: -7.0926,
+};
+
+const mapOptions = {
+  streetViewControl: false,
+  mapTypeControl: false,
+  styles: [
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [{ visibility: "off" }]
+    }
+  ]
 };
 
 export interface GoogleMapContainerProps {
@@ -27,14 +39,16 @@ export const GoogleMapContainer = ({
 }: GoogleMapContainerProps) => {
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const onLoad = useCallback((map: google.maps.Map) => {
     setMapRef(map);
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (mapRef && properties.length > 0) {
-      const bounds = new google.maps.LatLngBounds();
+    if (mapRef && properties.length > 0 && isLoaded) {
+      const bounds = new window.google.maps.LatLngBounds();
       let hasValidCoordinates = false;
 
       properties.forEach((property) => {
@@ -58,7 +72,7 @@ export const GoogleMapContainer = ({
         mapRef.setZoom(6);
       }
     }
-  }, [mapRef, properties]);
+  }, [mapRef, properties, isLoaded]);
 
   const getMarkerIcon = useCallback((property: Property) => {
     if (property.isLiveNow) {
@@ -90,25 +104,18 @@ export const GoogleMapContainer = ({
   }, [onMarkerClick]);
 
   return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+    <LoadScript 
+      googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+      onLoad={() => setIsLoaded(true)}
+    >
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         center={defaultCenter}
         zoom={6}
         onLoad={onLoad}
-        options={{
-          streetViewControl: false,
-          mapTypeControl: false,
-          styles: [
-            {
-              featureType: "poi",
-              elementType: "labels",
-              stylers: [{ visibility: "off" }]
-            }
-          ]
-        }}
+        options={mapOptions}
       >
-        {properties.map((property) => (
+        {isLoaded && properties.map((property) => (
           property.coordinates && (
             <Marker
               key={property.id}
@@ -118,16 +125,24 @@ export const GoogleMapContainer = ({
               }}
               icon={getMarkerIcon(property)}
               onClick={() => handleMarkerClick(property)}
-              animation={google.maps.Animation.DROP}
+              animation={window.google.maps.Animation.DROP}
             />
           )
         ))}
         {selectedProperty && (
-          <MapMarkerContent
-            property={selectedProperty}
-            selectedLiveType={selectedProperty.isLiveNow ? 'current' : 'scheduled'}
-            onClose={() => setSelectedProperty(null)}
-          />
+          <InfoWindow
+            position={{
+              lat: selectedProperty.coordinates.lat,
+              lng: selectedProperty.coordinates.lng,
+            }}
+            onCloseClick={() => setSelectedProperty(null)}
+          >
+            <MapMarkerContent
+              property={selectedProperty}
+              selectedLiveType={selectedProperty.isLiveNow ? 'current' : 'scheduled'}
+              onClose={() => setSelectedProperty(null)}
+            />
+          </InfoWindow>
         )}
       </GoogleMap>
     </LoadScript>
