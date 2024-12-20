@@ -24,18 +24,6 @@ const defaultCenter = {
   lng: -7.0926
 };
 
-const createMarkerIcon = (type: 'current' | 'scheduled') => {
-  const color = type === 'current' ? '#ea384c' : '#0ea5e9';
-  return {
-    path: google.maps.SymbolPath.CIRCLE,
-    fillColor: color,
-    fillOpacity: 0.9,
-    strokeWeight: 2,
-    strokeColor: 'white',
-    scale: 10,
-  };
-};
-
 export const GoogleMapContainer = ({
   selectedLiveType,
   livesToShow,
@@ -49,6 +37,15 @@ export const GoogleMapContainer = ({
   const onLoad = (map: google.maps.Map) => {
     setMapRef(map);
   };
+
+  const createMarkerIcon = (type: 'current' | 'scheduled', isHovered: boolean) => ({
+    path: window.google.maps.SymbolPath.CIRCLE,
+    fillColor: type === 'current' ? '#ea384c' : '#0ea5e9',
+    fillOpacity: 0.9,
+    strokeWeight: 2,
+    strokeColor: 'white',
+    scale: isHovered ? 12 : 10,
+  });
 
   // Filtrer les propriétés avec des lives
   const liveProperties = properties.filter(property => property.hasLive);
@@ -91,7 +88,6 @@ export const GoogleMapContainer = ({
         {liveProperties.map(property => {
           const isHovered = hoveredMarkerId === property.id;
           const isSelected = selectedLive?.id === property.id;
-          const scale = isHovered || isSelected ? 12 : 10;
           const type = property.isLiveNow ? 'current' : 'scheduled';
 
           return (
@@ -104,11 +100,8 @@ export const GoogleMapContainer = ({
               onClick={() => onMarkerClick(property as any)}
               onMouseOver={() => setHoveredMarkerId(property.id)}
               onMouseOut={() => setHoveredMarkerId(null)}
-              icon={{
-                ...createMarkerIcon(type),
-                scale: scale,
-              }}
-              animation={isHovered ? google.maps.Animation.BOUNCE : undefined}
+              icon={createMarkerIcon(type, isHovered || isSelected)}
+              animation={isHovered ? window.google.maps.Animation.BOUNCE : undefined}
             >
               {(isSelected || isHovered) && (
                 <InfoWindow onCloseClick={() => onMarkerClick(null)}>

@@ -51,6 +51,34 @@ export const Header = () => {
     }
   };
 
+  const mockProperty: Property = {
+    id: 0,
+    title: "Support Client",
+    price: 0,
+    location: "",
+    type: "Support",
+    surface: 0,
+    rooms: 0,
+    bathrooms: 0,
+    description: "Service client Livimmo",
+    features: [],
+    images: ["/placeholder.svg"],
+    agent: {
+      id: 0,
+      name: "Support",
+      email: "support@livimmo.com",
+      phone: "+212 123 456 789",
+      image: "/placeholder.svg",
+      verified: true,
+      company: "Livimmo Support"
+    },
+    coordinates: {
+      lat: 0,
+      lng: 0
+    },
+    transactionType: "Vente"
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
       <div className="container mx-auto px-4 h-12 flex items-center justify-between">
@@ -117,24 +145,7 @@ export const Header = () => {
                       >
                         {showChatbot ? (
                           <AIChat 
-                            property={{
-                              id: 0,
-                              title: "Support Client",
-                              price: 0,
-                              location: "",
-                              surface: 0,
-                              rooms: 0,
-                              bathrooms: 0,
-                              agent: {
-                                id: 0,
-                                name: "Support",
-                                email: "support@livimmo.com",
-                                phone: "+212 123 456 789",
-                                image: "/placeholder.svg",
-                                verified: true,
-                                company: "Livimmo Support"
-                              }
-                            }}
+                            property={mockProperty}
                             onClose={() => setShowChatbot(false)}
                           />
                         ) : (
