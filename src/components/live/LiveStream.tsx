@@ -28,7 +28,7 @@ const mockProperty = {
   features: ["Piscine", "Jardin", "Garage"],
   images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9"],
   hasLive: true,
-  liveDate: new Date(),
+  liveDate: new Date().toISOString(), // Keep as ISO string
   agent: {
     name: "Karim Benjelloun",
     image: "https://i.pravatar.cc/150?u=karim",
@@ -90,16 +90,16 @@ export const LiveStream = ({
     return null;
   }
 
-  // Convert string dates to Date objects for LiveCarousel and ReplayCarousel
-  const livesWithDateObjects = liveStreams.map(live => ({
+  // Prepare lives data with serialized dates
+  const livesWithSerializedDates = liveStreams.map(live => ({
     ...live,
-    date: new Date(live.date)
+    date: new Date(live.date).toISOString()
   }));
 
-  // Convert property liveDate to Date object
-  const propertyWithDateObject = {
+  // Prepare property with serialized date
+  const propertyWithSerializedDate = {
     ...mockProperty,
-    liveDate: new Date()
+    liveDate: new Date().toISOString()
   };
 
   return (
@@ -136,13 +136,13 @@ export const LiveStream = ({
         <div className="absolute bottom-[64px] left-0 right-0 z-[51]">
           {isReplay ? (
             <ReplayCarousel
-              replays={livesWithDateObjects}
+              replays={livesWithSerializedDates}
               currentReplayId={currentLiveId}
               onReplaySelect={handleLiveSelect}
             />
           ) : (
             <LiveCarousel
-              lives={livesWithDateObjects}
+              lives={livesWithSerializedDates}
               currentLiveId={currentLiveId}
               onLiveSelect={handleLiveSelect}
             />
@@ -151,7 +151,7 @@ export const LiveStream = ({
 
         <div className="absolute bottom-0 left-0 right-0 z-[52]">
           <LiveInfo 
-            property={propertyWithDateObject}
+            property={propertyWithSerializedDate}
             onMakeOffer={() => {}}
             viewerCount={Math.floor(Math.random() * 1000)}
             onToggleChat={() => setShowAIChat(!showAIChat)}
@@ -162,7 +162,7 @@ export const LiveStream = ({
         {showAIChat && (
           <div className="absolute top-0 right-0 bottom-0 w-80 z-[100]">
             <AIChat 
-              property={propertyWithDateObject}
+              property={propertyWithSerializedDate}
               onClose={() => setShowAIChat(false)}
             />
           </div>
