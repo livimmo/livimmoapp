@@ -130,7 +130,9 @@ export const Header = () => {
                                 name: "Support",
                                 email: "support@livimmo.com",
                                 phone: "+212 123 456 789",
-                                role: "agent"
+                                image: "/placeholder.svg",
+                                verified: true,
+                                company: "Livimmo Support"
                               }
                             }}
                             onClose={() => setShowChatbot(false)}
