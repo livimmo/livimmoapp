@@ -116,21 +116,23 @@ const scheduledLives: LiveEvent[] = [
 export const LiveCalendar = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
-  const livesForSelectedDate = scheduledLives.filter(
-    live => live.date.toDateString() === selectedDate?.toDateString()
-  );
+  const livesForSelectedDate = scheduledLives.filter(live => {
+    const liveDate = live.date instanceof Date ? live.date : new Date(live.date);
+    return selectedDate && liveDate.toDateString() === selectedDate.toDateString();
+  });
 
   const hasLivesOnDate = (date: Date) => {
-    const count = scheduledLives.filter(
-      live => live.date.toDateString() === date.toDateString()
-    ).length;
-    return count > 0;
+    return scheduledLives.filter(live => {
+      const liveDate = live.date instanceof Date ? live.date : new Date(live.date);
+      return liveDate.toDateString() === date.toDateString();
+    }).length > 0;
   };
 
   const getLiveCount = (date: Date) => {
-    return scheduledLives.filter(
-      live => live.date.toDateString() === date.toDateString()
-    ).length;
+    return scheduledLives.filter(live => {
+      const liveDate = live.date instanceof Date ? live.date : new Date(live.date);
+      return liveDate.toDateString() === date.toDateString();
+    }).length;
   };
 
   return (

@@ -18,12 +18,22 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   const [selectedLive, setSelectedLive] = useState<LiveStream | ScheduledLive | null>(null);
   const isMobile = useIsMobile();
 
-  const currentLives = liveStreams.filter(live => live.status === "live");
+  const currentLives = liveStreams.filter(live => live.status === "live").map(live => ({
+    ...live,
+    date: live.date instanceof Date ? live.date : new Date(live.date)
+  }));
 
   const handleMarkerClick = (live: LiveStream | ScheduledLive | null) => {
-    setSelectedLive(live);
-    if (selectedLiveType === 'scheduled' && live) {
-      setShowReservationDialog(true);
+    if (live) {
+      setSelectedLive({
+        ...live,
+        date: live.date instanceof Date ? live.date : new Date(live.date)
+      });
+      if (selectedLiveType === 'scheduled') {
+        setShowReservationDialog(true);
+      }
+    } else {
+      setSelectedLive(null);
     }
   };
 
