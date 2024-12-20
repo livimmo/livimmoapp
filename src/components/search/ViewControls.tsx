@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Grid, LayoutList } from "lucide-react";
+import { Grid, Map } from "lucide-react";
 
 interface ViewControlsProps {
-  viewMode: "grid" | "list";
-  setViewMode: (mode: "grid" | "list") => void;
+  viewMode: "grid" | "map";
+  setViewMode: (mode: "grid" | "map") => void;
 }
 
 export const ViewControls = ({ viewMode, setViewMode }: ViewControlsProps) => {
@@ -20,10 +20,10 @@ export const ViewControls = ({ viewMode, setViewMode }: ViewControlsProps) => {
       <Button
         variant="outline"
         size="icon"
-        onClick={() => setViewMode("list")}
-        className={viewMode === "list" ? "bg-accent" : ""}
+        onClick={() => setViewMode("map")}
+        className={viewMode === "map" ? "bg-accent" : ""}
       >
-        <LayoutList className="h-4 w-4" />
+        <Map className="h-4 w-4" />
       </Button>
     </div>
   );

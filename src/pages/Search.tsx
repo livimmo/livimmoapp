@@ -4,6 +4,7 @@ import { ViewControls } from "@/components/search/ViewControls";
 import { SearchContent } from "@/components/search/SearchContent";
 import { type Property } from "@/types/property";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
+import { HomeMap } from "@/components/home/HomeMap";
 
 const placeholderImages = [
   "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
@@ -131,7 +132,7 @@ const mockProperties: Property[] = addCoordinatesToProperties([
   }
 ]);
 
-type ViewMode = "grid" | "list";
+type ViewMode = "grid" | "list" | "map";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -180,13 +181,14 @@ const Search = () => {
       />
 
       <div className="pt-[60px] px-3">
+        <HomeMap properties={filteredProperties} />
         <ViewControls 
-          viewMode={viewMode} 
-          setViewMode={(mode: ViewMode) => setViewMode(mode)} 
+          viewMode={viewMode as "grid" | "map"} 
+          setViewMode={(mode: "grid" | "map") => setViewMode(mode)} 
         />
         <SearchContent
           filteredProperties={filteredProperties}
-          viewMode={viewMode}
+          viewMode={viewMode as "grid" | "list"}
         />
       </div>
     </div>
