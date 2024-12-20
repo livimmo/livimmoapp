@@ -3,17 +3,36 @@ import { Badge } from "@/components/ui/badge";
 import { type Property } from "@/types/property";
 import { PropertyVirtualTourStats } from "./PropertyVirtualTourStats";
 import { PropertyFloorPlan } from "./PropertyFloorPlan";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import { PrivateVisitDialog } from "@/components/profile/PrivateVisitDialog";
+import { useState } from "react";
 
 interface PropertyDetailContentProps {
   property: Property;
 }
 
 export const PropertyDetailContent = ({ property }: PropertyDetailContentProps) => {
+  const { user } = useAuth();
+  const [showVisitDialog, setShowVisitDialog] = useState(false);
+  const isBuyerOrTenant = user?.role === 'buyer' || user?.role === 'tenant';
+
   return (
     <div className="lg:col-span-2 space-y-6">
-      <div className="flex items-center text-muted-foreground">
-        <MapPin className="h-4 w-4 mr-2" />
-        {property.location}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center text-muted-foreground">
+          <MapPin className="h-4 w-4 mr-2" />
+          {property.location}
+        </div>
+        {isBuyerOrTenant && (
+          <Button 
+            variant="outline"
+            onClick={() => setShowVisitDialog(true)}
+            className="ml-4"
+          >
+            Réserver une visite privée
+          </Button>
+        )}
       </div>
 
       <div className="grid grid-cols-3 gap-4 text-center">
@@ -53,6 +72,11 @@ export const PropertyDetailContent = ({ property }: PropertyDetailContentProps) 
           ))}
         </div>
       </div>
+
+      <PrivateVisitDialog 
+        open={showVisitDialog} 
+        onOpenChange={setShowVisitDialog} 
+      />
     </div>
   );
 };
