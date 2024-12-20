@@ -6,9 +6,7 @@ import { Eye, Calendar, Play, MapPin, User } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface LiveSlideProps {
@@ -16,33 +14,9 @@ interface LiveSlideProps {
   index: number;
 }
 
-const MAPBOX_TOKEN = 'pk.eyJ1IjoibGl2aW1tbyIsImEiOiJjbHRwOWZ2Z2gwMXRqMmlxeDVrOXV4ZWd2In0.tHvZ6BrWHPRfZYrLHT_bwg';
-
 export const LiveSlide = ({ live, index }: LiveSlideProps) => {
   const navigate = useNavigate();
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-
-  useEffect(() => {
-    if (!mapContainer.current || map.current) return;
-
-    mapboxgl.accessToken = MAPBOX_TOKEN;
-    
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-7.0926, 31.7917],
-      zoom: 5
-    });
-
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
-    new mapboxgl.Marker().setLngLat([-7.0926, 31.7917]).addTo(map.current);
-
-    return () => {
-      map.current?.remove();
-      map.current = null;
-    };
-  }, []);
+  const isMobile = useIsMobile();
 
   const handleAction = () => {
     if (live.status === "live") {
@@ -53,7 +27,7 @@ export const LiveSlide = ({ live, index }: LiveSlideProps) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+    <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-6 p-4`}>
       <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
         <CardContent className="p-0 relative">
           <div className="relative aspect-video overflow-hidden">
@@ -135,10 +109,11 @@ export const LiveSlide = ({ live, index }: LiveSlideProps) => {
         </CardFooter>
       </Card>
 
-      <div 
-        ref={mapContainer} 
-        className="h-full min-h-[300px] rounded-xl overflow-hidden shadow-lg border"
-      />
+      {!isMobile && (
+        <div className="h-full min-h-[300px] rounded-xl overflow-hidden shadow-lg border">
+          {/* La carte est masquée sur mobile */}
+        </div>
+      )}
     </div>
   );
 };
