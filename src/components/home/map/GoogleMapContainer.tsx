@@ -3,6 +3,8 @@ import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/ap
 import { Property } from "@/types/property";
 import { LiveEvent } from "@/types/live";
 import { PropertyCard } from "@/components/PropertyCard";
+import { Badge } from "@/components/ui/badge";
+import { Circle, Calendar } from "lucide-react";
 
 interface GoogleMapContainerProps {
   properties: Property[];
@@ -30,9 +32,9 @@ const markerIcon = {
   scale: 10,
 };
 
-const hoverMarkerIcon = {
+const scheduledMarkerIcon = {
   ...markerIcon,
-  scale: 12,
+  fillColor: '#3b82f6', // blue-500
 };
 
 export const GoogleMapContainer = ({
@@ -42,16 +44,14 @@ export const GoogleMapContainer = ({
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [hoveredMarkerId, setHoveredMarkerId] = useState<number | null>(null);
 
-  const liveProperties = properties.filter(property => property.hasLive && property.isLiveNow);
-
   const onLoad = useCallback((map: google.maps.Map) => {
     setMapRef(map);
   }, []);
 
   useEffect(() => {
-    if (mapRef && liveProperties.length > 0) {
+    if (mapRef && properties.length > 0) {
       const bounds = new google.maps.LatLngBounds();
-      liveProperties.forEach((property) => {
+      properties.forEach((property) => {
         bounds.extend({
           lat: property.coordinates.lat,
           lng: property.coordinates.lng,
@@ -59,7 +59,28 @@ export const GoogleMapContainer = ({
       });
       mapRef.fitBounds(bounds);
     }
-  }, [mapRef, liveProperties]);
+  }, [mapRef, properties]);
+
+  const MarkerBadge = ({ isLive }: { isLive: boolean }) => (
+    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+      <Badge 
+        variant={isLive ? "destructive" : "default"}
+        className={`${isLive ? 'bg-red-500' : 'bg-blue-500'} text-white flex items-center gap-1`}
+      >
+        {isLive ? (
+          <>
+            <Circle className="w-2 h-2 fill-white animate-pulse" />
+            En direct
+          </>
+        ) : (
+          <>
+            <Calendar className="w-3 h-3" />
+            Programmé
+          </>
+        )}
+      </Badge>
+    </div>
+  );
 
   return (
     <div className="w-full h-full min-h-[600px] rounded-lg overflow-hidden shadow-lg">
@@ -67,10 +88,10 @@ export const GoogleMapContainer = ({
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={
-            liveProperties.length > 0
+            properties.length > 0
               ? {
-                  lat: liveProperties[0].coordinates.lat,
-                  lng: liveProperties[0].coordinates.lng,
+                  lat: properties[0].coordinates.lat,
+                  lng: properties[0].coordinates.lng,
                 }
               : defaultCenter
           }
@@ -83,7 +104,7 @@ export const GoogleMapContainer = ({
             mapTypeControl: true,
           }}
         >
-          {liveProperties.map((property) => (
+          {properties.map((property) => (
             <Marker
               key={property.id}
               position={{
@@ -93,7 +114,7 @@ export const GoogleMapContainer = ({
               onClick={() => setSelectedProperty(property)}
               onMouseOver={() => setHoveredMarkerId(property.id)}
               onMouseOut={() => setHoveredMarkerId(null)}
-              icon={hoveredMarkerId === property.id ? hoverMarkerIcon : markerIcon}
+              icon={property.isLiveNow ? markerIcon : scheduledMarkerIcon}
             >
               {(selectedProperty?.id === property.id || hoveredMarkerId === property.id) && (
                 <InfoWindow
@@ -106,7 +127,8 @@ export const GoogleMapContainer = ({
                     setHoveredMarkerId(null);
                   }}
                 >
-                  <div className="max-w-sm">
+                  <div className="relative max-w-sm">
+                    <MarkerBadge isLive={property.isLiveNow} />
                     <PropertyCard {...property} />
                   </div>
                 </InfoWindow>
