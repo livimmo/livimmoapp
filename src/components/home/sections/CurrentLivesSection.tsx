@@ -1,5 +1,4 @@
 import { LiveEvent } from "@/types/live";
-import { Badge } from "@/components/ui/badge";
 import { LiveSlider } from "@/components/live/LiveSlider";
 import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
 import { GoogleMapContainer } from "@/components/home/map/GoogleMapContainer";
@@ -29,15 +28,10 @@ export const CurrentLivesSection = ({
             Découvrez les visites en direct disponibles
           </p>
         </div>
-        <div className="flex items-center gap-4">
-          <Badge variant="secondary" className="px-4 py-1.5">
-            {currentLives.length} live{currentLives.length > 1 ? 's' : ''} en cours
-          </Badge>
-          <PropertyViewToggle
-            view={currentLiveViewMode}
-            onViewChange={setCurrentLiveViewMode}
-          />
-        </div>
+        <PropertyViewToggle
+          view={currentLiveViewMode}
+          onViewChange={setCurrentLiveViewMode}
+        />
       </div>
       {currentLiveViewMode === "list" ? (
         <LiveSlider lives={currentLives} />
