@@ -2,17 +2,17 @@ import { useState } from "react";
 import { type Property } from "@/types/property";
 import { HomeHeader } from "@/components/home/HomeHeader";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
-import { LiveSection } from "@/components/home/LiveSection";
 import { FeaturedSection } from "@/components/home/FeaturedSection";
 import { CTASection } from "@/components/home/CTASection";
 import { VirtualToursSection } from "@/components/home/VirtualToursSection";
-import { SearchSection } from "@/components/home/SearchSection";
 import { featuredProperties } from "@/data/featuredProperties";
 import { liveStreams, scheduledLives } from "@/data/mockLives";
 import { HeroBanner } from "@/components/home/HeroBanner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CurrentLivesSection } from "@/components/home/sections/CurrentLivesSection";
 import { ScheduledLivesSection } from "@/components/home/sections/ScheduledLivesSection";
 import { ReplayLivesSection } from "@/components/home/sections/ReplayLivesSection";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,11 +29,9 @@ const Index = () => {
     "Agadir", "Fès", "Villa", "Appartement", "Bureau", "Riad",
   ];
 
-  // Filtrer les lives par statut
   const currentLives = liveStreams.filter(live => live.status === "live");
   const replayLives = liveStreams.filter(live => live.status === "replay");
 
-  // Convertir les lives en format Property pour la carte
   const currentLiveProperties: Property[] = currentLives.map(live => ({
     id: live.id,
     title: live.title,
@@ -64,11 +62,13 @@ const Index = () => {
     transactionType: "Vente",
   }));
 
+  const isMobile = useIsMobile();
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20">
       <HomeHeader />
 
-      <main className="container mx-auto pt-20">
+      <main className="container mx-auto pt-16">
         <div className="max-w-full mx-auto px-4">
           <HeroBanner 
             properties={featuredProperties}
@@ -76,43 +76,51 @@ const Index = () => {
             replays={replayLives}
           />
 
-          <PropertyFilters
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            propertyType={propertyType}
-            setPropertyType={setPropertyType}
-            priceRange={priceRange}
-            setPriceRange={setPriceRange}
-            surfaceRange={surfaceRange}
-            setSurfaceRange={setSurfaceRange}
-            viewType={viewType}
-            setViewType={setViewType}
-            suggestions={suggestions}
-            transactionType={transactionType}
-            setTransactionType={setTransactionType}
-          />
-
-          <SearchSection 
-            filteredProperties={filteredProperties} 
-            defaultProperties={featuredProperties}
-          />
-
-          <div className="my-12 space-y-12">
-            <CurrentLivesSection
-              currentLives={currentLives}
-              currentLiveProperties={currentLiveProperties}
-              currentLiveViewMode={currentLiveViewMode}
-              setCurrentLiveViewMode={setCurrentLiveViewMode}
+          <div className={`${isMobile ? 'sticky top-16 z-20 bg-background/95 backdrop-blur-sm py-2' : ''}`}>
+            <PropertyFilters
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              propertyType={propertyType}
+              setPropertyType={setPropertyType}
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+              surfaceRange={surfaceRange}
+              setSurfaceRange={setSurfaceRange}
+              viewType={viewType}
+              setViewType={setViewType}
+              suggestions={suggestions}
+              transactionType={transactionType}
+              setTransactionType={setTransactionType}
             />
-
-            <ScheduledLivesSection scheduledLives={scheduledLives} />
-
-            <ReplayLivesSection replayLives={replayLives} />
           </div>
 
-          <div className="grid grid-cols-1 gap-12 my-12">
-            <FeaturedSection properties={featuredProperties} />
-            <VirtualToursSection properties={featuredProperties} />
+          <div className="my-8">
+            <Tabs defaultValue="lives" className="w-full">
+              <TabsList className={`mb-8 ${isMobile ? 'w-full grid grid-cols-3' : ''}`}>
+                <TabsTrigger value="lives" className={isMobile ? 'flex-1' : ''}>Lives</TabsTrigger>
+                <TabsTrigger value="properties" className={isMobile ? 'flex-1' : ''}>À vendre</TabsTrigger>
+                <TabsTrigger value="virtual" className={isMobile ? 'flex-1' : ''}>Visites 360°</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="lives" className="space-y-8">
+                <CurrentLivesSection
+                  currentLives={currentLives}
+                  currentLiveProperties={currentLiveProperties}
+                  currentLiveViewMode={currentLiveViewMode}
+                  setCurrentLiveViewMode={setCurrentLiveViewMode}
+                />
+                <ScheduledLivesSection scheduledLives={scheduledLives} />
+                <ReplayLivesSection replayLives={replayLives} />
+              </TabsContent>
+
+              <TabsContent value="properties">
+                <FeaturedSection properties={featuredProperties} />
+              </TabsContent>
+
+              <TabsContent value="virtual">
+                <VirtualToursSection properties={featuredProperties} />
+              </TabsContent>
+            </Tabs>
           </div>
 
           <CTASection />

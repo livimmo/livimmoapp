@@ -4,12 +4,17 @@ import { Badge } from '@/components/ui/badge';
 import { Users, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-interface MapMarkerContentProps {
+export interface MapMarkerContentProps {
   property: Property;
   selectedLiveType: 'current' | 'scheduled';
+  onClose: () => void;
 }
 
-export const MapMarkerContent = ({ property, selectedLiveType }: MapMarkerContentProps) => {
+export const MapMarkerContent = ({ 
+  property, 
+  selectedLiveType,
+  onClose 
+}: MapMarkerContentProps) => {
   const navigate = useNavigate();
 
   const formattedDate = property.liveDate
@@ -60,11 +65,12 @@ export const MapMarkerContent = ({ property, selectedLiveType }: MapMarkerConten
         className="w-full mt-3"
         size="sm"
         variant={selectedLiveType === 'current' ? 'destructive' : 'default'}
-        onClick={() =>
+        onClick={() => {
           selectedLiveType === 'current'
             ? navigate(`/live/${property.id}`)
-            : navigate(`/live/schedule/${property.id}`)
-        }
+            : navigate(`/live/schedule/${property.id}`);
+          onClose();
+        }}
       >
         {selectedLiveType === 'current' ? 'Rejoindre le live' : 'Réserver ma place'}
       </Button>
