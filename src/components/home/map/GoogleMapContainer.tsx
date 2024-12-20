@@ -13,7 +13,7 @@ interface GoogleMapContainerProps {
 const containerStyle = {
   width: "100%",
   height: "100%",
-  minHeight: "400px",
+  minHeight: "600px",
 };
 
 const defaultCenter = {
@@ -42,7 +42,6 @@ export const GoogleMapContainer = ({
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [hoveredMarkerId, setHoveredMarkerId] = useState<number | null>(null);
 
-  // Filtrer pour ne garder que les propriétés avec des lives en cours
   const liveProperties = properties.filter(property => property.hasLive && property.isLiveNow);
 
   const onLoad = useCallback((map: google.maps.Map) => {
@@ -63,55 +62,59 @@ export const GoogleMapContainer = ({
   }, [mapRef, liveProperties]);
 
   return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={
-          liveProperties.length > 0
-            ? {
-                lat: liveProperties[0].coordinates.lat,
-                lng: liveProperties[0].coordinates.lng,
-              }
-            : defaultCenter
-        }
-        zoom={6}
-        onLoad={onLoad}
-        options={{
-          disableDefaultUI: false,
-          zoomControl: true,
-        }}
-      >
-        {liveProperties.map((property) => (
-          <Marker
-            key={property.id}
-            position={{
-              lat: property.coordinates.lat,
-              lng: property.coordinates.lng,
-            }}
-            onClick={() => setSelectedProperty(property)}
-            onMouseOver={() => setHoveredMarkerId(property.id)}
-            onMouseOut={() => setHoveredMarkerId(null)}
-            icon={hoveredMarkerId === property.id ? hoverMarkerIcon : markerIcon}
-          >
-            {(selectedProperty?.id === property.id || hoveredMarkerId === property.id) && (
-              <InfoWindow
-                position={{
-                  lat: property.coordinates.lat,
-                  lng: property.coordinates.lng,
-                }}
-                onCloseClick={() => {
-                  setSelectedProperty(null);
-                  setHoveredMarkerId(null);
-                }}
-              >
-                <div className="max-w-sm">
-                  <PropertyCard {...property} />
-                </div>
-              </InfoWindow>
-            )}
-          </Marker>
-        ))}
-      </GoogleMap>
-    </LoadScript>
+    <div className="w-full h-full min-h-[600px] rounded-lg overflow-hidden shadow-lg">
+      <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={
+            liveProperties.length > 0
+              ? {
+                  lat: liveProperties[0].coordinates.lat,
+                  lng: liveProperties[0].coordinates.lng,
+                }
+              : defaultCenter
+          }
+          zoom={6}
+          onLoad={onLoad}
+          options={{
+            disableDefaultUI: false,
+            zoomControl: true,
+            fullscreenControl: true,
+            mapTypeControl: true,
+          }}
+        >
+          {liveProperties.map((property) => (
+            <Marker
+              key={property.id}
+              position={{
+                lat: property.coordinates.lat,
+                lng: property.coordinates.lng,
+              }}
+              onClick={() => setSelectedProperty(property)}
+              onMouseOver={() => setHoveredMarkerId(property.id)}
+              onMouseOut={() => setHoveredMarkerId(null)}
+              icon={hoveredMarkerId === property.id ? hoverMarkerIcon : markerIcon}
+            >
+              {(selectedProperty?.id === property.id || hoveredMarkerId === property.id) && (
+                <InfoWindow
+                  position={{
+                    lat: property.coordinates.lat,
+                    lng: property.coordinates.lng,
+                  }}
+                  onCloseClick={() => {
+                    setSelectedProperty(null);
+                    setHoveredMarkerId(null);
+                  }}
+                >
+                  <div className="max-w-sm">
+                    <PropertyCard {...property} />
+                  </div>
+                </InfoWindow>
+              )}
+            </Marker>
+          ))}
+        </GoogleMap>
+      </LoadScript>
+    </div>
   );
 };

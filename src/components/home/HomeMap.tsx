@@ -46,7 +46,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         </Button>
       </div>
 
-      <div className="relative w-full rounded-lg overflow-hidden shadow-lg h-[50vh] md:h-[600px]">
+      <div className="w-full h-[70vh] md:h-[600px] rounded-lg overflow-hidden shadow-lg">
         <GoogleMapContainer
           properties={properties}
           selectedLive={selectedLive}
