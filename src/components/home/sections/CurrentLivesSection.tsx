@@ -1,6 +1,4 @@
 import { LiveEvent } from "@/types/live";
-import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
-import { GoogleMapContainer } from "@/components/home/map/GoogleMapContainer";
 import { Property } from "@/types/property";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
@@ -17,15 +15,11 @@ import { LiveSlide } from "@/components/live/LiveSlide";
 interface CurrentLivesSectionProps {
   currentLives: LiveEvent[];
   currentLiveProperties: Property[];
-  currentLiveViewMode: "list" | "map";
-  setCurrentLiveViewMode: (mode: "list" | "map") => void;
 }
 
 export const CurrentLivesSection = ({
   currentLives,
   currentLiveProperties,
-  currentLiveViewMode,
-  setCurrentLiveViewMode,
 }: CurrentLivesSectionProps) => {
   const isMobile = useIsMobile();
   const plugin = useRef(
@@ -43,39 +37,25 @@ export const CurrentLivesSection = ({
             Découvrez les visites en direct disponibles
           </p>
         </div>
-        <PropertyViewToggle
-          view={currentLiveViewMode}
-          onViewChange={setCurrentLiveViewMode}
-        />
       </div>
-      {currentLiveViewMode === "list" ? (
-        <Carousel
-          plugins={[plugin.current]}
-          className="w-full"
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-        >
-          <CarouselContent className="-ml-2 md:-ml-4">
-            {currentLives.map((live) => (
-              <CarouselItem key={live.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
-                <LiveSlide live={live} index={0} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="-left-12 h-12 w-12" />
-          <CarouselNext className="-right-12 h-12 w-12" />
-        </Carousel>
-      ) : (
-        <div className="h-[600px] rounded-lg overflow-hidden">
-          <GoogleMapContainer
-            properties={currentLiveProperties}
-            selectedLive={null}
-            onMarkerClick={() => {}}
-          />
-        </div>
-      )}
+      <Carousel
+        plugins={[plugin.current]}
+        className="w-full"
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+      >
+        <CarouselContent className="-ml-2 md:-ml-4">
+          {currentLives.map((live) => (
+            <CarouselItem key={live.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
+              <LiveSlide live={live} index={0} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="-left-12 h-12 w-12" />
+        <CarouselNext className="-right-12 h-12 w-12" />
+      </Carousel>
     </section>
   );
 };
