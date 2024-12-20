@@ -1,16 +1,15 @@
-import { LiveStream } from "@/types/live";
+import { LiveEvent } from "@/types/live";
+import { Badge } from "@/components/ui/badge";
+import { LiveSlider } from "@/components/live/LiveSlider";
+import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
+import { GoogleMapContainer } from "@/components/home/map/GoogleMapContainer";
 import { Property } from "@/types/property";
-import { Button } from "@/components/ui/button";
-import { List, Map } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { LiveCard } from "@/components/live/LiveCard";
 
 interface CurrentLivesSectionProps {
-  currentLives: LiveStream[];
+  currentLives: LiveEvent[];
   currentLiveProperties: Property[];
   currentLiveViewMode: "list" | "map";
   setCurrentLiveViewMode: (mode: "list" | "map") => void;
-  onPropertyHover?: (live: LiveStream | null) => void;
 }
 
 export const CurrentLivesSection = ({
@@ -18,49 +17,39 @@ export const CurrentLivesSection = ({
   currentLiveProperties,
   currentLiveViewMode,
   setCurrentLiveViewMode,
-  onPropertyHover
 }: CurrentLivesSectionProps) => {
-  const isMobile = useIsMobile();
-
-  if (currentLives.length === 0) {
-    return null;
-  }
+  if (currentLives.length === 0) return null;
 
   return (
-    <section>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Lives en cours</h2>
-        <div className="flex gap-2">
-          <Button
-            variant={currentLiveViewMode === "list" ? "default" : "outline"}
-            size={isMobile ? "sm" : "default"}
-            onClick={() => setCurrentLiveViewMode("list")}
-          >
-            <List className="h-4 w-4 mr-2" />
-            Liste
-          </Button>
-          <Button
-            variant={currentLiveViewMode === "map" ? "default" : "outline"}
-            size={isMobile ? "sm" : "default"}
-            onClick={() => setCurrentLiveViewMode("map")}
-          >
-            <Map className="h-4 w-4 mr-2" />
-            Carte
-          </Button>
+    <section className="bg-white rounded-xl p-6 shadow-lg">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h2 className="text-2xl font-bold">Lives en cours</h2>
+          <p className="text-muted-foreground mt-1">
+            Découvrez les visites en direct disponibles
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <Badge variant="secondary" className="px-4 py-1.5">
+            {currentLives.length} live{currentLives.length > 1 ? 's' : ''} en cours
+          </Badge>
+          <PropertyViewToggle
+            view={currentLiveViewMode}
+            onViewChange={setCurrentLiveViewMode}
+          />
         </div>
       </div>
-
-      <div className="grid grid-cols-1 gap-4">
-        {currentLives.map((live) => (
-          <div
-            key={live.id}
-            onMouseEnter={() => onPropertyHover?.(live)}
-            onMouseLeave={() => onPropertyHover?.(null)}
-          >
-            <LiveCard live={live} />
-          </div>
-        ))}
-      </div>
+      {currentLiveViewMode === "list" ? (
+        <LiveSlider lives={currentLives} />
+      ) : (
+        <div className="h-[600px] rounded-lg overflow-hidden">
+          <GoogleMapContainer
+            properties={currentLiveProperties}
+            selectedLive={null}
+            onMarkerClick={() => {}}
+          />
+        </div>
+      )}
     </section>
   );
 };

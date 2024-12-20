@@ -13,7 +13,6 @@ import { CurrentLivesSection } from "@/components/home/sections/CurrentLivesSect
 import { ScheduledLivesSection } from "@/components/home/sections/ScheduledLivesSection";
 import { ReplayLivesSection } from "@/components/home/sections/ReplayLivesSection";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { GoogleMapContainer } from "@/components/home/map/GoogleMapContainer";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,8 +23,6 @@ const Index = () => {
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [currentLiveViewMode, setCurrentLiveViewMode] = useState<"list" | "map">("list");
-  const [hoveredProperty, setHoveredProperty] = useState<Property | null>(null);
-  const [hoveredLive, setHoveredLive] = useState<any | null>(null);
 
   const suggestions = [
     "Casablanca", "Rabat", "Marrakech", "Tanger",
@@ -106,71 +103,22 @@ const Index = () => {
               </TabsList>
 
               <TabsContent value="lives" className="space-y-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-8">
-                    <CurrentLivesSection
-                      currentLives={currentLives}
-                      currentLiveProperties={currentLiveProperties}
-                      currentLiveViewMode={currentLiveViewMode}
-                      setCurrentLiveViewMode={setCurrentLiveViewMode}
-                      onPropertyHover={setHoveredLive}
-                    />
-                    <ScheduledLivesSection 
-                      scheduledLives={scheduledLives} 
-                      onPropertyHover={setHoveredLive}
-                    />
-                    <ReplayLivesSection 
-                      replayLives={replayLives}
-                      onPropertyHover={setHoveredLive}
-                    />
-                  </div>
-                  <div className="hidden lg:block h-[calc(100vh-200px)] sticky top-24">
-                    <div className="rounded-lg overflow-hidden h-full border border-gray-200">
-                      <GoogleMapContainer 
-                        properties={currentLiveProperties}
-                        selectedLive={hoveredLive}
-                      />
-                    </div>
-                  </div>
-                </div>
+                <CurrentLivesSection
+                  currentLives={currentLives}
+                  currentLiveProperties={currentLiveProperties}
+                  currentLiveViewMode={currentLiveViewMode}
+                  setCurrentLiveViewMode={setCurrentLiveViewMode}
+                />
+                <ScheduledLivesSection scheduledLives={scheduledLives} />
+                <ReplayLivesSection replayLives={replayLives} />
               </TabsContent>
 
               <TabsContent value="properties">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div>
-                    <FeaturedSection 
-                      properties={featuredProperties} 
-                      onPropertyHover={setHoveredProperty}
-                    />
-                  </div>
-                  <div className="hidden lg:block h-[calc(100vh-200px)] sticky top-24">
-                    <div className="rounded-lg overflow-hidden h-full border border-gray-200">
-                      <GoogleMapContainer 
-                        properties={featuredProperties}
-                        hoveredProperty={hoveredProperty}
-                      />
-                    </div>
-                  </div>
-                </div>
+                <FeaturedSection properties={featuredProperties} />
               </TabsContent>
 
               <TabsContent value="virtual">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div>
-                    <VirtualToursSection 
-                      properties={featuredProperties} 
-                      onPropertyHover={setHoveredProperty}
-                    />
-                  </div>
-                  <div className="hidden lg:block h-[calc(100vh-200px)] sticky top-24">
-                    <div className="rounded-lg overflow-hidden h-full border border-gray-200">
-                      <GoogleMapContainer 
-                        properties={featuredProperties.filter(p => p.virtualTour?.enabled)}
-                        hoveredProperty={hoveredProperty}
-                      />
-                    </div>
-                  </div>
-                </div>
+                <VirtualToursSection properties={featuredProperties} />
               </TabsContent>
             </Tabs>
           </div>
