@@ -79,7 +79,7 @@ export const LiveButton = ({
         variant={isReplay ? "secondary" : "default"}
         className={cn(
           "w-full transition-all duration-300 transform",
-          isLiveNow ? "bg-primary hover:bg-primary/90" : "",
+          isLiveNow ? "bg-[#ea384c] hover:bg-[#ea384c]/90" : "",
           isClicked && "scale-95 opacity-80",
           "hover:scale-105 active:scale-95",
           "animate-in fade-in-0 zoom-in-95",

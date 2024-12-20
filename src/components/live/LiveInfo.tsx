@@ -147,7 +147,7 @@ export const LiveInfo = ({
             )}
             <Button 
               className={cn(
-                "bg-[#33C3F0] hover:bg-[#33C3F0]/90 text-white whitespace-nowrap shadow-sm transition-all hover:shadow-md",
+                "bg-[#ea384c] hover:bg-[#ea384c]/90 text-white whitespace-nowrap shadow-sm transition-all hover:shadow-md",
                 isMobile && "w-full"
               )}
               onClick={() => setIsOfferDialogOpen(true)}
