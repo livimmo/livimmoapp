@@ -70,7 +70,7 @@ export const PropertyCard = ({
 
   return (
     <>
-      <div className={cn("bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300", className)}>
+      <div className={cn("bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow", className)}>
         <div className="relative">
           <PropertyImage
             id={id}
@@ -137,6 +137,7 @@ export const PropertyCard = ({
           remainingSeats={remainingSeats}
           isUserRegistered={isUserRegistered}
         />
+        
         <div 
           className="px-4 py-3 border-t flex items-center justify-between bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors"
           onClick={handleAgentClick}

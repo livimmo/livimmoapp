@@ -1,7 +1,7 @@
-import { CheckCircle2, Award } from "lucide-react";
+import { Award } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { type BadgeLevel, getBadgeForAgent } from "@/utils/agentBadge";
+import { getBadgeForAgent } from "@/utils/agentBadge";
 
 interface AgentCertificationBadgeProps {
   rating: number;
@@ -17,29 +17,18 @@ export const AgentCertificationBadge = ({
   const badge = getBadgeForAgent(rating);
   
   return (
-    <div className={cn("flex items-center gap-2", className)}>
-      <Badge 
-        variant="secondary" 
-        className="flex items-center gap-1 text-primary"
-      >
-        <CheckCircle2 className="h-3 w-3" />
-        <span className="text-xs">Agent Certifié</span>
-      </Badge>
-      
-      {showLevel && (
-        <Badge 
-          variant="outline" 
-          className={cn(
-            "flex items-center gap-1 border",
-            badge.color,
-            badge.textColor,
-            badge.borderColor
-          )}
-        >
-          <Award className="h-3 w-3" />
-          <span className="text-xs">{badge.level}</span>
-        </Badge>
+    <Badge 
+      variant="outline" 
+      className={cn(
+        "flex items-center gap-1.5",
+        badge.color,
+        badge.textColor,
+        badge.borderColor,
+        className
       )}
-    </div>
+    >
+      <Award className="w-3.5 h-3.5" />
+      <span>Agent Certifié{showLevel ? ` ${badge.level}` : ''}</span>
+    </Badge>
   );
 };
