@@ -10,6 +10,7 @@ import {
 import { HeroSlide } from "./HeroSlide";
 import { type Property } from "@/types/property";
 import { type LiveEvent } from "@/types/live";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface HeroBannerProps {
   properties: Property[];
@@ -21,6 +22,7 @@ export const HeroBanner = ({ properties, currentLives = [], replays = [] }: Hero
   const plugin = useRef(
     Autoplay({ delay: 5000, stopOnInteraction: true })
   );
+  const isMobile = useIsMobile();
 
   // Combine all content types into slides with proper typing
   const slides = [
@@ -76,6 +78,11 @@ export const HeroBanner = ({ properties, currentLives = [], replays = [] }: Hero
       }
     }))
   ];
+
+  // Si on est sur mobile, ne pas rendre le composant
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <div className="relative w-full max-w-7xl mx-auto mb-8">

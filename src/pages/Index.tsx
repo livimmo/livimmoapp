@@ -71,7 +71,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <HomeHeader />
 
-      <main className="container mx-auto px-4 pt-20 max-w-7xl">
+      <main className={`container mx-auto px-4 ${isMobile ? 'pt-4' : 'pt-20'} max-w-7xl`}>
         <div className="max-w-[1400px] mx-auto space-y-12">
           <HeroBanner 
             properties={featuredProperties}
