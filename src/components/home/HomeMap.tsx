@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Property } from '@/types/property';
@@ -27,6 +27,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   const [selectedLiveType, setSelectedLiveType] = useState<'current' | 'scheduled'>('current');
   const [showReservationDialog, setShowReservationDialog] = useState(false);
   const [selectedLive, setSelectedLive] = useState<LiveEvent | null>(null);
+  const [mapElement, setMapElement] = useState<HTMLElement | null>(null);
 
   const handlePopupClick = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -47,6 +48,15 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
     }
   };
 
+  useEffect(() => {
+    if (mapElement) {
+      mapElement.addEventListener('click', handlePopupClick);
+      return () => {
+        mapElement.removeEventListener('click', handlePopupClick);
+      };
+    }
+  }, [mapElement]);
+
   // Centre de la carte sur le Maroc
   const center: [number, number] = [31.7917, -7.0926];
   const livesToShow = selectedLiveType === 'current' ? liveStreams : scheduledLives;
@@ -64,12 +74,8 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
           zoom={5}
           className="w-full h-full"
           scrollWheelZoom={true}
-          whenCreated={(mapInstance) => {
-            const container = mapInstance.getContainer();
-            container.addEventListener('click', handlePopupClick);
-            return () => {
-              container.removeEventListener('click', handlePopupClick);
-            };
+          whenReady={({ target }) => {
+            setMapElement(target.getContainer());
           }}
         >
           <TileLayer
