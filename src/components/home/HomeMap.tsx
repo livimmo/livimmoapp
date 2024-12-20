@@ -44,11 +44,9 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
 
       <div className="relative w-full rounded-lg overflow-hidden shadow-lg">
         <GoogleMapContainer
-          selectedLiveType={selectedLiveType}
-          livesToShow={[]}
-          onMarkerClick={handleMarkerClick}
-          selectedLive={selectedLive}
           properties={properties}
+          selectedLive={selectedLive}
+          onMarkerClick={handleMarkerClick}
         />
       </div>
 
