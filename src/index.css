@@ -71,7 +71,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
   }
 }
 
@@ -82,12 +82,23 @@
 }
 
 .leaflet-popup-content {
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .leaflet-popup-content-wrapper {
-  padding: 0;
-  border-radius: 8px;
-  overflow: hidden;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .leaflet-popup {
+    margin-bottom: 50px !important;
+  }
+  
+  .leaflet-popup-content {
+    width: 280px !important;
+  }
 }
