@@ -132,7 +132,7 @@ const mockProperties: Property[] = addCoordinatesToProperties([
   }
 ]);
 
-type ViewMode = "grid" | "map";
+type ViewMode = "list" | "map" | "grid";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
