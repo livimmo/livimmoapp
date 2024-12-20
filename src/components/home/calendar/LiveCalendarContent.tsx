@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
 import { LiveCard } from "../../live/LiveCard";
 import type { LiveEvent } from "@/types/live";
 import { scheduledLives } from "@/data/mockLives";
 import { GoogleMapContainer } from "../map/GoogleMapContainer";
 import { Property } from "@/types/property";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface LiveCalendarContentProps {
   selectedDate: Date | undefined;
@@ -56,15 +56,23 @@ export const LiveCalendarContent = ({
   }));
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 h-[500px]">
       {viewMode === "list" ? (
-        <div className="grid grid-cols-1 gap-4">
-          {livesForSelectedDate.map((live) => (
-            <LiveCard key={live.id} live={live} />
-          ))}
-        </div>
+        <ScrollArea className="h-full pr-4">
+          <div className="grid grid-cols-1 gap-4">
+            {livesForSelectedDate.length > 0 ? (
+              livesForSelectedDate.map((live) => (
+                <LiveCard key={live.id} live={live} />
+              ))
+            ) : (
+              <div className="flex items-center justify-center h-full text-muted-foreground">
+                {selectedDate ? "Aucun live programmé pour cette date" : "Sélectionnez une date pour voir les lives programmés"}
+              </div>
+            )}
+          </div>
+        </ScrollArea>
       ) : (
-        <div className="h-[400px] rounded-lg overflow-hidden border border-gray-200">
+        <div className="h-full rounded-lg overflow-hidden border border-gray-200">
           <GoogleMapContainer properties={propertyLives} />
         </div>
       )}

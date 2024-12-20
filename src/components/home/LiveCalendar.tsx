@@ -36,7 +36,7 @@ export const LiveCalendar = ({ defaultDate }: { defaultDate: Date }) => {
           onSelect={setSelectedDate}
           className="rounded-md border"
           components={{
-            Day: ({ day, date, ...props }) => {
+            Day: ({ date, ...props }) => {
               const liveCount = getLiveCountForDate(date);
               return (
                 <div className="relative w-9 h-9">
