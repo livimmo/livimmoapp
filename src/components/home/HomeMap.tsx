@@ -74,8 +74,8 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
           zoom={5}
           className="w-full h-full"
           scrollWheelZoom={true}
-          whenReady={({ target }) => {
-            setMapElement(target.getContainer());
+          whenReady={(map) => {
+            setMapElement(map.target.getContainer());
           }}
         >
           <TileLayer
