@@ -1,5 +1,4 @@
 import { PropertyList } from "@/components/properties/PropertyList";
-import { PropertyMap } from "@/components/search/PropertyMap";
 import { Button } from "@/components/ui/button";
 import { List, Map } from "lucide-react";
 import { type Property } from "@/types/property";
@@ -60,7 +59,7 @@ export const SearchSection = ({
           viewMode="grid"
         />
       ) : (
-        <div className="rounded-lg overflow-hidden h-[50vh] md:h-[600px]">
+        <div className="rounded-lg overflow-hidden h-[50vh] md:h-[600px] border border-gray-200">
           <MapView properties={displayProperties} />
         </div>
       )}

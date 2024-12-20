@@ -1,13 +1,21 @@
 import { useState, useCallback } from 'react';
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Property } from '@/types/property';
 import { PropertyCard } from '../PropertyCard';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Correction des icônes Leaflet pour le marker
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 interface MapViewProps {
   properties: Property[];
 }
-
-const GOOGLE_MAPS_API_KEY = 'AIzaSyBpyx3FTnDuj6a2XEKerIKFt87wxQYRov8';
 
 export const MapView = ({ properties }: MapViewProps) => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
@@ -22,39 +30,33 @@ export const MapView = ({ properties }: MapViewProps) => {
     lng: -7.0926
   };
 
-  const mapStyles = {
-    width: '100%',
-    height: '600px'
-  };
-
   return (
-    <div className="w-full h-[600px] relative rounded-lg overflow-hidden">
-      <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
-        <GoogleMap
-          mapContainerStyle={mapStyles}
-          center={center}
-          zoom={5}
+    <MapContainer
+      center={[center.lat, center.lng]}
+      zoom={5}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {properties.map((property) => (
+        <Marker
+          key={property.id}
+          position={[property.coordinates.lat, property.coordinates.lng]}
+          eventHandlers={{
+            click: () => handleMarkerClick(property),
+          }}
         >
-          {properties.map((property) => (
-            <Marker
-              key={property.id}
-              position={{
-                lat: property.coordinates.lat,
-                lng: property.coordinates.lng
-              }}
-              onClick={() => handleMarkerClick(property)}
-            >
-              {selectedProperty?.id === property.id && (
-                <InfoWindow onCloseClick={() => setSelectedProperty(null)}>
-                  <div className="w-[300px]">
-                    <PropertyCard {...property} />
-                  </div>
-                </InfoWindow>
-              )}
-            </Marker>
-          ))}
-        </GoogleMap>
-      </LoadScript>
-    </div>
+          {selectedProperty?.id === property.id && (
+            <Popup>
+              <div className="w-[280px]">
+                <PropertyCard {...property} />
+              </div>
+            </Popup>
+          )}
+        </Marker>
+      ))}
+    </MapContainer>
   );
 };
