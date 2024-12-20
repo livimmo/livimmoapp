@@ -22,11 +22,11 @@ export const HeroBanner = ({ properties, currentLives = [], replays = [] }: Hero
     Autoplay({ delay: 5000, stopOnInteraction: true })
   );
 
-  // Combine all content types into slides
+  // Combine all content types into slides with proper typing
   const slides = [
-    // Advertisement slides
+    // Advertisement slides with explicit type
     {
-      type: "ad",
+      type: "ad" as const,
       content: {
         image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81",
         title: "Découvrez notre nouvelle application mobile",
@@ -36,7 +36,7 @@ export const HeroBanner = ({ properties, currentLives = [], replays = [] }: Hero
       }
     },
     {
-      type: "ad",
+      type: "ad" as const,
       content: {
         image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
         title: "Devenez agent Livimmo",
@@ -55,7 +55,9 @@ export const HeroBanner = ({ properties, currentLives = [], replays = [] }: Hero
         viewers: live.viewers,
         buttonText: "Rejoindre le live",
         link: `/live/${live.id}`,
-        agent: live.agent
+        agent: live.agent,
+        price: live.price,
+        location: live.location
       }
     })),
     // Replay slides
@@ -65,10 +67,12 @@ export const HeroBanner = ({ properties, currentLives = [], replays = [] }: Hero
         image: replay.thumbnail,
         title: replay.title,
         description: replay.description,
-        duration: "20 min", // À remplacer par la vraie durée
+        duration: "20 min",
         buttonText: "Voir le replay",
         link: `/replay/${replay.id}`,
-        agent: replay.agent
+        agent: replay.agent,
+        price: replay.price,
+        location: replay.location
       }
     }))
   ];
@@ -86,7 +90,7 @@ export const HeroBanner = ({ properties, currentLives = [], replays = [] }: Hero
         <CarouselContent>
           {slides.map((slide, index) => (
             <CarouselItem key={index} className="basis-full">
-              <HeroSlide {...slide} />
+              <HeroSlide type={slide.type} content={slide.content} />
             </CarouselItem>
           ))}
         </CarouselContent>
