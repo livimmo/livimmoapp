@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LiveEvent } from "@/types/live";
-import { Eye, Calendar, Play, MapPin, User } from "lucide-react";
+import { Eye, Calendar, Play, MapPin, User, Home } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
@@ -26,8 +26,11 @@ export const LiveSlide = ({ live, index }: LiveSlideProps) => {
     }
   };
 
+  // Extraire le quartier de la localisation
+  const [city, district] = live.location.split(", ");
+
   return (
-    <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-6 p-4`}>
+    <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-1'} gap-6 p-4`}>
       <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
         <CardContent className="p-0 relative">
           <div className="relative aspect-video overflow-hidden">
@@ -77,8 +80,15 @@ export const LiveSlide = ({ live, index }: LiveSlideProps) => {
               {format(new Date(live.date), "d MMMM à HH:mm", { locale: fr })}
             </div>
             <div className="flex items-center text-sm text-muted-foreground">
+              <Home className="w-4 h-4 mr-2 flex-shrink-0" />
+              {live.type}
+            </div>
+            <div className="flex items-center text-sm text-muted-foreground">
               <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
-              {live.location}
+              <div className="flex flex-col">
+                <span>{city}</span>
+                {district && <span className="text-xs text-muted-foreground">{district}</span>}
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <Avatar className="h-8 w-8">
@@ -108,12 +118,6 @@ export const LiveSlide = ({ live, index }: LiveSlideProps) => {
           </Button>
         </CardFooter>
       </Card>
-
-      {!isMobile && (
-        <div className="h-full min-h-[300px] rounded-xl overflow-hidden shadow-lg border">
-          {/* La carte est masquée sur mobile */}
-        </div>
-      )}
     </div>
   );
 };

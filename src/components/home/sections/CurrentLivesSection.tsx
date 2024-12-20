@@ -3,6 +3,7 @@ import { LiveSlider } from "@/components/live/LiveSlider";
 import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
 import { GoogleMapContainer } from "@/components/home/map/GoogleMapContainer";
 import { Property } from "@/types/property";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CurrentLivesSectionProps {
   currentLives: LiveEvent[];
@@ -17,6 +18,8 @@ export const CurrentLivesSection = ({
   currentLiveViewMode,
   setCurrentLiveViewMode,
 }: CurrentLivesSectionProps) => {
+  const isMobile = useIsMobile();
+
   if (currentLives.length === 0) return null;
 
   return (
