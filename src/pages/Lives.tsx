@@ -9,7 +9,7 @@ import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { scheduledLives, liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
-import { HeroBanner } from "@/components/home/HeroBanner";
+import { HomeMap } from "@/components/home/HomeMap";
 
 const Lives = () => {
   const [currentLivesViewMode, setCurrentLivesViewMode] = useState<"list" | "map">("list");
@@ -27,7 +27,7 @@ const Lives = () => {
   const replayLives = liveStreams.map(live => ({
     ...live,
     status: "replay" as const,
-    viewers: Math.floor(Math.random() * 1000)
+    viewers: Math.floor(Math.random() * 1000) // Random number of views
   }));
 
   // Filter function for both current and scheduled lives
@@ -40,6 +40,9 @@ const Lives = () => {
         ? parseInt(live.price.replace(/[^\d]/g, ""))
         : live.price;
       const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
+      
+      // Note: Surface filtering is commented out as it's not available in the mock data
+      // Would need to add surface data to implement this filter
       
       return matchesSearch && matchesType && matchesPrice;
     });
@@ -90,9 +93,6 @@ const Lives = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 mt-12 space-y-8">
-      {/* Hero Banner */}
-      <HeroBanner properties={currentLiveProperties} />
-
       <PropertyFilters
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -108,6 +108,8 @@ const Lives = () => {
         transactionType={transactionType}
         setTransactionType={setTransactionType}
       />
+
+      <HomeMap properties={currentLiveProperties} />
 
       {/* Section des lives en cours */}
       <section>

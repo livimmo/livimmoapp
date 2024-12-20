@@ -6,7 +6,6 @@ import { AgentRating } from "@/components/ratings/AgentRating";
 import { AgentStats } from "@/components/agents/AgentStats";
 import { UserCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-import { AgentCertificationBadge } from "../agent/AgentCertificationBadge";
 
 interface AgentCardProps {
   agent: Agent;
@@ -22,10 +21,10 @@ export const AgentCard = ({ agent }: AgentCardProps) => {
           className="w-full h-full object-cover"
         />
         {agent.verified && (
-          <AgentCertificationBadge 
-            rating={agent.rating} 
-            className="absolute top-2 right-2"
-          />
+          <Badge className="absolute top-2 right-2 bg-primary">
+            <UserCheck className="w-4 h-4 mr-1" />
+            Vérifié
+          </Badge>
         )}
       </div>
       <CardHeader className="space-y-2">

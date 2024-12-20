@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { LiveCard } from "@/components/live/LiveCard";
+import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
 import { ReplayCard } from "@/components/live/ReplayCard";
 import { liveStreams } from "@/data/mockLives";
 import { type Property } from "@/types/property";
-import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
-import { PropertyMapView } from "@/components/map/PropertyMapView";
-import { PropertyListView } from "@/components/properties/PropertyListView";
 
 export const LiveSection = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
@@ -45,27 +43,38 @@ export const LiveSection = () => {
     transactionType: Math.random() > 0.5 ? "Vente" : "Location",
   });
 
-  const properties = [...currentLives, ...replayLives].map(convertToProperty);
+  const currentProperties = currentLives.map(convertToProperty);
+  const replayProperties = replayLives.map(convertToProperty);
+
+  if (currentLives.length === 0 && replayLives.length === 0) {
+    return (
+      <section className="mb-8">
+        <h2 className="text-2xl font-bold mb-4">Tous nos lives</h2>
+        <p className="text-muted-foreground text-center py-8">
+          Aucun live disponible pour le moment
+        </p>
+      </section>
+    );
+  }
 
   return (
     <section className="mb-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Tous nos lives</h2>
-        <PropertyViewToggle view={viewMode} onViewChange={setViewMode} />
+      <div className="space-y-4">
+        {viewMode === "list" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {currentLives.map((live) => (
+              <LiveCard key={live.id} live={live} />
+            ))}
+            {replayLives.map((live) => (
+              <ReplayCard key={live.id} live={live} />
+            ))}
+          </div>
+        ) : (
+          <div className="h-[500px] rounded-lg overflow-hidden">
+            <LiveGoogleMap properties={[...currentProperties, ...replayProperties]} />
+          </div>
+        )}
       </div>
-
-      {viewMode === "list" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {currentLives.map((live) => (
-            <LiveCard key={live.id} live={live} />
-          ))}
-          {replayLives.map((live) => (
-            <ReplayCard key={live.id} live={live} />
-          ))}
-        </div>
-      ) : (
-        <PropertyMapView properties={properties} />
-      )}
     </section>
   );
 };

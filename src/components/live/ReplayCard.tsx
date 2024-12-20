@@ -10,8 +10,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 import { LiveStream } from "./LiveStream";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { FavoriteButton } from "../property/FavoriteButton";
-import { ShareButtons } from "../properties/ShareButtons";
 
 interface ReplayCardProps {
   live: LiveEvent;
@@ -20,19 +18,20 @@ interface ReplayCardProps {
 export const ReplayCard = ({ live }: ReplayCardProps) => {
   const navigate = useNavigate();
   const [showReplay, setShowReplay] = useState(false);
-  const [showShare, setShowShare] = useState(false);
 
   const handleWatch = () => {
     setShowReplay(true);
   };
 
   const handleAgentClick = () => {
+    // Get agent ID from the agent name
     const agentNumber = getAgentIdByName(live.agent);
     if (agentNumber) {
       navigate(`/agent/${agentNumber}`);
     }
   };
 
+  // Helper function to get agent ID from name
   const getAgentIdByName = (name: string): number => {
     const agentMap: Record<string, number> = {
       "Sarah Martin": 1,
@@ -44,6 +43,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
     return agentMap[name] || 1;
   };
 
+  // Générer aléatoirement le statut vérifié
   const isVerified = Math.random() > 0.5;
 
   return (
@@ -67,42 +67,9 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
               </Badge>
             )}
           </div>
-          <div className="absolute top-2 right-2 flex gap-2">
-            <FavoriteButton 
-              propertyId={live.id} 
-              title={live.title}
-              className="bg-white/80 backdrop-blur-sm hover:bg-white/90"
-            />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white/90"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setShowShare(!showShare);
-              }}
-            >
-              <Eye className="h-5 w-5" />
-            </Button>
-          </div>
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30">
             <Play className="w-12 h-12 text-white" />
           </div>
-          {showShare && (
-            <div className="absolute top-14 right-2 z-10">
-              <ShareButtons
-                property={{
-                  title: live.title,
-                  price: typeof live.price === 'string' 
-                    ? parseInt(live.price.replace(/[^\d]/g, ""))
-                    : live.price || 0,
-                  location: live.location || '',
-                }}
-                currentUrl={window.location.href}
-              />
-            </div>
-          )}
         </CardContent>
         <CardContent className="p-4">
           <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">
@@ -118,7 +85,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
           )}
         </CardContent>
         <CardFooter className="p-4 pt-0 flex flex-col gap-4">
-          <Button onClick={handleWatch} variant="default" className="w-full">
+          <Button onClick={handleWatch} variant="secondary" className="w-full group-hover:bg-primary group-hover:text-white transition-colors">
             <Play className="w-4 h-4 mr-2" />
             Visionner
           </Button>

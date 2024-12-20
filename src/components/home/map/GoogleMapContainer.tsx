@@ -1,12 +1,19 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
-import { type Property } from "@/types/property";
-import { MapMarkerContent } from "./MapMarkerContent";
-import { LiveStream, ScheduledLive } from "@/types/live";
+import { Property } from "@/types/property";
+import { LiveEvent } from "@/types/live";
+import { PropertyCard } from "@/components/PropertyCard";
 
-const mapContainerStyle = {
+interface GoogleMapContainerProps {
+  properties: Property[];
+  selectedLive?: LiveEvent | null;
+  onMarkerClick?: (live: LiveEvent | null) => void;
+}
+
+const containerStyle = {
   width: "100%",
   height: "100%",
+  minHeight: "400px",
 };
 
 const defaultCenter = {
@@ -14,155 +21,96 @@ const defaultCenter = {
   lng: -7.0926,
 };
 
-const mapOptions = {
-  streetViewControl: false,
-  mapTypeControl: false,
-  styles: [
-    {
-      featureType: "poi",
-      elementType: "labels",
-      stylers: [{ visibility: "off" }]
-    }
-  ]
+const markerIcon = {
+  path: "M -1, -1 1, -1 1, 1 -1, 1",
+  fillColor: '#ea384c',
+  fillOpacity: 0.9,
+  strokeWeight: 2,
+  strokeColor: 'white',
+  scale: 10,
 };
 
-export interface GoogleMapContainerProps {
-  properties: Property[];
-  selectedLive?: LiveStream | ScheduledLive | null;
-  onMarkerClick?: (live: LiveStream | ScheduledLive | null) => void;
-}
+const hoverMarkerIcon = {
+  ...markerIcon,
+  scale: 12,
+};
 
-export const GoogleMapContainer = ({ 
+export const GoogleMapContainer = ({
   properties,
-  selectedLive,
-  onMarkerClick 
 }: GoogleMapContainerProps) => {
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [hoveredMarkerId, setHoveredMarkerId] = useState<number | null>(null);
+
+  // Filtrer pour ne garder que les propriétés avec des lives en cours
+  const liveProperties = properties.filter(property => property.hasLive && property.isLiveNow);
 
   const onLoad = useCallback((map: google.maps.Map) => {
     setMapRef(map);
-    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (!mapRef || !properties.length || !isLoaded) return;
-
-    try {
-      const bounds = new window.google.maps.LatLngBounds();
-      let hasValidCoordinates = false;
-
-      properties.forEach((property) => {
-        if (property.coordinates) {
-          bounds.extend({
-            lat: property.coordinates.lat,
-            lng: property.coordinates.lng,
-          });
-          hasValidCoordinates = true;
-        }
+    if (mapRef && liveProperties.length > 0) {
+      const bounds = new google.maps.LatLngBounds();
+      liveProperties.forEach((property) => {
+        bounds.extend({
+          lat: property.coordinates.lat,
+          lng: property.coordinates.lng,
+        });
       });
-      
-      if (hasValidCoordinates) {
-        mapRef.fitBounds(bounds);
-        const currentZoom = mapRef.getZoom();
-        if (currentZoom && currentZoom > 15) {
-          mapRef.setZoom(15);
-        }
-      } else {
-        mapRef.setCenter(defaultCenter);
-        mapRef.setZoom(6);
-      }
-    } catch (error) {
-      console.error("Error adjusting map bounds:", error);
+      mapRef.fitBounds(bounds);
     }
-  }, [mapRef, properties, isLoaded]);
-
-  const getMarkerIcon = useCallback((property: Property) => {
-    if (property.isLiveNow) {
-      return "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
-    } else if (property.liveDate) {
-      return "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
-    }
-    return "http://maps.google.com/mapfiles/ms/icons/purple-dot.png";
-  }, []);
-
-  const handleMarkerClick = useCallback((property: Property) => {
-    const serializedProperty = {
-      ...property,
-      agent: {
-        ...property.agent,
-      },
-      coordinates: {
-        ...property.coordinates,
-      }
-    };
-    
-    setSelectedProperty(serializedProperty);
-    
-    if (onMarkerClick && property.isLiveNow) {
-      onMarkerClick({
-        id: property.id,
-        title: property.title,
-        thumbnail: property.images[0],
-        price: property.price.toString(),
-        location: property.location,
-        type: property.type,
-        date: new Date(),
-        status: "live",
-        agent: property.agent.name,
-        viewers: property.viewers || 0,
-        availableSeats: property.remainingSeats || 20,
-        description: property.description || "Aucune description disponible"
-      });
-    }
-  }, [onMarkerClick]);
-
-  if (!isLoaded) {
-    return <div className="w-full h-full flex items-center justify-center">Chargement de la carte...</div>;
-  }
+  }, [mapRef, liveProperties]);
 
   return (
-    <LoadScript 
-      googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-      onLoad={() => setIsLoaded(true)}
-    >
+    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
       <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={defaultCenter}
+        mapContainerStyle={containerStyle}
+        center={
+          liveProperties.length > 0
+            ? {
+                lat: liveProperties[0].coordinates.lat,
+                lng: liveProperties[0].coordinates.lng,
+              }
+            : defaultCenter
+        }
         zoom={6}
         onLoad={onLoad}
-        options={mapOptions}
+        options={{
+          disableDefaultUI: false,
+          zoomControl: true,
+        }}
       >
-        {properties.map((property) => (
-          property.coordinates && (
-            <Marker
-              key={property.id}
-              position={{
-                lat: property.coordinates.lat,
-                lng: property.coordinates.lng,
-              }}
-              icon={getMarkerIcon(property)}
-              onClick={() => handleMarkerClick(property)}
-              animation={window.google.maps.Animation.DROP}
-            />
-          )
-        ))}
-        {selectedProperty && selectedProperty.coordinates && (
-          <InfoWindow
+        {liveProperties.map((property) => (
+          <Marker
+            key={property.id}
             position={{
-              lat: selectedProperty.coordinates.lat,
-              lng: selectedProperty.coordinates.lng,
+              lat: property.coordinates.lat,
+              lng: property.coordinates.lng,
             }}
-            onCloseClick={() => setSelectedProperty(null)}
+            onClick={() => setSelectedProperty(property)}
+            onMouseOver={() => setHoveredMarkerId(property.id)}
+            onMouseOut={() => setHoveredMarkerId(null)}
+            icon={hoveredMarkerId === property.id ? hoverMarkerIcon : markerIcon}
           >
-            <MapMarkerContent
-              property={selectedProperty}
-              selectedLiveType={selectedProperty.isLiveNow ? 'current' : 'scheduled'}
-              onClose={() => setSelectedProperty(null)}
-            />
-          </InfoWindow>
-        )}
+            {(selectedProperty?.id === property.id || hoveredMarkerId === property.id) && (
+              <InfoWindow
+                position={{
+                  lat: property.coordinates.lat,
+                  lng: property.coordinates.lng,
+                }}
+                onCloseClick={() => {
+                  setSelectedProperty(null);
+                  setHoveredMarkerId(null);
+                }}
+              >
+                <div className="max-w-sm">
+                  <PropertyCard {...property} />
+                </div>
+              </InfoWindow>
+            )}
+          </Marker>
+        ))}
       </GoogleMap>
     </LoadScript>
   );

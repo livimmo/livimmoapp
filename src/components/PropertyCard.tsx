@@ -11,7 +11,6 @@ import { CheckCircle2, View } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import { AgentCertificationBadge } from "./agent/AgentCertificationBadge";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -149,7 +148,10 @@ export const PropertyCard = ({
             </div>
           </div>
           {agent.verified && (
-            <AgentCertificationBadge rating={4.8} showLevel={false} />
+            <div className="flex items-center gap-1 text-primary">
+              <CheckCircle2 className="h-4 w-4" />
+              <span className="text-xs">Vérifié</span>
+            </div>
           )}
         </div>
       </div>

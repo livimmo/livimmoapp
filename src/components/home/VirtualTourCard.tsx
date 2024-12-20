@@ -4,9 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Eye, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { FavoriteButton } from "../property/FavoriteButton";
-import { ShareButtons } from "../properties/ShareButtons";
-import { useState } from "react";
 
 interface VirtualTourCardProps {
   property: Property;
@@ -14,7 +11,6 @@ interface VirtualTourCardProps {
 
 export const VirtualTourCard = ({ property }: VirtualTourCardProps) => {
   const navigate = useNavigate();
-  const [showShare, setShowShare] = useState(false);
 
   return (
     <Card className="overflow-hidden group">
@@ -30,42 +26,9 @@ export const VirtualTourCard = ({ property }: VirtualTourCardProps) => {
             Lancer la visite
           </Button>
         </div>
-        <div className="absolute top-2 left-2">
-          <Badge className="bg-background/80 backdrop-blur-sm">
-            Visite virtuelle
-          </Badge>
-        </div>
-        <div className="absolute top-2 right-2 flex gap-2">
-          <FavoriteButton 
-            propertyId={property.id} 
-            title={property.title}
-            className="bg-white/80 backdrop-blur-sm hover:bg-white/90"
-          />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white/90"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setShowShare(!showShare);
-            }}
-          >
-            <Eye className="h-5 w-5" />
-          </Button>
-        </div>
-        {showShare && (
-          <div className="absolute top-14 right-2 z-10">
-            <ShareButtons
-              property={{
-                title: property.title,
-                price: property.price,
-                location: property.location,
-              }}
-              currentUrl={window.location.href}
-            />
-          </div>
-        )}
+        <Badge className="absolute top-2 left-2 bg-background/80 backdrop-blur-sm">
+          Visite virtuelle
+        </Badge>
       </div>
       <CardContent className="p-4">
         <h3 className="font-semibold text-lg mb-2">{property.title}</h3>
