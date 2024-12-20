@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { type Property } from "@/types/property";
 import { MapMarkerContent } from "./MapMarkerContent";
@@ -28,40 +28,65 @@ export const GoogleMapContainer = ({
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
-  const onLoad = (map: google.maps.Map) => {
+  const onLoad = useCallback((map: google.maps.Map) => {
     setMapRef(map);
-  };
+  }, []);
 
   useEffect(() => {
     if (mapRef && properties.length > 0) {
       const bounds = new google.maps.LatLngBounds();
-      
+      let hasValidCoordinates = false;
+
       properties.forEach((property) => {
         if (property.coordinates) {
           bounds.extend({
             lat: property.coordinates.lat,
             lng: property.coordinates.lng,
           });
+          hasValidCoordinates = true;
         }
       });
       
-      mapRef.fitBounds(bounds);
-
-      const currentZoom = mapRef.getZoom();
-      if (currentZoom && currentZoom > 15) {
-        mapRef.setZoom(15);
+      if (hasValidCoordinates) {
+        mapRef.fitBounds(bounds);
+        const currentZoom = mapRef.getZoom();
+        if (currentZoom && currentZoom > 15) {
+          mapRef.setZoom(15);
+        }
+      } else {
+        mapRef.setCenter(defaultCenter);
+        mapRef.setZoom(6);
       }
     }
   }, [mapRef, properties]);
 
-  const getMarkerIcon = (property: Property) => {
+  const getMarkerIcon = useCallback((property: Property) => {
     if (property.isLiveNow) {
       return "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
     } else if (property.liveDate) {
       return "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
     }
     return "http://maps.google.com/mapfiles/ms/icons/purple-dot.png";
-  };
+  }, []);
+
+  const handleMarkerClick = useCallback((property: Property) => {
+    setSelectedProperty(property);
+    if (onMarkerClick && property.isLiveNow) {
+      onMarkerClick({
+        id: property.id,
+        title: property.title,
+        thumbnail: property.images[0],
+        price: property.price.toString(),
+        location: property.location,
+        type: property.type,
+        date: new Date(),
+        status: "live",
+        agent: property.agent.name,
+        viewers: property.viewers || 0,
+        availableSeats: property.remainingSeats || 20,
+      });
+    }
+  }, [onMarkerClick]);
 
   return (
     <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
@@ -84,7 +109,7 @@ export const GoogleMapContainer = ({
                 lng: property.coordinates.lng,
               }}
               icon={getMarkerIcon(property)}
-              onClick={() => setSelectedProperty(property)}
+              onClick={() => handleMarkerClick(property)}
             />
           )
         ))}
