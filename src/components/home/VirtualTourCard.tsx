@@ -27,7 +27,7 @@ export const VirtualTourCard = ({ property }: VirtualTourCardProps) => {
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
           <Button variant="secondary" onClick={() => navigate(`/property/${property.id}`)}>
             <Eye className="w-4 h-4 mr-2" />
-            Lancer la visite
+            Visiter
           </Button>
         </div>
         <div className="absolute top-2 left-2">
