@@ -84,6 +84,7 @@ export const GoogleMapContainer = ({
         agent: property.agent.name,
         viewers: property.viewers || 0,
         availableSeats: property.remainingSeats || 20,
+        description: property.description || "Aucune description disponible"
       });
     }
   }, [onMarkerClick]);
@@ -98,6 +99,13 @@ export const GoogleMapContainer = ({
         options={{
           streetViewControl: false,
           mapTypeControl: false,
+          styles: [
+            {
+              featureType: "poi",
+              elementType: "labels",
+              stylers: [{ visibility: "off" }]
+            }
+          ]
         }}
       >
         {properties.map((property) => (
@@ -110,6 +118,7 @@ export const GoogleMapContainer = ({
               }}
               icon={getMarkerIcon(property)}
               onClick={() => handleMarkerClick(property)}
+              animation={google.maps.Animation.DROP}
             />
           )
         ))}
