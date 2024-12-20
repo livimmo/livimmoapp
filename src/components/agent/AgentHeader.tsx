@@ -2,6 +2,7 @@ import { Agent } from "@/types/agent";
 import { Badge } from "@/components/ui/badge";
 import { StarRating } from "@/components/ratings/StarRating";
 import { MapPin } from "lucide-react";
+import { AgentCertificationBadge } from "./AgentCertificationBadge";
 
 interface AgentHeaderProps {
   agent: Agent;
@@ -18,9 +19,7 @@ export const AgentHeader = ({ agent }: AgentHeaderProps) => {
         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
           <h1 className="text-2xl font-bold">{agent.name}</h1>
           {agent.verified && (
-            <Badge variant="secondary" className="w-fit">
-              Vérifié
-            </Badge>
+            <AgentCertificationBadge rating={agent.rating} />
           )}
         </div>
         
