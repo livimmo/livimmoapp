@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { type Property } from "@/types/property";
 import { MapMarkerContent } from "./MapMarkerContent";
+import { LiveStream, ScheduledLive } from "@/types/live";
 
 const mapContainerStyle = {
   width: "100%",
@@ -13,11 +14,17 @@ const defaultCenter = {
   lng: -7.0926,
 };
 
-interface GoogleMapContainerProps {
+export interface GoogleMapContainerProps {
   properties: Property[];
+  selectedLive?: LiveStream | ScheduledLive | null;
+  onMarkerClick?: (live: LiveStream | ScheduledLive | null) => void;
 }
 
-export const GoogleMapContainer = ({ properties }: GoogleMapContainerProps) => {
+export const GoogleMapContainer = ({ 
+  properties,
+  selectedLive,
+  onMarkerClick 
+}: GoogleMapContainerProps) => {
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
@@ -25,7 +32,6 @@ export const GoogleMapContainer = ({ properties }: GoogleMapContainerProps) => {
     setMapRef(map);
   };
 
-  // Ajuster dynamiquement les limites de la carte en fonction des propriétés
   useEffect(() => {
     if (mapRef && properties.length > 0) {
       const bounds = new google.maps.LatLngBounds();
@@ -41,7 +47,6 @@ export const GoogleMapContainer = ({ properties }: GoogleMapContainerProps) => {
       
       mapRef.fitBounds(bounds);
 
-      // Ajuster le zoom si nécessaire
       const currentZoom = mapRef.getZoom();
       if (currentZoom && currentZoom > 15) {
         mapRef.setZoom(15);
@@ -83,10 +88,10 @@ export const GoogleMapContainer = ({ properties }: GoogleMapContainerProps) => {
             />
           )
         ))}
-        {selectedProperty && selectedProperty.coordinates && (
+        {selectedProperty && (
           <MapMarkerContent
             property={selectedProperty}
-            position={selectedProperty.coordinates}
+            selectedLiveType={selectedProperty.isLiveNow ? 'current' : 'scheduled'}
             onClose={() => setSelectedProperty(null)}
           />
         )}
