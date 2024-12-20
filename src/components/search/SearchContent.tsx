@@ -3,7 +3,7 @@ import { type Property } from "@/types/property";
 
 interface SearchContentProps {
   filteredProperties: Property[];
-  viewMode: "grid" | "map";
+  viewMode: "grid" | "list";
 }
 
 export const SearchContent = ({ filteredProperties, viewMode }: SearchContentProps) => {
