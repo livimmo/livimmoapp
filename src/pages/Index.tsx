@@ -27,7 +27,7 @@ const Index = () => {
   const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
-  const [currentLiveViewMode, setCurrentLiveViewMode] = useState<"grid" | "map">("grid");
+  const [currentLiveViewMode, setCurrentLiveViewMode] = useState<"list" | "map">("list");
 
   const suggestions = [
     "Casablanca", "Rabat", "Marrakech", "Tanger",
@@ -50,7 +50,7 @@ const Index = () => {
   const replayLives = liveStreams.filter(live => live.status === "replay");
 
   // Convertir les lives en format Property pour la carte
-  const currentLiveProperties = currentLives.map(live => ({
+  const currentLiveProperties: Property[] = currentLives.map(live => ({
     id: live.id,
     title: live.title,
     price: parseInt(live.price.replace(/[^\d]/g, "")),
@@ -129,7 +129,7 @@ const Index = () => {
                     />
                   </div>
                 </div>
-                {currentLiveViewMode === "grid" ? (
+                {currentLiveViewMode === "list" ? (
                   <LiveSlider lives={currentLives} />
                 ) : (
                   <div className="h-[600px] rounded-lg overflow-hidden">
