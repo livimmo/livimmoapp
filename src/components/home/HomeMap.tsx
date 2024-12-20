@@ -4,9 +4,9 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Property } from '@/types/property';
 import { liveStreams, scheduledLives } from '@/data/mockLives';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '../ui/button';
 import { ReservationForm } from './ReservationForm';
-import { MapControls } from './MapControls';
-import { MapPopupContent } from './MapPopupContent';
+import { LiveBadge } from '../live/LiveBadge';
 
 interface HomeMapProps {
   properties: Property[];
@@ -23,6 +23,34 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   const [selectedLiveType, setSelectedLiveType] = useState<'current' | 'scheduled'>('current');
   const [showReservationDialog, setShowReservationDialog] = useState(false);
   const [selectedLive, setSelectedLive] = useState<any>(null);
+
+  // Initialize map
+  useEffect(() => {
+    if (!mapContainer.current || map.current) return;
+
+    mapboxgl.accessToken = MAPBOX_TOKEN;
+    
+    const newMap = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [-7.0926, 31.7917],
+      zoom: 5
+    });
+
+    newMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    map.current = newMap;
+
+    // Add click event listener to handle popup buttons
+    mapContainer.current.addEventListener('click', handlePopupClick);
+
+    return () => {
+      mapContainer.current?.removeEventListener('click', handlePopupClick);
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
+    };
+  }, []);
 
   const handlePopupClick = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -43,35 +71,11 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
     }
   };
 
-  useEffect(() => {
-    if (!mapContainer.current || map.current) return;
-
-    mapboxgl.accessToken = MAPBOX_TOKEN;
-    
-    const newMap = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-7.0926, 31.7917],
-      zoom: 5
-    });
-
-    newMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
-    map.current = newMap;
-
-    mapContainer.current.addEventListener('click', handlePopupClick);
-
-    return () => {
-      mapContainer.current?.removeEventListener('click', handlePopupClick);
-      if (map.current) {
-        map.current.remove();
-        map.current = null;
-      }
-    };
-  }, []);
-
+  // Handle markers and popups
   useEffect(() => {
     if (!map.current) return;
 
+    // Clear existing markers and popups
     markersRef.current.forEach(marker => marker.remove());
     markersRef.current = [];
     popupsRef.current.forEach(popup => popup.remove());
@@ -85,6 +89,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         lng: -7.0926 + Math.random() * 2 - 1,
       };
 
+      // Create marker element
       const el = document.createElement('div');
       el.className = `flex items-center justify-center w-6 h-6 ${
         selectedLiveType === 'current' 
@@ -93,6 +98,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
       } rounded-full border-2 border-white shadow-lg cursor-pointer`;
       el.innerHTML = selectedLiveType === 'current' ? '🔴' : '📅';
 
+      // Format date outside of template string
       const formattedDate = live.date ? new Date(live.date).toLocaleDateString('fr-FR', {
         weekday: 'long',
         day: 'numeric',
@@ -101,18 +107,48 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         minute: '2-digit'
       }) : '';
 
+      // Create popup content with horizontal layout
       const popupContent = document.createElement('div');
-      const popupReactContent = MapPopupContent({ 
-        live, 
-        selectedLiveType, 
-        formattedDate 
-      });
-      popupContent.innerHTML = popupReactContent.props.children.outerHTML;
+      popupContent.className = 'p-2 max-w-[300px]';
+      popupContent.innerHTML = `
+        <div class="flex gap-3">
+          <div class="relative flex-shrink-0" style="width: 80px;">
+            <img src="${live.thumbnail}" alt="${live.title}" class="w-[80px] h-[60px] object-cover rounded"/>
+            ${selectedLiveType === 'current' ? `
+              <div class="absolute top-1 left-1">
+                <div class="flex items-center justify-center w-4 h-4 bg-red-500 rounded-full animate-pulse">
+                  <span class="text-white text-[10px]">🔴</span>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+          <div class="flex-grow min-w-0">
+            <h3 class="font-medium text-sm mb-1 truncate">${live.title}</h3>
+            <p class="text-primary font-medium text-xs mb-1">${live.price}</p>
+            <p class="text-xs text-gray-600 mb-1 truncate">${live.location}</p>
+            <div class="text-xs text-gray-500 mb-2">
+              ${selectedLiveType === 'current' 
+                ? `${live.viewers} spectateurs`
+                : formattedDate
+              }
+            </div>
+          </div>
+        </div>
+        <button 
+          class="w-full mt-2 px-2 py-1 text-xs bg-primary text-white rounded hover:bg-primary/90 transition-colors"
+          data-live-id="${live.id}"
+          data-action="${selectedLiveType === 'current' ? 'join' : 'reserve'}"
+        >
+          ${selectedLiveType === 'current' ? 'Rejoindre le live' : 'Réserver ma place'}
+        </button>
+      `;
 
+      // Create popup
       const popup = new mapboxgl.Popup({ offset: 25 })
         .setDOMContent(popupContent);
       popupsRef.current.push(popup);
 
+      // Create marker
       const marker = new mapboxgl.Marker(el)
         .setLngLat([coordinates.lng, coordinates.lat])
         .setPopup(popup)
@@ -130,10 +166,24 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
 
   return (
     <div className="space-y-4">
-      <MapControls 
-        selectedLiveType={selectedLiveType} 
-        onTypeChange={setSelectedLiveType}
-      />
+      <div className="flex justify-end gap-2">
+        <Button
+          variant={selectedLiveType === 'current' ? 'default' : 'outline'}
+          onClick={() => setSelectedLiveType('current')}
+          className="relative"
+        >
+          Lives en cours
+          {selectedLiveType === 'current' && (
+            <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+          )}
+        </Button>
+        <Button
+          variant={selectedLiveType === 'scheduled' ? 'default' : 'outline'}
+          onClick={() => setSelectedLiveType('scheduled')}
+        >
+          Lives programmés
+        </Button>
+      </div>
 
       <div className="relative w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
         <div ref={mapContainer} className="w-full h-full" />
