@@ -4,7 +4,7 @@ import { Property } from "@/types/property";
 import { PropertyCard } from '../PropertyCard';
 import { ScrollArea } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
-import { Clock } from 'lucide-react';
+import { Circle } from 'lucide-react';
 import { Skeleton } from '../ui/skeleton';
 
 interface PropertyMapProps {
@@ -48,7 +48,7 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[700px]">
-      <div className="relative h-full">
+      <div className="relative h-[400px] lg:h-full rounded-lg overflow-hidden">
         {isLoading && (
           <Skeleton className="w-full h-full rounded-lg" />
         )}
@@ -61,6 +61,12 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
             mapContainerStyle={containerStyle}
             center={center}
             zoom={6}
+            options={{
+              disableDefaultUI: false,
+              zoomControl: true,
+              fullscreenControl: true,
+              mapTypeControl: true,
+            }}
           >
             {properties.map((property) => (
               <Marker
@@ -92,12 +98,11 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
                       <div className="absolute bottom-2 left-2">
                         {selectedProperty.isLiveNow ? (
                           <Badge variant="destructive" className="bg-red-500">
-                            <span className="mr-1 inline-block h-2 w-2 rounded-full bg-white animate-pulse" />
+                            <Circle className="w-2 h-2 fill-white mr-1 animate-pulse" />
                             Live en cours
                           </Badge>
                         ) : selectedProperty.liveDate && (
                           <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
-                            <Clock className="mr-1 h-4 w-4" />
                             {new Date(selectedProperty.liveDate).toLocaleDateString("fr-FR", {
                               day: "numeric",
                               month: "short",
@@ -124,7 +129,7 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
         </LoadScript>
       </div>
 
-      <ScrollArea className="h-full bg-white rounded-lg shadow-lg p-4">
+      <ScrollArea className="h-[300px] lg:h-full bg-white rounded-lg shadow-lg p-4">
         <div className="space-y-4">
           {properties.map((property) => (
             <div
