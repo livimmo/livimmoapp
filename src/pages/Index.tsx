@@ -28,6 +28,17 @@ const Index = () => {
     "Agadir", "Fès", "Villa", "Appartement", "Bureau", "Riad",
   ];
 
+  const filterPropertiesByViewType = (properties: Property[]) => {
+    switch (viewType) {
+      case "live":
+        return properties.filter(property => property.hasLive && !property.isReplay);
+      case "replay":
+        return properties.filter(property => property.hasLive && property.isReplay);
+      default:
+        return properties;
+    }
+  };
+
   const allLives = [...liveStreams, ...scheduledLives];
 
   // Sélectionner quelques replays pour le slider
