@@ -5,19 +5,14 @@ import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { LiveSection } from "@/components/home/LiveSection";
 import { FeaturedSection } from "@/components/home/FeaturedSection";
 import { CTASection } from "@/components/home/CTASection";
-import { LiveSlider } from "@/components/live/LiveSlider";
 import { VirtualToursSection } from "@/components/home/VirtualToursSection";
 import { SearchSection } from "@/components/home/SearchSection";
-import { HomeMap } from "@/components/home/HomeMap";
-import { addCoordinatesToProperties } from "@/data/mockProperties";
-import { liveStreams, scheduledLives } from "@/data/mockLives";
 import { featuredProperties } from "@/data/featuredProperties";
+import { liveStreams, scheduledLives } from "@/data/mockLives";
 import { HeroBanner } from "@/components/home/HeroBanner";
-import { LiveCalendar } from "@/components/home/LiveCalendar";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
-import { GoogleMapContainer } from "@/components/home/map/GoogleMapContainer";
+import { CurrentLivesSection } from "@/components/home/sections/CurrentLivesSection";
+import { ScheduledLivesSection } from "@/components/home/sections/ScheduledLivesSection";
+import { ReplayLivesSection } from "@/components/home/sections/ReplayLivesSection";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,17 +28,6 @@ const Index = () => {
     "Casablanca", "Rabat", "Marrakech", "Tanger",
     "Agadir", "Fès", "Villa", "Appartement", "Bureau", "Riad",
   ];
-
-  const filterPropertiesByViewType = (properties: Property[]) => {
-    switch (viewType) {
-      case "live":
-        return properties.filter(property => property.hasLive && !property.isReplay);
-      case "replay":
-        return properties.filter(property => property.hasLive && property.isReplay);
-      default:
-        return properties;
-    }
-  };
 
   // Filtrer les lives par statut
   const currentLives = liveStreams.filter(live => live.status === "live");
@@ -109,107 +93,26 @@ const Index = () => {
           />
 
           <div className="my-12 space-y-12">
-            {/* Section Lives en cours */}
-            {currentLives.length > 0 && (
-              <section className="bg-white rounded-xl p-6 shadow-lg">
-                <div className="flex items-center justify-between mb-8">
-                  <div>
-                    <h2 className="text-2xl font-bold">Lives en cours</h2>
-                    <p className="text-muted-foreground mt-1">
-                      Découvrez les visites en direct disponibles
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <Badge variant="secondary" className="px-4 py-1.5">
-                      {currentLives.length} live{currentLives.length > 1 ? 's' : ''} en cours
-                    </Badge>
-                    <PropertyViewToggle
-                      view={currentLiveViewMode}
-                      onViewChange={setCurrentLiveViewMode}
-                    />
-                  </div>
-                </div>
-                {currentLiveViewMode === "list" ? (
-                  <LiveSlider lives={currentLives} />
-                ) : (
-                  <div className="h-[600px] rounded-lg overflow-hidden">
-                    <GoogleMapContainer
-                      properties={currentLiveProperties}
-                      selectedLive={null}
-                      onMarkerClick={() => {}}
-                    />
-                  </div>
-                )}
-              </section>
-            )}
+            <CurrentLivesSection
+              currentLives={currentLives}
+              currentLiveProperties={currentLiveProperties}
+              currentLiveViewMode={currentLiveViewMode}
+              setCurrentLiveViewMode={setCurrentLiveViewMode}
+            />
 
-            {/* Section Lives programmés */}
-            <section className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="flex items-center justify-between mb-8">
-                <div>
-                  <h2 className="text-2xl font-bold">Lives programmés</h2>
-                  <p className="text-muted-foreground mt-1">
-                    Réservez votre place pour les prochaines visites
-                  </p>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2">
-                  <LiveCalendar defaultDate={new Date()} />
-                </div>
-                <div className="space-y-4">
-                  <Card className="p-4">
-                    <h3 className="font-semibold mb-4">Prochains lives</h3>
-                    {scheduledLives.slice(0, 3).map((live) => (
-                      <div 
-                        key={live.id} 
-                        className="p-3 hover:bg-accent rounded-lg transition-colors cursor-pointer group"
-                      >
-                        <p className="font-medium group-hover:text-primary transition-colors">
-                          {live.title}
-                        </p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {new Date(live.date).toLocaleDateString('fr-FR', {
-                            day: 'numeric',
-                            month: 'long',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </p>
-                      </div>
-                    ))}
-                  </Card>
-                </div>
-              </div>
-            </section>
+            <ScheduledLivesSection scheduledLives={scheduledLives} />
 
-            {/* Section Replays */}
-            {replayLives.length > 0 && (
-              <section className="bg-white rounded-xl p-6 shadow-lg">
-                <div className="flex items-center justify-between mb-8">
-                  <div>
-                    <h2 className="text-2xl font-bold">Replays disponibles</h2>
-                    <p className="text-muted-foreground mt-1">
-                      Revivez les visites passées
-                    </p>
-                  </div>
-                  <Badge variant="secondary" className="px-4 py-1.5">
-                    {replayLives.length} replay{replayLives.length > 1 ? 's' : ''} disponible{replayLives.length > 1 ? 's' : ''}
-                  </Badge>
-                </div>
-                <LiveSlider lives={replayLives} />
-              </section>
-            )}
+            <ReplayLivesSection replayLives={replayLives} />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 my-12">
             <VirtualToursSection properties={featuredProperties} />
-            <FeaturedSection properties={filterPropertiesByViewType(featuredProperties)} />
+            <FeaturedSection properties={featuredProperties} />
           </div>
 
           <SearchSection 
-            filteredProperties={filterPropertiesByViewType(filteredProperties)} 
-            defaultProperties={filterPropertiesByViewType(featuredProperties)}
+            filteredProperties={filteredProperties} 
+            defaultProperties={featuredProperties}
           />
 
           <CTASection />
