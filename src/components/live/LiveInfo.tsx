@@ -56,10 +56,10 @@ export const LiveInfo = ({
       "fixed bottom-0 left-0 right-0",
       isMobile ? 'max-h-[40vh]' : 'max-h-[20vh]',
       "z-50",
-      isReplay ? 'bg-[#33C3F0]/10' : 'bg-[#ea384c]/10',
+      "bg-white", // Changed to white background
       isReplay ? 'border-[#33C3F0]/20' : 'border-[#ea384c]/20',
       "border-t",
-      "hover:bg-background/90 hover:shadow-xl",
+      "hover:bg-white hover:shadow-xl", // Changed hover state to stay white
       isFullscreen && "z-[9999]"
     )}>
       <div className="w-full max-w-5xl mx-auto">
