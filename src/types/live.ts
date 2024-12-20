@@ -1,4 +1,4 @@
-export interface LiveEvent {
+export interface LiveStream {
   id: number;
   title: string;
   description: string;
@@ -21,6 +21,10 @@ export interface LiveStreamProps {
   otherLives: LiveEvent[];
   onLiveChange: (liveId: number) => void;
   isReplay?: boolean;
+}
+
+export interface LiveEvent extends LiveStream {
+  // Additional properties specific to LiveEvent if needed
 }
 
 export const replayTimestamps = [
