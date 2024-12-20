@@ -15,7 +15,7 @@ import { featuredProperties } from "@/data/featuredProperties";
 import { HeroBanner } from "@/components/home/HeroBanner";
 import { LiveCalendar } from "@/components/home/LiveCalendar";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -105,7 +105,7 @@ const Index = () => {
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2">
-                  <LiveCalendar />
+                  <LiveCalendar defaultDate={new Date()} />
                 </div>
                 <div className="space-y-4">
                   <Card className="p-4">

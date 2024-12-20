@@ -113,8 +113,12 @@ const scheduledLives: LiveEvent[] = [
   }
 ];
 
-export const LiveCalendar = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+interface LiveCalendarProps {
+  defaultDate?: Date;
+}
+
+export const LiveCalendar = ({ defaultDate = new Date() }: LiveCalendarProps) => {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(defaultDate);
 
   const livesForSelectedDate = scheduledLives.filter(live => {
     const liveDate = live.date instanceof Date ? live.date : new Date(live.date);
