@@ -1,32 +1,39 @@
 import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
-import { Card } from "@/components/ui/card";
-import { LiveCard } from "../live/LiveCard";
-import type { LiveEvent } from "@/types/live";
-import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
-import { GoogleMapContainer } from "./map/GoogleMapContainer";
-import { LiveCalendarContent } from "./calendar/LiveCalendarContent";
 import { LiveCalendarHeader } from "./calendar/LiveCalendarHeader";
+import { LiveCalendarContent } from "./calendar/LiveCalendarContent";
+import { scheduledLives } from "@/data/mockLives";
 
-interface LiveCalendarProps {
-  defaultDate?: Date;
-}
-
-export const LiveCalendar = ({ defaultDate = new Date() }: LiveCalendarProps) => {
+export const LiveCalendar = ({ defaultDate }: { defaultDate: Date }) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(defaultDate);
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
 
+  const livesForSelectedDate = scheduledLives.filter(live => {
+    const liveDate = live.date instanceof Date ? live.date : new Date(live.date);
+    return selectedDate && liveDate.toDateString() === selectedDate.toDateString();
+  });
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <Card className="p-4">
-        <LiveCalendarHeader />
-        <LiveCalendarContent 
+    <div className="space-y-4">
+      <LiveCalendarHeader 
+        viewMode={viewMode} 
+        onViewChange={setViewMode}
+        liveCount={livesForSelectedDate.length}
+      />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <Calendar
+          mode="single"
+          selected={selectedDate}
+          onSelect={setSelectedDate}
+          className="rounded-md border"
+        />
+        <LiveCalendarContent
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           viewMode={viewMode}
           setViewMode={setViewMode}
         />
-      </Card>
+      </div>
     </div>
   );
 };

@@ -33,6 +33,7 @@ export const GoogleMapContainer = ({
     setMapRef(map);
   }, []);
 
+  // Ajuster dynamiquement les limites de la carte en fonction des propriétés
   useEffect(() => {
     if (mapRef && properties.length > 0) {
       const bounds = new google.maps.LatLngBounds();
@@ -43,6 +44,12 @@ export const GoogleMapContainer = ({
         });
       });
       mapRef.fitBounds(bounds);
+
+      // Ajuster le zoom si nécessaire
+      const zoom = mapRef.getZoom();
+      if (zoom && zoom > 15) {
+        mapRef.setZoom(15);
+      }
     }
   }, [mapRef, properties]);
 
