@@ -6,6 +6,14 @@ import { useState } from "react";
 import { MapView } from "./MapView";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { PropertyCard } from "../PropertyCard";
 
 interface SearchSectionProps {
   filteredProperties: Property[];
@@ -55,10 +63,30 @@ export const SearchSection = ({
       </div>
       
       {viewMode === "list" ? (
-        <PropertyList 
-          properties={displayProperties}
-          viewMode="grid"
-        />
+        <div className="relative">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+              skipSnaps: false,
+              slidesToScroll: isMobile ? 1 : 3,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {displayProperties.map((property) => (
+                <CarouselItem 
+                  key={property.id} 
+                  className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
+                >
+                  <PropertyCard {...property} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex -left-12" />
+            <CarouselNext className="hidden md:flex -right-12" />
+          </Carousel>
+        </div>
       ) : (
         <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-2 gap-8'} h-[600px]`}>
           <div className="rounded-lg overflow-hidden border border-gray-200 h-full">
