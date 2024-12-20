@@ -12,6 +12,7 @@ import { HomeMap } from "@/components/home/HomeMap";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
 import { liveStreams, scheduledLives } from "@/data/mockLives";
 import { featuredProperties } from "@/data/featuredProperties";
+import { HeroBanner } from "@/components/home/HeroBanner";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,22 +30,23 @@ const Index = () => {
 
   const allLives = [...liveStreams, ...scheduledLives];
 
-  const filterPropertiesByViewType = (properties: Property[]) => {
-    switch (viewType) {
-      case "live":
-        return properties.filter(p => p.hasLive && !p.isReplay);
-      case "replay":
-        return properties.filter(p => p.hasLive && p.isReplay);
-      default:
-        return properties;
-    }
-  };
+  // Sélectionner quelques replays pour le slider
+  const replayLives = liveStreams.slice(0, 3).map(live => ({
+    ...live,
+    status: "replay" as const
+  }));
 
   return (
     <div className="min-h-screen bg-background">
       <HomeHeader />
 
       <main className="container mx-auto px-4 pt-20">
+        <HeroBanner 
+          properties={featuredProperties}
+          currentLives={liveStreams.slice(0, 2)}
+          replays={replayLives}
+        />
+
         <PropertyFilters
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -61,13 +63,6 @@ const Index = () => {
           setTransactionType={setTransactionType}
         />
 
-        <HomeMap properties={featuredProperties} />
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">Lives et Replays</h2>
-          <LiveSlider lives={allLives} />
-        </section>
-        
         <VirtualToursSection properties={featuredProperties} />
         
         <FeaturedSection properties={filterPropertiesByViewType(featuredProperties)} />
