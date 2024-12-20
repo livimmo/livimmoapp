@@ -14,7 +14,7 @@ export const LiveBadge = ({ count, className }: LiveBadgeProps) => {
       {count > 0 && (
         <Badge 
           variant="destructive" 
-          className="absolute -top-2 -right-2 h-4 w-4 p-0 flex items-center justify-center text-[10px]"
+          className="absolute -top-3 -right-3 h-5 w-5 p-0 flex items-center justify-center text-xs font-medium rounded-full"
         >
           {count}
         </Badge>
