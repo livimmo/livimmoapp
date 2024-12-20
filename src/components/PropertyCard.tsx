@@ -63,14 +63,16 @@ export const PropertyCard = ({
     navigate(`/${action}`);
   };
 
-  // Générer aléatoirement le statut vérifié si non défini
-  if (agent.verified === undefined) {
-    agent.verified = Math.random() > 0.5;
-  }
+  // Extraire le quartier de la localisation
+  const [city, district] = location.split(", ");
 
   return (
     <>
-      <div className={cn("bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow", className)}>
+      <div className={cn(
+        "group bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300",
+        "transform hover:-translate-y-1",
+        className
+      )}>
         <div className="relative">
           <PropertyImage
             id={id}
@@ -149,7 +151,15 @@ export const PropertyCard = ({
             </Avatar>
             <div className="flex flex-col">
               <span className="text-sm font-medium text-gray-900">{agent.name}</span>
-              <span className="text-xs text-gray-500">{agent.company || 'Agent indépendant'}</span>
+              <div className="flex items-center gap-1">
+                <span className="text-xs text-gray-500">{agent.company || 'Agent indépendant'}</span>
+                {district && (
+                  <>
+                    <span className="text-xs text-gray-400">•</span>
+                    <span className="text-xs text-gray-500">{district}</span>
+                  </>
+                )}
+              </div>
             </div>
           </div>
           {agent.verified && (
