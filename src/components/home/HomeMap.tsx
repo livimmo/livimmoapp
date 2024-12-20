@@ -6,6 +6,7 @@ import { liveStreams, scheduledLives } from '@/data/mockLives';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { ReservationForm } from './ReservationForm';
+import { LiveBadge } from '../live/LiveBadge';
 
 interface HomeMapProps {
   properties: Property[];
@@ -112,6 +113,13 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
       popupContent.innerHTML = `
         <div class="mb-2 relative">
           <img src="${live.thumbnail}" alt="${live.title}" class="w-full h-[100px] object-cover rounded"/>
+          ${selectedLiveType === 'current' ? `
+            <div class="absolute top-1 left-1">
+              <div class="flex items-center justify-center w-6 h-6 bg-red-500 rounded-full animate-pulse">
+                <span class="text-white text-xs">🔴</span>
+              </div>
+            </div>
+          ` : ''}
           <div class="absolute bottom-1 left-1">
             <span class="px-2 py-0.5 rounded-full text-xs font-medium ${
               selectedLiveType === 'current'
