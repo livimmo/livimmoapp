@@ -39,13 +39,36 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
     newMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
     map.current = newMap;
 
+    // Add click event listener to handle popup buttons
+    mapContainer.current.addEventListener('click', handlePopupClick);
+
     return () => {
+      mapContainer.current?.removeEventListener('click', handlePopupClick);
       if (map.current) {
         map.current.remove();
         map.current = null;
       }
     };
   }, []);
+
+  const handlePopupClick = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.tagName === 'BUTTON') {
+      const liveId = target.getAttribute('data-live-id');
+      const action = target.getAttribute('data-action');
+      
+      if (action === 'join' && liveId) {
+        navigate(`/live/${liveId}`);
+      } else if (action === 'reserve' && liveId) {
+        const livesToShow = selectedLiveType === 'current' ? liveStreams : scheduledLives;
+        const selectedLiveData = livesToShow.find(l => l.id.toString() === liveId);
+        if (selectedLiveData) {
+          setSelectedLive(selectedLiveData);
+          setShowReservationDialog(true);
+        }
+      }
+    }
+  };
 
   // Handle markers and popups
   useEffect(() => {
@@ -74,10 +97,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
       } rounded-full border-2 border-white shadow-lg cursor-pointer`;
       el.innerHTML = selectedLiveType === 'current' ? '🔴' : '📅';
 
-      // Create popup content
-      const popupContent = document.createElement('div');
-      popupContent.className = 'p-2 max-w-[200px]';
-      
+      // Format date outside of template string
       const formattedDate = live.date ? new Date(live.date).toLocaleDateString('fr-FR', {
         weekday: 'long',
         day: 'numeric',
@@ -86,8 +106,11 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         minute: '2-digit'
       }) : '';
 
+      // Create popup content
+      const popupContent = document.createElement('div');
+      popupContent.className = 'p-2 max-w-[200px]';
       popupContent.innerHTML = `
-        <div class="mb-2">
+        <div class="mb-2 relative">
           <img src="${live.thumbnail}" alt="${live.title}" class="w-full h-[100px] object-cover rounded"/>
           <div class="absolute bottom-1 left-1">
             <span class="px-2 py-0.5 rounded-full text-xs font-medium ${
@@ -117,31 +140,12 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
         </button>
       `;
 
-      // Add click handlers
-      popupContent.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        if (target.tagName === 'BUTTON') {
-          const liveId = target.getAttribute('data-live-id');
-          const action = target.getAttribute('data-action');
-          
-          if (action === 'join' && liveId) {
-            navigate(`/live/${liveId}`);
-          } else if (action === 'reserve' && liveId) {
-            const selectedLiveData = livesToShow.find(l => l.id.toString() === liveId);
-            if (selectedLiveData) {
-              setSelectedLive(selectedLiveData);
-              setShowReservationDialog(true);
-            }
-          }
-        }
-      });
-
-      // Create and store popup
+      // Create popup
       const popup = new mapboxgl.Popup({ offset: 25 })
         .setDOMContent(popupContent);
       popupsRef.current.push(popup);
 
-      // Create and store marker
+      // Create marker
       const marker = new mapboxgl.Marker(el)
         .setLngLat([coordinates.lng, coordinates.lat])
         .setPopup(popup)
