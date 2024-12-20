@@ -132,7 +132,7 @@ const mockProperties: Property[] = addCoordinatesToProperties([
   }
 ]);
 
-type ViewMode = "list" | "map" | "grid";
+type ViewMode = "grid" | "list" | "map";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -182,10 +182,13 @@ const Search = () => {
 
       <div className="pt-[60px] px-3">
         <HomeMap properties={filteredProperties} />
-        <ViewControls viewMode={viewMode} setViewMode={setViewMode} />
+        <ViewControls 
+          viewMode={viewMode as "grid" | "map"} 
+          setViewMode={(mode: "grid" | "map") => setViewMode(mode)} 
+        />
         <SearchContent
           filteredProperties={filteredProperties}
-          viewMode={viewMode}
+          viewMode={viewMode as "grid" | "list"}
         />
       </div>
     </div>
