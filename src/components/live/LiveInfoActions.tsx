@@ -29,17 +29,29 @@ export const LiveInfoActions = ({
 }: LiveInfoActionsProps) => {
   const navigate = useNavigate();
   
-  const themeColor = '#F97316'; // Orange pour toutes les actions
+  const themeColor = isReplay 
+    ? '#16A34A' // Vert pour les replays
+    : '#F97316'; // Orange pour les autres
       
-  const bgBase = 'bg-orange-500';
+  const bgBase = isReplay 
+    ? 'bg-green-600' 
+    : 'bg-orange-500';
       
-  const bgHover = 'hover:bg-orange-600';
+  const bgHover = isReplay 
+    ? 'hover:bg-green-700' 
+    : 'hover:bg-orange-600';
       
-  const bgLight = 'bg-orange-500/10';
+  const bgLight = isReplay 
+    ? 'bg-green-500/10' 
+    : 'bg-orange-500/10';
       
-  const bgLightHover = 'hover:bg-orange-500/20';
+  const bgLightHover = isReplay 
+    ? 'hover:bg-green-500/20' 
+    : 'hover:bg-orange-500/20';
       
-  const textColor = 'text-orange-500';
+  const textColor = isReplay 
+    ? 'text-green-600' 
+    : 'text-orange-500';
 
   return (
     <div className={cn(
@@ -93,7 +105,9 @@ export const LiveInfoActions = ({
           <Badge 
             variant="secondary" 
             className={cn(
-              'bg-orange-500/10 text-orange-500',
+              isReplay 
+                ? 'bg-green-500/10 text-green-600'
+                : 'bg-orange-500/10 text-orange-500',
               "shadow-sm",
               "transition-all duration-300 ease-in-out",
               "hover:scale-105"

@@ -20,15 +20,16 @@ export const ReplayCarouselHeader = ({
         variant="default"
         size="lg"
         className={cn(
-          "bg-emerald-600 hover:bg-emerald-700 text-white gap-2 transition-all duration-300",
+          "bg-green-600 hover:bg-green-700 text-white gap-2 transition-all duration-300",
           "group flex items-center shadow-lg hover:shadow-xl",
           "hover:scale-105 transform",
-          isCollapsed ? "w-auto" : "w-full justify-between"
+          isCollapsed ? "w-auto" : "w-full justify-between",
+          "z-50" // Ensure button is always visible
         )}
         onClick={onToggleCollapse}
       >
         <div className="flex items-center gap-2">
-          <LiveBadge count={replayCount} className="text-emerald-600" />
+          <LiveBadge count={replayCount} className="text-green-600" />
           <span className="font-medium">
             {isCollapsed 
               ? "autres replays disponibles" 
