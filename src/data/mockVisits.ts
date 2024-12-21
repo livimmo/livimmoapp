@@ -1,16 +1,32 @@
 import { Visit } from "@/types/visit";
+import { Property } from "@/types/property";
+
+const mockProperty: Property = {
+  id: 1,
+  title: "Appartement moderne au centre-ville",
+  price: 1200000,
+  location: "Casablanca, Maarif",
+  type: "Appartement",
+  surface: 120,
+  rooms: 3,
+  bathrooms: 2,
+  description: "Magnifique appartement rénové...",
+  features: ["Climatisation", "Ascenseur", "Parking"],
+  images: ["/placeholder.svg"],
+  coordinates: {
+    lat: 33.5731104,
+    lng: -7.6425486
+  },
+  transactionType: "Vente"
+};
 
 export const mockVisits: Visit[] = [
   {
     id: 1,
-    propertyId: 1,
-    propertyTitle: "Villa moderne à Casablanca",
-    propertyImage: "/placeholder.svg",
-    propertyLocation: "Casablanca, Californie",
-    date: new Date("2024-04-20"),
-    time: "14:00",
+    date: new Date("2024-03-20T14:00:00"),
     status: "pending",
     type: "physical",
+    property: mockProperty,
     agent: {
       id: 1,
       name: "Sarah Martin",
@@ -18,25 +34,33 @@ export const mockVisits: Visit[] = [
       contact: {
         phone: "+212 6XX XXX XXX",
         email: "sarah.martin@example.com"
-      }
+      },
+      location: "Casablanca",
+      type: "agent",
+      rating: 4.8,
+      totalReviews: 124,
+      activeProperties: 15,
+      completedLives: 45,
+      scheduledLives: 3,
+      soldProperties: 89,
+      company: "Livimmo",
+      companyLogo: "/livimmo-icon.svg",
+      verified: true,
+      specialties: ["Résidentiel", "Luxe"]
     },
     visitor: {
       name: "Mohamed Alami",
-      phone: "+212 6XX XXX XXX",
       email: "m.alami@example.com",
-      message: "Je suis intéressé par l'achat de cette villa pour ma famille"
-    }
+      phone: "+212 6XX XXX XXX"
+    },
+    notes: "Intéressé par la vue et l'emplacement"
   },
   {
     id: 2,
-    propertyId: 2,
-    propertyTitle: "Appartement vue mer à Tanger",
-    propertyImage: "/placeholder.svg",
-    propertyLocation: "Tanger, Malabata",
-    date: new Date("2024-04-21"),
-    time: "16:30",
+    date: new Date("2024-03-21T10:00:00"),
     status: "confirmed",
-    type: "remote",
+    type: "virtual",
+    property: mockProperty,
     agent: {
       id: 2,
       name: "Mohammed Alami",
@@ -44,25 +68,33 @@ export const mockVisits: Visit[] = [
       contact: {
         phone: "+212 6XX XXX XXX",
         email: "m.alami@example.com"
-      }
+      },
+      location: "Rabat",
+      type: "agent",
+      rating: 4.9,
+      totalReviews: 156,
+      activeProperties: 12,
+      completedLives: 38,
+      scheduledLives: 2,
+      soldProperties: 72,
+      company: "Livimmo",
+      companyLogo: "/livimmo-icon.svg",
+      verified: true,
+      specialties: ["Commercial", "Bureau"]
     },
     visitor: {
       name: "Sophia Chen",
-      phone: "+1 XXX XXX XXXX",
-      email: "sophia.c@example.com",
-      message: "Je cherche à louer un appartement avec vue sur mer pour 1 an"
-    }
+      email: "s.chen@example.com",
+      phone: "+212 6XX XXX XXX"
+    },
+    notes: "Recherche un bien pour investissement"
   },
   {
     id: 3,
-    propertyId: 3,
-    propertyTitle: "Duplex au centre de Rabat",
-    propertyImage: "/placeholder.svg",
-    propertyLocation: "Rabat, Agdal",
-    date: new Date("2024-04-22"),
-    time: "10:00",
+    date: new Date("2024-03-22T15:30:00"),
     status: "completed",
     type: "physical",
+    property: mockProperty,
     agent: {
       id: 3,
       name: "Yasmine Idrissi",
@@ -70,25 +102,33 @@ export const mockVisits: Visit[] = [
       contact: {
         phone: "+212 6XX XXX XXX",
         email: "yasmine.idrissi@example.com"
-      }
+      },
+      location: "Marrakech",
+      type: "agent",
+      rating: 4.7,
+      totalReviews: 98,
+      activeProperties: 8,
+      completedLives: 25,
+      scheduledLives: 4,
+      soldProperties: 45,
+      company: "Livimmo",
+      companyLogo: "/livimmo-icon.svg",
+      verified: true,
+      specialties: ["Résidentiel", "Luxe"]
     },
     visitor: {
       name: "John Smith",
-      phone: "+44 XXX XXX XXXX", 
-      email: "john.s@example.com",
-      message: "Je suis un investisseur étranger intéressé par l'achat de ce duplex"
-    }
+      email: "j.smith@example.com",
+      phone: "+212 6XX XXX XXX"
+    },
+    notes: "A apprécié la visite, réflexion en cours"
   },
   {
     id: 4,
-    propertyId: 1,
-    propertyTitle: "Villa moderne à Casablanca",
-    propertyImage: "/placeholder.svg",
-    propertyLocation: "Casablanca, Californie",
-    date: new Date("2024-04-23"),
-    time: "11:30",
-    status: "pending",
-    type: "physical",
+    date: new Date("2024-03-23T11:00:00"),
+    status: "cancelled",
+    type: "virtual",
+    property: mockProperty,
     agent: {
       id: 1,
       name: "Sarah Martin",
@@ -96,25 +136,33 @@ export const mockVisits: Visit[] = [
       contact: {
         phone: "+212 6XX XXX XXX",
         email: "sarah.martin@example.com"
-      }
+      },
+      location: "Casablanca",
+      type: "agent",
+      rating: 4.8,
+      totalReviews: 124,
+      activeProperties: 15,
+      completedLives: 45,
+      scheduledLives: 3,
+      soldProperties: 89,
+      company: "Livimmo",
+      companyLogo: "/livimmo-icon.svg",
+      verified: true,
+      specialties: ["Résidentiel", "Luxe"]
     },
     visitor: {
       name: "Karim Benjelloun",
-      phone: "+212 6XX XXX XXX",
       email: "k.benjelloun@example.com",
-      message: "Je souhaite visiter la villa pour une potentielle location longue durée"
-    }
+      phone: "+212 6XX XXX XXX"
+    },
+    notes: "Annulé pour cause personnelle"
   },
   {
     id: 5,
-    propertyId: 2,
-    propertyTitle: "Appartement vue mer à Tanger",
-    propertyImage: "/placeholder.svg",
-    propertyLocation: "Tanger, Malabata",
-    date: new Date("2024-04-24"),
-    time: "15:00",
-    status: "confirmed",
-    type: "remote",
+    date: new Date("2024-03-24T16:00:00"),
+    status: "pending",
+    type: "physical",
+    property: mockProperty,
     agent: {
       id: 2,
       name: "Mohammed Alami",
@@ -122,13 +170,25 @@ export const mockVisits: Visit[] = [
       contact: {
         phone: "+212 6XX XXX XXX",
         email: "m.alami@example.com"
-      }
+      },
+      location: "Rabat",
+      type: "agent",
+      rating: 4.9,
+      totalReviews: 156,
+      activeProperties: 12,
+      completedLives: 38,
+      scheduledLives: 2,
+      soldProperties: 72,
+      company: "Livimmo",
+      companyLogo: "/livimmo-icon.svg",
+      verified: true,
+      specialties: ["Commercial", "Bureau"]
     },
     visitor: {
       name: "Laura Martinez",
-      phone: "+34 XXX XXX XXX",
-      email: "laura.m@example.com",
-      message: "Je cherche un pied-à-terre à Tanger pour les vacances"
-    }
+      email: "l.martinez@example.com",
+      phone: "+212 6XX XXX XXX"
+    },
+    notes: "Première visite programmée"
   }
 ];
