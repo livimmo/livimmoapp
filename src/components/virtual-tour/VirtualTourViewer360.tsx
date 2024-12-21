@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { LiveChat } from "@/components/live/LiveChat";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { LiveOfferDialog } from "@/components/live/LiveOfferDialog";
+import { ReservationForm } from "@/components/home/ReservationForm";
 
 interface VirtualTourViewer360Props {
   tourUrl: string;
@@ -35,6 +36,7 @@ export const VirtualTourViewer360 = ({
   const [showChat, setShowChat] = useState(false);
   const [showBookingDialog, setShowBookingDialog] = useState(false);
   const [showOfferDialog, setShowOfferDialog] = useState(false);
+  const [showReservationDialog, setShowReservationDialog] = useState(false);
   const viewerRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -65,7 +67,7 @@ export const VirtualTourViewer360 = ({
   };
 
   const handleQuickBook = () => {
-    setShowBookingDialog(true);
+    setShowReservationDialog(true);
   };
 
   const handleMakeOffer = () => {
@@ -193,6 +195,18 @@ export const VirtualTourViewer360 = ({
           price={500000} // À remplacer par le vrai prix
           isOpen={showOfferDialog}
           onClose={() => setShowOfferDialog(false)}
+        />
+      )}
+
+      {showReservationDialog && (
+        <ReservationForm
+          live={{
+            id: propertyId,
+            title: propertyTitle,
+            date: new Date(),
+            availableSeats: 1,
+          }}
+          onClose={() => setShowReservationDialog(false)}
         />
       )}
     </div>
