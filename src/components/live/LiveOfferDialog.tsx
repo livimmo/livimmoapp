@@ -12,6 +12,7 @@ import { OfferTabContent } from "./offer/OfferTabContent";
 import { VisitTabContent } from "./offer/VisitTabContent";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useNavigate } from "react-router-dom";
 
 interface LiveOfferDialogProps {
   title: string;
@@ -30,8 +31,20 @@ export const LiveOfferDialog = ({ title, price, isOpen, onClose }: LiveOfferDial
   const [visitTime, setVisitTime] = useState("");
   const { toast } = useToast();
   const { isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
 
   const handleOffer = () => {
+    if (!isAuthenticated) {
+      onClose();
+      toast({
+        title: "Connexion requise",
+        description: "Vous devez être connecté pour faire une offre",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+
     if (offerAmount <= 0) {
       toast({
         title: "Erreur",
@@ -54,12 +67,10 @@ export const LiveOfferDialog = ({ title, price, isOpen, onClose }: LiveOfferDial
       propertyTitle: title,
       amount: offerAmount,
       validUntil: validUntil,
-      contact: isAuthenticated
-        ? {
-            name: `${user?.firstName} ${user?.lastName}`,
-            email: user?.email,
-          }
-        : null,
+      contact: {
+        name: `${user?.firstName} ${user?.lastName}`,
+        email: user?.email,
+      },
     };
 
     console.log("Live offer data:", offerData);
@@ -72,6 +83,17 @@ export const LiveOfferDialog = ({ title, price, isOpen, onClose }: LiveOfferDial
   };
 
   const handleVisit = () => {
+    if (!isAuthenticated) {
+      onClose();
+      toast({
+        title: "Connexion requise",
+        description: "Vous devez être connecté pour réserver une visite",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+
     if (!visitDate || !visitTime) {
       toast({
         title: "Erreur",
@@ -86,12 +108,10 @@ export const LiveOfferDialog = ({ title, price, isOpen, onClose }: LiveOfferDial
       type: visitType,
       date: visitDate,
       time: visitTime,
-      contact: isAuthenticated
-        ? {
-            name: `${user?.firstName} ${user?.lastName}`,
-            email: user?.email,
-          }
-        : null,
+      contact: {
+        name: `${user?.firstName} ${user?.lastName}`,
+        email: user?.email,
+      },
     };
 
     console.log("Visit booking data:", visitData);

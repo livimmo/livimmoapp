@@ -16,6 +16,7 @@ import { OfferForm } from "./offer/OfferForm";
 import { VisitBookingForm } from "./offer/VisitBookingForm";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useNavigate } from "react-router-dom";
 
 interface OfferDialogProps {
   title: string;
@@ -29,11 +30,84 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [validUntil, setValidUntil] = useState<Date | undefined>(
-    new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 jours par défaut
+    new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
   );
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleOffer = () => {
+    if (!isAuthenticated) {
+      setIsOpen(false);
+      toast({
+        title: "Connexion requise",
+        description: "Vous devez être connecté pour faire une offre",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+
+    if (offerAmount <= 0) {
+      toast({
+        title: "Erreur",
+        description: "Le montant de l'offre doit être supérieur à 0",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!validUntil) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez sélectionner une date de validité",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const offerData = {
+      propertyTitle: title,
+      amount: offerAmount,
+      message,
+      validUntil,
+      contact: {
+        name: `${user?.firstName} ${user?.lastName}`,
+        email: user?.email,
+        phone,
+      },
+    };
+
+    console.log("Offer data:", offerData);
+
+    toast({
+      title: "Offre envoyée !",
+      description: `Votre offre de ${offerAmount.toLocaleString()} DH pour ${title} est valide jusqu'au ${format(validUntil, 'dd MMMM yyyy', { locale: fr })}.`,
+    });
+    setIsOpen(false);
+  };
+
+  const handleVisitBooking = (visitData: any) => {
+    if (!isAuthenticated) {
+      setIsOpen(false);
+      toast({
+        title: "Connexion requise",
+        description: "Vous devez être connecté pour réserver une visite",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+
+    console.log("Visit booking data:", visitData);
+    
+    toast({
+      title: "Visite réservée !",
+      description: `Votre demande de visite pour ${title} a été envoyée. Vous recevrez une confirmation sous peu.`,
+    });
+    setIsOpen(false);
+  };
 
   const getButtonContent = () => {
     if (!isAuthenticated) {
@@ -60,62 +134,6 @@ export const OfferDialog = ({ title, price }: OfferDialogProps) => {
         Faire une offre
       </>
     );
-  };
-
-  const handleOffer = () => {
-    if (offerAmount <= 0) {
-      toast({
-        title: "Erreur",
-        description: "Le montant de l'offre doit être supérieur à 0",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!validUntil) {
-      toast({
-        title: "Erreur",
-        description: "Veuillez sélectionner une date de validité",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const offerData = {
-      propertyTitle: title,
-      amount: offerAmount,
-      message,
-      validUntil,
-      contact: isAuthenticated
-        ? {
-            name: `${user?.firstName} ${user?.lastName}`,
-            email: user?.email,
-            phone: phone,
-          }
-        : {
-            name,
-            email,
-            phone,
-          },
-    };
-
-    console.log("Offer data:", offerData);
-
-    toast({
-      title: "Offre envoyée !",
-      description: `Votre offre de ${offerAmount.toLocaleString()} DH pour ${title} est valide jusqu'au ${format(validUntil, 'dd MMMM yyyy', { locale: fr })}.`,
-    });
-    setIsOpen(false);
-  };
-
-  const handleVisitBooking = (visitData: any) => {
-    console.log("Visit booking data:", visitData);
-    
-    toast({
-      title: "Visite réservée !",
-      description: `Votre demande de visite pour ${title} a été envoyée. Vous recevrez une confirmation sous peu.`,
-    });
-    setIsOpen(false);
   };
 
   return (
