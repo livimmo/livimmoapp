@@ -20,6 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SubmitPropertyButton } from "./SubmitPropertyButton";
 
 const mockProperty: Property = {
   id: 0,
@@ -93,6 +94,7 @@ export const Header = () => {
           </h1>
         </div>
         <div className="flex items-center gap-2">
+          <SubmitPropertyButton />
           {isAuthenticated ? (
             <>
               {isAgentOrPromoter && (
