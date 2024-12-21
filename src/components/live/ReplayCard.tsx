@@ -56,19 +56,19 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
             className="w-full h-48 object-cover transition-transform group-hover:scale-105"
           />
           <div className="absolute top-2 left-2 flex gap-2">
-            <Badge variant="secondary" className="bg-black/50 text-white">
+            <Badge variant="secondary" className="bg-emerald-500/90 text-white">
               <Clock className="w-3 h-3 mr-1" />
               45 min
             </Badge>
             {live.viewers && (
-              <Badge variant="secondary" className="bg-black/50 text-white flex items-center gap-1">
+              <Badge variant="secondary" className="bg-emerald-500/90 text-white flex items-center gap-1">
                 <Eye className="w-3 h-3" />
                 {live.viewers}
               </Badge>
             )}
           </div>
           <div className="absolute bottom-2 left-2 right-2">
-            <Badge variant="secondary" className="bg-black/50 text-white w-full flex items-center gap-1 justify-center">
+            <Badge variant="secondary" className="bg-emerald-500/90 text-white w-full flex items-center gap-1 justify-center">
               <MapPin className="w-3 h-3" />
               {live.location} {live.neighborhood && `- ${live.neighborhood}`}
             </Badge>
@@ -111,7 +111,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
           )}
         </CardContent>
         <CardContent className="p-4">
-          <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+          <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">
             {live.title}
           </h3>
           <div className="text-sm text-muted-foreground mb-2">
@@ -124,7 +124,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
           )}
         </CardContent>
         <CardFooter className="p-4 pt-0 flex flex-col gap-4">
-          <Button onClick={handleWatch} variant="default" className="w-full">
+          <Button onClick={handleWatch} variant="default" className="w-full bg-emerald-500 hover:bg-emerald-600">
             <Play className="w-4 h-4 mr-2" />
             Visionner
           </Button>
@@ -146,7 +146,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
               </div>
             </div>
             {isVerified && (
-              <div className="flex items-center gap-1 text-primary">
+              <div className="flex items-center gap-1 text-emerald-600">
                 <CheckCircle2 className="h-4 w-4" />
                 <span className="text-xs">Vérifié</span>
               </div>
