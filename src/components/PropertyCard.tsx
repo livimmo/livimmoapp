@@ -63,7 +63,6 @@ export const PropertyCard = ({
     navigate(`/${action}`);
   };
 
-  // Extraire le quartier de la localisation
   const [city, district] = location.split(", ");
 
   return (
@@ -98,10 +97,12 @@ export const PropertyCard = ({
           <div className="absolute top-2 left-2 right-14 z-10">
             <div className="flex flex-wrap gap-1">
               {!hasLive && (
-                <Badge variant="destructive">Vendu</Badge>
+                <Badge variant="destructive" className="bg-[#ea384c]/90 backdrop-blur-sm text-white font-semibold shadow-sm">
+                  Vendu
+                </Badge>
               )}
               {virtualTour?.enabled && (
-                <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm flex items-center gap-1">
+                <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm flex items-center gap-1 font-semibold shadow-sm">
                   <View className="w-3 h-3" />
                   360°
                 </Badge>
@@ -116,7 +117,14 @@ export const PropertyCard = ({
                       ? "default"
                       : "secondary"
                   }
-                  className="bg-white/90 backdrop-blur-sm whitespace-nowrap"
+                  className={cn(
+                    "backdrop-blur-sm font-semibold shadow-sm whitespace-nowrap",
+                    tag === "Coup de fusil" 
+                      ? "bg-[#ea384c]/90 text-white"
+                      : tag === "Nouveauté"
+                      ? "bg-[#0EA5E9]/90 text-white"
+                      : "bg-white/90 text-gray-900"
+                  )}
                 >
                   {tag}
                 </Badge>
@@ -124,6 +132,7 @@ export const PropertyCard = ({
             </div>
           </div>
         </div>
+        
         <PropertyInfo
           id={id}
           title={title}
