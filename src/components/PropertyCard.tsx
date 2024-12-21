@@ -7,6 +7,8 @@ import { PropertyCardImage } from "./property-card/PropertyCardImage";
 import { PropertyCardAgent } from "./property-card/PropertyCardAgent";
 import { PropertyCardAuthDialog } from "./property-card/PropertyCardAuthDialog";
 import { getRandomTags } from "@/utils/propertyTags";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { VirtualTourViewer360 } from "@/components/virtual-tour/VirtualTourViewer360";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -41,13 +43,14 @@ export const PropertyCard = ({
   const currentUrl = `${window.location.origin}/property/${id}`;
   const tags = getRandomTags();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [showVirtualTour, setShowVirtualTour] = useState(false);
 
   const handleJoinLive = () => {
     navigate(`/live/${id}`);
   };
 
   const handleVirtualTour = () => {
-    navigate(`/property/${id}/virtual-tour`);
+    setShowVirtualTour(true);
   };
 
   const [city, district] = location.split(", ");
@@ -100,6 +103,19 @@ export const PropertyCard = ({
         open={showAuthDialog} 
         onOpenChange={setShowAuthDialog} 
       />
+
+      <Dialog open={showVirtualTour} onOpenChange={setShowVirtualTour}>
+        <DialogContent className="max-w-6xl h-[80vh]">
+          <VirtualTourViewer360
+            tourUrl="TzhRashYdRt"
+            propertyId={id}
+            propertyTitle={title}
+            agentName={agent.name}
+            onContactAgent={() => {}}
+            onBookVisit={() => setShowAuthDialog(true)}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
