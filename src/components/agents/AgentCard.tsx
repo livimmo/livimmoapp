@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AgentRating } from "@/components/ratings/AgentRating";
 import { AgentStats } from "@/components/agents/AgentStats";
-import { UserCheck } from "lucide-react";
+import { UserCheck, Building } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AgentCertificationBadge } from "../agent/AgentCertificationBadge";
 
@@ -33,7 +33,19 @@ export const AgentCard = ({ agent }: AgentCardProps) => {
           <div>
             <h3 className="text-xl font-semibold">{agent.name}</h3>
             {agent.company && (
-              <p className="text-sm text-muted-foreground">{agent.company}</p>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Building className="w-4 h-4" />
+                <div className="flex items-center gap-2">
+                  {agent.companyLogo && (
+                    <img 
+                      src={agent.companyLogo} 
+                      alt={agent.company} 
+                      className="w-6 h-6 object-contain"
+                    />
+                  )}
+                  <span>{agent.company}</span>
+                </div>
+              </div>
             )}
             <p className="text-sm text-muted-foreground">{agent.location}</p>
           </div>

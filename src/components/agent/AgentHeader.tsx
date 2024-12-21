@@ -1,7 +1,7 @@
 import { Agent } from "@/types/agent";
 import { Badge } from "@/components/ui/badge";
 import { StarRating } from "@/components/ratings/StarRating";
-import { MapPin } from "lucide-react";
+import { MapPin, Building } from "lucide-react";
 import { AgentCertificationBadge } from "./AgentCertificationBadge";
 
 interface AgentHeaderProps {
@@ -24,7 +24,19 @@ export const AgentHeader = ({ agent }: AgentHeaderProps) => {
         </div>
         
         {agent.company && (
-          <p className="text-gray-600">{agent.company}</p>
+          <div className="flex items-center gap-3 text-gray-600">
+            <Building className="w-4 h-4" />
+            <div className="flex items-center gap-2">
+              {agent.companyLogo && (
+                <img 
+                  src={agent.companyLogo} 
+                  alt={agent.company} 
+                  className="w-8 h-8 object-contain"
+                />
+              )}
+              <span>{agent.company}</span>
+            </div>
+          </div>
         )}
         
         <div className="flex items-center gap-2">

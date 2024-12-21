@@ -6,6 +6,7 @@ export const mockAgents: Agent[] = [
     name: "Sarah Martin",
     avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
     company: "Immobilier Premium",
+    companyLogo: "https://example.com/premium-logo.png",
     location: "Casablanca",
     type: "agent",
     rating: 4.8,
@@ -25,15 +26,16 @@ export const mockAgents: Agent[] = [
         facebook: "https://facebook.com/sarahmartinimmo"
       }
     },
-    description: "Spécialiste de l'immobilier de luxe à Casablanca avec plus de 10 ans d'expérience. Je me spécialise dans les propriétés haut de gamme et les résidences de prestige. Mon approche personnalisée et ma connaissance approfondie du marché immobilier local m'ont permis de conclure avec succès plus de 200 transactions."
+    description: "Spécialiste de l'immobilier de luxe à Casablanca avec plus de 10 ans d'expérience."
   },
   {
     id: 2,
-    name: "Mohammed Alami",
+    name: "Hicham Berrada",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
-    company: "Groupe Alami Immobilier",
+    company: "Lamap",
+    companyLogo: "/lovable-uploads/2c5cdac7-efc4-4b21-af73-7e198de56621.png",
     location: "Rabat",
-    type: "promoter",
+    type: "agent",
     rating: 4.6,
     totalReviews: 89,
     activeProperties: 25,
@@ -44,14 +46,14 @@ export const mockAgents: Agent[] = [
     verified: true,
     contact: {
       phone: "+212 6 23 45 67 89",
-      email: "m.alami@alami-immo.ma",
+      email: "h.berrada@lamap.ma",
       social: {
-        linkedin: "https://linkedin.com/in/mohammed-alami",
-        facebook: "https://facebook.com/alamiimmo",
-        instagram: "https://instagram.com/alamiimmobilier"
+        linkedin: "https://linkedin.com/in/hicham-berrada",
+        facebook: "https://facebook.com/lamapimmo",
+        instagram: "https://instagram.com/lamapimmobilier"
       }
     },
-    description: "Promoteur immobilier de référence à Rabat depuis 1995. Notre groupe a développé plus de 50 projets résidentiels et commerciaux, représentant plus de 3000 unités livrées. Nous nous engageons à créer des espaces de vie modernes et durables qui répondent aux plus hauts standards de qualité."
+    description: "Expert immobilier chez Lamap, spécialisé dans l'accompagnement personnalisé pour vos projets immobiliers."
   },
   {
     id: 3,

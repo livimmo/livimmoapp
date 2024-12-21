@@ -3,6 +3,7 @@ export interface Agent {
   name: string;
   avatar: string;
   company?: string;
+  companyLogo?: string;
   location: string;
   type: "agent" | "promoter";
   rating: number;
