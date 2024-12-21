@@ -1,7 +1,7 @@
 import { Property } from "@/types/property";
 import { VirtualTourCard } from "./VirtualTourCard";
 import { Button } from "@/components/ui/button";
-import { Eye } from "lucide-react";
+import { View } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -30,7 +30,7 @@ export const VirtualToursSection = ({ properties }: VirtualToursSectionProps) =>
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">Visites Virtuelles</h2>
         <div className="bg-accent rounded-lg p-8 text-center">
-          <Eye className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+          <View className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
           <p className="text-muted-foreground">
             Aucune visite virtuelle disponible pour le moment
           </p>
@@ -44,7 +44,7 @@ export const VirtualToursSection = ({ properties }: VirtualToursSectionProps) =>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Visites Virtuelles</h2>
         <Button variant="outline">
-          <Eye className="w-4 h-4 mr-2" />
+          <View className="w-4 h-4 mr-2" />
           Toutes les visites
         </Button>
       </div>

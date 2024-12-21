@@ -2,7 +2,7 @@ import { Property } from "@/types/property";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Eye, ArrowRight } from "lucide-react";
+import { View, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { FavoriteButton } from "../property/FavoriteButton";
 import { ShareButtons } from "../properties/ShareButtons";
@@ -26,7 +26,7 @@ export const VirtualTourCard = ({ property }: VirtualTourCardProps) => {
         />
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
           <Button variant="secondary" onClick={() => navigate(`/property/${property.id}`)}>
-            <Eye className="w-4 h-4 mr-2" />
+            <View className="w-4 h-4 mr-2" />
             Visiter
           </Button>
         </div>
@@ -51,7 +51,7 @@ export const VirtualTourCard = ({ property }: VirtualTourCardProps) => {
               setShowShare(!showShare);
             }}
           >
-            <Eye className="h-5 w-5" />
+            <View className="h-5 w-5" />
           </Button>
         </div>
         {showShare && (

@@ -7,12 +7,14 @@ import { FavoriteButton } from "./property/FavoriteButton";
 import { Badge } from "./ui/badge";
 import { getRandomTags } from "@/utils/propertyTags";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
-import { CheckCircle2, View } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { AgentCertificationBadge } from "./agent/AgentCertificationBadge";
 import { cn } from "@/lib/utils";
+import { VirtualTourBadge } from "./property/VirtualTourBadge";
+import { VirtualTourButton } from "./property/VirtualTourButton";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -50,6 +52,10 @@ export const PropertyCard = ({
 
   const handleJoinLive = () => {
     navigate(`/live/${id}`);
+  };
+
+  const handleVirtualTour = () => {
+    navigate(`/property/${id}/virtual-tour`);
   };
 
   const handleAgentClick = () => {
@@ -101,12 +107,7 @@ export const PropertyCard = ({
                   Vendu
                 </Badge>
               )}
-              {virtualTour?.enabled && (
-                <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm flex items-center gap-1 font-semibold shadow-sm">
-                  <View className="w-3 h-3" />
-                  360°
-                </Badge>
-              )}
+              {virtualTour?.enabled && <VirtualTourBadge />}
               {tags.map((tag) => (
                 <Badge
                   key={tag}
@@ -131,6 +132,11 @@ export const PropertyCard = ({
               ))}
             </div>
           </div>
+          {virtualTour?.enabled && (
+            <div className="absolute bottom-4 right-4 z-10">
+              <VirtualTourButton onClick={handleVirtualTour} />
+            </div>
+          )}
         </div>
         
         <PropertyInfo
