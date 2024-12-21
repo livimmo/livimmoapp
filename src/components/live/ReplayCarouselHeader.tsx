@@ -24,7 +24,9 @@ export const ReplayCarouselHeader = ({
           "group flex items-center shadow-lg hover:shadow-xl",
           "hover:scale-105 transform",
           isCollapsed ? "w-auto" : "w-full justify-between",
-          "z-50" // Ensure button is always visible
+          "z-[60]", // Augmenté le z-index pour être au-dessus de LiveInfo
+          "absolute bottom-[90px]", // Positionné au-dessus de LiveInfo
+          "left-4" // Ajout d'un padding à gauche
         )}
         onClick={onToggleCollapse}
       >
