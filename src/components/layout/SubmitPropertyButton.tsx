@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { HousePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -6,17 +7,17 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { PropertySubmissionForm } from "@/components/property/submission/PropertySubmissionForm";
 
 export const SubmitPropertyButton = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Si l'utilisateur est un agent ou un promoteur, on ne montre pas le bouton
   if (user?.role === "agent" || user?.role === "promoter") {
@@ -35,9 +36,26 @@ export const SubmitPropertyButton = () => {
     setIsDialogOpen(true);
   };
 
-  const handleSubmit = () => {
-    setIsDialogOpen(false);
-    navigate("/submit-property");
+  const handleSubmit = async (data: any) => {
+    setIsSubmitting(true);
+    try {
+      // TODO: Implement API call to submit property
+      console.log("Property submission data:", data);
+      
+      toast({
+        title: "Bien soumis avec succès",
+        description: "Notre équipe prendra contact avec vous sous 24 heures.",
+      });
+      setIsDialogOpen(false);
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la soumission",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -53,34 +71,16 @@ export const SubmitPropertyButton = () => {
       </Button>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-w-4xl max-h-[90vh]">
           <DialogHeader>
             <DialogTitle>Déposer votre bien</DialogTitle>
-            <DialogDescription className="pt-4">
-              Vous êtes sur le point de déposer une annonce pour votre bien immobilier.
-              Notre équipe vous accompagnera tout au long du processus.
-            </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-4">
-            <div className="text-sm">
-              <h3 className="font-medium mb-2">Ce que vous pouvez faire :</h3>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>Ajouter des photos et vidéos de votre bien</li>
-                <li>Décrire en détail votre propriété</li>
-                <li>Programmer des visites en direct</li>
-                <li>Gérer vos demandes de visite</li>
-              </ul>
-            </div>
-
-            <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                Annuler
-              </Button>
-              <Button onClick={handleSubmit}>
-                Continuer
-              </Button>
-            </div>
+          <div className="overflow-y-auto max-h-[calc(90vh-8rem)]">
+            <PropertySubmissionForm 
+              onSubmit={handleSubmit} 
+              isSubmitting={isSubmitting} 
+            />
           </div>
         </DialogContent>
       </Dialog>
