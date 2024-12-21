@@ -51,7 +51,7 @@ export const VisitDetailsDialog = ({ visit, onClose }: VisitDetailsDialogProps) 
             <h4 className="font-medium mb-2">Agent immobilier</h4>
             <div className="flex items-center gap-4">
               <img
-                src={visit.agent.image}
+                src={visit.agent.avatar}
                 alt={visit.agent.name}
                 className="w-12 h-12 rounded-full"
               />
@@ -60,11 +60,11 @@ export const VisitDetailsDialog = ({ visit, onClose }: VisitDetailsDialogProps) 
                 <div className="flex gap-4 mt-2">
                   <Button variant="outline" size="sm">
                     <Phone className="h-4 w-4 mr-2" />
-                    {visit.agent.phone}
+                    {visit.agent.contact.phone}
                   </Button>
                   <Button variant="outline" size="sm">
                     <Mail className="h-4 w-4 mr-2" />
-                    {visit.agent.email}
+                    {visit.agent.contact.email}
                   </Button>
                 </div>
               </div>

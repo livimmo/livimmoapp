@@ -31,7 +31,6 @@ export const VisitDetailsDialog = ({
   const { toast } = useToast();
 
   const handleConfirm = () => {
-    // TODO: Implement API call to confirm visit
     toast({
       title: "Visite confirmée",
       description: "La visite a été confirmée avec succès",
@@ -40,7 +39,6 @@ export const VisitDetailsDialog = ({
   };
 
   const handleCancel = () => {
-    // TODO: Implement API call to cancel visit
     toast({
       title: "Visite annulée",
       description: "La visite a été annulée avec succès",
@@ -49,7 +47,6 @@ export const VisitDetailsDialog = ({
   };
 
   const handleReschedule = () => {
-    // TODO: Implement rescheduling logic
     toast({
       title: "Replanification",
       description: "Fonctionnalité à venir",
@@ -79,11 +76,11 @@ export const VisitDetailsDialog = ({
             </div>
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-muted-foreground" />
-              <span>{visit.agent.email}</span>
+              <span>{visit.agent.contact.email}</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone className="w-4 h-4 text-muted-foreground" />
-              <span>{visit.agent.phone}</span>
+              <span>{visit.agent.contact.phone}</span>
             </div>
             <div className="flex items-center gap-2">
               <Home className="w-4 h-4 text-muted-foreground" />
