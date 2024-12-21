@@ -23,14 +23,6 @@ import { PropertyStatusBadge } from "./PropertyStatusBadge";
 import { PropertyStatusSelect } from "./PropertyStatusSelect";
 import { PropertyNotes } from "./PropertyNotes";
 
-interface PropertyManagementTableProps {
-  properties: Property[];
-  onEdit: (property: Property) => void;
-  onDelete: (propertyId: number) => void;
-  onStatusChange: (propertyId: number, status: string) => void;
-  onNotesChange: (propertyId: number, notes: any) => void;
-}
-
 export const PropertyManagementTable = ({
   properties,
   onEdit,
@@ -40,6 +32,7 @@ export const PropertyManagementTable = ({
 }: PropertyManagementTableProps) => {
   const [editingStatus, setEditingStatus] = useState<number | null>(null);
   const [showNotes, setShowNotes] = useState<number | null>(null);
+  const [showCalendar, setShowCalendar] = useState<number | null>(null);
 
   const renderAdvancedStatus = (property: Property) => {
     return (
@@ -64,21 +57,22 @@ export const PropertyManagementTable = ({
   };
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Bien</TableHead>
-            <TableHead>Prix</TableHead>
-            <TableHead>Statut</TableHead>
-            <TableHead>Live/Visite</TableHead>
-            <TableHead>Date de création</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {properties.map((property) => (
-            <TableRow key={property.id}>
+    <>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Bien</TableHead>
+              <TableHead>Prix</TableHead>
+              <TableHead>Statut</TableHead>
+              <TableHead>Live/Visite</TableHead>
+              <TableHead>Date de création</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {properties.map((property) => (
+              <TableRow key={property.id}>
               <TableCell className="font-medium">
                 <div className="flex items-center gap-4">
                   <img
@@ -123,36 +117,41 @@ export const PropertyManagementTable = ({
                   locale: fr,
                 })}
               </TableCell>
-              <TableCell className="text-right">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => onEdit(property)}>
-                      <Edit className="mr-2 h-4 w-4" />
-                      Modifier
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setShowNotes(property.id)}>
-                      <FileText className="mr-2 h-4 w-4" />
-                      Notes privées
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="text-destructive"
-                      onClick={() => onDelete(property.id)}
-                    >
-                      <Trash className="mr-2 h-4 w-4" />
-                      Supprimer
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+                <TableCell className="text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => onEdit(property)}>
+                        <Edit className="mr-2 h-4 w-4" />
+                        Modifier
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setShowNotes(property.id)}>
+                        <FileText className="mr-2 h-4 w-4" />
+                        Notes privées
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setShowCalendar(property.id)}>
+                        <Calendar className="mr-2 h-4 w-4" />
+                        Calendrier des visites
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="text-destructive"
+                        onClick={() => onDelete(property.id)}
+                      >
+                        <Trash className="mr-2 h-4 w-4" />
+                        Supprimer
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
 
       <PropertyNotes
         open={showNotes !== null}
@@ -165,6 +164,15 @@ export const PropertyManagementTable = ({
           }
         }}
       />
-    </div>
+
+      <Dialog open={showCalendar !== null} onOpenChange={() => setShowCalendar(null)}>
+        <DialogContent className="max-w-4xl">
+          <VisitCalendar
+            propertyId={showCalendar!}
+            propertyTitle={properties.find(p => p.id === showCalendar)?.title || ""}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
