@@ -17,6 +17,7 @@ interface LiveInfoProps {
   isScheduled?: boolean;
   onToggleFullscreen?: () => void;
   isFullscreen?: boolean;
+  liveId: number;
 }
 
 export const LiveInfo = ({ 
@@ -26,7 +27,8 @@ export const LiveInfo = ({
   isReplay,
   isScheduled,
   onToggleFullscreen,
-  isFullscreen 
+  isFullscreen,
+  liveId
 }: LiveInfoProps) => {
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
   const [offerCount, setOfferCount] = useState(12);
@@ -43,31 +45,6 @@ export const LiveInfo = ({
     return () => clearInterval(interval);
   }, []);
 
-  // Define theme colors based on live status
-  const themeColor = isReplay 
-    ? '#10B981' 
-    : isScheduled 
-      ? '#33C3F0'
-      : '#ea384c';
-      
-  const bgOpacity = isReplay 
-    ? 'bg-emerald-500/5' 
-    : isScheduled
-      ? 'bg-[#33C3F0]/5'
-      : 'bg-red-500/5';
-      
-  const hoverBgOpacity = isReplay 
-    ? 'hover:bg-emerald-500/10' 
-    : isScheduled
-      ? 'hover:bg-[#33C3F0]/10'
-      : 'hover:bg-red-500/10';
-      
-  const borderColor = isReplay 
-    ? 'border-emerald-500/20' 
-    : isScheduled
-      ? 'border-[#33C3F0]/20'
-      : 'border-red-500/20';
-
   return (
     <Card className={cn(
       "p-2 backdrop-blur-md",
@@ -77,12 +54,7 @@ export const LiveInfo = ({
       "flex flex-col",
       "fixed bottom-0 left-0 right-0",
       isMobile ? 'max-h-[40vh]' : 'max-h-[20vh]',
-      "z-50",
-      bgOpacity,
-      borderColor,
-      "border-t",
-      hoverBgOpacity,
-      isFullscreen && "z-[9999]"
+      "z-50"
     )}>
       <div className="w-full max-w-5xl mx-auto">
         <div className={cn(
@@ -106,30 +78,8 @@ export const LiveInfo = ({
             offerCount={offerCount}
             price={property.price}
             onOpenOfferDialog={() => setIsOfferDialogOpen(true)}
+            liveId={liveId}
           />
-          
-          {isMobile && (
-            <div className="flex items-center justify-between w-full">
-              <Badge 
-                variant="secondary" 
-                className={cn(
-                  isReplay 
-                    ? 'bg-emerald-500/10 text-emerald-500' 
-                    : isScheduled
-                      ? 'bg-[#33C3F0]/10 text-[#33C3F0]'
-                      : 'bg-red-500/10 text-red-500',
-                  "shadow-sm",
-                  "transition-all duration-300 ease-in-out",
-                  "hover:scale-105"
-                )}
-              >
-                {offerCount} offres
-              </Badge>
-              <p className="text-lg font-bold whitespace-nowrap" style={{ color: themeColor }}>
-                {property.price.toLocaleString()} DH
-              </p>
-            </div>
-          )}
         </div>
       </div>
 
