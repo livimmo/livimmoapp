@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Users, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface DeveloperSlide {
   id: number;
@@ -35,12 +36,18 @@ export const DeveloperSlider = ({ slides }: DeveloperSliderProps) => {
     Autoplay({ delay: 5000, stopOnInteraction: true })
   );
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const handleAction = (slide: DeveloperSlide) => {
     if (slide.link) {
       navigate(slide.link);
     }
   };
+
+  // Ne pas rendre le composant sur mobile
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <div className="relative w-full max-w-7xl mx-auto mb-8">
