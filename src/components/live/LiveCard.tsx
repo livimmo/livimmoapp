@@ -1,14 +1,13 @@
 import { LiveEvent } from "@/types/live";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "../ui/badge";
 import { Link } from "react-router-dom";
 import { Calendar, Users, Share2, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../ui/button";
 import { useState } from "react";
 import { ReservationForm } from "../home/ReservationForm";
 import { FavoriteButton } from "../property/FavoriteButton";
 import { ShareButtons } from "../properties/ShareButtons";
 import { useAuth } from "@/contexts/AuthContext";
-import { cn } from "@/lib/utils";
 
 interface LiveCardProps {
   live: LiveEvent;
@@ -35,10 +34,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
   };
 
   return (
-    <div className={cn(
-      "group relative overflow-hidden rounded-lg border",
-      live.status === "live" ? "border-[#ea384c]/20 bg-[#ea384c]/5 hover:bg-[#ea384c]/10" : "bg-background"
-    )}>
+    <div className="group relative overflow-hidden rounded-lg border bg-background">
       <Link
         to={live.status === "live" ? `/live/${live.id}` : `/live/schedule/${live.id}`}
         className="block"
@@ -95,38 +91,23 @@ export const LiveCard = ({ live }: LiveCardProps) => {
           </div>
         </div>
         <div className="p-4">
-          <h3 className={cn(
-            "font-semibold line-clamp-2 transition-colors",
-            live.status === "live" ? "text-white hover:text-emerald-300" : "group-hover:text-primary"
-          )}>
+          <h3 className="font-semibold line-clamp-2 group-hover:text-primary transition-colors">
             {live.title}
           </h3>
-          <div className={cn(
-            "mt-2 flex items-center gap-2 text-sm",
-            live.status === "live" ? "text-white/80" : "text-muted-foreground"
-          )}>
+          <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4" />
             <span>{formattedDate}</span>
           </div>
-          <div className={cn(
-            "mt-2 flex items-center gap-2 text-sm",
-            live.status === "live" ? "text-white/80" : "text-muted-foreground"
-          )}>
+          <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4" />
             <span>
               {live.location}
               {live.neighborhood && (
-                <span className={cn(
-                  "text-xs",
-                  live.status === "live" ? "text-white/60" : "text-muted-foreground"
-                )}> • {live.neighborhood}</span>
+                <span className="text-xs text-muted-foreground"> • {live.neighborhood}</span>
               )}
             </span>
           </div>
-          <div className={cn(
-            "mt-2 flex items-center gap-2 text-sm",
-            live.status === "live" ? "text-white/80" : "text-muted-foreground"
-          )}>
+          <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
             <Users className="h-4 w-4" />
             <span>{live.availableSeats} places restantes</span>
           </div>
@@ -136,13 +117,48 @@ export const LiveCard = ({ live }: LiveCardProps) => {
               alt={live.agent}
               className="h-6 w-6 rounded-full"
             />
-            <span className={cn(
-              "text-sm",
-              live.status === "live" ? "text-white/80" : "text-muted-foreground"
-            )}>{live.agent}</span>
+            <span className="text-sm text-muted-foreground">{live.agent}</span>
           </div>
         </div>
       </Link>
+
+      {live.status !== "live" && (
+        <>
+          <Button 
+            className="w-full mt-4"
+            onClick={handleReservationClick}
+          >
+            <Calendar className="w-4 h-4 mr-2" />
+            Réserver
+          </Button>
+
+          {showReservation && !isAuthenticated && (
+            <ReservationForm
+              live={{
+                id: live.id,
+                title: live.title,
+                date: new Date(live.date),
+                availableSeats: live.availableSeats,
+              }}
+              onClose={() => setShowReservation(false)}
+            />
+          )}
+
+          {showReservation && isAuthenticated && (
+            <div className="mt-4 p-4 border-t">
+              <ReservationForm
+                live={{
+                  id: live.id,
+                  title: live.title,
+                  date: new Date(live.date),
+                  availableSeats: live.availableSeats,
+                }}
+                onClose={() => setShowReservation(false)}
+              />
+            </div>
+          )}
+        </>
+      )}
 
       {showShare && (
         <div className="absolute top-14 right-2 z-10">
