@@ -94,18 +94,20 @@ export const AIChat = ({ property, onClose }: AIChatProps) => {
               <div
                 className={`max-w-[80%] rounded-lg p-3 ${
                   message.isBot
-                    ? "bg-primary/10 text-primary-foreground"
-                    : "bg-primary text-primary-foreground"
+                    ? "bg-blue-100 text-blue-900"
+                    : "bg-primary text-white"
                 }`}
               >
                 {message.isBot && (
                   <div className="flex items-center gap-2 mb-1">
-                    <Bot className="h-4 w-4" />
-                    <span className="text-xs font-medium">Assistant IA</span>
+                    <Bot className="h-4 w-4 text-blue-600" />
+                    <span className="text-xs font-medium text-blue-600">Assistant IA</span>
                   </div>
                 )}
                 <p className="text-sm">{message.text}</p>
-                <span className="text-xs opacity-70 mt-1 block">
+                <span className={`text-xs mt-1 block ${
+                  message.isBot ? "text-blue-600/70" : "text-white/70"
+                }`}>
                   {message.timestamp.toLocaleTimeString()}
                 </span>
               </div>
@@ -113,11 +115,11 @@ export const AIChat = ({ property, onClose }: AIChatProps) => {
           ))}
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-primary/10 rounded-lg p-3">
+              <div className="bg-blue-100 rounded-lg p-3">
                 <div className="flex gap-1">
-                  <span className="w-2 h-2 bg-primary/50 rounded-full animate-bounce"></span>
-                  <span className="w-2 h-2 bg-primary/50 rounded-full animate-bounce delay-75"></span>
-                  <span className="w-2 h-2 bg-primary/50 rounded-full animate-bounce delay-150"></span>
+                  <span className="w-2 h-2 bg-blue-600/50 rounded-full animate-bounce"></span>
+                  <span className="w-2 h-2 bg-blue-600/50 rounded-full animate-bounce delay-75"></span>
+                  <span className="w-2 h-2 bg-blue-600/50 rounded-full animate-bounce delay-150"></span>
                 </div>
               </div>
             </div>
