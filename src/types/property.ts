@@ -73,4 +73,9 @@ export interface Property {
       }>;
     };
   };
+  privateNotes?: {
+    ownerName?: string;
+    location?: string;
+    notes?: string;
+  };
 }

@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Edit, Trash, MoreHorizontal } from "lucide-react";
+import { Edit, Trash, MoreHorizontal, FileText, Video, Calendar, Camera360 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,12 +21,14 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { PropertyStatusBadge } from "./PropertyStatusBadge";
 import { PropertyStatusSelect } from "./PropertyStatusSelect";
+import { PropertyNotes } from "./PropertyNotes";
 
 interface PropertyManagementTableProps {
   properties: Property[];
   onEdit: (property: Property) => void;
   onDelete: (propertyId: number) => void;
   onStatusChange: (propertyId: number, status: string) => void;
+  onNotesChange: (propertyId: number, notes: any) => void;
 }
 
 export const PropertyManagementTable = ({
@@ -34,8 +36,32 @@ export const PropertyManagementTable = ({
   onEdit,
   onDelete,
   onStatusChange,
+  onNotesChange,
 }: PropertyManagementTableProps) => {
   const [editingStatus, setEditingStatus] = useState<number | null>(null);
+  const [showNotes, setShowNotes] = useState<number | null>(null);
+
+  const renderAdvancedStatus = (property: Property) => {
+    return (
+      <div className="flex gap-2">
+        {property.hasLive && property.isLiveNow && (
+          <Badge variant="destructive" className="gap-1">
+            <Video className="w-3 h-3" /> Live
+          </Badge>
+        )}
+        {property.hasLive && !property.isLiveNow && property.liveDate && (
+          <Badge variant="secondary" className="gap-1">
+            <Calendar className="w-3 h-3" /> {format(new Date(property.liveDate), "dd/MM")}
+          </Badge>
+        )}
+        {property.virtualTour?.enabled && (
+          <Badge variant="default" className="gap-1">
+            <Camera360 className="w-3 h-3" /> Visite 360°
+          </Badge>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="rounded-md border">
@@ -45,6 +71,7 @@ export const PropertyManagementTable = ({
             <TableHead>Bien</TableHead>
             <TableHead>Prix</TableHead>
             <TableHead>Statut</TableHead>
+            <TableHead>Live/Visite</TableHead>
             <TableHead>Date de création</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -89,6 +116,9 @@ export const PropertyManagementTable = ({
                 )}
               </TableCell>
               <TableCell>
+                {renderAdvancedStatus(property)}
+              </TableCell>
+              <TableCell>
                 {format(new Date(property.createdAt || new Date()), "PP", {
                   locale: fr,
                 })}
@@ -105,6 +135,10 @@ export const PropertyManagementTable = ({
                       <Edit className="mr-2 h-4 w-4" />
                       Modifier
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setShowNotes(property.id)}>
+                      <FileText className="mr-2 h-4 w-4" />
+                      Notes privées
+                    </DropdownMenuItem>
                     <DropdownMenuItem
                       className="text-destructive"
                       onClick={() => onDelete(property.id)}
@@ -119,6 +153,18 @@ export const PropertyManagementTable = ({
           ))}
         </TableBody>
       </Table>
+
+      <PropertyNotes
+        open={showNotes !== null}
+        onOpenChange={() => setShowNotes(null)}
+        property={properties.find(p => p.id === showNotes)}
+        onSave={(notes) => {
+          if (showNotes) {
+            onNotesChange(showNotes, notes);
+            setShowNotes(null);
+          }
+        }}
+      />
     </div>
   );
 };

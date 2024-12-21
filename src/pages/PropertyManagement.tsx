@@ -6,16 +6,17 @@ import { PropertyManagementTable } from "@/components/property/management/Proper
 import { AddPropertyDialog } from "@/components/property/AddPropertyDialog";
 import { useToast } from "@/hooks/use-toast";
 import { mockProperties } from "@/data/mockProperties";
+import { Property } from "@/types/property";
 
 const PropertyManagement = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [isAddPropertyOpen, setIsAddPropertyOpen] = useState(false);
-  const [properties, setProperties] = useState(mockProperties);
+  const [properties, setProperties] = useState<Property[]>(mockProperties);
 
   const isAgent = user?.role === "agent" || user?.role === "promoter";
 
-  const handleStatusChange = (propertyId: number, status: string) => {
+  const handleStatusChange = (propertyId: number, status: "available" | "pending" | "sold" | "rented") => {
     setProperties(prev =>
       prev.map(property =>
         property.id === propertyId ? { ...property, status } : property
@@ -35,9 +36,23 @@ const PropertyManagement = () => {
     });
   };
 
-  const handleEdit = (property: any) => {
+  const handleEdit = (property: Property) => {
     console.log("Édition du bien:", property);
     // TODO: Implémenter l'édition
+  };
+
+  const handleNotesChange = (propertyId: number, notes: any) => {
+    setProperties(prev =>
+      prev.map(property =>
+        property.id === propertyId
+          ? { ...property, privateNotes: notes }
+          : property
+      )
+    );
+    toast({
+      title: "Notes mises à jour",
+      description: "Les notes privées ont été mises à jour avec succès.",
+    });
   };
 
   if (!isAgent) {
@@ -70,6 +85,7 @@ const PropertyManagement = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
         onStatusChange={handleStatusChange}
+        onNotesChange={handleNotesChange}
       />
 
       <AddPropertyDialog
