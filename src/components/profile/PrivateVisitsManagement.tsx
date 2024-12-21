@@ -1,12 +1,13 @@
 import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Visit } from "@/types/visit";
+import { VisitsList } from "./visits/VisitsList";
 import { VisitCancellationDialog } from "./visits/VisitCancellationDialog";
 import { VisitReschedulingDialog } from "./visits/VisitReschedulingDialog";
 import { VisitDetailsDialog } from "./visits/VisitDetailsDialog";
 import { mockVisits } from "@/data/mockVisits";
 import { useAuth } from "@/contexts/AuthContext";
-import { VisitsCalendar } from "./visits/VisitsCalendar";
 
 export const PrivateVisitsManagement = () => {
   const { toast } = useToast();
@@ -16,7 +17,7 @@ export const PrivateVisitsManagement = () => {
   const [showCancellationDialog, setShowCancellationDialog] = useState(false);
   const [showReschedulingDialog, setShowReschedulingDialog] = useState(false);
 
-  const isAgent = user?.role === "agent" || user?.role === "developer";
+  const isAgent = user?.role === 'agent' || user?.role === 'developer';
 
   const handleCancel = (visit: Visit) => {
     setSelectedVisit(visit);
@@ -70,10 +71,29 @@ export const PrivateVisitsManagement = () => {
     <div className="space-y-6">
       <h2 className="text-lg font-semibold">Mes Visites Privées</h2>
 
-      <VisitsCalendar 
-        visits={visits}
-        onVisitSelect={setSelectedVisit}
-      />
+      <Tabs defaultValue="pending" className="w-full">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="pending">En attente</TabsTrigger>
+          <TabsTrigger value="confirmed">Confirmées</TabsTrigger>
+          <TabsTrigger value="ongoing">En cours</TabsTrigger>
+          <TabsTrigger value="completed">Terminées</TabsTrigger>
+          <TabsTrigger value="cancelled">Annulées</TabsTrigger>
+        </TabsList>
+
+        {["pending", "confirmed", "ongoing", "completed", "cancelled"].map((status) => (
+          <TabsContent key={status} value={status}>
+            <VisitsList
+              visits={visits}
+              status={status}
+              onCancel={handleCancel}
+              onReschedule={handleReschedule}
+              onVisitSelect={setSelectedVisit}
+              onVisitUpdate={handleVisitUpdate}
+              showAgentActions={isAgent}
+            />
+          </TabsContent>
+        ))}
+      </Tabs>
 
       {selectedVisit && (
         <>
