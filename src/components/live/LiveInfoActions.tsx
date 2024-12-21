@@ -30,8 +30,8 @@ export const LiveInfoActions = ({
   const navigate = useNavigate();
   
   const themeColor = isReplay 
-    ? '#16A34A' // Vert pour les replays
-    : '#F97316'; // Orange pour les autres
+    ? '#16A34A' 
+    : '#F97316';
       
   const bgBase = isReplay 
     ? 'bg-green-600' 
@@ -52,6 +52,10 @@ export const LiveInfoActions = ({
   const textColor = isReplay 
     ? 'text-green-600' 
     : 'text-orange-500';
+
+  const handleClose = () => {
+    navigate(-1);
+  };
 
   return (
     <div className={cn(
@@ -95,7 +99,8 @@ export const LiveInfoActions = ({
             bgLightHover,
             "transition-colors"
           )}
-          onClick={() => navigate(-1)}
+          onClick={handleClose}
+          type="button"
         >
           <X className="h-6 w-6" />
         </Button>
