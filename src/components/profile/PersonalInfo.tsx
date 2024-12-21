@@ -7,6 +7,7 @@ import { Facebook, Instagram, Youtube, MessageCircle } from "lucide-react";
 import { LiveManagement } from "./LiveManagement";
 import { PrivateVisitButton } from "./PrivateVisitButton";
 import { PrivateVisitsManagement } from "./PrivateVisitsManagement";
+import { ValidatedProperties } from "./ValidatedProperties";
 
 interface PersonalInfoProps {
   firstName: string;
@@ -72,10 +73,16 @@ export const PersonalInfo = ({
       </div>
 
       {accountType === "buyer" && (
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-semibold">Visites privées</h3>
-          <PrivateVisitButton />
-        </div>
+        <>
+          <div className="space-y-4 border-t pt-4">
+            <h3 className="text-lg font-semibold">Visites privées</h3>
+            <PrivateVisitButton />
+          </div>
+          
+          <div className="space-y-4 border-t pt-4">
+            <ValidatedProperties />
+          </div>
+        </>
       )}
 
       {accountType === "agent" && (
