@@ -1,21 +1,19 @@
-import { Dispatch, SetStateAction } from "react";
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
-export interface PropertyFiltersProps {
+interface PropertyFiltersProps {
   searchTerm: string;
-  setSearchTerm: Dispatch<SetStateAction<string>>;
+  setSearchTerm: (value: string) => void;
   propertyType: string;
-  setPropertyType: Dispatch<SetStateAction<string>>;
-  priceRange: number[];
-  setPriceRange: Dispatch<SetStateAction<number[]>>;
-  surfaceRange: number[];
-  setSurfaceRange: Dispatch<SetStateAction<number[]>>;
-  transactionType: string[];
-  setTransactionType: Dispatch<SetStateAction<string[]>>;
+  setPropertyType: (value: string) => void;
+  priceRange: [number, number];
+  setPriceRange: (value: [number, number]) => void;
+  surfaceRange: [number, number];
+  setSurfaceRange: (value: [number, number]) => void;
   viewType: "grid" | "list";
-  setViewType: Dispatch<SetStateAction<"grid" | "list">>;
+  setViewType: (value: "grid" | "list") => void;
+  suggestions?: string[];
+  transactionType: string[];
+  setTransactionType: (value: string[]) => void;
 }
 
 export const PropertyFilters = ({
@@ -27,45 +25,80 @@ export const PropertyFilters = ({
   setPriceRange,
   surfaceRange,
   setSurfaceRange,
+  viewType,
+  setViewType,
+  suggestions,
   transactionType,
   setTransactionType,
-  viewType,
-  setViewType
 }: PropertyFiltersProps) => {
   return (
-    <div className="space-y-4">
-      <Input
+    <div className="flex flex-col md:flex-row gap-4">
+      <input
         type="text"
         placeholder="Rechercher..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        className="border rounded p-2"
       />
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Select
-          value={propertyType}
-          onValueChange={setPropertyType}
-        >
-          <option value="all">Tous les types</option>
-          <option value="apartment">Appartement</option>
-          <option value="house">Maison</option>
-          <option value="land">Terrain</option>
-        </Select>
-
-        <div className="flex gap-2">
-          <Button
-            variant={viewType === "grid" ? "default" : "outline"}
-            onClick={() => setViewType("grid")}
+      <select
+        value={propertyType}
+        onChange={(e) => setPropertyType(e.target.value)}
+        className="border rounded p-2"
+      >
+        <option value="">Tous les types</option>
+        <option value="Villa">Villa</option>
+        <option value="Appartement">Appartement</option>
+        <option value="Riad">Riad</option>
+        <option value="Terrain">Terrain</option>
+        <option value="Bureau">Bureau</option>
+        <option value="Logistique/Industriel">Logistique/Industriel</option>
+      </select>
+      <input
+        type="number"
+        placeholder="Prix min"
+        value={priceRange[0]}
+        onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
+        className="border rounded p-2"
+      />
+      <input
+        type="number"
+        placeholder="Prix max"
+        value={priceRange[1]}
+        onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+        className="border rounded p-2"
+      />
+      <input
+        type="number"
+        placeholder="Surface min"
+        value={surfaceRange[0]}
+        onChange={(e) => setSurfaceRange([Number(e.target.value), surfaceRange[1]])}
+        className="border rounded p-2"
+      />
+      <input
+        type="number"
+        placeholder="Surface max"
+        value={surfaceRange[1]}
+        onChange={(e) => setSurfaceRange([surfaceRange[0], Number(e.target.value)])}
+        className="border rounded p-2"
+      />
+      <select
+        value={viewType}
+        onChange={(e) => setViewType(e.target.value as "grid" | "list")}
+        className="border rounded p-2"
+      >
+        <option value="grid">Grille</option>
+        <option value="list">Liste</option>
+      </select>
+      <div className="flex gap-2">
+        {suggestions && suggestions.map((suggestion) => (
+          <button
+            key={suggestion}
+            onClick={() => setSearchTerm(suggestion)}
+            className="border rounded p-2"
           >
-            Grille
-          </Button>
-          <Button
-            variant={viewType === "list" ? "default" : "outline"}
-            onClick={() => setViewType("list")}
-          >
-            Liste
-          </Button>
-        </div>
+            {suggestion}
+          </button>
+        ))}
       </div>
     </div>
   );
