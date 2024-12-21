@@ -10,9 +10,9 @@ interface HomeFiltersProps {
 export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("all");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000000]);
-  const [surfaceRange, setSurfaceRange] = useState<[number, number]>([0, 100000]);
-  const [viewType, setViewType] = useState<"grid" | "list">("grid");
+  const [priceRange, setPriceRange] = useState([0, 5000000]);
+  const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
+  const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
   const suggestions = [
@@ -57,6 +57,12 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
       (property) =>
         property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1]
     );
+
+    if (viewType === "live") {
+      filtered = filtered.filter((property) => property.hasLive && !property.isReplay);
+    } else if (viewType === "replay") {
+      filtered = filtered.filter((property) => property.hasLive && property.isReplay);
+    }
 
     onFiltersChange(filtered);
   };
