@@ -27,6 +27,10 @@ export const VisitCalendar = ({ propertyId, propertyTitle }: VisitCalendarProps)
     return [];
   };
 
+  const getVisitCount = (date: Date) => {
+    return getVisitsForDate(date).length;
+  };
+
   const getVisitStatusColor = (status: string) => {
     switch (status) {
       case "confirmed":
@@ -71,19 +75,14 @@ export const VisitCalendar = ({ propertyId, propertyTitle }: VisitCalendarProps)
           }}
           components={{
             DayContent: ({ date }) => {
-              const visits = getVisitsForDate(date);
+              const visitCount = getVisitCount(date);
               return (
                 <div className="relative w-full h-full flex items-center justify-center">
-                  {date.getDate()}
-                  {visits.length > 0 && (
-                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 flex gap-0.5">
-                      {visits.map((visit, index) => (
-                        <div
-                          key={index}
-                          className={`w-1.5 h-1.5 rounded-full ${getVisitStatusColor(visit.status)}`}
-                        />
-                      ))}
-                    </div>
+                  <span>{date.getDate()}</span>
+                  {visitCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                      {visitCount}
+                    </span>
                   )}
                 </div>
               );
