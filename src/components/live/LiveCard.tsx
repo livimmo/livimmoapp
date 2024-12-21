@@ -1,14 +1,13 @@
 import { LiveEvent } from "@/types/live";
 import { Badge } from "../ui/badge";
 import { Link } from "react-router-dom";
-import { Calendar, Users, Share2, MapPin, Play } from "lucide-react";
+import { Calendar, Users, Share2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { ReservationForm } from "../home/ReservationForm";
 import { FavoriteButton } from "../property/FavoriteButton";
 import { ShareButtons } from "../properties/ShareButtons";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 interface LiveCardProps {
   live: LiveEvent;
@@ -18,7 +17,6 @@ export const LiveCard = ({ live }: LiveCardProps) => {
   const [showReservation, setShowReservation] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
   
   const formattedDate = live.date
     ? new Date(live.date).toLocaleDateString("fr-FR", {
@@ -35,12 +33,6 @@ export const LiveCard = ({ live }: LiveCardProps) => {
     setShowReservation(true);
   };
 
-  const handleJoinLive = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigate(`/live/${live.id}`);
-  };
-
   return (
     <div className="group relative overflow-hidden rounded-lg border bg-background">
       <Link
@@ -53,20 +45,9 @@ export const LiveCard = ({ live }: LiveCardProps) => {
             alt={live.title}
             className="h-full w-full object-cover transition-transform group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            {live.status === "live" && (
-              <Button 
-                onClick={handleJoinLive}
-                className="bg-red-500 hover:bg-red-600 text-white gap-2"
-              >
-                <Play className="w-4 h-4" />
-                Rejoindre le live
-              </Button>
-            )}
-          </div>
           <div className="absolute top-2 left-2 flex flex-wrap gap-2 max-w-[80%]">
             {live.status === "live" && (
-              <Badge variant="destructive" className="animate-pulse flex items-center gap-1.5 bg-red-500 hover:bg-red-600">
+              <Badge variant="destructive" className="animate-pulse flex items-center gap-1.5">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
@@ -116,15 +97,6 @@ export const LiveCard = ({ live }: LiveCardProps) => {
           <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4" />
             <span>{formattedDate}</span>
-          </div>
-          <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4" />
-            <span>
-              {live.location}
-              {live.neighborhood && (
-                <span className="text-xs text-muted-foreground"> • {live.neighborhood}</span>
-              )}
-            </span>
           </div>
           <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
             <Users className="h-4 w-4" />

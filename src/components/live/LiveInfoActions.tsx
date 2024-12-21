@@ -30,32 +30,40 @@ export const LiveInfoActions = ({
   const navigate = useNavigate();
   
   const themeColor = isReplay 
-    ? '#16A34A' 
-    : '#F97316';
+    ? '#10B981' 
+    : isScheduled 
+      ? '#33C3F0'
+      : '#ea384c';
       
   const bgBase = isReplay 
-    ? 'bg-green-600' 
-    : 'bg-orange-500';
+    ? 'bg-emerald-500' 
+    : isScheduled
+      ? 'bg-[#33C3F0]'
+      : 'bg-red-500';
       
   const bgHover = isReplay 
-    ? 'hover:bg-green-700' 
-    : 'hover:bg-orange-600';
+    ? 'hover:bg-emerald-600' 
+    : isScheduled
+      ? 'hover:bg-[#33C3F0]/90'
+      : 'hover:bg-red-600';
       
   const bgLight = isReplay 
-    ? 'bg-green-500/10' 
-    : 'bg-orange-500/10';
+    ? 'bg-emerald-500/10' 
+    : isScheduled
+      ? 'bg-[#33C3F0]/10'
+      : 'bg-red-500/10';
       
   const bgLightHover = isReplay 
-    ? 'hover:bg-green-500/20' 
-    : 'hover:bg-orange-500/20';
+    ? 'hover:bg-emerald-500/20' 
+    : isScheduled
+      ? 'hover:bg-[#33C3F0]/20'
+      : 'hover:bg-red-500/20';
       
   const textColor = isReplay 
-    ? 'text-green-600' 
-    : 'text-orange-500';
-
-  const handleClose = () => {
-    navigate(-1);
-  };
+    ? 'text-emerald-500' 
+    : isScheduled
+      ? 'text-[#33C3F0]'
+      : 'text-red-500';
 
   return (
     <div className={cn(
@@ -99,8 +107,7 @@ export const LiveInfoActions = ({
             bgLightHover,
             "transition-colors"
           )}
-          onClick={handleClose}
-          type="button"
+          onClick={() => navigate(-1)}
         >
           <X className="h-6 w-6" />
         </Button>
@@ -111,8 +118,10 @@ export const LiveInfoActions = ({
             variant="secondary" 
             className={cn(
               isReplay 
-                ? 'bg-green-500/10 text-green-600'
-                : 'bg-orange-500/10 text-orange-500',
+                ? 'bg-emerald-500/10 text-emerald-500' 
+                : isScheduled
+                  ? 'bg-[#33C3F0]/10 text-[#33C3F0]'
+                  : 'bg-red-500/10 text-red-500',
               "shadow-sm",
               "transition-all duration-300 ease-in-out",
               "hover:scale-105"

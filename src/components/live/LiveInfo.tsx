@@ -45,23 +45,27 @@ export const LiveInfo = ({
 
   // Define theme colors based on live status
   const themeColor = isReplay 
-    ? '#16A34A' // Vert pour les replays
+    ? '#10B981' 
     : isScheduled 
-      ? '#F97316' // Orange pour les lives programmés
-      : '#EF4444'; // Rouge pour les lives en cours
+      ? '#33C3F0'
+      : '#ea384c';
       
-  const bgOpacity = 'bg-white'; // Fond blanc pour tous les états
+  const bgOpacity = isReplay 
+    ? 'bg-emerald-500/5' 
+    : isScheduled
+      ? 'bg-[#33C3F0]/5'
+      : 'bg-red-500/5';
       
   const hoverBgOpacity = isReplay 
-    ? 'hover:bg-green-50' 
+    ? 'hover:bg-emerald-500/10' 
     : isScheduled
-      ? 'hover:bg-orange-50'
-      : 'hover:bg-red-50';
+      ? 'hover:bg-[#33C3F0]/10'
+      : 'hover:bg-red-500/10';
       
   const borderColor = isReplay 
-    ? 'border-green-500/20' 
+    ? 'border-emerald-500/20' 
     : isScheduled
-      ? 'border-orange-500/20'
+      ? 'border-[#33C3F0]/20'
       : 'border-red-500/20';
 
   return (
@@ -110,16 +114,16 @@ export const LiveInfo = ({
                 variant="secondary" 
                 className={cn(
                   isReplay 
-                    ? 'bg-green-500/10 text-green-600'
+                    ? 'bg-emerald-500/10 text-emerald-500' 
                     : isScheduled
-                      ? 'bg-orange-500/10 text-orange-500'
+                      ? 'bg-[#33C3F0]/10 text-[#33C3F0]'
                       : 'bg-red-500/10 text-red-500',
                   "shadow-sm",
                   "transition-all duration-300 ease-in-out",
                   "hover:scale-105"
                 )}
               >
-                {isReplay ? "Virtual" : `${offerCount} offres`}
+                {offerCount} offres
               </Badge>
               <p className="text-lg font-bold whitespace-nowrap" style={{ color: themeColor }}>
                 {property.price.toLocaleString()} DH
