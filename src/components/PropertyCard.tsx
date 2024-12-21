@@ -7,12 +7,13 @@ import { FavoriteButton } from "./property/FavoriteButton";
 import { Badge } from "./ui/badge";
 import { getRandomTags } from "@/utils/propertyTags";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
-import { CheckCircle2, View } from "lucide-react";
+import { View, ArrowRight } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { AgentCertificationBadge } from "./agent/AgentCertificationBadge";
 import { cn } from "@/lib/utils";
+import { VirtualTourButton } from "./property/VirtualTourButton";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -94,6 +95,12 @@ export const PropertyCard = ({
             />
             <PropertyActions title={title} currentUrl={currentUrl} />
           </div>
+          {virtualTour?.enabled && (
+            <VirtualTourButton
+              propertyId={id}
+              className="absolute bottom-2 right-2 z-10"
+            />
+          )}
           <div className="absolute top-2 left-2 right-14 z-10">
             <div className="flex flex-wrap gap-1">
               {!hasLive && (
