@@ -1,7 +1,7 @@
 import { LiveEvent } from "@/types/live";
 import { Badge } from "../ui/badge";
 import { Link } from "react-router-dom";
-import { Calendar, Users, Share2 } from "lucide-react";
+import { Calendar, Users, Share2, MapPin } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { ReservationForm } from "../home/ReservationForm";
@@ -97,6 +97,15 @@ export const LiveCard = ({ live }: LiveCardProps) => {
           <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4" />
             <span>{formattedDate}</span>
+          </div>
+          <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+            <MapPin className="h-4 w-4" />
+            <span>
+              {live.location}
+              {live.neighborhood && (
+                <span className="text-xs text-muted-foreground"> • {live.neighborhood}</span>
+              )}
+            </span>
           </div>
           <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
             <Users className="h-4 w-4" />
