@@ -14,6 +14,7 @@ interface LiveInfoProps {
   viewerCount: number;
   onToggleChat?: () => void;
   isReplay?: boolean;
+  isScheduled?: boolean;
   onToggleFullscreen?: () => void;
   isFullscreen?: boolean;
 }
@@ -23,6 +24,7 @@ export const LiveInfo = ({
   viewerCount, 
   onToggleChat, 
   isReplay,
+  isScheduled,
   onToggleFullscreen,
   isFullscreen 
 }: LiveInfoProps) => {
@@ -41,10 +43,30 @@ export const LiveInfo = ({
     return () => clearInterval(interval);
   }, []);
 
-  const themeColor = isReplay ? '#10B981' : '#33C3F0';
-  const bgOpacity = isReplay ? 'bg-emerald-500/5' : 'bg-[#33C3F0]/5';
-  const hoverBgOpacity = isReplay ? 'hover:bg-emerald-500/10' : 'hover:bg-[#33C3F0]/10';
-  const borderColor = isReplay ? 'border-emerald-500/20' : 'border-[#33C3F0]/20';
+  // Define theme colors based on live status
+  const themeColor = isReplay 
+    ? '#10B981' 
+    : isScheduled 
+      ? '#33C3F0'
+      : '#ea384c';
+      
+  const bgOpacity = isReplay 
+    ? 'bg-emerald-500/5' 
+    : isScheduled
+      ? 'bg-[#33C3F0]/5'
+      : 'bg-red-500/5';
+      
+  const hoverBgOpacity = isReplay 
+    ? 'hover:bg-emerald-500/10' 
+    : isScheduled
+      ? 'hover:bg-[#33C3F0]/10'
+      : 'hover:bg-red-500/10';
+      
+  const borderColor = isReplay 
+    ? 'border-emerald-500/20' 
+    : isScheduled
+      ? 'border-[#33C3F0]/20'
+      : 'border-red-500/20';
 
   return (
     <Card className={cn(
@@ -71,10 +93,12 @@ export const LiveInfo = ({
             property={property}
             viewerCount={viewerCount}
             isReplay={isReplay}
+            isScheduled={isScheduled}
           />
 
           <LiveInfoActions 
             isReplay={isReplay}
+            isScheduled={isScheduled}
             isMobile={isMobile}
             isFavorite={isFavorite}
             setIsFavorite={setIsFavorite}
@@ -89,7 +113,11 @@ export const LiveInfo = ({
               <Badge 
                 variant="secondary" 
                 className={cn(
-                  isReplay ? 'bg-emerald-500/10 text-emerald-500' : 'bg-[#33C3F0]/10 text-[#33C3F0]',
+                  isReplay 
+                    ? 'bg-emerald-500/10 text-emerald-500' 
+                    : isScheduled
+                      ? 'bg-[#33C3F0]/10 text-[#33C3F0]'
+                      : 'bg-red-500/10 text-red-500',
                   "shadow-sm",
                   "transition-all duration-300 ease-in-out",
                   "hover:scale-105"

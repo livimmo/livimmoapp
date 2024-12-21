@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 interface LiveInfoActionsProps {
   isReplay?: boolean;
+  isScheduled?: boolean;
   isMobile: boolean;
   isFavorite: boolean;
   setIsFavorite: (value: boolean) => void;
@@ -17,6 +18,7 @@ interface LiveInfoActionsProps {
 
 export const LiveInfoActions = ({
   isReplay,
+  isScheduled,
   isMobile,
   isFavorite,
   setIsFavorite,
@@ -26,12 +28,42 @@ export const LiveInfoActions = ({
   onOpenOfferDialog
 }: LiveInfoActionsProps) => {
   const navigate = useNavigate();
-  const themeColor = isReplay ? '#10B981' : '#33C3F0';
-  const bgBase = isReplay ? 'bg-emerald-500' : 'bg-[#33C3F0]';
-  const bgHover = isReplay ? 'hover:bg-emerald-600' : 'hover:bg-[#33C3F0]/90';
-  const bgLight = isReplay ? 'bg-emerald-500/10' : 'bg-[#33C3F0]/10';
-  const bgLightHover = isReplay ? 'hover:bg-emerald-500/20' : 'hover:bg-[#33C3F0]/20';
-  const textColor = isReplay ? 'text-emerald-500' : 'text-[#33C3F0]';
+  
+  const themeColor = isReplay 
+    ? '#10B981' 
+    : isScheduled 
+      ? '#33C3F0'
+      : '#ea384c';
+      
+  const bgBase = isReplay 
+    ? 'bg-emerald-500' 
+    : isScheduled
+      ? 'bg-[#33C3F0]'
+      : 'bg-red-500';
+      
+  const bgHover = isReplay 
+    ? 'hover:bg-emerald-600' 
+    : isScheduled
+      ? 'hover:bg-[#33C3F0]/90'
+      : 'hover:bg-red-600';
+      
+  const bgLight = isReplay 
+    ? 'bg-emerald-500/10' 
+    : isScheduled
+      ? 'bg-[#33C3F0]/10'
+      : 'bg-red-500/10';
+      
+  const bgLightHover = isReplay 
+    ? 'hover:bg-emerald-500/20' 
+    : isScheduled
+      ? 'hover:bg-[#33C3F0]/20'
+      : 'hover:bg-red-500/20';
+      
+  const textColor = isReplay 
+    ? 'text-emerald-500' 
+    : isScheduled
+      ? 'text-[#33C3F0]'
+      : 'text-red-500';
 
   return (
     <div className={cn(
@@ -85,7 +117,11 @@ export const LiveInfoActions = ({
           <Badge 
             variant="secondary" 
             className={cn(
-              isReplay ? 'bg-emerald-500/10 text-emerald-500' : 'bg-[#33C3F0]/10 text-[#33C3F0]',
+              isReplay 
+                ? 'bg-emerald-500/10 text-emerald-500' 
+                : isScheduled
+                  ? 'bg-[#33C3F0]/10 text-[#33C3F0]'
+                  : 'bg-red-500/10 text-red-500',
               "shadow-sm",
               "transition-all duration-300 ease-in-out",
               "hover:scale-105"
