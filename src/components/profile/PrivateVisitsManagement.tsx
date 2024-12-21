@@ -7,13 +7,17 @@ import { VisitCancellationDialog } from "./visits/VisitCancellationDialog";
 import { VisitReschedulingDialog } from "./visits/VisitReschedulingDialog";
 import { VisitDetailsDialog } from "./visits/VisitDetailsDialog";
 import { mockVisits } from "@/data/mockVisits";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const PrivateVisitsManagement = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [visits, setVisits] = useState<Visit[]>(mockVisits);
   const [selectedVisit, setSelectedVisit] = useState<Visit | null>(null);
   const [showCancellationDialog, setShowCancellationDialog] = useState(false);
   const [showReschedulingDialog, setShowReschedulingDialog] = useState(false);
+
+  const isAgent = user?.role === 'agent' || user?.role === 'developer';
 
   const handleCancel = (visit: Visit) => {
     setSelectedVisit(visit);
@@ -23,6 +27,10 @@ export const PrivateVisitsManagement = () => {
   const handleReschedule = (visit: Visit) => {
     setSelectedVisit(visit);
     setShowReschedulingDialog(true);
+  };
+
+  const handleVisitUpdate = (updatedVisit: Visit) => {
+    setVisits(visits.map(v => v.id === updatedVisit.id ? updatedVisit : v));
   };
 
   const confirmCancellation = (reason: string) => {
@@ -72,55 +80,19 @@ export const PrivateVisitsManagement = () => {
           <TabsTrigger value="cancelled">Annulées</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="pending">
-          <VisitsList
-            visits={visits}
-            status="pending"
-            onCancel={handleCancel}
-            onReschedule={handleReschedule}
-            onVisitSelect={setSelectedVisit}
-          />
-        </TabsContent>
-
-        <TabsContent value="confirmed">
-          <VisitsList
-            visits={visits}
-            status="confirmed"
-            onCancel={handleCancel}
-            onReschedule={handleReschedule}
-            onVisitSelect={setSelectedVisit}
-          />
-        </TabsContent>
-
-        <TabsContent value="ongoing">
-          <VisitsList
-            visits={visits}
-            status="ongoing"
-            onCancel={handleCancel}
-            onReschedule={handleReschedule}
-            onVisitSelect={setSelectedVisit}
-          />
-        </TabsContent>
-
-        <TabsContent value="completed">
-          <VisitsList
-            visits={visits}
-            status="completed"
-            onCancel={handleCancel}
-            onReschedule={handleReschedule}
-            onVisitSelect={setSelectedVisit}
-          />
-        </TabsContent>
-
-        <TabsContent value="cancelled">
-          <VisitsList
-            visits={visits}
-            status="cancelled"
-            onCancel={handleCancel}
-            onReschedule={handleReschedule}
-            onVisitSelect={setSelectedVisit}
-          />
-        </TabsContent>
+        {["pending", "confirmed", "ongoing", "completed", "cancelled"].map((status) => (
+          <TabsContent key={status} value={status}>
+            <VisitsList
+              visits={visits}
+              status={status}
+              onCancel={handleCancel}
+              onReschedule={handleReschedule}
+              onVisitSelect={setSelectedVisit}
+              onVisitUpdate={handleVisitUpdate}
+              showAgentActions={isAgent}
+            />
+          </TabsContent>
+        ))}
       </Tabs>
 
       {selectedVisit && (

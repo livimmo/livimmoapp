@@ -8,9 +8,19 @@ export interface VisitsListProps {
   onCancel: (visit: Visit) => void;
   onReschedule: (visit: Visit) => void;
   onVisitSelect: Dispatch<SetStateAction<Visit | null>>;
+  onVisitUpdate?: (updatedVisit: Visit) => void;
+  showAgentActions?: boolean;
 }
 
-export const VisitsList = ({ visits, status, onCancel, onReschedule, onVisitSelect }: VisitsListProps) => {
+export const VisitsList = ({ 
+  visits, 
+  status, 
+  onCancel, 
+  onReschedule, 
+  onVisitSelect,
+  onVisitUpdate,
+  showAgentActions = false
+}: VisitsListProps) => {
   const filteredVisits = visits.filter(visit => visit.status === status);
 
   if (filteredVisits.length === 0) {
@@ -33,6 +43,8 @@ export const VisitsList = ({ visits, status, onCancel, onReschedule, onVisitSele
           onCancel={() => onCancel(visit)}
           onReschedule={() => onReschedule(visit)}
           onSelect={() => onVisitSelect(visit)}
+          onVisitUpdate={onVisitUpdate}
+          showAgentActions={showAgentActions}
         />
       ))}
     </div>

@@ -4,15 +4,29 @@ import { Calendar, Clock, MapPin, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { AgentVisitActions } from "./AgentVisitActions";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface VisitCardProps {
   visit: Visit;
   onCancel: () => void;
   onReschedule: () => void;
   onSelect: () => void;
+  onVisitUpdate?: (updatedVisit: Visit) => void;
+  showAgentActions?: boolean;
 }
 
-export const VisitCard = ({ visit, onCancel, onReschedule, onSelect }: VisitCardProps) => {
+export const VisitCard = ({ 
+  visit, 
+  onCancel, 
+  onReschedule, 
+  onSelect,
+  onVisitUpdate,
+  showAgentActions = false
+}: VisitCardProps) => {
+  const { user } = useAuth();
+  const isAgent = user?.role === 'agent' || user?.role === 'developer';
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "pending":
@@ -57,25 +71,34 @@ export const VisitCard = ({ visit, onCancel, onReschedule, onSelect }: VisitCard
             </div>
             <div className="flex items-center gap-2">
               <User className="h-4 w-4" />
-              <span>{visit.agent.name}</span>
+              <span>{isAgent ? visit.visitor.name : visit.agent.name}</span>
             </div>
           </div>
 
-          {visit.status === "pending" || visit.status === "confirmed" ? (
-            <div className="mt-4 flex gap-2">
-              {visit.status === "confirmed" && visit.isLive && (
-                <Button variant="default" className="w-full" onClick={() => window.location.href = visit.liveUrl || ''}>
-                  Rejoindre le live
-                </Button>
-              )}
-              <Button variant="outline" className="w-full" onClick={onReschedule}>
-                Reprogrammer
-              </Button>
-              <Button variant="destructive" className="w-full" onClick={onCancel}>
-                Annuler
-              </Button>
+          {showAgentActions && isAgent && onVisitUpdate ? (
+            <div className="mt-4">
+              <AgentVisitActions 
+                visit={visit}
+                onVisitUpdate={onVisitUpdate}
+              />
             </div>
-          ) : null}
+          ) : (
+            (visit.status === "pending" || visit.status === "confirmed") && !isAgent && (
+              <div className="mt-4 flex gap-2">
+                {visit.status === "confirmed" && visit.isLive && (
+                  <Button variant="default" className="w-full" onClick={() => window.location.href = visit.liveUrl || ''}>
+                    Rejoindre le live
+                  </Button>
+                )}
+                <Button variant="outline" className="w-full" onClick={onReschedule}>
+                  Reprogrammer
+                </Button>
+                <Button variant="destructive" className="w-full" onClick={onCancel}>
+                  Annuler
+                </Button>
+              </div>
+            )
+          )}
         </div>
       </div>
     </div>
