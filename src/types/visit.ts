@@ -1,3 +1,5 @@
+import { Agent } from "./agent";
+
 export type VisitStatus = "pending" | "confirmed" | "ongoing" | "completed" | "cancelled";
 export type VisitType = "physical" | "remote" | "virtual";
 
