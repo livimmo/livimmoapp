@@ -180,7 +180,8 @@ export const replayLives: LiveEvent[] = [
     price: "5,500,000 MAD",
     description: "Magnifique villa de luxe avec piscine et jardin",
     viewers: 150,
-    status: "replay"
+    status: "replay",
+    availableSeats: 0 // Ajout du champ manquant
   },
   {
     id: 9,
@@ -194,7 +195,8 @@ export const replayLives: LiveEvent[] = [
     price: "2,800,000 MAD",
     description: "Superbe appartement avec vue panoramique sur l'océan",
     viewers: 98,
-    status: "replay"
+    status: "replay",
+    availableSeats: 0 // Ajout du champ manquant
   },
   {
     id: 10,
@@ -208,6 +210,7 @@ export const replayLives: LiveEvent[] = [
     price: "3,200,000 MAD",
     description: "Riad authentique entièrement rénové avec matériaux traditionnels",
     viewers: 120,
-    status: "replay"
+    status: "replay",
+    availableSeats: 0 // Ajout du champ manquant
   }
 ];

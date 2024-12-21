@@ -14,6 +14,7 @@ import { HeroBanner } from "@/components/home/HeroBanner";
 const Lives = () => {
   const [currentLivesViewMode, setCurrentLivesViewMode] = useState<"list" | "map">("list");
   const [scheduledViewMode, setScheduledViewMode] = useState<"list" | "map">("list");
+  const [replayViewMode, setReplayViewMode] = useState<"list" | "map">("list");
   
   // Filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -100,6 +101,37 @@ const Lives = () => {
     },
     isLiveNow: false,
     viewers: 0,
+    remainingSeats: live.availableSeats,
+    transactionType: "Vente"
+  }));
+
+  // Convert replay lives to Property format for the map
+  const replayLiveProperties: Property[] = filteredReplayLives.map((live) => ({
+    id: live.id,
+    title: live.title,
+    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
+    location: live.location,
+    type: live.type,
+    surface: 0,
+    rooms: 0,
+    bathrooms: 0,
+    description: live.description || "",
+    features: [],
+    images: [live.thumbnail],
+    hasLive: true,
+    liveDate: live.date,
+    agent: {
+      name: live.agent,
+      image: "",
+      phone: "",
+      email: "",
+    },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2 - 1,
+      lng: -7.0926 + Math.random() * 2 - 1,
+    },
+    isLiveNow: false,
+    viewers: live.viewers,
     remainingSeats: live.availableSeats,
     transactionType: "Vente"
   }));
@@ -224,12 +256,44 @@ const Lives = () => {
 
       {/* Section des replays */}
       <section>
-        <h2 className="text-2xl font-bold mb-6">Replays disponibles</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredReplayLives.map((live) => (
-            <ReplayCard key={live.id} live={live} />
-          ))}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">
+            Replays disponibles
+            <span className="ml-2 text-sm font-normal text-muted-foreground">
+              ({filteredReplayLives.length})
+            </span>
+          </h2>
+          <div className="flex gap-2">
+            <Button
+              variant={replayViewMode === "list" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setReplayViewMode("list")}
+            >
+              <List className="h-4 w-4 mr-2" />
+              Liste
+            </Button>
+            <Button
+              variant={replayViewMode === "map" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setReplayViewMode("map")}
+            >
+              <Map className="h-4 w-4 mr-2" />
+              Carte
+            </Button>
+          </div>
         </div>
+
+        {replayViewMode === "list" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredReplayLives.map((live) => (
+              <ReplayCard key={live.id} live={live} />
+            ))}
+          </div>
+        ) : (
+          <div className="h-[500px] rounded-lg overflow-hidden">
+            <LiveGoogleMap properties={replayLiveProperties} />
+          </div>
+        )}
       </section>
     </div>
   );
