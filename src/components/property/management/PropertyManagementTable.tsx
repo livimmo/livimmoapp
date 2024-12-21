@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Edit, Trash, MoreHorizontal, FileText, Video, Calendar, Camera360 } from "lucide-react";
+import { Edit, Trash, MoreHorizontal, FileText, Video, Calendar, Camera } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -56,7 +56,7 @@ export const PropertyManagementTable = ({
         )}
         {property.virtualTour?.enabled && (
           <Badge variant="default" className="gap-1">
-            <Camera360 className="w-3 h-3" /> Visite 360°
+            <Camera className="w-3 h-3" /> Visite 360°
           </Badge>
         )}
       </div>
