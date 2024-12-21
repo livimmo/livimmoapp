@@ -1,4 +1,4 @@
-import { Home, Search, Video, Heart, User, Building2 } from "lucide-react";
+import { Home, Search, Video, Heart, User, Building2, Flame } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
@@ -12,10 +12,7 @@ export const BottomNav = () => {
     return location.pathname === path;
   };
 
-  // Compte le nombre de lives en cours
   const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
-
-  // Compte le nombre de favoris
   const favoritesCount = mockFavoritesData.length;
 
   const navItems = [
@@ -28,6 +25,11 @@ export const BottomNav = () => {
       badge: activeLivesCount > 0 ? activeLivesCount : undefined 
     },
     { icon: Building2, label: "Promoteurs", path: "/developers" },
+    { 
+      icon: Flame, 
+      label: "Hot Deals", 
+      path: "/hot-deals",
+    },
     { 
       icon: Heart, 
       label: "Favoris", 
