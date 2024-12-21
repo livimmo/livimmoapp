@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "@/pages/Home";
-import PropertyManagement from "@/pages/PropertyManagement";
-import HotDeals from "@/pages/HotDeals";
-import BottomNav from "@/components/ui/BottomNav";
+import Home from "./pages/Home";
+import PropertyManagement from "./pages/PropertyManagement";
+import HotDeals from "./pages/HotDeals";
+import { BottomNav } from "./components/BottomNav";
 
 const App = () => {
   return (

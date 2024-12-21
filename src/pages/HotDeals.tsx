@@ -10,13 +10,14 @@ const HotDeals = () => {
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
+  const [viewType, setViewType] = useState<"grid" | "list">("grid");
 
-  // Filtrer les propriétés pour n'avoir que les Hot Deals (propriétés avec tags "Coup de fusil")
+  // Filtrer les propriétés pour n'avoir que les Hot Deals
   const hotDeals = mockProperties.filter(property => 
     property.tags?.includes("Coup de fusil")
   );
 
-  // Appliquer les filtres supplémentaires
+  // Appliquer les filtres
   const filteredHotDeals = hotDeals.filter(property => {
     const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       property.location.toLowerCase().includes(searchTerm.toLowerCase());
@@ -44,6 +45,8 @@ const HotDeals = () => {
           setSurfaceRange={setSurfaceRange}
           transactionType={transactionType}
           setTransactionType={setTransactionType}
+          viewType={viewType}
+          setViewType={setViewType}
         />
       </div>
 

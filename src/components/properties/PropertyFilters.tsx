@@ -1,27 +1,21 @@
+import { Dispatch, SetStateAction } from "react";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SlidersHorizontal } from "lucide-react";
-import { useState } from "react";
-import { SmartSearchBar } from "@/components/search/SmartSearchBar";
-import { TransactionTypeFilter } from "./filters/TransactionTypeFilter";
-import { LiveOnlyFilter } from "./filters/LiveOnlyFilter";
-import { PriceRangeFilter } from "./filters/PriceRangeFilter";
-import { SurfaceRangeFilter } from "./filters/SurfaceRangeFilter";
 
-interface PropertyFiltersProps {
+export interface PropertyFiltersProps {
   searchTerm: string;
-  setSearchTerm: (value: string) => void;
+  setSearchTerm: Dispatch<SetStateAction<string>>;
   propertyType: string;
-  setPropertyType: (value: string) => void;
+  setPropertyType: Dispatch<SetStateAction<string>>;
   priceRange: number[];
-  setPriceRange: (value: number[]) => void;
+  setPriceRange: Dispatch<SetStateAction<number[]>>;
   surfaceRange: number[];
-  setSurfaceRange: (value: number[]) => void;
-  viewType: "all" | "live" | "replay";
-  setViewType: (value: "all" | "live" | "replay") => void;
-  suggestions?: string[];
+  setSurfaceRange: Dispatch<SetStateAction<number[]>>;
   transactionType: string[];
-  setTransactionType: (value: string[]) => void;
+  setTransactionType: Dispatch<SetStateAction<string[]>>;
+  viewType: "grid" | "list";
+  setViewType: Dispatch<SetStateAction<"grid" | "list">>;
 }
 
 export const PropertyFilters = ({
@@ -33,74 +27,46 @@ export const PropertyFilters = ({
   setPriceRange,
   surfaceRange,
   setSurfaceRange,
-  viewType,
-  setViewType,
-  suggestions = [],
   transactionType,
   setTransactionType,
+  viewType,
+  setViewType
 }: PropertyFiltersProps) => {
-  const [showFilters, setShowFilters] = useState(false);
-
   return (
-    <div className="space-y-4 mb-6">
-      <div className="flex gap-2">
-        <div className="relative flex-1">
-          <SmartSearchBar
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            suggestions={suggestions}
-          />
-        </div>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setShowFilters(!showFilters)}
+    <div className="space-y-4">
+      <Input
+        type="text"
+        placeholder="Rechercher..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Select
+          value={propertyType}
+          onValueChange={setPropertyType}
         >
-          <SlidersHorizontal className="h-4 w-4" />
-        </Button>
-      </div>
+          <option value="all">Tous les types</option>
+          <option value="apartment">Appartement</option>
+          <option value="house">Maison</option>
+          <option value="land">Terrain</option>
+        </Select>
 
-      {showFilters && (
-        <div className="space-y-4">
-          <TransactionTypeFilter
-            transactionType={transactionType}
-            setTransactionType={setTransactionType}
-          />
-
-          <div className="flex items-center gap-4">
-            <Select value={propertyType} onValueChange={setPropertyType}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Type de bien" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tous les types</SelectItem>
-                <SelectItem value="Villa">Villa</SelectItem>
-                <SelectItem value="Appartement">Appartement</SelectItem>
-                <SelectItem value="Bureau">Bureau</SelectItem>
-                <SelectItem value="Riad">Riad</SelectItem>
-                <SelectItem value="Hôtel">Hôtel</SelectItem>
-                <SelectItem value="Commerce">Commerce</SelectItem>
-                <SelectItem value="Industriel">Industriel</SelectItem>
-                <SelectItem value="Terrain">Terrain</SelectItem>
-              </SelectContent>
-            </Select>
-            <LiveOnlyFilter 
-              viewType={viewType}
-              setViewType={setViewType}
-            />
-          </div>
-
-          <PriceRangeFilter 
-            priceRange={priceRange}
-            setPriceRange={setPriceRange}
-          />
-
-          <SurfaceRangeFilter 
-            surfaceRange={surfaceRange}
-            setSurfaceRange={setSurfaceRange}
-          />
+        <div className="flex gap-2">
+          <Button
+            variant={viewType === "grid" ? "default" : "outline"}
+            onClick={() => setViewType("grid")}
+          >
+            Grille
+          </Button>
+          <Button
+            variant={viewType === "list" ? "default" : "outline"}
+            onClick={() => setViewType("list")}
+          >
+            Liste
+          </Button>
         </div>
-      )}
+      </div>
     </div>
   );
 };
