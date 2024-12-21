@@ -14,7 +14,7 @@ const generateRandomRooms = (min: number, max: number) => {
 };
 
 // Helper function to generate mock coordinates
-export const generateMockCoordinates = (location: string) => {
+const generateMockCoordinates = (location: string) => {
   const defaultCoords = {
     lat: 33.5731104,
     lng: -7.6425486
@@ -132,3 +132,17 @@ export const mockProperties: Property[] = Array.from({ length: 20 }, (_, index) 
 
 // Base mock property with all required fields (keeping for compatibility)
 export const mockProperty: Property = mockProperties[0];
+
+// Add coordinates to properties that don't have them
+export const addCoordinatesToProperties = (properties: Property[]): Property[] => {
+  return properties.map(property => {
+    if (!property.coordinates) {
+      const cityName = property.location.split(',')[0].trim();
+      return {
+        ...property,
+        coordinates: generateMockCoordinates(cityName)
+      };
+    }
+    return property;
+  });
+};
