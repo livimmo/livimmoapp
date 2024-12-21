@@ -26,7 +26,12 @@ export const LiveInfoActions = ({
   onOpenOfferDialog
 }: LiveInfoActionsProps) => {
   const navigate = useNavigate();
-  const themeColor = isReplay ? '#33C3F0' : '#ea384c';
+  const themeColor = isReplay ? '#10B981' : '#33C3F0';
+  const bgBase = isReplay ? 'bg-emerald-500' : 'bg-[#33C3F0]';
+  const bgHover = isReplay ? 'hover:bg-emerald-600' : 'hover:bg-[#33C3F0]/90';
+  const bgLight = isReplay ? 'bg-emerald-500/10' : 'bg-[#33C3F0]/10';
+  const bgLightHover = isReplay ? 'hover:bg-emerald-500/20' : 'hover:bg-[#33C3F0]/20';
+  const textColor = isReplay ? 'text-emerald-500' : 'text-[#33C3F0]';
 
   return (
     <div className={cn(
@@ -38,10 +43,11 @@ export const LiveInfoActions = ({
           variant="ghost"
           size="icon"
           className={cn(
-            isReplay ? 'bg-[#33C3F0]/10 hover:bg-[#33C3F0]/20' : 'bg-[#ea384c]/10 hover:bg-[#ea384c]/20',
-            isReplay ? 'text-[#33C3F0]' : 'text-[#ea384c]',
+            bgLight,
+            textColor,
+            bgLightHover,
             "transition-colors",
-            isFavorite && (isReplay ? 'bg-[#33C3F0] text-white hover:bg-[#33C3F0]/90' : 'bg-[#ea384c] text-white hover:bg-[#ea384c]/90')
+            isFavorite && `${bgBase} text-white ${bgHover}`
           )}
           onClick={() => setIsFavorite(!isFavorite)}
         >
@@ -51,7 +57,9 @@ export const LiveInfoActions = ({
           variant="ghost"
           size="icon"
           className={cn(
-            isReplay ? 'bg-[#33C3F0]/10 hover:bg-[#33C3F0]/20 text-[#33C3F0]' : 'bg-[#ea384c]/10 hover:bg-[#ea384c]/20 text-[#ea384c]',
+            bgLight,
+            textColor,
+            bgLightHover,
             "transition-colors"
           )}
           onClick={onToggleChat}
@@ -62,7 +70,9 @@ export const LiveInfoActions = ({
           variant="ghost"
           size="icon"
           className={cn(
-            isReplay ? 'bg-[#33C3F0]/10 hover:bg-[#33C3F0]/20 text-[#33C3F0]' : 'bg-[#ea384c]/10 hover:bg-[#ea384c]/20 text-[#ea384c]',
+            bgLight,
+            textColor,
+            bgLightHover,
             "transition-colors"
           )}
           onClick={() => navigate(-1)}
@@ -75,7 +85,7 @@ export const LiveInfoActions = ({
           <Badge 
             variant="secondary" 
             className={cn(
-              isReplay ? 'bg-[#33C3F0]/10 text-[#33C3F0]' : 'bg-[#ea384c]/10 text-[#ea384c]',
+              isReplay ? 'bg-emerald-500/10 text-emerald-500' : 'bg-[#33C3F0]/10 text-[#33C3F0]',
               "shadow-sm",
               "transition-all duration-300 ease-in-out",
               "hover:scale-105"
@@ -90,7 +100,8 @@ export const LiveInfoActions = ({
       )}
       <Button 
         className={cn(
-          isReplay ? 'bg-[#33C3F0] hover:bg-[#33C3F0]/90' : 'bg-[#ea384c] hover:bg-[#ea384c]/90',
+          bgBase,
+          bgHover,
           "text-white whitespace-nowrap shadow-sm transition-all hover:shadow-md",
           isMobile && "w-full"
         )}

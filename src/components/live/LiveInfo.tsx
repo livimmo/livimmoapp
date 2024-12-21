@@ -41,6 +41,11 @@ export const LiveInfo = ({
     return () => clearInterval(interval);
   }, []);
 
+  const themeColor = isReplay ? '#10B981' : '#33C3F0';
+  const bgOpacity = isReplay ? 'bg-emerald-500/5' : 'bg-[#33C3F0]/5';
+  const hoverBgOpacity = isReplay ? 'hover:bg-emerald-500/10' : 'hover:bg-[#33C3F0]/10';
+  const borderColor = isReplay ? 'border-emerald-500/20' : 'border-[#33C3F0]/20';
+
   return (
     <Card className={cn(
       "p-2 backdrop-blur-md",
@@ -51,10 +56,10 @@ export const LiveInfo = ({
       "fixed bottom-0 left-0 right-0",
       isMobile ? 'max-h-[40vh]' : 'max-h-[20vh]',
       "z-50",
-      "bg-[#33C3F0]/5",
-      isReplay ? 'border-[#33C3F0]/20' : 'border-[#ea384c]/20',
+      bgOpacity,
+      borderColor,
       "border-t",
-      "hover:bg-[#33C3F0]/10",
+      hoverBgOpacity,
       isFullscreen && "z-[9999]"
     )}>
       <div className="w-full max-w-5xl mx-auto">
@@ -84,7 +89,7 @@ export const LiveInfo = ({
               <Badge 
                 variant="secondary" 
                 className={cn(
-                  isReplay ? 'bg-[#33C3F0]/10 text-[#33C3F0]' : 'bg-[#ea384c]/10 text-[#ea384c]',
+                  isReplay ? 'bg-emerald-500/10 text-emerald-500' : 'bg-[#33C3F0]/10 text-[#33C3F0]',
                   "shadow-sm",
                   "transition-all duration-300 ease-in-out",
                   "hover:scale-105"
@@ -92,7 +97,7 @@ export const LiveInfo = ({
               >
                 {offerCount} offres
               </Badge>
-              <p className="text-lg font-bold whitespace-nowrap" style={{ color: isReplay ? '#33C3F0' : '#ea384c' }}>
+              <p className="text-lg font-bold whitespace-nowrap" style={{ color: themeColor }}>
                 {property.price.toLocaleString()} DH
               </p>
             </div>

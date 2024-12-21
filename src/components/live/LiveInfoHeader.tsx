@@ -12,11 +12,12 @@ interface LiveInfoHeaderProps {
 }
 
 export const LiveInfoHeader = ({ property, viewerCount, isReplay }: LiveInfoHeaderProps) => {
-  const themeColor = isReplay ? '#33C3F0' : '#ea384c';
+  const themeColor = isReplay ? '#10B981' : '#33C3F0';
+  const bgColor = isReplay ? 'bg-emerald-500/10' : 'bg-[#33C3F0]/10';
 
   return (
     <div className="flex items-center gap-3 min-w-0 flex-1">
-      <div className="h-12 w-20 bg-[#33C3F0]/10 rounded-md overflow-hidden shrink-0 flex items-center justify-center shadow-sm">
+      <div className={cn("h-12 w-20 rounded-md overflow-hidden shrink-0 flex items-center justify-center shadow-sm", bgColor)}>
         <img 
           src={property.images[0]} 
           alt={property.title}
@@ -38,7 +39,7 @@ export const LiveInfoHeader = ({ property, viewerCount, isReplay }: LiveInfoHead
             variant="default" 
             className={cn(
               "flex items-center gap-1",
-              isReplay ? 'bg-[#33C3F0] hover:bg-[#33C3F0]/90' : 'bg-[#ea384c] hover:bg-[#ea384c]/90',
+              isReplay ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-[#33C3F0] hover:bg-[#33C3F0]/90',
               "text-white shadow-sm"
             )}
           >
