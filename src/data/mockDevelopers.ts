@@ -4,7 +4,7 @@ export const developers: Developer[] = [
   {
     id: 1,
     name: "Alliance",
-    logo: "https://images.unsplash.com/photo-1487958449943-2429e8be8625",
+    logo: "/lovable-uploads/188fabd7-e87b-4dc5-8913-d6fadc126147.png",
     description: "Leader dans le développement immobilier résidentiel au Maroc",
     location: "Casablanca",
     sector: "residential",
@@ -17,7 +17,7 @@ export const developers: Developer[] = [
   {
     id: 2,
     name: "Addoha",
-    logo: "https://images.unsplash.com/photo-1433832597046-4f10e10ac764",
+    logo: "/lovable-uploads/1d136254-80fc-4f34-ac97-28ccb5ca245d.png",
     description: "Spécialiste des projets haut de gamme en bord de mer",
     location: "Tanger",
     sector: "mixed",
@@ -30,7 +30,7 @@ export const developers: Developer[] = [
   {
     id: 3,
     name: "SoftGroupe Immobilier",
-    logo: "https://images.unsplash.com/photo-1527576539890-dfa815648363",
+    logo: "/lovable-uploads/e7fb4aa9-b702-48f7-9190-84ec6ad43f85.png",
     description: "Développeur de projets traditionnels et modernes",
     location: "Marrakech",
     sector: "residential",
@@ -43,7 +43,7 @@ export const developers: Developer[] = [
   {
     id: 4,
     name: "Anfa Realities",
-    logo: "https://images.unsplash.com/photo-1496307653780-42ee777d4833",
+    logo: "/lovable-uploads/c4f2eee7-0c67-4bef-b242-09268bad03d1.png",
     description: "Excellence dans l'immobilier de luxe",
     location: "Rabat",
     sector: "mixed",
