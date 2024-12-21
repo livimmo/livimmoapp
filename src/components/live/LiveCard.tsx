@@ -57,7 +57,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
             {live.status === "live" && (
               <Button 
                 onClick={handleJoinLive}
-                className="bg-orange-500 hover:bg-orange-600 text-white gap-2"
+                className="bg-red-500 hover:bg-red-600 text-white gap-2"
               >
                 <Play className="w-4 h-4" />
                 Rejoindre le live
@@ -66,7 +66,7 @@ export const LiveCard = ({ live }: LiveCardProps) => {
           </div>
           <div className="absolute top-2 left-2 flex flex-wrap gap-2 max-w-[80%]">
             {live.status === "live" && (
-              <Badge variant="destructive" className="animate-pulse flex items-center gap-1.5">
+              <Badge variant="destructive" className="animate-pulse flex items-center gap-1.5 bg-red-500 hover:bg-red-600">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
