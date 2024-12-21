@@ -22,6 +22,16 @@ import { fr } from "date-fns/locale";
 import { PropertyStatusBadge } from "./PropertyStatusBadge";
 import { PropertyStatusSelect } from "./PropertyStatusSelect";
 import { PropertyNotes } from "./PropertyNotes";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { VisitCalendar } from "./visits/VisitCalendar";
+
+interface PropertyManagementTableProps {
+  properties: Property[];
+  onEdit: (property: Property) => void;
+  onDelete: (propertyId: number) => void;
+  onStatusChange: (propertyId: number, status: "available" | "pending" | "sold" | "rented") => void;
+  onNotesChange: (propertyId: number, notes: any) => void;
+}
 
 export const PropertyManagementTable = ({
   properties,
@@ -73,50 +83,50 @@ export const PropertyManagementTable = ({
           <TableBody>
             {properties.map((property) => (
               <TableRow key={property.id}>
-              <TableCell className="font-medium">
-                <div className="flex items-center gap-4">
-                  <img
-                    src={property.images[0]}
-                    alt={property.title}
-                    className="h-12 w-12 rounded-md object-cover"
-                  />
-                  <div>
-                    <p className="font-medium">{property.title}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {property.location}
-                    </p>
+                <TableCell className="font-medium">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={property.images[0]}
+                      alt={property.title}
+                      className="h-12 w-12 rounded-md object-cover"
+                    />
+                    <div>
+                      <p className="font-medium">{property.title}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {property.location}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                {property.price.toLocaleString()} DH
-              </TableCell>
-              <TableCell>
-                {editingStatus === property.id ? (
-                  <PropertyStatusSelect
-                    value={property.status || "available"}
-                    onValueChange={(value) => {
-                      onStatusChange(property.id, value);
-                      setEditingStatus(null);
-                    }}
-                  />
-                ) : (
-                  <div
-                    className="cursor-pointer"
-                    onClick={() => setEditingStatus(property.id)}
-                  >
-                    <PropertyStatusBadge status={property.status || "available"} />
-                  </div>
-                )}
-              </TableCell>
-              <TableCell>
-                {renderAdvancedStatus(property)}
-              </TableCell>
-              <TableCell>
-                {format(new Date(property.createdAt || new Date()), "PP", {
-                  locale: fr,
-                })}
-              </TableCell>
+                </TableCell>
+                <TableCell>
+                  {property.price.toLocaleString()} DH
+                </TableCell>
+                <TableCell>
+                  {editingStatus === property.id ? (
+                    <PropertyStatusSelect
+                      value={property.status || "available"}
+                      onValueChange={(value) => {
+                        onStatusChange(property.id, value);
+                        setEditingStatus(null);
+                      }}
+                    />
+                  ) : (
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => setEditingStatus(property.id)}
+                    >
+                      <PropertyStatusBadge status={property.status || "available"} />
+                    </div>
+                  )}
+                </TableCell>
+                <TableCell>
+                  {renderAdvancedStatus(property)}
+                </TableCell>
+                <TableCell>
+                  {format(new Date(property.createdAt || new Date()), "PP", {
+                    locale: fr,
+                  })}
+                </TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

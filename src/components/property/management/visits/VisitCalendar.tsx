@@ -6,10 +6,9 @@ import { VisitDetailsDialog } from "./VisitDetailsDialog";
 import { AddAvailabilityDialog } from "./AddAvailabilityDialog";
 import { Button } from "@/components/ui/button";
 import { ViewType, CalendarViewSelector } from "./CalendarViewSelector";
-import { Plus, Calendar as CalendarIcon } from "lucide-react";
+import { Plus } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Badge } from "@/components/ui/badge";
 
 interface VisitCalendarProps {
   propertyId: number;
