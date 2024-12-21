@@ -13,7 +13,7 @@ import { HeroBanner } from "@/components/home/HeroBanner";
 
 const Lives = () => {
   const [currentLivesViewMode, setCurrentLivesViewMode] = useState<"list" | "map">("list");
-  const [scheduledViewMode, setScheduledViewMode] = useState<"list" | "map" | "calendar">("list");
+  const [scheduledViewMode, setScheduledViewMode] = useState<"list" | "map">("list");
   
   // Filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -49,8 +49,8 @@ const Lives = () => {
   const filteredScheduledLives = filterLives(scheduledLives);
   const filteredReplayLives = filterLives(replayLives);
 
-  // Convert current lives to Property format for the map
-  const currentLiveProperties: Property[] = filteredCurrentLives.map((live) => ({
+  // Convert scheduled lives to Property format for the map
+  const scheduledLiveProperties: Property[] = filteredScheduledLives.map((live) => ({
     id: live.id,
     title: live.title,
     price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
@@ -59,7 +59,7 @@ const Lives = () => {
     surface: 0,
     rooms: 0,
     bathrooms: 0,
-    description: live.description || "",
+    description: "",
     features: [],
     images: [live.thumbnail],
     hasLive: true,
@@ -74,19 +74,11 @@ const Lives = () => {
       lat: 31.7917 + Math.random() * 2 - 1,
       lng: -7.0926 + Math.random() * 2 - 1,
     },
-    isLiveNow: true,
-    viewers: live.viewers,
+    isLiveNow: false,
+    viewers: 0,
     remainingSeats: live.availableSeats,
-    transactionType: Math.random() > 0.5 ? "Vente" : "Location"
+    transactionType: "Vente"
   }));
-
-  // Suggestions based on available locations and types
-  const suggestions = Array.from(new Set([
-    ...liveStreams.map(live => live.location),
-    ...liveStreams.map(live => live.type),
-    ...scheduledLives.map(live => live.location),
-    ...scheduledLives.map(live => live.type),
-  ]));
 
   return (
     <div className="container mx-auto px-4 py-8 mt-12 space-y-8">
@@ -160,13 +152,40 @@ const Lives = () => {
 
       {/* Section des lives programmés */}
       <section>
-        <h2 className="text-2xl font-bold mb-6">
-          Lives programmés
-          <span className="ml-2 text-sm font-normal text-muted-foreground">
-            ({filteredScheduledLives.length})
-          </span>
-        </h2>
-        <ScheduledLivesList lives={filteredScheduledLives} />
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">
+            Lives programmés
+            <span className="ml-2 text-sm font-normal text-muted-foreground">
+              ({filteredScheduledLives.length})
+            </span>
+          </h2>
+          <div className="flex gap-2">
+            <Button
+              variant={scheduledViewMode === "list" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setScheduledViewMode("list")}
+            >
+              <List className="h-4 w-4 mr-2" />
+              Liste
+            </Button>
+            <Button
+              variant={scheduledViewMode === "map" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setScheduledViewMode("map")}
+            >
+              <Map className="h-4 w-4 mr-2" />
+              Carte
+            </Button>
+          </div>
+        </div>
+
+        {scheduledViewMode === "list" ? (
+          <ScheduledLivesList lives={filteredScheduledLives} />
+        ) : (
+          <div className="h-[500px] rounded-lg overflow-hidden">
+            <LiveGoogleMap properties={scheduledLiveProperties} />
+          </div>
+        )}
       </section>
 
       {/* Section des replays */}
