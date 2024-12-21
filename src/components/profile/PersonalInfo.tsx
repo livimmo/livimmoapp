@@ -93,6 +93,7 @@ export const PersonalInfo = ({
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
+                
                 <Label htmlFor="company">Nom de l'entreprise</Label>
                 <Input id="company" placeholder="Votre entreprise" />
               </div>
