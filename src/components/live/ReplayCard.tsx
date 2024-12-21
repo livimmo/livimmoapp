@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LiveEvent } from "@/types/live";
-import { Eye, Play, Clock, CheckCircle2, MapPin } from "lucide-react";
+import { Eye, Play, Clock, CheckCircle2, MapPin, X } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
