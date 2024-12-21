@@ -7,6 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
+import { Upload, X, Video, Calendar, Play, Camera } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 
 interface AddPropertyDialogProps {
   open: boolean;
@@ -23,6 +26,10 @@ export const AddPropertyDialog = ({ open, onOpenChange }: AddPropertyDialogProps
   const [rooms, setRooms] = useState("");
   const [description, setDescription] = useState("");
   const [transactionType, setTransactionType] = useState<"Vente" | "Location">("Vente");
+  const [files, setFiles] = useState<File[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [hasLive, setHasLive] = useState(false);
+  const [liveType, setLiveType] = useState<"live" | "scheduled" | "replay" | "virtual">("live");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,13 +43,65 @@ export const AddPropertyDialog = ({ open, onOpenChange }: AddPropertyDialogProps
       return;
     }
 
-    // TODO: Implement property creation logic
     toast({
       title: "Bien ajouté",
       description: "Le bien a été ajouté avec succès",
     });
     
     onOpenChange(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    const validFiles = droppedFiles.filter(file => 
+      file.type.startsWith('image/') || file.type.startsWith('video/')
+    );
+
+    if (validFiles.length !== droppedFiles.length) {
+      toast({
+        title: "Fichiers non valides",
+        description: "Seuls les images et vidéos sont acceptées",
+        variant: "destructive",
+      });
+    }
+
+    if (validFiles.length > 0) {
+      setFiles(prev => [...prev, ...validFiles]);
+      toast({
+        title: "Fichiers ajoutés",
+        description: `${validFiles.length} fichier(s) ajouté(s) avec succès`,
+      });
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const getLiveIcon = () => {
+    switch (liveType) {
+      case "live":
+        return <Play className="h-4 w-4" />;
+      case "scheduled":
+        return <Calendar className="h-4 w-4" />;
+      case "replay":
+        return <Video className="h-4 w-4" />;
+      case "virtual":
+        return <Camera className="h-4 w-4" />;
+    }
   };
 
   return (
@@ -154,6 +213,132 @@ export const AddPropertyDialog = ({ open, onOpenChange }: AddPropertyDialogProps
               placeholder="Description détaillée du bien"
               className="h-32"
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Photos/Vidéos</Label>
+            <div
+              className={`border-2 border-dashed rounded-lg p-6 transition-colors ${
+                isDragging 
+                  ? 'border-primary bg-primary/10' 
+                  : 'border-gray-300 hover:border-primary'
+              }`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
+              <div className="flex flex-col items-center justify-center gap-2">
+                <Upload className="h-8 w-8 text-gray-400" />
+                <p className="text-sm text-gray-600">
+                  Glissez et déposez vos fichiers ici ou
+                </p>
+                <label className="cursor-pointer">
+                  <Input
+                    type="file"
+                    onChange={(e) => {
+                      const newFiles = Array.from(e.target.files || []);
+                      setFiles(prev => [...prev, ...newFiles]);
+                    }}
+                    multiple
+                    accept="image/*,video/*"
+                    className="hidden"
+                  />
+                  <Button type="button" variant="outline" size="sm">
+                    Parcourir
+                  </Button>
+                </label>
+              </div>
+            </div>
+
+            {files.length > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                {files.map((file, index) => (
+                  <div key={index} className="relative group">
+                    <div className="aspect-square rounded-lg overflow-hidden bg-gray-100">
+                      {file.type.startsWith('image/') ? (
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={`Preview ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <video
+                          src={URL.createObjectURL(file)}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      className="absolute -top-2 -right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => removeFile(index)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="hasLive">Activer le Live</Label>
+              <Switch
+                id="hasLive"
+                checked={hasLive}
+                onCheckedChange={setHasLive}
+              />
+            </div>
+
+            {hasLive && (
+              <div className="space-y-2">
+                <Label>Type de Live</Label>
+                <Select value={liveType} onValueChange={(value: "live" | "scheduled" | "replay" | "virtual") => setLiveType(value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="live">
+                      <div className="flex items-center gap-2">
+                        <Play className="h-4 w-4" />
+                        Live en direct
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="scheduled">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4" />
+                        Live programmé
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="replay">
+                      <div className="flex items-center gap-2">
+                        <Video className="h-4 w-4" />
+                        Replay disponible
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="virtual">
+                      <div className="flex items-center gap-2">
+                        <Camera className="h-4 w-4" />
+                        Visite virtuelle
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Badge variant="outline" className="mt-2">
+                  {getLiveIcon()}
+                  <span className="ml-2">
+                    {liveType === "live" && "Live en direct"}
+                    {liveType === "scheduled" && "Live programmé"}
+                    {liveType === "replay" && "Replay disponible"}
+                    {liveType === "virtual" && "Visite virtuelle"}
+                  </span>
+                </Badge>
+              </div>
+            )}
           </div>
 
           <div className="flex justify-end gap-2">
