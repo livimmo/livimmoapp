@@ -1,4 +1,14 @@
+import { Agent } from "./agent";
+
 export type VisitStatus = "pending" | "confirmed" | "ongoing" | "completed" | "cancelled";
+export type VisitType = "physical" | "remote";
+
+export interface Visitor {
+  name: string;
+  phone: string;
+  email: string;
+  message?: string;
+}
 
 export interface Visit {
   id: number;
@@ -9,13 +19,9 @@ export interface Visit {
   date: Date;
   time: string;
   status: VisitStatus;
-  agent: {
-    id: number;
-    name: string;
-    image: string;
-    phone: string;
-    email: string;
-  };
+  type: VisitType;
+  agent: Agent;
+  visitor: Visitor;
   isLive?: boolean;
   liveUrl?: string;
 }
