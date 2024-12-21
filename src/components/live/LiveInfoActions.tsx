@@ -29,41 +29,17 @@ export const LiveInfoActions = ({
 }: LiveInfoActionsProps) => {
   const navigate = useNavigate();
   
-  const themeColor = isReplay 
-    ? '#10B981' 
-    : isScheduled 
-      ? '#33C3F0'
-      : '#ea384c';
+  const themeColor = '#F97316'; // Orange pour toutes les actions
       
-  const bgBase = isReplay 
-    ? 'bg-emerald-500' 
-    : isScheduled
-      ? 'bg-[#33C3F0]'
-      : 'bg-red-500';
+  const bgBase = 'bg-orange-500';
       
-  const bgHover = isReplay 
-    ? 'hover:bg-emerald-600' 
-    : isScheduled
-      ? 'hover:bg-[#33C3F0]/90'
-      : 'hover:bg-red-600';
+  const bgHover = 'hover:bg-orange-600';
       
-  const bgLight = isReplay 
-    ? 'bg-emerald-500/10' 
-    : isScheduled
-      ? 'bg-[#33C3F0]/10'
-      : 'bg-red-500/10';
+  const bgLight = 'bg-orange-500/10';
       
-  const bgLightHover = isReplay 
-    ? 'hover:bg-emerald-500/20' 
-    : isScheduled
-      ? 'hover:bg-[#33C3F0]/20'
-      : 'hover:bg-red-500/20';
+  const bgLightHover = 'hover:bg-orange-500/20';
       
-  const textColor = isReplay 
-    ? 'text-emerald-500' 
-    : isScheduled
-      ? 'text-[#33C3F0]'
-      : 'text-red-500';
+  const textColor = 'text-orange-500';
 
   return (
     <div className={cn(
@@ -117,11 +93,7 @@ export const LiveInfoActions = ({
           <Badge 
             variant="secondary" 
             className={cn(
-              isReplay 
-                ? 'bg-emerald-500/10 text-emerald-500' 
-                : isScheduled
-                  ? 'bg-[#33C3F0]/10 text-[#33C3F0]'
-                  : 'bg-red-500/10 text-red-500',
+              'bg-orange-500/10 text-orange-500',
               "shadow-sm",
               "transition-all duration-300 ease-in-out",
               "hover:scale-105"
