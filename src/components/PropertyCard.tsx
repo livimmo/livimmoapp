@@ -8,10 +8,12 @@ import { FavoriteButton } from "./property/FavoriteButton";
 import { ShareButtons } from "./properties/ShareButtons";
 import { useState } from "react";
 import { AgentCertificationBadge } from "./agent/AgentCertificationBadge";
+import { OffersCounter } from "./property/OffersCounter";
 
 interface PropertyCardProps extends Property {
   showLocation?: boolean;
   className?: string;
+  offers?: number;
 }
 
 export const PropertyCard = ({
@@ -30,6 +32,7 @@ export const PropertyCard = ({
   className = "",
   isReplay,
   virtualTour,
+  offers,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const [showShare, setShowShare] = useState(false);
@@ -61,6 +64,9 @@ export const PropertyCard = ({
           </Button>
         </div>
         <div className="absolute top-2 left-2 flex flex-col gap-2">
+          {offers !== undefined && (
+            <OffersCounter offers={offers} />
+          )}
           {virtualTour?.enabled && (
             <Badge className="bg-background/80 backdrop-blur-sm">
               Visite virtuelle
