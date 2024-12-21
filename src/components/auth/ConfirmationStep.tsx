@@ -18,6 +18,8 @@ export const ConfirmationStep = ({
 
   const getRoleMessage = () => {
     switch (role) {
+      case "owner":
+        return "Bienvenue ! Vous pouvez maintenant ajouter et gérer vos biens immobiliers.";
       case "promoter":
         return "Bienvenue ! Vous pouvez maintenant ajouter vos projets et programmer vos lives.";
       case "agent":

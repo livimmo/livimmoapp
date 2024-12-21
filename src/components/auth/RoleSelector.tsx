@@ -1,4 +1,4 @@
-import { Building2, Building, Home, ShoppingBag } from "lucide-react";
+import { Building2, Building, Home, ShoppingBag, Key } from "lucide-react";
 import { UserRole } from "@/types/user";
 import { cn } from "@/lib/utils";
 
@@ -9,6 +9,13 @@ interface RoleSelectorProps {
 
 export const RoleSelector = ({ selectedRole, onSelect }: RoleSelectorProps) => {
   const roles: { id: UserRole; label: string; description: string; icon: any; color: string }[] = [
+    {
+      id: "owner",
+      label: "Propriétaire",
+      description: "Gérez vos biens et suivez les visites",
+      icon: Key,
+      color: "bg-purple-500",
+    },
     {
       id: "promoter",
       label: "Promoteur",

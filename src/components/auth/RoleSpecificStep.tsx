@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { UserRole } from "@/types/user";
+import { Textarea } from "@/components/ui/textarea";
 
 interface RoleSpecificStepProps {
   role: UserRole;
@@ -25,6 +26,41 @@ export const RoleSpecificStep = ({
 
   const renderFields = () => {
     switch (role) {
+      case "owner":
+        return (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="phone">Téléphone*</Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => onChange("phone", e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="location">Adresse principale*</Label>
+              <Input
+                id="location"
+                value={formData.location}
+                onChange={(e) => onChange("location", e.target.value)}
+                placeholder="Ville, Quartier"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="description">Présentation</Label>
+              <Textarea
+                id="description"
+                value={formData.description}
+                onChange={(e) => onChange("description", e.target.value)}
+                placeholder="Présentez-vous en quelques mots..."
+                className="h-32"
+              />
+            </div>
+          </>
+        );
       case "promoter":
         return (
           <>
