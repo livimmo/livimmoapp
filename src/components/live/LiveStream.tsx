@@ -150,6 +150,7 @@ export const LiveStream = ({
             viewerCount={Math.floor(Math.random() * 1000)}
             onToggleChat={() => setShowAIChat(!showAIChat)}
             isReplay={isReplay}
+            liveId={currentLiveId}
           />
         </div>
 

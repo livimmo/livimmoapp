@@ -140,6 +140,7 @@ export const JoinLive = () => {
             onMakeOffer={() => setShowOfferForm(true)} 
             viewerCount={viewerCount}
             onToggleChat={() => setShowChat(!showChat)}
+            liveId={currentLiveId}
           />
         </div>
 
