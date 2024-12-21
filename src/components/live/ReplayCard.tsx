@@ -111,7 +111,7 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
           )}
         </CardContent>
         <CardContent className="p-4">
-          <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">
+          <h3 className="font-semibold mb-2 line-clamp-2 text-white hover:text-emerald-400 transition-colors">
             {live.title}
           </h3>
           <div className="text-sm text-muted-foreground mb-2">
