@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LiveButton } from "./property/LiveButton";
 import { MapPin, Home, Maximize2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface PropertyInfoProps {
   id: number;
@@ -38,26 +39,48 @@ export const PropertyInfo = ({
   return (
     <div className="p-4">
       <Link to={`/property/${id}`}>
-        <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+        <h3 className={cn(
+          "font-semibold text-lg mb-2 line-clamp-2 transition-colors",
+          isLiveNow ? "text-white hover:text-emerald-300" : "group-hover:text-primary"
+        )}>
           {title}
         </h3>
       </Link>
-      <p className="text-primary font-bold text-xl mb-3">
+      <p className={cn(
+        "font-bold text-xl mb-3",
+        isLiveNow ? "text-white" : "text-primary"
+      )}>
         {price.toLocaleString()} DH
       </p>
       <div className="space-y-2 mb-4">
-        <div className="flex items-center text-gray-500 text-sm gap-2">
+        <div className={cn(
+          "flex items-center text-sm gap-2",
+          isLiveNow ? "text-white/80" : "text-gray-500"
+        )}>
           <MapPin className="w-4 h-4 flex-shrink-0" />
           <div className="flex flex-col">
             <span>{city}</span>
-            {district && <span className="text-xs text-gray-400">{district}</span>}
+            {district && (
+              <span className={cn(
+                "text-xs",
+                isLiveNow ? "text-white/60" : "text-gray-400"
+              )}>
+                {district}
+              </span>
+            )}
           </div>
         </div>
-        <div className="flex items-center text-gray-500 text-sm gap-2">
+        <div className={cn(
+          "flex items-center text-sm gap-2",
+          isLiveNow ? "text-white/80" : "text-gray-500"
+        )}>
           <Home className="w-4 h-4 flex-shrink-0" />
           <span>{type}</span>
         </div>
-        <div className="flex items-center text-gray-500 text-sm gap-2">
+        <div className={cn(
+          "flex items-center text-sm gap-2",
+          isLiveNow ? "text-white/80" : "text-gray-500"
+        )}>
           <Maximize2 className="w-4 h-4 flex-shrink-0" />
           <span>{surface} m² • {rooms} pièces</span>
         </div>
