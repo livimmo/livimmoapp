@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
-import { AccountTypeSelector } from "@/components/profile/AccountTypeSelector";
+import { AccountTypeSelector, AccountType } from "@/components/profile/AccountTypeSelector";
 import { PersonalInfo } from "@/components/profile/PersonalInfo";
 import { SocialConnect } from "@/components/profile/SocialConnect";
 import { PropertyManagementSection } from "@/components/profile/PropertyManagementSection";
+
 import { Button } from "@/components/ui/button";
 import { LogOut, Lock, Languages } from "lucide-react";
 import { useNavigate } from "react-router-dom";
