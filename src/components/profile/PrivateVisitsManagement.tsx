@@ -17,7 +17,7 @@ export const PrivateVisitsManagement = () => {
   const [showCancellationDialog, setShowCancellationDialog] = useState(false);
   const [showReschedulingDialog, setShowReschedulingDialog] = useState(false);
 
-  const isAgent = user?.role === 'agent' || user?.role === 'developer';
+  const isAgent = user?.role === 'agent' || user?.role === 'promoter' || user?.role === 'developer';
 
   const handleCancel = (visit: Visit) => {
     setSelectedVisit(visit);
