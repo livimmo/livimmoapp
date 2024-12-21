@@ -45,7 +45,7 @@ export const ReplayCarousel = ({
       "transition-all duration-300 ease-in-out",
       isCollapsed ? "h-16" : "h-[320px]",
       "p-4",
-      "bg-[#F2FCE2]" // Ajout du fond vert doux
+      "bg-transparent" // Modification ici pour rendre le fond transparent
     )}>
       <ReplayCarouselHeader 
         replayCount={filteredReplays.length}
