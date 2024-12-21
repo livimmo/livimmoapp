@@ -47,26 +47,26 @@ export const LiveInfo = ({
   const themeColor = isReplay 
     ? '#F97316' // Orange pour les visites virtuelles
     : isScheduled 
-      ? '#33C3F0'
-      : '#ea384c';
+      ? '#F97316' // Orange pour les lives programmés
+      : '#F97316'; // Orange pour les lives en cours
       
   const bgOpacity = isReplay 
-    ? 'bg-orange-500/5' 
+    ? 'bg-white' 
     : isScheduled
-      ? 'bg-[#33C3F0]/5'
-      : 'bg-red-500/5';
+      ? 'bg-white'
+      : 'bg-white';
       
   const hoverBgOpacity = isReplay 
-    ? 'hover:bg-orange-500/10' 
+    ? 'hover:bg-orange-50' 
     : isScheduled
-      ? 'hover:bg-[#33C3F0]/10'
-      : 'hover:bg-red-500/10';
+      ? 'hover:bg-orange-50'
+      : 'hover:bg-orange-50';
       
   const borderColor = isReplay 
     ? 'border-orange-500/20' 
     : isScheduled
-      ? 'border-[#33C3F0]/20'
-      : 'border-red-500/20';
+      ? 'border-orange-500/20'
+      : 'border-orange-500/20';
 
   return (
     <Card className={cn(
@@ -116,8 +116,8 @@ export const LiveInfo = ({
                   isReplay 
                     ? 'bg-orange-500/10 text-orange-500' 
                     : isScheduled
-                      ? 'bg-[#33C3F0]/10 text-[#33C3F0]'
-                      : 'bg-red-500/10 text-red-500',
+                      ? 'bg-orange-500/10 text-orange-500'
+                      : 'bg-orange-500/10 text-orange-500',
                   "shadow-sm",
                   "transition-all duration-300 ease-in-out",
                   "hover:scale-105"
