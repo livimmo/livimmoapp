@@ -6,7 +6,7 @@ import { GoogleMapContainer } from './map/GoogleMapContainer';
 import { Property } from '@/types/property';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { LiveSlider } from '../live/LiveSlider';
-import { liveStreams } from '@/data/mockLives';
+import { liveStreams, scheduledLives } from '@/data/mockLives';
 
 interface HomeMapProps {
   properties: Property[];
@@ -18,7 +18,13 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
   const [selectedLive, setSelectedLive] = useState<LiveStream | ScheduledLive | null>(null);
   const isMobile = useIsMobile();
 
+  // Filter current lives and scheduled lives
   const currentLives = liveStreams.filter(live => live.status === "live").map(live => ({
+    ...live,
+    date: live.date instanceof Date ? live.date : new Date(live.date)
+  }));
+
+  const scheduledFavoriteLives = scheduledLives.filter(live => live.status === "scheduled").map(live => ({
     ...live,
     date: live.date instanceof Date ? live.date : new Date(live.date)
   }));
@@ -36,6 +42,9 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
       setSelectedLive(null);
     }
   };
+
+  // Get the appropriate lives based on selected type
+  const displayedLives = selectedLiveType === 'current' ? currentLives : scheduledFavoriteLives;
 
   return (
     <section className="space-y-8">
@@ -72,9 +81,11 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
 
         {/* Live Slider Section */}
         <div className="w-full h-[500px] bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-semibold mb-4">Lives en cours</h3>
+          <h3 className="text-xl font-semibold mb-4">
+            {selectedLiveType === 'current' ? 'Lives en cours' : 'Lives programmés'}
+          </h3>
           <div className="h-[calc(100%-2rem)]">
-            <LiveSlider lives={currentLives} />
+            <LiveSlider lives={displayedLives} />
           </div>
         </div>
       </div>
