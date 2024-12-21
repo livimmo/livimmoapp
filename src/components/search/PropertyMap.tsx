@@ -86,42 +86,13 @@ export const PropertyMap = ({ properties }: PropertyMapProps) => {
                   lng: selectedProperty.coordinates.lng
                 }}
                 onCloseClick={() => setSelectedProperty(null)}
+                options={{
+                  maxWidth: 280,
+                  pixelOffset: new google.maps.Size(0, -20)
+                }}
               >
-                <div className="p-2 max-w-[300px]">
-                  <div className="relative mb-2">
-                    <img 
-                      src={selectedProperty.images[0]} 
-                      alt={selectedProperty.title}
-                      className="w-full h-[150px] object-cover rounded-lg"
-                    />
-                    {selectedProperty.hasLive && (
-                      <div className="absolute bottom-2 left-2">
-                        {selectedProperty.isLiveNow ? (
-                          <Badge variant="destructive" className="bg-red-500">
-                            <Circle className="w-2 h-2 fill-white mr-1 animate-pulse" />
-                            Live en cours
-                          </Badge>
-                        ) : selectedProperty.liveDate && (
-                          <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
-                            {new Date(selectedProperty.liveDate).toLocaleDateString("fr-FR", {
-                              day: "numeric",
-                              month: "short",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </Badge>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  <h3 className="font-semibold text-base mb-1">{selectedProperty.title}</h3>
-                  <p className="text-primary font-bold">{selectedProperty.price.toLocaleString()} DH</p>
-                  <p className="text-sm text-gray-500">{selectedProperty.location}</p>
-                  <div className="flex gap-2 text-sm text-gray-500 mt-1">
-                    <span>{selectedProperty.surface} m²</span>
-                    <span>•</span>
-                    <span>{selectedProperty.rooms} pièces</span>
-                  </div>
+                <div className="max-w-[260px] scale-90 origin-top">
+                  <PropertyCard {...selectedProperty} />
                 </div>
               </InfoWindow>
             )}
