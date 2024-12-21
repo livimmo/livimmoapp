@@ -3,6 +3,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { LiveInfo } from "./LiveInfo";
 import { useState, useEffect } from "react";
 import { LiveCarousel } from "./LiveCarousel";
+import { ReplayCarousel } from "./ReplayCarousel";
 import { liveStreams } from "@/data/mockLives";
 import { cn } from "@/lib/utils";
 import { LiveHeader } from "./LiveHeader";
@@ -124,6 +125,22 @@ export const LiveStream = ({
               isReplay={isReplay}
             />
           </div>
+        </div>
+
+        <div className="absolute bottom-[64px] left-0 right-0 z-[51]">
+          {isReplay ? (
+            <ReplayCarousel
+              replays={processedLives}
+              currentReplayId={currentLiveId}
+              onReplaySelect={handleLiveSelect}
+            />
+          ) : (
+            <LiveCarousel
+              lives={processedLives}
+              currentLiveId={currentLiveId}
+              onLiveSelect={handleLiveSelect}
+            />
+          )}
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 z-[52]">
