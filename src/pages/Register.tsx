@@ -2,20 +2,35 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { UserRole } from "@/types/user";
+import { useToast } from "@/hooks/use-toast";
 
 const Register = () => {
   const { signup } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [role, setRole] = useState<UserRole>("buyer");
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await signup(email, password, firstName, lastName, role);
+    try {
+      await signup(
+        formData.email,
+        formData.password,
+        formData.firstName,
+        formData.lastName,
+        "buyer"
+      );
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'inscription.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -23,55 +38,58 @@ const Register = () => {
       <h1 className="text-2xl font-bold mb-6">Inscription</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <Label htmlFor="firstName">Prénom</Label>
+          <label htmlFor="firstName" className="block text-sm font-medium mb-1">
+            Prénom
+          </label>
           <Input
             id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            type="text"
+            value={formData.firstName}
+            onChange={(e) =>
+              setFormData({ ...formData, firstName: e.target.value })
+            }
             required
           />
         </div>
         <div>
-          <Label htmlFor="lastName">Nom</Label>
+          <label htmlFor="lastName" className="block text-sm font-medium mb-1">
+            Nom
+          </label>
           <Input
             id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            type="text"
+            value={formData.lastName}
+            onChange={(e) =>
+              setFormData({ ...formData, lastName: e.target.value })
+            }
             required
           />
         </div>
         <div>
-          <Label htmlFor="email">Email</Label>
+          <label htmlFor="email" className="block text-sm font-medium mb-1">
+            Email
+          </label>
           <Input
             id="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
           />
         </div>
         <div>
-          <Label htmlFor="password">Mot de passe</Label>
+          <label htmlFor="password" className="block text-sm font-medium mb-1">
+            Mot de passe
+          </label>
           <Input
             id="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
             required
           />
-        </div>
-        <div>
-          <Label htmlFor="role">Type de compte</Label>
-          <select
-            id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value as UserRole)}
-            className="w-full rounded-md border border-input bg-background px-3 py-2"
-          >
-            <option value="buyer">Acheteur/Locataire</option>
-            <option value="agent">Agent Immobilier</option>
-            <option value="promoter">Promoteur</option>
-          </select>
         </div>
         <Button type="submit" className="w-full">
           S'inscrire
