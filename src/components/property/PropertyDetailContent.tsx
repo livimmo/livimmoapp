@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { PrivateVisitDialog } from "@/components/profile/PrivateVisitDialog";
 import { useState } from "react";
+import { VirtualTourViewer360 } from "@/components/virtual-tour/VirtualTourViewer360";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface PropertyDetailContentProps {
   property: Property;
@@ -15,7 +17,16 @@ interface PropertyDetailContentProps {
 export const PropertyDetailContent = ({ property }: PropertyDetailContentProps) => {
   const { user } = useAuth();
   const [showVisitDialog, setShowVisitDialog] = useState(false);
+  const [showVirtualTour, setShowVirtualTour] = useState(false);
   const isBuyerOrTenant = user?.role === 'buyer' || user?.role === 'tenant';
+
+  const handleVisitClick = () => {
+    if (property.virtualTour?.enabled) {
+      setShowVirtualTour(true);
+    } else {
+      setShowVisitDialog(true);
+    }
+  };
 
   return (
     <div className="lg:col-span-2 space-y-6">
@@ -27,10 +38,10 @@ export const PropertyDetailContent = ({ property }: PropertyDetailContentProps) 
         {isBuyerOrTenant && (
           <Button 
             variant="outline"
-            onClick={() => setShowVisitDialog(true)}
+            onClick={handleVisitClick}
             className="ml-4"
           >
-            Réserver une visite privée
+            {property.virtualTour?.enabled ? 'Visite virtuelle' : 'Réserver une visite'}
           </Button>
         )}
       </div>
@@ -77,6 +88,19 @@ export const PropertyDetailContent = ({ property }: PropertyDetailContentProps) 
         open={showVisitDialog} 
         onOpenChange={setShowVisitDialog} 
       />
+
+      <Dialog open={showVirtualTour} onOpenChange={setShowVirtualTour}>
+        <DialogContent className="max-w-6xl h-[80vh]">
+          <VirtualTourViewer360
+            tourUrl="TzhRashYdRt"
+            propertyId={property.id}
+            propertyTitle={property.title}
+            agentName={property.agent.name}
+            onContactAgent={() => {}}
+            onBookVisit={() => setShowVisitDialog(true)}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
