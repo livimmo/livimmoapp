@@ -23,13 +23,6 @@ const Lives = () => {
   const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
-  // Create replay lives from existing lives
-  const replayLives = liveStreams.map(live => ({
-    ...live,
-    status: "replay" as const,
-    viewers: Math.floor(Math.random() * 1000)
-  }));
-
   // Filter function for both current and scheduled lives
   const filterLives = (lives: any[]) => {
     return lives.filter((live) => {
@@ -48,6 +41,37 @@ const Lives = () => {
   const filteredCurrentLives = filterLives(liveStreams);
   const filteredScheduledLives = filterLives(scheduledLives);
   const filteredReplayLives = filterLives(replayLives);
+
+  // Convert current lives to Property format for the map
+  const currentLiveProperties: Property[] = filteredCurrentLives.map((live) => ({
+    id: live.id,
+    title: live.title,
+    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
+    location: live.location,
+    type: live.type,
+    surface: 0,
+    rooms: 0,
+    bathrooms: 0,
+    description: live.description || "",
+    features: [],
+    images: [live.thumbnail],
+    hasLive: true,
+    liveDate: live.date,
+    agent: {
+      name: live.agent,
+      image: "",
+      phone: "",
+      email: "",
+    },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2 - 1,
+      lng: -7.0926 + Math.random() * 2 - 1,
+    },
+    isLiveNow: true,
+    viewers: live.viewers,
+    remainingSeats: live.availableSeats,
+    transactionType: Math.random() > 0.5 ? "Vente" : "Location"
+  }));
 
   // Convert scheduled lives to Property format for the map
   const scheduledLiveProperties: Property[] = filteredScheduledLives.map((live) => ({
@@ -79,6 +103,14 @@ const Lives = () => {
     remainingSeats: live.availableSeats,
     transactionType: "Vente"
   }));
+
+  // Suggestions based on available locations and types
+  const suggestions = Array.from(new Set([
+    ...liveStreams.map(live => live.location),
+    ...liveStreams.map(live => live.type),
+    ...scheduledLives.map(live => live.location),
+    ...scheduledLives.map(live => live.type),
+  ]));
 
   return (
     <div className="container mx-auto px-4 py-8 mt-12 space-y-8">
