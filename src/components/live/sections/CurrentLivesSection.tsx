@@ -1,6 +1,7 @@
 import { LiveEvent } from "@/types/live";
 import { Property } from "@/types/property";
 import { LiveCard } from "@/components/live/LiveCard";
+import { Button } from "@/components/ui/button";
 
 interface CurrentLivesSectionProps {
   lives: LiveEvent[];
@@ -16,11 +17,11 @@ export const CurrentLivesSection = ({
   if (lives.length === 0) return null;
 
   return (
-    <section className="mb-8">
+    <section className="mb-12 bg-white rounded-xl p-6 shadow-sm">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
-            <span className="inline-block w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+            <span className="inline-block w-3 h-3 bg-[#ea384c] rounded-full animate-pulse"></span>
             Lives en cours
             <span className="ml-2 text-sm font-normal text-muted-foreground">
               ({lives.length})
@@ -34,7 +35,11 @@ export const CurrentLivesSection = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {lives.map((live) => (
-          <LiveCard key={live.id} live={live} />
+          <LiveCard 
+            key={live.id} 
+            live={live} 
+            className="h-full"
+          />
         ))}
       </div>
     </section>
