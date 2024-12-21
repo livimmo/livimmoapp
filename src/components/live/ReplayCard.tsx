@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LiveEvent } from "@/types/live";
-import { Eye, Play, Clock, CheckCircle2 } from "lucide-react";
+import { Eye, Play, Clock, CheckCircle2, MapPin } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
@@ -66,6 +66,12 @@ export const ReplayCard = ({ live }: ReplayCardProps) => {
                 {live.viewers}
               </Badge>
             )}
+          </div>
+          <div className="absolute bottom-2 left-2 right-2">
+            <Badge variant="secondary" className="bg-black/50 text-white w-full flex items-center gap-1 justify-center">
+              <MapPin className="w-3 h-3" />
+              {live.location} {live.neighborhood && `- ${live.neighborhood}`}
+            </Badge>
           </div>
           <div className="absolute top-2 right-2 flex gap-2">
             <FavoriteButton 
