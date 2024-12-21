@@ -9,26 +9,7 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      properties: {
-        Row: {
-          id: number
-          title: string
-          price: number
-          location: string
-          type: string
-          surface: number
-          rooms: number
-          bathrooms: number
-          description: string
-          features: string[]
-          images: string[]
-          status: 'available' | 'pending' | 'sold' | 'rented'
-          agent_id: string
-          createdAt: string
-        }
-        Insert: Omit<Database["public"]["Tables"]["properties"]["Row"], "id">
-        Update: Partial<Database["public"]["Tables"]["properties"]["Row"]>
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
