@@ -5,13 +5,11 @@ import { getBadgeForAgent } from "@/utils/agentBadge";
 
 interface AgentCertificationBadgeProps {
   rating: number;
-  showLevel?: boolean;
   className?: string;
 }
 
 export const AgentCertificationBadge = ({ 
   rating,
-  showLevel = true,
   className 
 }: AgentCertificationBadgeProps) => {
   const badge = getBadgeForAgent(rating);
@@ -28,7 +26,7 @@ export const AgentCertificationBadge = ({
       )}
     >
       <Award className="w-3.5 h-3.5" />
-      <span>Agent Certifié{showLevel ? ` ${badge.level}` : ''}</span>
+      <span>Agent Certifié</span>
     </Badge>
   );
 };
