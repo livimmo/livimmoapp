@@ -51,15 +51,8 @@ export const mockProperty: Property = {
     image: "https://example.com/avatar.jpg",
     phone: "+212 6XX XXX XXX",
     email: "sarah@example.com",
-    description: "Expert immobilier avec plus de 10 ans d'expérience",
-    rating: 4.8,
-    totalReviews: 156,
-    activeProperties: 12,
-    completedLives: 45,
-    scheduledLives: 3,
-    soldProperties: 89,
-    verified: true,
-    specialties: ["Résidentiel", "Luxe"]
+    company: "Immobilier Premium",
+    verified: true
   }
 };
 
