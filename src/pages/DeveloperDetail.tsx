@@ -1,69 +1,52 @@
 import { useParams } from "react-router-dom";
 import { developers } from "@/data/mockDevelopers";
-import { StarRating } from "@/components/ratings/StarRating";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LiveCard } from "@/components/live/LiveCard";
-import { liveStreams, scheduledLives } from "@/data/mockLives";
+import { replayLives, liveStreams, scheduledLives } from "@/data/mockLives";
+import { CurrentLivesSection } from "@/components/home/sections/CurrentLivesSection";
+import { ScheduledLivesSection } from "@/components/home/sections/ScheduledLivesSection";
+import { ReplayLivesSection } from "@/components/home/sections/ReplayLivesSection";
 
 const DeveloperDetail = () => {
   const { id } = useParams();
-  const developer = developers.find(d => d.id === Number(id));
+  const developer = developers.find((dev) => dev.id === Number(id));
 
   if (!developer) {
     return <div>Promoteur non trouvé</div>;
   }
 
-  // Filter lives for this developer (mock filtering)
-  const activeLives = liveStreams.slice(0, developer.activeLives);
-  const upcomingLives = scheduledLives.slice(0, developer.scheduledLives);
+  // Filtrer les lives pour ce promoteur spécifique (simulation)
+  const developerCurrentLives = liveStreams.slice(0, 2);
+  const developerScheduledLives = scheduledLives.slice(0, 3);
+  const developerReplayLives = replayLives.slice(0, 3);
 
   return (
-    <div className="container px-4 py-6 pb-20">
-      <div className="relative h-48 mb-8 rounded-lg overflow-hidden">
-        <img
-          src={developer.logo}
-          alt={developer.name}
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      <div className="space-y-6">
-        <div className="flex items-start justify-between">
+    <div className="container px-4 py-8 space-y-8">
+      <header className="mb-8">
+        <div className="flex items-center gap-4 mb-4">
+          <img
+            src={developer.logo}
+            alt={developer.name}
+            className="w-24 h-24 object-contain"
+          />
           <div>
             <h1 className="text-3xl font-bold">{developer.name}</h1>
             <p className="text-muted-foreground">{developer.location}</p>
           </div>
-          <StarRating rating={developer.rating} totalReviews={developer.totalReviews} />
         </div>
-
         <p className="text-lg">{developer.description}</p>
+      </header>
 
-        <Tabs defaultValue="active" className="w-full">
-          <TabsList className="w-full">
-            <TabsTrigger value="active" className="flex-1">
-              Lives en cours ({activeLives.length})
-            </TabsTrigger>
-            <TabsTrigger value="scheduled" className="flex-1">
-              Lives programmés ({upcomingLives.length})
-            </TabsTrigger>
-          </TabsList>
+      <div className="space-y-8">
+        {developerCurrentLives.length > 0 && (
+          <CurrentLivesSection currentLives={developerCurrentLives} />
+        )}
 
-          <TabsContent value="active">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {activeLives.map((live) => (
-                <LiveCard key={live.id} live={live} />
-              ))}
-            </div>
-          </TabsContent>
+        {developerScheduledLives.length > 0 && (
+          <ScheduledLivesSection scheduledLives={developerScheduledLives} />
+        )}
 
-          <TabsContent value="scheduled">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {upcomingLives.map((live) => (
-                <LiveCard key={live.id} live={live} />
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+        {developerReplayLives.length > 0 && (
+          <ReplayLivesSection replayLives={developerReplayLives} />
+        )}
       </div>
     </div>
   );
