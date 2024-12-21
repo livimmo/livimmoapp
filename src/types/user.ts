@@ -1,4 +1,4 @@
-export type UserRole = "promoter" | "agent" | "tenant" | "buyer" | "owner";
+export type UserRole = "promoter" | "agent" | "tenant" | "buyer" | "owner" | "developer";
 export type AccountType = "buyer" | "agent" | "owner";
 
 export interface User {

@@ -25,7 +25,7 @@ export const VisitCard = ({
   showAgentActions = false
 }: VisitCardProps) => {
   const { user } = useAuth();
-  const isAgent = user?.role === 'agent' || user?.role === 'developer';
+  const isAgent = user?.role === "agent" || user?.role === "developer";
 
   const getStatusBadge = (status: string) => {
     switch (status) {
