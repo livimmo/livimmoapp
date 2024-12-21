@@ -1,20 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { type Property } from "@/types/property";
-import { PropertyImage } from "./property/PropertyImage";
 import { PropertyInfo } from "./PropertyInfo";
-import { PropertyActions } from "./property/PropertyActions";
-import { FavoriteButton } from "./property/FavoriteButton";
-import { Badge } from "./ui/badge";
-import { getRandomTags } from "@/utils/propertyTags";
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
-import { CheckCircle2 } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
-import { Button } from "./ui/button";
-import { useState } from "react";
-import { AgentCertificationBadge } from "./agent/AgentCertificationBadge";
 import { cn } from "@/lib/utils";
-import { VirtualTourBadge } from "./property/VirtualTourBadge";
-import { VirtualTourButton } from "./property/VirtualTourButton";
+import { useState } from "react";
+import { PropertyCardImage } from "./property-card/PropertyCardImage";
+import { PropertyCardAgent } from "./property-card/PropertyCardAgent";
+import { PropertyCardAuthDialog } from "./property-card/PropertyCardAuthDialog";
+import { getRandomTags } from "@/utils/propertyTags";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -58,17 +50,6 @@ export const PropertyCard = ({
     navigate(`/property/${id}/virtual-tour`);
   };
 
-  const handleAgentClick = () => {
-    if (agent.id) {
-      navigate(`/agent/${agent.id}`);
-    }
-  };
-
-  const handleAuthAction = (action: 'login' | 'signup') => {
-    setShowAuthDialog(false);
-    navigate(`/${action}`);
-  };
-
   const [city, district] = location.split(", ");
 
   return (
@@ -78,66 +59,23 @@ export const PropertyCard = ({
         "transform hover:-translate-y-1",
         className
       )}>
-        <div className="relative">
-          <PropertyImage
-            id={id}
-            title={title}
-            image={images[0]}
-            hasLive={hasLive}
-            liveDate={liveDate}
-            viewers={viewers}
-            currentUrl={currentUrl}
-            isLiveNow={isLiveNow}
-            isUserRegistered={isUserRegistered}
-            remainingSeats={remainingSeats}
-            offers={offers}
-          />
-          <div className="absolute top-2 right-2 z-10 flex gap-2">
-            <FavoriteButton 
-              propertyId={id} 
-              title={title} 
-              onUnauthorized={() => setShowAuthDialog(true)}
-            />
-            <PropertyActions title={title} currentUrl={currentUrl} />
-          </div>
-          <div className="absolute top-2 left-2 right-14 z-10">
-            <div className="flex flex-wrap gap-1">
-              {!hasLive && (
-                <Badge variant="destructive" className="bg-[#ea384c]/90 backdrop-blur-sm text-white font-semibold shadow-sm">
-                  Vendu
-                </Badge>
-              )}
-              {virtualTour?.enabled && <VirtualTourBadge />}
-              {tags.map((tag) => (
-                <Badge
-                  key={tag}
-                  variant={
-                    tag === "Coup de fusil"
-                      ? "destructive"
-                      : tag === "Nouveauté"
-                      ? "default"
-                      : "secondary"
-                  }
-                  className={cn(
-                    "backdrop-blur-sm font-semibold shadow-sm whitespace-nowrap",
-                    tag === "Coup de fusil" 
-                      ? "bg-[#ea384c]/90 text-white"
-                      : tag === "Nouveauté"
-                      ? "bg-[#0EA5E9]/90 text-white"
-                      : "bg-white/90 text-gray-900"
-                  )}
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
-          {virtualTour?.enabled && (
-            <div className="absolute bottom-4 right-4 z-10">
-              <VirtualTourButton onClick={handleVirtualTour} />
-            </div>
-          )}
-        </div>
+        <PropertyCardImage
+          id={id}
+          title={title}
+          image={images[0]}
+          hasLive={hasLive}
+          liveDate={liveDate}
+          viewers={viewers}
+          currentUrl={currentUrl}
+          isLiveNow={isLiveNow}
+          isUserRegistered={isUserRegistered}
+          remainingSeats={remainingSeats}
+          offers={offers}
+          virtualTour={virtualTour}
+          tags={tags}
+          onVirtualTourClick={handleVirtualTour}
+          onUnauthorized={() => setShowAuthDialog(true)}
+        />
         
         <PropertyInfo
           id={id}
@@ -155,52 +93,13 @@ export const PropertyCard = ({
           isUserRegistered={isUserRegistered}
         />
         
-        <div 
-          className="px-4 py-3 border-t flex items-center justify-between bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors"
-          onClick={handleAgentClick}
-        >
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8 border border-gray-200">
-              <AvatarImage src={agent.image} alt={agent.name} />
-              <AvatarFallback>{agent.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-gray-900">{agent.name}</span>
-              <div className="flex items-center gap-1">
-                <span className="text-xs text-gray-500">{agent.company || 'Agent indépendant'}</span>
-                {district && (
-                  <>
-                    <span className="text-xs text-gray-400">•</span>
-                    <span className="text-xs text-gray-500">{district}</span>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-          {agent.verified && (
-            <AgentCertificationBadge rating={4.8} showLevel={false} />
-          )}
-        </div>
+        <PropertyCardAgent agent={agent} district={district} />
       </div>
 
-      <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Connectez-vous pour ajouter aux favoris</DialogTitle>
-            <DialogDescription>
-              Pour ajouter ce bien à vos favoris, vous devez avoir un compte Livimmo.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex gap-4 mt-4">
-            <Button variant="outline" className="w-full" onClick={() => handleAuthAction('signup')}>
-              Créer un compte
-            </Button>
-            <Button className="w-full" onClick={() => handleAuthAction('login')}>
-              Se connecter
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <PropertyCardAuthDialog 
+        open={showAuthDialog} 
+        onOpenChange={setShowAuthDialog} 
+      />
     </>
   );
 };
