@@ -22,6 +22,7 @@ import Agents from "./pages/Agents";
 import AgentDetail from "./pages/AgentDetail";
 import PropertyManagement from "./pages/PropertyManagement";
 import SubmitProperty from "./pages/SubmitProperty";
+import OwnerDashboard from "./pages/OwnerDashboard";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
               <Route path="/agent/:id" element={<AgentDetail />} />
               <Route path="/my-properties" element={<PropertyManagement />} />
               <Route path="/submit-property" element={<SubmitProperty />} />
+              <Route path="/owner-dashboard" element={<OwnerDashboard />} />
             </Routes>
           </div>
           <BottomNav />
