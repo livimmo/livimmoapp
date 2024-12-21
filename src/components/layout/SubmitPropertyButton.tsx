@@ -14,9 +14,14 @@ import { useState } from "react";
 
 export const SubmitPropertyButton = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Si l'utilisateur est un agent ou un promoteur, on ne montre pas le bouton
+  if (user?.role === "agent" || user?.role === "promoter") {
+    return null;
+  }
 
   const handleClick = () => {
     if (!isAuthenticated) {
