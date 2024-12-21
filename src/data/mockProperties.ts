@@ -20,13 +20,14 @@ export const generateMockCoordinates = (location: string) => {
 };
 
 // Helper function to add coordinates to properties
-export const addCoordinatesToProperties = (properties: Property[]): Property[] => {
+export const addCoordinatesToProperties = (properties: Omit<Property, 'coordinates'>[]): Property[] => {
   return properties.map(property => ({
     ...property,
     coordinates: generateMockCoordinates(property.location)
   }));
 };
 
+// Base mock property with all required fields
 export const mockProperty: Property = {
   id: 1,
   title: "Appartement moderne au centre-ville",
@@ -50,8 +51,6 @@ export const mockProperty: Property = {
     image: "https://example.com/avatar.jpg",
     phone: "+212 6XX XXX XXX",
     email: "sarah@example.com",
-    location: "Casablanca",
-    type: "agent",
     description: "Expert immobilier avec plus de 10 ans d'expérience",
     rating: 4.8,
     totalReviews: 156,
