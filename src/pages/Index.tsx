@@ -153,22 +153,22 @@ const Index = () => {
             <ScheduledLivesSection scheduledLives={scheduledLives} />
 
             <ReplayLivesSection replayLives={replayLives} />
+
+            <ScrollArea className="h-full pb-8">
+              <VirtualToursSection properties={featuredProperties} />
+            </ScrollArea>
+
+            <div className="pb-12">
+              <FeaturedSection properties={featuredProperties} />
+            </div>
+
+            <SearchSection 
+              filteredProperties={filteredProperties} 
+              defaultProperties={featuredProperties}
+            />
+
+            <CTASection />
           </div>
-
-          <ScrollArea className="h-full pb-8">
-            <VirtualToursSection properties={featuredProperties} />
-          </ScrollArea>
-
-          <div className="pb-12">
-            <FeaturedSection properties={featuredProperties} />
-          </div>
-
-          <SearchSection 
-            filteredProperties={filteredProperties} 
-            defaultProperties={featuredProperties}
-          />
-
-          <CTASection />
         </div>
       </main>
     </div>
