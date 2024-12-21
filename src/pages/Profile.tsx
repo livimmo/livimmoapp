@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
-import { AccountTypeSelector, AccountType } from "@/components/profile/AccountTypeSelector";
+import { AccountTypeSelector } from "@/components/profile/AccountTypeSelector";
 import { PersonalInfo } from "@/components/profile/PersonalInfo";
 import { SocialConnect } from "@/components/profile/SocialConnect";
+import { PropertyManagementSection } from "@/components/profile/PropertyManagementSection";
 import { Button } from "@/components/ui/button";
 import { LogOut, Lock, Languages } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -38,6 +40,7 @@ interface UserProfile {
 }
 
 const Profile = () => {
+  const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile>({
@@ -94,6 +97,8 @@ const Profile = () => {
       description: "Un email vous a été envoyé pour changer votre mot de passe.",
     });
   };
+
+  const isAgent = profile.accountType === "agent";
 
   return (
     <div className="min-h-screen pb-20">
@@ -169,6 +174,10 @@ const Profile = () => {
             onSubmit={handleSubmit}
             onChange={handleProfileChange}
           />
+
+          {isAgent && user?.id && (
+            <PropertyManagementSection userId={user.id} />
+          )}
 
           <div className="border-t pt-8">
             <h2 className="text-lg font-semibold mb-4">Connexion sociale</h2>
