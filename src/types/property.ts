@@ -13,7 +13,8 @@ export interface Property {
   hasLive?: boolean;
   isReplay?: boolean;
   liveDate?: Date;
-  status?: 'live' | 'scheduled' | null;
+  status?: 'available' | 'pending' | 'sold' | 'rented';
+  createdAt?: Date;
   agent: {
     id?: number;
     name: string;
