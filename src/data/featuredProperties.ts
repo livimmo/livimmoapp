@@ -33,8 +33,8 @@ export const featuredProperties: Property[] = [
     transactionType: "Vente",
     virtualTour: {
       enabled: true,
-      url: "VOTRE_ID_KLAPTY",
-      platform: 'klapty',
+      url: "TzhRashYdRt",
+      platform: 'matterport',
       type: "360",
       hotspots: [
         {
