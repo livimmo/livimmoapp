@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { PropertySubmissionForm } from "@/components/property/submission/PropertySubmissionForm";
-import { Header } from "@/components/layout/Header";
 
 const SubmitProperty = () => {
   const navigate = useNavigate();
@@ -32,12 +31,9 @@ const SubmitProperty = () => {
   };
 
   return (
-    <div>
-      <Header />
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
-        <h1 className="text-2xl font-bold mb-6">Déposer Votre Bien</h1>
-        <PropertySubmissionForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
-      </div>
+    <div className="container mx-auto px-4 py-8 max-w-3xl">
+      <h1 className="text-2xl font-bold mb-6">Déposer Votre Bien</h1>
+      <PropertySubmissionForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
     </div>
   );
 };
