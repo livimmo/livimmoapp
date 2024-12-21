@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 import { developers } from "@/data/mockDevelopers";
 import { replayLives, liveStreams, scheduledLives } from "@/data/mockLives";
 import { CurrentLivesSection } from "@/components/home/sections/CurrentLivesSection";
@@ -8,6 +9,7 @@ import { ReplayLivesSection } from "@/components/home/sections/ReplayLivesSectio
 const DeveloperDetail = () => {
   const { id } = useParams();
   const developer = developers.find((dev) => dev.id === Number(id));
+  const [currentLiveViewMode, setCurrentLiveViewMode] = useState<"map" | "list">("list");
 
   if (!developer) {
     return <div>Promoteur non trouvé</div>;
@@ -17,6 +19,32 @@ const DeveloperDetail = () => {
   const developerCurrentLives = liveStreams.slice(0, 2);
   const developerScheduledLives = scheduledLives.slice(0, 3);
   const developerReplayLives = replayLives.slice(0, 3);
+
+  // Mock properties for current lives (you can replace this with actual data)
+  const currentLiveProperties = developerCurrentLives.map(live => ({
+    id: live.id,
+    title: live.title,
+    price: parseInt(live.price.replace(/[^0-9]/g, '')),
+    location: live.location,
+    type: live.type,
+    surface: 150, // Mock value
+    rooms: 4, // Mock value
+    bathrooms: 2, // Mock value
+    description: live.description,
+    features: [],
+    images: [live.thumbnail],
+    agent: {
+      name: live.agent,
+      image: "https://example.com/agent.jpg",
+      phone: "+212 600000000",
+      email: "agent@example.com"
+    },
+    coordinates: {
+      lat: 31.6295, // Mock coordinates for Marrakech
+      lng: -7.9811
+    },
+    transactionType: "Vente" as const
+  }));
 
   return (
     <div className="container px-4 py-8 space-y-8">
@@ -37,7 +65,12 @@ const DeveloperDetail = () => {
 
       <div className="space-y-8">
         {developerCurrentLives.length > 0 && (
-          <CurrentLivesSection currentLives={developerCurrentLives} />
+          <CurrentLivesSection 
+            currentLives={developerCurrentLives}
+            currentLiveProperties={currentLiveProperties}
+            currentLiveViewMode={currentLiveViewMode}
+            setCurrentLiveViewMode={setCurrentLiveViewMode}
+          />
         )}
 
         {developerScheduledLives.length > 0 && (
