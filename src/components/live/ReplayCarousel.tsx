@@ -32,7 +32,6 @@ export const ReplayCarousel = ({
     stopOnInteraction: true,
   };
 
-  // Réduire automatiquement la fenêtre lorsqu'un replay est sélectionné
   useEffect(() => {
     if (currentReplayId) {
       setIsCollapsed(true);
@@ -74,8 +73,8 @@ export const ReplayCarousel = ({
                   <div
                     className={cn(
                       "relative group cursor-pointer rounded-lg overflow-hidden",
-                      "transition-all duration-200 hover:ring-2 hover:ring-primary",
-                      replay.id === currentReplayId && "ring-2 ring-primary"
+                      "transition-all duration-200 hover:ring-2 hover:ring-emerald-500",
+                      replay.id === currentReplayId && "ring-2 ring-emerald-500"
                     )}
                     onClick={() => onReplaySelect(replay.id)}
                   >
@@ -85,14 +84,14 @@ export const ReplayCarousel = ({
                       className="w-full aspect-video object-cover"
                     />
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Badge variant="secondary" className="bg-primary text-white">
+                      <Badge variant="secondary" className="bg-emerald-500 text-white">
                         Visionner
                       </Badge>
                     </div>
                     <div className="absolute top-2 left-2 flex flex-wrap gap-1 max-w-[80%]">
                       <Badge 
                         variant="secondary"
-                        className="flex items-center gap-1.5 px-2 py-1 bg-blue-600 text-white"
+                        className="flex items-center gap-1.5 px-2 py-1 bg-emerald-500 text-white"
                       >
                         REPLAY
                       </Badge>

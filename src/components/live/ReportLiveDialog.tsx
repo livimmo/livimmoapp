@@ -80,7 +80,7 @@ export const ReportLiveDialog = ({ liveId, isOpen, onClose }: ReportLiveDialogPr
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-destructive" />
+            <AlertTriangle className="h-5 w-5 text-emerald-500" />
             Signaler ce live
           </DialogTitle>
           <DialogDescription>
@@ -122,7 +122,7 @@ export const ReportLiveDialog = ({ liveId, isOpen, onClose }: ReportLiveDialogPr
               Annuler
             </Button>
             <Button 
-              variant="destructive" 
+              className="bg-emerald-500 hover:bg-emerald-600"
               onClick={handleSubmit}
               disabled={isSubmitting}
             >
