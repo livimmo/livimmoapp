@@ -4,14 +4,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { UseFormReturn } from "react-hook-form";
 
 interface MediaUploadStepProps {
-  data: any[];
-  onUpdate: (data: any[]) => void;
+  form: UseFormReturn<any>;
 }
 
-export const MediaUploadStep = ({ data, onUpdate }: MediaUploadStepProps) => {
-  const [files, setFiles] = useState<File[]>(data || []);
+export const MediaUploadStep = ({ form }: MediaUploadStepProps) => {
+  const { watch, setValue } = form;
+  const [files, setFiles] = useState<File[]>(watch("media") || []);
   const [isDragging, setIsDragging] = useState(false);
   const { toast } = useToast();
 
@@ -45,14 +46,14 @@ export const MediaUploadStep = ({ data, onUpdate }: MediaUploadStepProps) => {
     if (validFiles.length > 0) {
       const newFiles = [...files, ...validFiles];
       setFiles(newFiles);
-      onUpdate(newFiles);
+      setValue("media", newFiles);
     }
   };
 
   const removeFile = (index: number) => {
     const newFiles = files.filter((_, i) => i !== index);
     setFiles(newFiles);
-    onUpdate(newFiles);
+    setValue("media", newFiles);
   };
 
   return (
@@ -81,7 +82,7 @@ export const MediaUploadStep = ({ data, onUpdate }: MediaUploadStepProps) => {
                   const newFiles = Array.from(e.target.files || []);
                   const updatedFiles = [...files, ...newFiles];
                   setFiles(updatedFiles);
-                  onUpdate(updatedFiles);
+                  setValue("media", updatedFiles);
                 }}
                 multiple
                 accept="image/*,video/*"

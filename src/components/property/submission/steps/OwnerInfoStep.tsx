@@ -1,20 +1,14 @@
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { UseFormReturn } from "react-hook-form";
 
 interface OwnerInfoStepProps {
-  data: any;
-  onUpdate: (data: any) => void;
+  form: UseFormReturn<any>;
 }
 
-export const OwnerInfoStep = ({ data, onUpdate }: OwnerInfoStepProps) => {
-  const [formData, setFormData] = useState(data);
-
-  const handleChange = (field: string, value: string) => {
-    const newData = { ...formData, [field]: value };
-    setFormData(newData);
-    onUpdate(newData);
-  };
+export const OwnerInfoStep = ({ form }: OwnerInfoStepProps) => {
+  const { register } = form;
 
   return (
     <div className="space-y-6">
@@ -23,8 +17,7 @@ export const OwnerInfoStep = ({ data, onUpdate }: OwnerInfoStepProps) => {
         <Input
           id="ownerName"
           placeholder="Votre nom complet"
-          value={formData.ownerName || ""}
-          onChange={(e) => handleChange("ownerName", e.target.value)}
+          {...register("ownerInfo.ownerName")}
           required
         />
       </div>
@@ -35,8 +28,7 @@ export const OwnerInfoStep = ({ data, onUpdate }: OwnerInfoStepProps) => {
           id="ownerEmail"
           type="email"
           placeholder="votre@email.com"
-          value={formData.ownerEmail || ""}
-          onChange={(e) => handleChange("ownerEmail", e.target.value)}
+          {...register("ownerInfo.ownerEmail")}
           required
         />
       </div>
@@ -47,8 +39,7 @@ export const OwnerInfoStep = ({ data, onUpdate }: OwnerInfoStepProps) => {
           id="ownerPhone"
           type="tel"
           placeholder="+212 6XX XXX XXX"
-          value={formData.ownerPhone || ""}
-          onChange={(e) => handleChange("ownerPhone", e.target.value)}
+          {...register("ownerInfo.ownerPhone")}
           required
         />
       </div>

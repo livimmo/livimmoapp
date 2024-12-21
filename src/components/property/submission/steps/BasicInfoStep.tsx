@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { UseFormReturn } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,18 +7,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 
 interface BasicInfoStepProps {
-  data: any;
-  onUpdate: (data: any) => void;
+  form: UseFormReturn<any>;
 }
 
-export const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
-  const [formData, setFormData] = useState(data);
-
-  const handleChange = (field: string, value: string) => {
-    const newData = { ...formData, [field]: value };
-    setFormData(newData);
-    onUpdate(newData);
-  };
+export const BasicInfoStep = ({ form }: BasicInfoStepProps) => {
+  const { register, watch, setValue } = form;
+  const formData = watch("basicInfo");
 
   return (
     <div className="space-y-6">
@@ -26,8 +21,7 @@ export const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
         <Input
           id="title"
           placeholder="Ex: Appartement 3 pièces au centre-ville"
-          value={formData.title || ""}
-          onChange={(e) => handleChange("title", e.target.value)}
+          {...register("basicInfo.title")}
           required
         />
       </div>
@@ -37,8 +31,7 @@ export const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
         <Textarea
           id="description"
           placeholder="Décrivez votre bien en détail..."
-          value={formData.description || ""}
-          onChange={(e) => handleChange("description", e.target.value)}
+          {...register("basicInfo.description")}
           required
         />
       </div>
@@ -50,8 +43,7 @@ export const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
             id="price"
             type="number"
             placeholder="Prix en MAD"
-            value={formData.price || ""}
-            onChange={(e) => handleChange("price", e.target.value)}
+            {...register("basicInfo.price")}
             required
           />
         </div>
@@ -59,8 +51,7 @@ export const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
         <div className="space-y-2">
           <Label htmlFor="type">Type de bien*</Label>
           <Select
-            value={formData.type || ""}
-            onValueChange={(value) => handleChange("type", value)}
+            {...register("basicInfo.type")}
           >
             <SelectTrigger>
               <SelectValue placeholder="Sélectionner le type" />
@@ -80,8 +71,7 @@ export const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
           <Input
             id="location"
             placeholder="Ville, Quartier"
-            value={formData.location || ""}
-            onChange={(e) => handleChange("location", e.target.value)}
+            {...register("basicInfo.location")}
             required
           />
         </div>
@@ -92,8 +82,7 @@ export const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
             id="surface"
             type="number"
             placeholder="Surface en m²"
-            value={formData.surface || ""}
-            onChange={(e) => handleChange("surface", e.target.value)}
+            {...register("basicInfo.surface")}
             required
           />
         </div>

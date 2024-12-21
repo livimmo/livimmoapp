@@ -3,19 +3,20 @@ import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { fr } from "date-fns/locale";
+import { UseFormReturn } from "react-hook-form";
 
 interface AvailabilityStepProps {
-  data: any;
-  onUpdate: (data: any) => void;
+  form: UseFormReturn<any>;
 }
 
-export const AvailabilityStep = ({ data, onUpdate }: AvailabilityStepProps) => {
-  const [formData, setFormData] = useState(data);
+export const AvailabilityStep = ({ form }: AvailabilityStepProps) => {
+  const { watch, setValue } = form;
+  const [formData, setFormData] = useState(watch("availability") || {});
 
   const handleChange = (field: string, value: any) => {
     const newData = { ...formData, [field]: value };
     setFormData(newData);
-    onUpdate(newData);
+    setValue("availability", newData);
   };
 
   return (

@@ -17,7 +17,19 @@ const mockProperty: Property = {
     lat: 33.5731104,
     lng: -7.6425486
   },
-  transactionType: "Vente"
+  transactionType: "Vente",
+  agent: {
+    id: 1,
+    name: "Sarah Martin",
+    avatar: "https://example.com/avatar.jpg",
+    contact: {
+      phone: "+212 6XX XXX XXX",
+      email: "sarah@example.com"
+    },
+    location: "Casablanca",
+    type: "agent",
+    description: "Expert immobilier avec plus de 10 ans d'expérience"
+  }
 };
 
 export const mockVisits: Visit[] = [
@@ -46,7 +58,8 @@ export const mockVisits: Visit[] = [
       company: "Livimmo",
       companyLogo: "/livimmo-icon.svg",
       verified: true,
-      specialties: ["Résidentiel", "Luxe"]
+      specialties: ["Résidentiel", "Luxe"],
+      description: "Expert immobilier avec plus de 10 ans d'expérience"
     },
     visitor: {
       name: "Mohamed Alami",

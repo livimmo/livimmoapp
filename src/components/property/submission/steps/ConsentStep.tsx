@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { UseFormReturn } from "react-hook-form";
 
 interface ConsentStepProps {
-  data: boolean;
-  onUpdate: (data: boolean) => void;
+  form: UseFormReturn<any>;
 }
 
-export const ConsentStep = ({ data, onUpdate }: ConsentStepProps) => {
-  const [isChecked, setIsChecked] = useState(data);
+export const ConsentStep = ({ form }: ConsentStepProps) => {
+  const { watch, setValue } = form;
+  const [isChecked, setIsChecked] = useState(watch("consent"));
 
   const handleChange = (checked: boolean) => {
     setIsChecked(checked);
-    onUpdate(checked);
+    setValue("consent", checked);
   };
 
   return (
