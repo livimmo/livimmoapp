@@ -2,13 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Eye, MessageCircle, Calendar, Info, 
+  Eye, MessageCircle, Calendar, Info, Euro,
   RotateCw, ArrowLeft, ArrowRight, Maximize2,
   MessageSquare, X 
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LiveChat } from "@/components/live/LiveChat";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { LiveOfferDialog } from "@/components/live/LiveOfferDialog";
 
 interface VirtualTourViewer360Props {
   tourUrl: string;
@@ -33,6 +34,7 @@ export const VirtualTourViewer360 = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [showBookingDialog, setShowBookingDialog] = useState(false);
+  const [showOfferDialog, setShowOfferDialog] = useState(false);
   const viewerRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -47,10 +49,8 @@ export const VirtualTourViewer360 = ({
 
   const getEmbedUrl = () => {
     if (platform === 'klapty') {
-      // Format Klapty URL
       return `https://www.klapty.com/tour/${tourUrl}`;
     }
-    // Format Matterport URL (default)
     return `https://my.matterport.com/show/?m=${tourUrl}`;
   };
 
@@ -66,6 +66,10 @@ export const VirtualTourViewer360 = ({
 
   const handleQuickBook = () => {
     setShowBookingDialog(true);
+  };
+
+  const handleMakeOffer = () => {
+    setShowOfferDialog(true);
   };
 
   return (
@@ -143,6 +147,15 @@ export const VirtualTourViewer360 = ({
                   <Calendar className="w-4 h-4" />
                   Réserver une visite
                 </Button>
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="gap-2 bg-orange-500 hover:bg-orange-600"
+                  onClick={handleMakeOffer}
+                >
+                  <Euro className="w-4 h-4" />
+                  Faire une offre
+                </Button>
               </div>
               <div className="text-sm text-muted-foreground">
                 Agent: {agentName}
@@ -173,6 +186,15 @@ export const VirtualTourViewer360 = ({
           </div>
         </DialogContent>
       </Dialog>
+
+      {showOfferDialog && (
+        <LiveOfferDialog
+          title={propertyTitle}
+          price={500000} // À remplacer par le vrai prix
+          isOpen={showOfferDialog}
+          onClose={() => setShowOfferDialog(false)}
+        />
+      )}
     </div>
   );
 };
