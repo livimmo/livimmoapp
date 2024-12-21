@@ -25,11 +25,13 @@ import { PropertyNotes } from "./PropertyNotes";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { VisitCalendar } from "./visits/VisitCalendar";
 
+type PropertyStatus = "available" | "pending" | "sold" | "rented";
+
 interface PropertyManagementTableProps {
   properties: Property[];
   onEdit: (property: Property) => void;
   onDelete: (propertyId: number) => void;
-  onStatusChange: (propertyId: number, status: "available" | "pending" | "sold" | "rented") => void;
+  onStatusChange: (propertyId: number, status: PropertyStatus) => void;
   onNotesChange: (propertyId: number, notes: any) => void;
 }
 
@@ -105,7 +107,7 @@ export const PropertyManagementTable = ({
                   {editingStatus === property.id ? (
                     <PropertyStatusSelect
                       value={property.status || "available"}
-                      onValueChange={(value) => {
+                      onValueChange={(value: PropertyStatus) => {
                         onStatusChange(property.id, value);
                         setEditingStatus(null);
                       }}

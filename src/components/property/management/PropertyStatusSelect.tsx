@@ -6,9 +6,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+type PropertyStatus = "available" | "pending" | "sold" | "rented";
+
 interface PropertyStatusSelectProps {
-  value: string;
-  onValueChange: (value: string) => void;
+  value: PropertyStatus;
+  onValueChange: (value: PropertyStatus) => void;
 }
 
 export const PropertyStatusSelect = ({
