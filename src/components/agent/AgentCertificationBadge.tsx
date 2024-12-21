@@ -1,20 +1,32 @@
+import { Award } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Star } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { getBadgeForAgent } from "@/utils/agentBadge";
 
-export interface AgentCertificationBadgeProps {
+interface AgentCertificationBadgeProps {
   rating: number;
-  showLevel?: boolean; // Ajout de la prop optionnelle
+  className?: string;
 }
 
 export const AgentCertificationBadge = ({ 
-  rating, 
-  showLevel = true 
+  rating,
+  className 
 }: AgentCertificationBadgeProps) => {
+  const badge = getBadgeForAgent(rating);
+  
   return (
-    <Badge variant="secondary" className="flex items-center gap-1">
-      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-      <span>{rating.toFixed(1)}</span>
-      {showLevel && <span className="text-xs">• Expert</span>}
+    <Badge 
+      variant="outline" 
+      className={cn(
+        "flex items-center gap-1.5",
+        badge.color,
+        badge.textColor,
+        badge.borderColor,
+        className
+      )}
+    >
+      <Award className="w-3.5 h-3.5" />
+      <span>Agent Certifié</span>
     </Badge>
   );
 };
