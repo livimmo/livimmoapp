@@ -53,7 +53,12 @@ const PropertyManagement = () => {
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Gestion des biens</h1>
+        <div>
+          <h1 className="text-2xl font-bold">Mes Biens</h1>
+          <p className="text-gray-500">
+            Gérez vos biens immobiliers facilement et efficacement
+          </p>
+        </div>
         <Button onClick={() => setIsAddPropertyOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Ajouter un bien

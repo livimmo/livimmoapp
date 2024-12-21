@@ -6,16 +6,14 @@ import { mockFavoritesData } from "@/data/mockFavorites";
 
 export const BottomNav = () => {
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
-  // Compte le nombre de lives en cours
+  const isAgent = user?.role === "agent" || user?.role === "promoter";
   const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
-
-  // Compte le nombre de favoris
   const favoritesCount = mockFavoritesData.length;
 
   const navItems = [
@@ -34,6 +32,11 @@ export const BottomNav = () => {
       path: "/favorites",
       badge: isAuthenticated && favoritesCount > 0 ? favoritesCount : undefined
     },
+    ...(isAgent ? [{ 
+      icon: Building2, 
+      label: "Mes Biens", 
+      path: "/my-properties" 
+    }] : []),
     { icon: User, label: "Profil", path: "/profile" },
   ];
 
