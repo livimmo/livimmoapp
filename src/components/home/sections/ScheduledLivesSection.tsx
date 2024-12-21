@@ -1,7 +1,7 @@
 import { LiveEvent } from "@/types/live";
 import { Card } from "@/components/ui/card";
 import { LiveCalendar } from "@/components/home/LiveCalendar";
-import { Clock } from "lucide-react";
+import { Clock, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface ScheduledLivesSectionProps {
@@ -92,6 +92,10 @@ export const ScheduledLivesSection = ({ scheduledLives }: ScheduledLivesSectionP
                       minute: '2-digit'
                     })}
                   </p>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
+                    <MapPin className="w-3 h-3" />
+                    {live.location} {live.neighborhood && `- ${live.neighborhood}`}
+                  </div>
                 </div>
               </div>
             ))}

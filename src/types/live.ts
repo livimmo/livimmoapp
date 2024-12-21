@@ -5,9 +5,10 @@ export interface BaseLive {
   thumbnail: string;
   agent: string;
   location: string;
+  neighborhood?: string;
   type: string;
   price: string;
-  date: Date;  // Changed back to Date only
+  date: Date;
   availableSeats: number;
   viewers: number;
   tags?: string[];
