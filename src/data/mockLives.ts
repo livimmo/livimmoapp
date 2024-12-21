@@ -166,3 +166,48 @@ export const scheduledLives: LiveEvent[] = [
     viewers: 0
   }
 ];
+
+export const replayLives: LiveEvent[] = [
+  {
+    id: 8,
+    title: "Visite Villa de Luxe",
+    date: new Date(Date.now() - 86400000), // yesterday
+    type: "Villa",
+    location: "Marrakech",
+    neighborhood: "Palmeraie",
+    agent: "Sarah Martin",
+    thumbnail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+    price: "5,500,000 MAD",
+    description: "Magnifique villa de luxe avec piscine et jardin",
+    viewers: 150,
+    status: "replay"
+  },
+  {
+    id: 9,
+    title: "Appartement Vue Océan",
+    date: new Date(Date.now() - 172800000), // 2 days ago
+    type: "Appartement",
+    location: "Casablanca",
+    neighborhood: "Ain Diab",
+    agent: "Mohammed Alami",
+    thumbnail: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+    price: "2,800,000 MAD",
+    description: "Superbe appartement avec vue panoramique sur l'océan",
+    viewers: 98,
+    status: "replay"
+  },
+  {
+    id: 10,
+    title: "Riad Traditionnel Rénové",
+    date: new Date(Date.now() - 259200000), // 3 days ago
+    type: "Riad",
+    location: "Marrakech",
+    neighborhood: "Médina",
+    agent: "Yasmine Idrissi",
+    thumbnail: "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
+    price: "3,200,000 MAD",
+    description: "Riad authentique entièrement rénové avec matériaux traditionnels",
+    viewers: 120,
+    status: "replay"
+  }
+];

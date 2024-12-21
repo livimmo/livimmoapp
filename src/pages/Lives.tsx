@@ -6,7 +6,7 @@ import { ReplayCard } from "@/components/live/ReplayCard";
 import { Button } from "@/components/ui/button";
 import { PropertyCard } from "@/components/PropertyCard";
 import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
-import { scheduledLives, liveStreams } from "@/data/mockLives";
+import { scheduledLives, liveStreams, replayLives } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { HeroBanner } from "@/components/home/HeroBanner";
@@ -110,6 +110,8 @@ const Lives = () => {
     ...liveStreams.map(live => live.type),
     ...scheduledLives.map(live => live.location),
     ...scheduledLives.map(live => live.type),
+    ...replayLives.map(live => live.location),
+    ...replayLives.map(live => live.type),
   ]));
 
   return (
