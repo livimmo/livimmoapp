@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
 import { mockFavoritesData } from "@/data/mockFavorites";
+import { mockProperties } from "@/data/mockProperties";
 
 export const BottomNav = () => {
   const location = useLocation();
@@ -13,8 +14,15 @@ export const BottomNav = () => {
   };
 
   const isAgent = user?.role === "agent" || user?.role === "promoter";
+  const isOwner = user?.role === "owner";
+  const showMyProperties = isAgent || isOwner;
+  
   const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
   const favoritesCount = mockFavoritesData.length;
+  const myPropertiesCount = mockProperties.filter(property => 
+    property.ownerId === user?.id || 
+    property.agentId === user?.id
+  ).length;
 
   const navItems = [
     { icon: Home, label: "Accueil", path: "/" },
@@ -32,10 +40,11 @@ export const BottomNav = () => {
       path: "/favorites",
       badge: isAuthenticated && favoritesCount > 0 ? favoritesCount : undefined
     },
-    ...(isAgent ? [{ 
+    ...(showMyProperties ? [{ 
       icon: Building2, 
       label: "Mes Biens", 
-      path: "/my-properties" 
+      path: isOwner ? "/owner-dashboard" : "/my-properties",
+      badge: myPropertiesCount > 0 ? myPropertiesCount : undefined
     }] : []),
   ];
 
