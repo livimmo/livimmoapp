@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Camera, IdCard } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { StarRating } from "../ratings/StarRating";
+import { AccountType } from "@/types/user";
 
 interface ProfileAvatarProps {
   firstName: string;
   lastName: string;
   avatar?: string;
-  accountType: "buyer" | "agent";
+  accountType: AccountType;
   rating?: number;
   totalReviews?: number;
 }
