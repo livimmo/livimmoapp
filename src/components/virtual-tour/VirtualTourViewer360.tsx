@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { LiveChat } from "@/components/live/LiveChat";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { LiveOfferDialog } from "@/components/live/LiveOfferDialog";
 import { ReservationForm } from "@/components/home/ReservationForm";
-import { VirtualTourControls } from "./VirtualTourControls";
-import { VirtualTourHeader } from "./VirtualTourHeader";
+import { Button } from "@/components/ui/button";
+import { VirtualTourControls } from "@/components/virtual-tour/VirtualTourControls";
+import { VirtualTourHeader } from "@/components/virtual-tour/VirtualTourHeader";
 
 interface VirtualTourViewer360Props {
   tourUrl: string;
