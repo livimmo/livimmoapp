@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Building2, Heart, Home, PlaySquare, Store } from "lucide-react";
+import { Home, Heart, Building2, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { mockLives } from "@/data/mockLives";
@@ -13,55 +13,66 @@ export const BottomNav = () => {
 
   const activeLivesCount = mockLives.filter(live => live.status === "live").length;
   const favoritesCount = mockFavoritesData.length;
-  const myPropertiesCount = mockProperties.filter(property => 
-    (property.agent && property.agent.id === user?.id) || 
-    (isOwner && property.owner?.id === user?.id)
-  ).length;
+  const myPropertiesCount = mockProperties.filter(property => {
+    if (property.agent && user?.id) {
+      return property.agent.id?.toString() === user.id.toString();
+    }
+    if (isOwner && property.owner && user?.id) {
+      return property.owner.id?.toString() === user.id.toString();
+    }
+    return false;
+  }).length;
 
   const navItems = [
-    { icon: Home, label: "Accueil", path: "/" },
-    { 
-      icon: PlaySquare, 
-      label: "Lives", 
-      path: "/lives",
-      badge: activeLivesCount > 0 ? activeLivesCount : undefined 
+    {
+      label: "Accueil",
+      icon: Home,
+      href: "/",
+      count: 0
     },
-    { 
-      icon: Heart, 
-      label: "Favoris", 
-      path: "/favorites",
-      badge: favoritesCount > 0 ? favoritesCount : undefined
+    {
+      label: "Favoris",
+      icon: Heart,
+      href: "/favorites",
+      count: favoritesCount
     },
-    { 
-      icon: Store, 
-      label: "Mes Biens", 
-      path: "/owner-dashboard",
-      badge: myPropertiesCount > 0 ? myPropertiesCount : undefined,
-      show: isOwner
+    {
+      label: "Mes Biens",
+      icon: Building2,
+      href: "/properties",
+      count: myPropertiesCount
+    },
+    {
+      label: "Lives",
+      icon: Video,
+      href: "/lives",
+      count: activeLivesCount
     }
-  ].filter(item => !item.show || item.show === true);
+  ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 z-50">
-      <div className="flex justify-around items-center max-w-screen-xl mx-auto">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 md:hidden">
+      <div className="flex justify-around items-center">
         {navItems.map((item) => (
           <Link
-            key={item.path}
-            to={item.path}
+            key={item.href}
+            to={item.href}
             className={cn(
-              "flex flex-col items-center text-xs font-medium relative",
-              location.pathname === item.path
+              "flex flex-col items-center gap-1 text-xs",
+              location.pathname === item.href
                 ? "text-primary"
                 : "text-gray-500 hover:text-primary"
             )}
           >
-            <item.icon className="h-6 w-6 mb-1" />
-            {item.badge && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                {item.badge}
-              </span>
-            )}
-            {item.label}
+            <div className="relative">
+              <item.icon className="w-6 h-6" />
+              {item.count > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-white rounded-full text-[10px] min-w-[16px] h-4 flex items-center justify-center">
+                  {item.count}
+                </span>
+              )}
+            </div>
+            <span>{item.label}</span>
           </Link>
         ))}
       </div>
