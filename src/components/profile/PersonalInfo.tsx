@@ -3,11 +3,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AccountType } from "./AccountTypeSelector";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Facebook, Instagram, Youtube, MessageCircle } from "lucide-react";
+import { Facebook, Instagram, Youtube, MessageCircle, Building2, Home } from "lucide-react";
 import { LiveManagement } from "./LiveManagement";
 import { PrivateVisitButton } from "./PrivateVisitButton";
 import { PrivateVisitsManagement } from "./PrivateVisitsManagement";
 import { ValidatedProperties } from "./ValidatedProperties";
+import { OwnerProperties } from "@/components/owner/OwnerProperties";
+import { OwnerStats } from "@/components/owner/OwnerStats";
+import { OwnerCalendar } from "@/components/owner/OwnerCalendar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface PersonalInfoProps {
   firstName: string;
@@ -71,6 +75,37 @@ export const PersonalInfo = ({
           />
         </div>
       </div>
+
+      {accountType === "owner" && (
+        <>
+          <div className="space-y-4 border-t pt-4">
+            <OwnerStats />
+          </div>
+          
+          <div className="space-y-4 border-t pt-4">
+            <Tabs defaultValue="properties" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="properties">
+                  <Building2 className="h-4 w-4 mr-2" />
+                  Mes Biens
+                </TabsTrigger>
+                <TabsTrigger value="calendar">
+                  <Home className="h-4 w-4 mr-2" />
+                  Calendrier des Visites
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="properties">
+                <OwnerProperties />
+              </TabsContent>
+              
+              <TabsContent value="calendar">
+                <OwnerCalendar />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </>
+      )}
 
       {accountType === "buyer" && (
         <>

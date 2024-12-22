@@ -1,9 +1,9 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Building, User } from "lucide-react";
+import { Building, User, Key } from "lucide-react";
 import { UserRole } from "@/types/user";
 
-export type AccountType = "buyer" | "agent";
+export type AccountType = "buyer" | "agent" | "owner";
 
 interface AccountTypeSelectorProps {
   value: AccountType;
@@ -12,6 +12,30 @@ interface AccountTypeSelectorProps {
 }
 
 export const AccountTypeSelector = ({ value, onChange, userRole }: AccountTypeSelectorProps) => {
+  // Si l'utilisateur est un propriétaire, on affiche uniquement l'option owner
+  if (userRole === "owner") {
+    return (
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold">Type de compte</h2>
+        <div className="flex items-center space-x-2 border rounded-lg p-4">
+          <RadioGroupItem value="owner" id="owner" checked />
+          <Label
+            htmlFor="owner"
+            className="flex items-center space-x-2 cursor-pointer"
+          >
+            <Key className="h-5 w-5" />
+            <div>
+              <p className="font-medium">Propriétaire</p>
+              <p className="text-sm text-muted-foreground">
+                Gérez vos biens et suivez les visites
+              </p>
+            </div>
+          </Label>
+        </div>
+      </div>
+    );
+  }
+
   // Si l'utilisateur est un promoteur ou un agent, on affiche uniquement l'option agent
   if (userRole === "promoter" || userRole === "agent") {
     return (
@@ -60,15 +84,31 @@ export const AccountTypeSelector = ({ value, onChange, userRole }: AccountTypeSe
     );
   }
 
-  // Si aucun rôle n'est spécifié, on affiche les deux options (comportement par défaut)
+  // Si aucun rôle n'est spécifié, on affiche toutes les options
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold">Type de compte</h2>
       <RadioGroup
         value={value}
         onValueChange={onChange}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        className="grid grid-cols-1 gap-4"
       >
+        <div className="flex items-center space-x-2 border rounded-lg p-4">
+          <RadioGroupItem value="owner" id="owner" />
+          <Label
+            htmlFor="owner"
+            className="flex items-center space-x-2 cursor-pointer"
+          >
+            <Key className="h-5 w-5" />
+            <div>
+              <p className="font-medium">Propriétaire</p>
+              <p className="text-sm text-muted-foreground">
+                Gérez vos biens et suivez les visites
+              </p>
+            </div>
+          </Label>
+        </div>
+
         <div className="flex items-center space-x-2 border rounded-lg p-4">
           <RadioGroupItem value="buyer" id="buyer" />
           <Label
