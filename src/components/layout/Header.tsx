@@ -7,7 +7,7 @@ import { AddLiveDialog } from "@/components/AddLiveDialog";
 import { useState } from "react";
 import { ReservationForm } from "@/components/home/ReservationForm";
 import { AIChat } from "@/components/live/AIChat";
-import { type Property } from "@/types/property"; // Ajout de l'import manquant
+import { type Property } from "@/types/property";
 import {
   Tooltip,
   TooltipContent,
@@ -54,7 +54,6 @@ export const Header = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
   const { toast } = useToast();
-  const [showVisitDialog, setShowVisitDialog] = useState(false);
   const [showChatbot, setShowChatbot] = useState(false);
 
   const handleLogoClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -71,7 +70,7 @@ export const Header = () => {
   };
 
   const isAgentOrPromoter = user?.role === 'agent' || user?.role === 'promoter';
-  const isBuyerOrTenant = user?.role === 'buyer' || user?.role === 'tenant';
+  const isOwner = user?.role === 'owner';
 
   const handleCallClick = (type: 'phone' | 'email') => {
     if (type === 'phone') {
@@ -94,7 +93,7 @@ export const Header = () => {
           </h1>
         </div>
         <div className="flex items-center gap-2">
-          <SubmitPropertyButton />
+          {isOwner && <SubmitPropertyButton />}
           {isAuthenticated ? (
             <>
               {isAgentOrPromoter && (
@@ -105,25 +104,6 @@ export const Header = () => {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Démarrer ou programmer un live</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )}
-              {isBuyerOrTenant && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setShowVisitDialog(true)}
-                        className="relative"
-                      >
-                        <House className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Planifier une visite privée</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -222,13 +202,6 @@ export const Header = () => {
           )}
         </div>
       </div>
-
-      {showVisitDialog && (
-        <ReservationForm
-          live={{ id: 0, title: "", date: new Date() }}
-          onClose={() => setShowVisitDialog(false)}
-        />
-      )}
     </header>
   );
 };
