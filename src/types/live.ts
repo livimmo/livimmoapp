@@ -10,21 +10,20 @@ export interface BaseLive {
   price: string;
   date: Date;
   availableSeats: number;
+  viewers: number;
   tags?: string[];
-  viewers?: number;
 }
 
-export interface CurrentLive extends BaseLive {
-  status: "live";
+export interface LiveStream extends BaseLive {
+  status: 'live';
 }
 
 export interface ScheduledLive extends BaseLive {
-  status: "scheduled";
+  status: 'scheduled';
 }
 
 export interface ReplayLive extends BaseLive {
-  status: "replay";
-  viewers: number;
+  status: 'replay';
 }
 
-export type LiveEvent = CurrentLive | ScheduledLive | ReplayLive;
+export type LiveEvent = LiveStream | ScheduledLive | ReplayLive;

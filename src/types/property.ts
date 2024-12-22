@@ -15,8 +15,8 @@ export interface Property {
   liveDate?: Date;
   status?: 'available' | 'pending' | 'sold' | 'rented';
   createdAt?: Date;
-  agent: {
-    id?: number;
+  agent?: {
+    id?: string | number; // Allow both string and number IDs
     name: string;
     image: string;
     phone: string;
@@ -24,20 +24,34 @@ export interface Property {
     company?: string;
     verified?: boolean;
   };
+  owner?: {
+    id?: string | number; // Allow both string and number IDs
+    name: string;
+    email?: string;
+    phone?: string;
+  };
   coordinates: {
     lat: number;
     lng: number;
   };
-  isLiveNow?: boolean;
   viewers?: number;
+  isLiveNow?: boolean;
   remainingSeats?: number;
+  isUserRegistered?: boolean;
   transactionType: "Vente" | "Location";
+  tags?: string[];
   virtualTour?: {
     enabled: boolean;
     url?: string;
     platform?: 'matterport' | 'klapty';
     type: "360" | "video" | "live";
     hotspots?: Array<{
+      title: string;
+      description: string;
+      position: { x: number; y: number };
+      details?: Array<{ label: string; value: string }>;
+    }>;
+    annotations?: Array<{
       title: string;
       description: string;
       position: { x: number; y: number };
@@ -65,5 +79,9 @@ export interface Property {
       }>;
     };
   };
-  tags?: string[];
+  privateNotes?: {
+    ownerName?: string;
+    location?: string;
+    notes?: string;
+  };
 }
