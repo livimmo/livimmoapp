@@ -86,12 +86,15 @@ export const mockLives: LiveEvent[] = [
 // Create replay lives from existing mock lives
 export const replayLives: LiveEvent[] = mockLives.map(live => ({
   ...live,
-  id: live.id + 100, // Ensure unique IDs for replays
-  status: "completed",
-  date: new Date(new Date().setDate(new Date().getDate() - Math.floor(Math.random() * 30))), // Random date within last 30 days
-  viewers: Math.floor(Math.random() * 100) + 20, // Random number of viewers between 20 and 120
+  id: live.id + 100,
+  status: "replay" as const,
+  date: new Date(new Date().setDate(new Date().getDate() - Math.floor(Math.random() * 30))),
+  viewers: Math.floor(Math.random() * 100) + 20,
 }));
 
 // Export both names for backward compatibility
 export const liveStreams = mockLives;
 export const scheduledLives = mockLives.filter(live => live.status === "scheduled");
+
+// Re-export everything
+export { mockLives, replayLives, liveStreams, scheduledLives };
