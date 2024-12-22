@@ -35,12 +35,12 @@ export const PropertyCardImage = ({
   image,
   hasLive,
   liveDate,
-  viewers = 0,
+  viewers,
   currentUrl,
   isLiveNow,
-  remainingSeats,
   isUserRegistered,
-  offers = 0,
+  remainingSeats,
+  offers,
   virtualTour,
   tags,
   onVirtualTourClick,
@@ -150,7 +150,10 @@ export const PropertyCardImage = ({
 
       {virtualTour?.enabled && (
         <div className="absolute bottom-4 right-4 z-10">
-          <VirtualTourButton onClick={onVirtualTourClick} />
+          <VirtualTourButton 
+            onClick={onVirtualTourClick}
+            className="!px-2 md:!px-4"
+          />
         </div>
       )}
     </div>
