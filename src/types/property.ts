@@ -15,14 +15,20 @@ export interface Property {
   liveDate?: Date;
   status?: 'available' | 'pending' | 'sold' | 'rented';
   createdAt?: Date;
-  agent: {
-    id?: number;
+  agent?: {
+    id?: string;
     name: string;
     image: string;
     phone: string;
     email: string;
     company?: string;
     verified?: boolean;
+  };
+  owner?: {
+    id?: string;
+    name: string;
+    email?: string;
+    phone?: string;
   };
   coordinates: {
     lat: number;

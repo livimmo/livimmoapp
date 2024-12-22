@@ -1,6 +1,6 @@
 import { LiveEvent } from "@/types/live";
 
-export const liveStreams: LiveEvent[] = [
+export const mockLives: LiveEvent[] = [
   {
     id: 1,
     title: "Visite Villa Moderne",

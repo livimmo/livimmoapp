@@ -11,12 +11,11 @@ export const BottomNav = () => {
   const { user } = useAuth();
   const isOwner = user?.role === "owner";
 
-  const liveStreams = mockLives;
-  const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
+  const activeLivesCount = mockLives.filter(live => live.status === "live").length;
   const favoritesCount = mockFavoritesData.length;
   const myPropertiesCount = mockProperties.filter(property => 
     (property.agent && property.agent.id === user?.id) || 
-    (isOwner && property.owner && property.owner.id === user?.id)
+    (isOwner && property.owner?.id === user?.id)
   ).length;
 
   const navItems = [
