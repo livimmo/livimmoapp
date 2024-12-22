@@ -105,7 +105,7 @@ export const PropertyCard = ({
       />
 
       <Dialog open={showVirtualTour} onOpenChange={setShowVirtualTour}>
-        <DialogContent className="max-w-6xl h-[80vh]">
+        <DialogContent className="max-w-[95vw] md:max-w-6xl h-[90vh] p-0 md:p-6">
           <VirtualTourViewer360
             tourUrl="TzhRashYdRt"
             propertyId={id}

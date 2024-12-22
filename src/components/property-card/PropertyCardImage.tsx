@@ -149,7 +149,7 @@ export const PropertyCardImage = ({
       )}
 
       {virtualTour?.enabled && (
-        <div className="absolute bottom-4 right-4 z-10">
+        <div className="absolute inset-0 flex items-center justify-center">
           <VirtualTourButton 
             onClick={onVirtualTourClick}
             className="!px-2 md:!px-4"

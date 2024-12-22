@@ -13,7 +13,7 @@ export const VirtualTourButton = ({ onClick, className }: VirtualTourButtonProps
       onClick={onClick}
       className={cn(
         "bg-orange-500 hover:bg-orange-600 text-white",
-        "group flex items-center shadow-lg hover:shadow-xl",
+        "group flex items-center justify-center shadow-lg hover:shadow-xl",
         "hover:scale-105 transform transition-all duration-300",
         "md:gap-2",
         className
