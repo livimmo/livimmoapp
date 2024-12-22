@@ -32,16 +32,15 @@ const Index = () => {
     "Agadir", "Fès", "Villa", "Appartement", "Bureau", "Riad",
   ];
 
-  // Filtrer les lives par statut
+  // Filter lives by status
   const currentLives = liveStreams.filter(live => live.status === "live");
   const replayLives = liveStreams.filter(live => live.status === "replay");
 
-  // Effet pour filtrer les propriétés en fonction des critères de recherche
+  // Effect to filter properties based on search criteria
   useEffect(() => {
     const filterProperties = () => {
       let filtered = [...featuredProperties];
 
-      // Filtre par terme de recherche (ville, type de bien, etc.)
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
         filtered = filtered.filter(property => 
@@ -51,26 +50,22 @@ const Index = () => {
         );
       }
 
-      // Filtre par type de bien
       if (propertyType !== "all") {
         filtered = filtered.filter(property => 
           property.type.toLowerCase() === propertyType.toLowerCase()
         );
       }
 
-      // Filtre par plage de prix
       filtered = filtered.filter(property => 
         property.price >= priceRange[0] && 
         property.price <= priceRange[1]
       );
 
-      // Filtre par surface
       filtered = filtered.filter(property => 
         property.surface >= surfaceRange[0] && 
         property.surface <= surfaceRange[1]
       );
 
-      // Filtre par type de transaction
       if (transactionType.length > 0) {
         filtered = filtered.filter(property => 
           transactionType.includes(property.transactionType)
@@ -83,7 +78,7 @@ const Index = () => {
     filterProperties();
   }, [searchTerm, propertyType, priceRange, surfaceRange, transactionType]);
 
-  // Convertir les lives en format Property pour la carte
+  // Convert lives to Property format for the map
   const currentLiveProperties: Property[] = currentLives.map(live => ({
     id: live.id,
     title: live.title,
