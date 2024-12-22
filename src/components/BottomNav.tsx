@@ -1,34 +1,28 @@
-import { Home, Search, Video, Heart, Building2 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { Building2, Heart, Home, PlaySquare, Store } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { liveStreams } from "@/data/mockLives";
+import { mockLives } from "@/data/mockLives";
 import { mockFavoritesData } from "@/data/mockFavorites";
 import { mockProperties } from "@/data/mockProperties";
 
 export const BottomNav = () => {
   const location = useLocation();
-  const { isAuthenticated, user } = useAuth();
-
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
-
-  const isAgent = user?.role === "agent" || user?.role === "promoter";
+  const { user } = useAuth();
   const isOwner = user?.role === "owner";
-  const showMyProperties = isAgent || isOwner;
-  
+
+  const liveStreams = mockLives;
   const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
   const favoritesCount = mockFavoritesData.length;
   const myPropertiesCount = mockProperties.filter(property => 
-    property.agent?.id === user?.id || 
-    (isOwner && property.owner?.id === user?.id)
+    (property.agent && property.agent.id === user?.id) || 
+    (isOwner && property.owner && property.owner.id === user?.id)
   ).length;
 
   const navItems = [
     { icon: Home, label: "Accueil", path: "/" },
-    { icon: Search, label: "Recherche", path: "/search" },
     { 
-      icon: Video, 
+      icon: PlaySquare, 
       label: "Lives", 
       path: "/lives",
       badge: activeLivesCount > 0 ? activeLivesCount : undefined 
@@ -37,15 +31,16 @@ export const BottomNav = () => {
       icon: Heart, 
       label: "Favoris", 
       path: "/favorites",
-      badge: isAuthenticated && favoritesCount > 0 ? favoritesCount : undefined
+      badge: favoritesCount > 0 ? favoritesCount : undefined
     },
-    ...(showMyProperties ? [{ 
-      icon: Building2, 
+    { 
+      icon: Store, 
       label: "Mes Biens", 
-      path: isOwner ? "/owner-dashboard" : "/my-properties",
-      badge: myPropertiesCount > 0 ? myPropertiesCount : undefined
-    }] : []),
-  ];
+      path: "/owner-dashboard",
+      badge: myPropertiesCount > 0 ? myPropertiesCount : undefined,
+      show: isOwner
+    }
+  ].filter(item => !item.show || item.show === true);
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 z-50">
@@ -54,19 +49,20 @@ export const BottomNav = () => {
           <Link
             key={item.path}
             to={item.path}
-            className={`flex flex-col items-center p-2 relative ${
-              isActive(item.path)
+            className={cn(
+              "flex flex-col items-center text-xs font-medium relative",
+              location.pathname === item.path
                 ? "text-primary"
                 : "text-gray-500 hover:text-primary"
-            }`}
+            )}
           >
-            <item.icon className="w-5 h-5" />
-            {item.badge !== undefined && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
+            <item.icon className="h-6 w-6 mb-1" />
+            {item.badge && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 {item.badge}
               </span>
             )}
-            <span className="text-xs mt-1">{item.label}</span>
+            {item.label}
           </Link>
         ))}
       </div>
