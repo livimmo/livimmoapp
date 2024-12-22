@@ -4,6 +4,7 @@ import { type Property } from "@/types/property";
 import { PropertyCard } from '../PropertyCard';
 import { ScrollArea } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
+import { Camera } from 'lucide-react';
 import { Clock } from 'lucide-react';
 import { Skeleton } from '../ui/skeleton';
 
@@ -38,6 +39,19 @@ export function LiveGoogleMap({ properties }: LiveGoogleMapProps) {
     setIsLoading(false);
   };
 
+  const createCameraIcon = (isLiveNow: boolean) => {
+    const color = isLiveNow ? '#ef4444' : '#3b82f6';
+    return {
+      path: "M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm-4 29v-8l7 4-7 4z",
+      fillColor: color,
+      fillOpacity: 1,
+      strokeWeight: 0,
+      rotation: 0,
+      scale: 0.7,
+      anchor: new google.maps.Point(24, 24),
+    };
+  };
+
   if (!import.meta.env.VITE_GOOGLE_MAPS_API_KEY) {
     return (
       <div className="p-4 text-center text-muted-foreground">
@@ -69,6 +83,7 @@ export function LiveGoogleMap({ properties }: LiveGoogleMapProps) {
                   lat: property.coordinates.lat,
                   lng: property.coordinates.lng
                 }}
+                icon={createCameraIcon(property.isLiveNow)}
                 onClick={() => setSelectedProperty(property)}
               />
             ))}
@@ -92,7 +107,7 @@ export function LiveGoogleMap({ properties }: LiveGoogleMapProps) {
                       <div className="absolute bottom-2 left-2">
                         {selectedProperty.isLiveNow ? (
                           <Badge variant="destructive" className="bg-red-500">
-                            <span className="mr-1 inline-block h-2 w-2 rounded-full bg-white animate-pulse" />
+                            <Camera className="mr-1 h-4 w-4" />
                             Live en cours
                           </Badge>
                         ) : selectedProperty.liveDate && (
