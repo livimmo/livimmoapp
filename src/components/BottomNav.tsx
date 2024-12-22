@@ -1,4 +1,4 @@
-import { Home, Search, Video, Heart, User, Building2 } from "lucide-react";
+import { Home, Search, Video, Heart, Building2 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
@@ -37,7 +37,6 @@ export const BottomNav = () => {
       label: "Mes Biens", 
       path: "/my-properties" 
     }] : []),
-    { icon: User, label: "Profil", path: "/profile" },
   ];
 
   return (
