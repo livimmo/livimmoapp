@@ -16,7 +16,7 @@ export interface Property {
   status?: 'available' | 'pending' | 'sold' | 'rented';
   createdAt?: Date;
   agent?: {
-    id?: string | number; // Allow both string and number IDs
+    id?: string | number;
     name: string;
     image: string;
     phone: string;
@@ -25,7 +25,7 @@ export interface Property {
     verified?: boolean;
   };
   owner?: {
-    id?: string | number; // Allow both string and number IDs
+    id?: string | number;
     name: string;
     email?: string;
     phone?: string;
