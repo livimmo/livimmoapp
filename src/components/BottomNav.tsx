@@ -20,8 +20,8 @@ export const BottomNav = () => {
   const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
   const favoritesCount = mockFavoritesData.length;
   const myPropertiesCount = mockProperties.filter(property => 
-    property.ownerId === user?.id || 
-    property.agentId === user?.id
+    property.agent?.id === user?.id || 
+    (isOwner && property.owner?.id === user?.id)
   ).length;
 
   const navItems = [
@@ -33,7 +33,6 @@ export const BottomNav = () => {
       path: "/lives",
       badge: activeLivesCount > 0 ? activeLivesCount : undefined 
     },
-    { icon: Building2, label: "Promoteurs", path: "/developers" },
     { 
       icon: Heart, 
       label: "Favoris", 
@@ -50,7 +49,7 @@ export const BottomNav = () => {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 z-50">
-      <div className="flex justify-between items-center max-w-screen-xl mx-auto">
+      <div className="flex justify-around items-center max-w-screen-xl mx-auto">
         {navItems.map((item) => (
           <Link
             key={item.path}
