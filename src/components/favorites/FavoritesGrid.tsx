@@ -1,5 +1,5 @@
 import { PropertyCard } from "@/components/PropertyCard";
-import { Property } from "@/types/property";
+import { type Property } from "@/types/property";
 
 interface FavoritesGridProps {
   properties: Property[];
