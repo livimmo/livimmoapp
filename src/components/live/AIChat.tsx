@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Bot, Send, Phone, Mail } from "lucide-react";
+import { Bot, Send, Phone, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -12,7 +12,7 @@ interface Message {
   isBot: boolean;
   timestamp: Date;
   actions?: {
-    type: "contact" | "call" | "email";
+    type: "contact" | "call" | "whatsapp";
     label: string;
     action: () => void;
   }[];
@@ -46,16 +46,19 @@ export const AIChat = ({ property, onClose }: AIChatProps) => {
     }
   };
 
-  const handleEmailAgent = () => {
-    if (property.agent.email) {
-      window.location.href = `mailto:${property.agent.email}`;
+  const handleWhatsAppAgent = () => {
+    if (property.agent.phone) {
+      // Format phone number for WhatsApp (remove spaces and add country code if needed)
+      const formattedPhone = property.agent.phone.replace(/\s+/g, '');
+      const message = encodeURIComponent(`Bonjour, je suis intéressé(e) par le bien "${property.title}"`);
+      window.location.href = `https://wa.me/${formattedPhone}?text=${message}`;
     }
   };
 
   const generateAgentResponse = () => {
     return {
       id: Date.now(),
-      text: `Bien sûr ! Voici les coordonnées de ${property.agent.name} :\n\nTéléphone : ${property.agent.phone}\nEmail : ${property.agent.email}\n\nVous pouvez le contacter directement ou utiliser les boutons ci-dessous.`,
+      text: `Bien sûr ! Voici les coordonnées de ${property.agent.name} :\n\nTéléphone : ${property.agent.phone}\n\nVous pouvez le contacter directement ou utiliser les boutons ci-dessous.`,
       isBot: true,
       timestamp: new Date(),
       actions: [
@@ -65,9 +68,9 @@ export const AIChat = ({ property, onClose }: AIChatProps) => {
           action: handleContactAgent,
         },
         {
-          type: "email",
-          label: "Envoyer un email",
-          action: handleEmailAgent,
+          type: "whatsapp",
+          label: "Envoyer un WhatsApp",
+          action: handleWhatsAppAgent,
         },
       ],
     };
@@ -160,7 +163,7 @@ export const AIChat = ({ property, onClose }: AIChatProps) => {
                         className="w-full"
                       >
                         {action.type === "call" && <Phone className="w-4 h-4 mr-2" />}
-                        {action.type === "email" && <Mail className="w-4 h-4 mr-2" />}
+                        {action.type === "whatsapp" && <MessageSquare className="w-4 h-4 mr-2" />}
                         {action.label}
                       </Button>
                     ))}
