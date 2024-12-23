@@ -14,7 +14,29 @@ export const useProperties = () => {
         `);
 
       if (error) throw error;
-      return data as PropertyWithAgent[];
+
+      // Cast the data to the correct type after verifying agent exists
+      const propertiesWithAgent = data?.map((property) => ({
+        ...property,
+        agent: property.agent || {
+          id: "",
+          full_name: "",
+          avatar_url: "",
+          company: "",
+          phone: "",
+          role: "",
+          verified: false,
+          rating: 0,
+          specialties: [],
+          description: "",
+          location: "",
+          social_links: {},
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+      })) as PropertyWithAgent[];
+
+      return propertiesWithAgent || [];
     },
   });
 

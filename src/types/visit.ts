@@ -1,5 +1,5 @@
-import { type Profile } from "@/types/database/profile";
-import { type Property } from "@/types/property";
+import { type Profile } from "./database/profile";
+import { type Property } from "./property";
 
 export interface Visit {
   id: string;
@@ -12,15 +12,6 @@ export interface Visit {
   notes: string | null;
   created_at: string;
   updated_at: string;
-  property?: {
-    title: string;
-    location: string;
-    image: string;
-    agent: Profile;
-  };
-  visitor?: {
-    id: string;
-    name: string;
-    avatar: string;
-  };
+  property?: Property;
+  visitor?: Profile;
 }

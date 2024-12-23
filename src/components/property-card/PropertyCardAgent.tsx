@@ -9,7 +9,7 @@ interface PropertyCardAgentProps {
 }
 
 export const PropertyCardAgent = ({ agent, district }: PropertyCardAgentProps) => {
-  if (!agent) return null;
+  if (!agent?.full_name) return null;
 
   const initials = agent.full_name
     ? agent.full_name.split(" ").map(n => n[0]).join("")
