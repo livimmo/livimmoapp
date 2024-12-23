@@ -136,7 +136,7 @@ export function LiveGoogleMap({ properties }: LiveGoogleMapProps) {
               }`}
               onClick={() => setSelectedProperty(property)}
             >
-              <PropertyCard {...property} />
+              <PropertyCard property={property} />
             </div>
           ))}
         </div>
