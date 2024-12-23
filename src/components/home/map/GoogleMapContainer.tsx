@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import { Property } from "@/types/property";
 import { LiveStream, ScheduledLive } from "@/types/live";
 
@@ -24,32 +24,34 @@ const GoogleMapContainer = ({ properties, selectedLive, onMarkerClick }: GoogleM
   };
 
   return (
-    <GoogleMap
-      onLoad={map => setMap(map)}
-      center={center}
-      zoom={10}
-      mapContainerClassName="h-full w-full"
-    >
-      {properties.map(property => (
-        <Marker
-          key={property.id}
-          position={property.coordinates}
-          onClick={() => handleMarkerClick(property)}
-        />
-      ))}
+    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+      <GoogleMap
+        onLoad={map => setMap(map)}
+        center={center}
+        zoom={10}
+        mapContainerClassName="h-full w-full"
+      >
+        {properties.map(property => (
+          <Marker
+            key={property.id}
+            position={property.coordinates}
+            onClick={() => handleMarkerClick(property)}
+          />
+        ))}
 
-      {selectedLive && (
-        <InfoWindow
-          position={properties.find(p => p.id === selectedLive.id)?.coordinates || center}
-          onCloseClick={() => onMarkerClick(null)}
-        >
-          <div>
-            <h3 className="font-semibold">{selectedLive.title}</h3>
-            <p className="text-sm text-gray-600">{selectedLive.location}</p>
-          </div>
-        </InfoWindow>
-      )}
-    </GoogleMap>
+        {selectedLive && (
+          <InfoWindow
+            position={properties.find(p => p.id === selectedLive.id)?.coordinates || center}
+            onCloseClick={() => onMarkerClick(null)}
+          >
+            <div>
+              <h3 className="font-semibold">{selectedLive.title}</h3>
+              <p className="text-sm text-gray-600">{selectedLive.location}</p>
+            </div>
+          </InfoWindow>
+        )}
+      </GoogleMap>
+    </LoadScript>
   );
 };
 

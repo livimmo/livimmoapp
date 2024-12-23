@@ -95,6 +95,7 @@ export const generateMockCoordinates = (location: string) => {
 };
 
 // Génération de 20 propriétés aléatoires
+
 export const mockProperties: Property[] = Array.from({ length: 20 }, (_, index) => {
   const randomCity = cities[Math.floor(Math.random() * cities.length)];
   const randomDistrict = randomCity.districts[Math.floor(Math.random() * randomCity.districts.length)];
