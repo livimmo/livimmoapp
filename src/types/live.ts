@@ -14,6 +14,7 @@ export interface LiveEvent {
   viewers?: number;
   availableSeats?: number;
   neighborhood?: string;
+  tags?: string[];
 }
 
 export type LiveStream = LiveEvent & {

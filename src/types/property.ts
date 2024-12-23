@@ -13,7 +13,7 @@ export interface Property {
   hasLive?: boolean;
   liveDate?: Date;
   agent: {
-    id?: string | number;
+    id?: number;
     name: string;
     image: string;
     phone: string;
@@ -32,6 +32,29 @@ export interface Property {
   virtualTour?: {
     enabled: boolean;
     url?: string;
+    type?: string;
+    platform?: string;
+    hotspots?: Array<{
+      title: string;
+      description: string;
+      position: { x: number; y: number };
+      details: Array<{ label: string; value: string }>;
+    }>;
+    floorPlan?: {
+      url: string;
+      rooms: Array<{
+        id: string;
+        name: string;
+        area: number;
+        coordinates: { x: number; y: number };
+      }>;
+    };
+    statistics?: {
+      totalVisits: number;
+      averageTime: string;
+      popularRooms: Array<{ name: string; visits: number }>;
+      lastVisits: Array<{ date: string; duration: string }>;
+    };
   };
   owner?: {
     id: number;
@@ -39,5 +62,6 @@ export interface Property {
   };
   privateNotes?: string;
   tags?: string[];
-  isReplay?: boolean;
+  status?: string;
+  createdAt?: Date;
 }
