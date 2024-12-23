@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { type Property } from "@/types/property";
 import { PropertyInfo } from "./PropertyInfo";
-import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { PropertyCardImage } from "./property-card/PropertyCardImage";
 import { PropertyCardAgent } from "./property-card/PropertyCardAgent";
 import { PropertyCardAuthDialog } from "./property-card/PropertyCardAuthDialog";
 import { getRandomTags } from "@/utils/propertyTags";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { VirtualTourViewer360 } from "@/components/virtual-tour/VirtualTourViewer360";
+import { PropertyCardWrapper } from "./property-card/PropertyCardWrapper";
+import { PropertyCardVirtualTourDialog } from "./property-card/PropertyCardVirtualTourDialog";
 
 type PropertyCardProps = Property & {
   viewers?: number;
@@ -57,11 +56,7 @@ export const PropertyCard = ({
 
   return (
     <>
-      <div className={cn(
-        "group bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300",
-        "transform hover:-translate-y-1",
-        className
-      )}>
+      <PropertyCardWrapper className={className}>
         <PropertyCardImage
           id={id}
           title={title}
@@ -97,25 +92,22 @@ export const PropertyCard = ({
         />
         
         <PropertyCardAgent agent={agent} district={district} />
-      </div>
+      </PropertyCardWrapper>
 
       <PropertyCardAuthDialog 
         open={showAuthDialog} 
         onOpenChange={setShowAuthDialog} 
       />
 
-      <Dialog open={showVirtualTour} onOpenChange={setShowVirtualTour}>
-        <DialogContent className="max-w-[95vw] md:max-w-6xl h-[90vh] p-0 md:p-6">
-          <VirtualTourViewer360
-            tourUrl="TzhRashYdRt"
-            propertyId={id}
-            propertyTitle={title}
-            agentName={agent.name}
-            onContactAgent={() => {}}
-            onBookVisit={() => setShowAuthDialog(true)}
-          />
-        </DialogContent>
-      </Dialog>
+      <PropertyCardVirtualTourDialog
+        open={showVirtualTour}
+        onOpenChange={setShowVirtualTour}
+        id={id}
+        title={title}
+        agentName={agent.name}
+        onContactAgent={() => {}}
+        onBookVisit={() => setShowAuthDialog(true)}
+      />
     </>
   );
 };
