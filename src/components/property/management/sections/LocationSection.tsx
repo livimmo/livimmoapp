@@ -1,20 +1,42 @@
 import { Label } from "@/components/ui/label";
-import { GoogleMapInput } from "@/components/GoogleMapInput";
+import { Input } from "@/components/ui/input";
 
 interface LocationSectionProps {
-  location: string;
-  onLocationChange: (location: string) => void;
+  city: string;
+  district: string;
+  onCityChange: (value: string) => void;
+  onDistrictChange: (value: string) => void;
 }
 
-export const LocationSection = ({ location, onLocationChange }: LocationSectionProps) => {
+export const LocationSection = ({
+  city,
+  district,
+  onCityChange,
+  onDistrictChange,
+}: LocationSectionProps) => {
   return (
-    <div className="space-y-2">
-      <Label>Localisation*</Label>
-      <GoogleMapInput
-        value={location}
-        onChange={onLocationChange}
-        required
-      />
+    <div className="space-y-4">
+      <div>
+        <Label htmlFor="city">Ville*</Label>
+        <Input
+          id="city"
+          value={city}
+          onChange={(e) => onCityChange(e.target.value)}
+          placeholder="Ex: Casablanca"
+          required
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="district">Quartier*</Label>
+        <Input
+          id="district"
+          value={district}
+          onChange={(e) => onDistrictChange(e.target.value)}
+          placeholder="Ex: Gauthier"
+          required
+        />
+      </div>
     </div>
   );
 };
