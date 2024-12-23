@@ -5,6 +5,7 @@ import { FavoritesContent } from "@/components/favorites/FavoritesContent";
 import { type Property } from "@/types/property";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
 import { mockFavoritesData } from "@/data/mockFavorites";
+import { HomeMap } from "@/components/home/HomeMap";
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState<Property[]>(
@@ -43,6 +44,8 @@ const Favorites = () => {
   return (
     <div className="container mx-auto px-4 py-6 space-y-6">
       <FavoritesHeader viewMode={viewMode} onViewModeChange={setViewMode} />
+
+      <HomeMap properties={filteredFavorites} />
 
       <FavoritesFilters
         filterType={filterType}

@@ -4,7 +4,7 @@ import { AgentCertificationBadge } from "../agent/AgentCertificationBadge";
 
 interface PropertyCardAgentProps {
   agent: {
-    id?: string | number;
+    id?: number;
     name: string;
     image: string;
     company?: string;

@@ -10,14 +10,13 @@ import { getRandomTags } from "@/utils/propertyTags";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { VirtualTourViewer360 } from "@/components/virtual-tour/VirtualTourViewer360";
 
-type PropertyCardProps = Omit<Property, 'virtualTour'> & {
+type PropertyCardProps = Property & {
   viewers?: number;
   isLiveNow?: boolean;
   remainingSeats?: number;
   isUserRegistered?: boolean;
   offers?: number;
   className?: string;
-  virtualTour?: Property['virtualTour'];
 };
 
 export const PropertyCard = ({

@@ -1,78 +1,72 @@
+import { Home, Search, Video, Heart, Building2 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Heart, Building2, Video } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { mockLives } from "@/data/mockLives";
+import { liveStreams } from "@/data/mockLives";
 import { mockFavoritesData } from "@/data/mockFavorites";
 import { mockProperties } from "@/data/mockProperties";
 
 export const BottomNav = () => {
   const location = useLocation();
-  const { user } = useAuth();
-  const isOwner = user?.role === "owner";
+  const { isAuthenticated, user } = useAuth();
 
-  const activeLivesCount = mockLives.filter(live => live.status === "live").length;
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
+  const isAgent = user?.role === "agent" || user?.role === "promoter";
+  const isOwner = user?.role === "owner";
+  const showMyProperties = isAgent || isOwner;
+  
+  const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
   const favoritesCount = mockFavoritesData.length;
-  const myPropertiesCount = mockProperties.filter(property => {
-    if (property.agent && user?.id) {
-      return property.agent.id?.toString() === user.id.toString();
-    }
-    if (isOwner && property.owner && user?.id) {
-      return property.owner.id?.toString() === user.id.toString();
-    }
-    return false;
-  }).length;
+  const myPropertiesCount = mockProperties.filter(property => 
+    property.agent?.id === user?.id || 
+    (isOwner && property.owner?.id === user?.id)
+  ).length;
 
   const navItems = [
-    {
-      label: "Accueil",
-      icon: Home,
-      href: "/",
-      count: 0
+    { icon: Home, label: "Accueil", path: "/" },
+    { icon: Search, label: "Recherche", path: "/search" },
+    { 
+      icon: Video, 
+      label: "Lives", 
+      path: "/lives",
+      badge: activeLivesCount > 0 ? activeLivesCount : undefined 
     },
-    {
-      label: "Favoris",
-      icon: Heart,
-      href: "/favorites",
-      count: favoritesCount
+    { 
+      icon: Heart, 
+      label: "Favoris", 
+      path: "/favorites",
+      badge: isAuthenticated && favoritesCount > 0 ? favoritesCount : undefined
     },
-    {
-      label: "Mes Biens",
-      icon: Building2,
-      href: "/my-properties",
-      count: myPropertiesCount
-    },
-    {
-      label: "Lives",
-      icon: Video,
-      href: "/lives",
-      count: activeLivesCount
-    }
+    ...(showMyProperties ? [{ 
+      icon: Building2, 
+      label: "Mes Biens", 
+      path: isOwner ? "/owner-dashboard" : "/my-properties",
+      badge: myPropertiesCount > 0 ? myPropertiesCount : undefined
+    }] : []),
   ];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 z-50">
-      <div className="flex justify-around items-center">
+      <div className="flex justify-around items-center max-w-screen-xl mx-auto">
         {navItems.map((item) => (
           <Link
-            key={item.href}
-            to={item.href}
-            className={cn(
-              "flex flex-col items-center gap-1 text-xs",
-              location.pathname === item.href
+            key={item.path}
+            to={item.path}
+            className={`flex flex-col items-center p-2 relative ${
+              isActive(item.path)
                 ? "text-primary"
                 : "text-gray-500 hover:text-primary"
-            )}
+            }`}
           >
-            <div className="relative">
-              <item.icon className="w-6 h-6" />
-              {item.count > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-white rounded-full text-[10px] min-w-[16px] h-4 flex items-center justify-center">
-                  {item.count}
-                </span>
-              )}
-            </div>
-            <span>{item.label}</span>
+            <item.icon className="w-5 h-5" />
+            {item.badge !== undefined && (
+              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
+                {item.badge}
+              </span>
+            )}
+            <span className="text-xs mt-1">{item.label}</span>
           </Link>
         ))}
       </div>

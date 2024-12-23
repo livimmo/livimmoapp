@@ -1,26 +1,29 @@
-export type LiveStatus = "scheduled" | "live" | "replay" | "ended";
-
-export interface LiveEvent {
+export interface BaseLive {
   id: number;
   title: string;
-  description?: string;
+  description: string;
   thumbnail: string;
-  date: Date;
   agent: string;
-  price: string;
   location: string;
-  type: string;
-  status: LiveStatus;
-  viewers?: number;
-  availableSeats?: number;
   neighborhood?: string;
+  type: string;
+  price: string;
+  date: Date;
+  availableSeats: number;
+  viewers: number;
   tags?: string[];
 }
 
-export type LiveStream = LiveEvent & {
-  status: "live";
-};
+export interface LiveStream extends BaseLive {
+  status: 'live';
+}
 
-export type ScheduledLive = LiveEvent & {
-  status: "scheduled";
-};
+export interface ScheduledLive extends BaseLive {
+  status: 'scheduled';
+}
+
+export interface ReplayLive extends BaseLive {
+  status: 'replay';
+}
+
+export type LiveEvent = LiveStream | ScheduledLive | ReplayLive;

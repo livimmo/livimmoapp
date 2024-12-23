@@ -11,9 +11,10 @@ export interface Property {
   features: string[];
   images: string[];
   hasLive?: boolean;
-  isLiveNow?: boolean;
   isReplay?: boolean;
   liveDate?: Date;
+  status?: 'available' | 'pending' | 'sold' | 'rented';
+  createdAt?: Date;
   agent: {
     id?: number;
     name: string;
@@ -28,18 +29,27 @@ export interface Property {
     lng: number;
   };
   viewers?: number;
+  isLiveNow?: boolean;
   remainingSeats?: number;
-  transactionType: string;
+  isUserRegistered?: boolean;
+  transactionType: "Vente" | "Location";
+  tags?: string[];
   virtualTour?: {
     enabled: boolean;
     url?: string;
-    type?: string;
-    platform?: string;
+    platform?: 'matterport' | 'klapty';
+    type: "360" | "video" | "live";
     hotspots?: Array<{
       title: string;
       description: string;
       position: { x: number; y: number };
-      details: Array<{ label: string; value: string }>;
+      details?: Array<{ label: string; value: string }>;
+    }>;
+    annotations?: Array<{
+      title: string;
+      description: string;
+      position: { x: number; y: number };
+      details?: Array<{ label: string; value: string }>;
     }>;
     floorPlan?: {
       url: string;
@@ -53,20 +63,19 @@ export interface Property {
     statistics?: {
       totalVisits: number;
       averageTime: string;
-      popularRooms: Array<{ name: string; visits: number }>;
-      lastVisits: Array<{ date: string; duration: string }>;
+      popularRooms: Array<{
+        name: string;
+        visits: number;
+      }>;
+      lastVisits: Array<{
+        date: string;
+        duration: string;
+      }>;
     };
   };
-  owner?: {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
+  privateNotes?: {
+    ownerName?: string;
+    location?: string;
+    notes?: string;
   };
-  privateNotes?: string;
-  tags?: string[];
-  status?: PropertyStatus;
-  createdAt?: Date;
 }
-
-export type PropertyStatus = "available" | "pending" | "sold" | "rented";
