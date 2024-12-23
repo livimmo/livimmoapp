@@ -8,3 +8,10 @@ export const generateMockCoordinates = () => {
     lng
   };
 };
+
+export const parseCoordinates = (coordinates: { lat: number; lng: number } | null) => {
+  if (!coordinates) {
+    return generateMockCoordinates();
+  }
+  return coordinates;
+};
