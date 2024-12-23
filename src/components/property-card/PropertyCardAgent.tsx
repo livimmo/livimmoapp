@@ -4,11 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle2 } from "lucide-react";
 
 interface PropertyCardAgentProps {
-  agent: Profile;
+  agent?: Profile;
   district: string;
 }
 
 export const PropertyCardAgent = ({ agent, district }: PropertyCardAgentProps) => {
+  if (!agent) return null;
+
   return (
     <div className="p-4 border-t flex items-center justify-between">
       <div className="flex items-center gap-2">
