@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Headset } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -34,7 +33,6 @@ export const SupportButton = () => {
             onClick={handleSupportClick}
             className="text-muted-foreground hover:text-primary"
           >
-            <Headset className="w-5 h-5 mr-2" />
             Support
           </Button>
         </TooltipTrigger>
