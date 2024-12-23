@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { User, UserRole } from '@/types/user';
+import { supabase } from '@/integrations/supabase/client';
 
 interface AuthContextType {
   user: User | null;
@@ -10,6 +11,8 @@ interface AuthContextType {
   signup: (email: string, password: string, firstName: string, lastName: string, role: UserRole) => Promise<void>;
   logout: () => void;
   switchRole: (newRole: UserRole) => Promise<void>;
+  signIn: (provider: 'google' | 'facebook') => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,6 +21,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const signIn = async (provider: 'google' | 'facebook') => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: provider,
+    });
+    
+    if (error) {
+      toast({
+        title: "Erreur de connexion",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        title: "Erreur de déconnexion",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      setUser(null);
+      navigate('/');
+    }
+  };
 
   const switchRole = async (newRole: UserRole) => {
     if (!user) return;
@@ -107,7 +138,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       login, 
       signup, 
       logout,
-      switchRole 
+      switchRole,
+      signIn,
+      signOut
     }}>
       {children}
     </AuthContext.Provider>

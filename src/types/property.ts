@@ -61,7 +61,7 @@ export interface Property {
   tags: string[] | null;
 }
 
-// Type for the PropertyCard component props
+// Type pour les props du PropertyCard
 export type PropertyCardProps = Property & {
   viewers?: number;
   isLiveNow?: boolean;
