@@ -34,10 +34,10 @@ const replayMarkerIcon = {
 };
 
 const getMarkerIcon = (property: Property) => {
-  if (property.isLiveNow) {
+  if (property.is_live_now) {
     return liveMarkerIcon;
   }
-  if (property.liveDate && new Date(property.liveDate) > new Date()) {
+  if (property.live_date && new Date(property.live_date) > new Date()) {
     return scheduledMarkerIcon;
   }
   return replayMarkerIcon;
@@ -46,18 +46,18 @@ const getMarkerIcon = (property: Property) => {
 const MarkerBadge = ({ property }: { property: Property }) => (
   <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
     <Badge 
-      variant={property.isLiveNow ? "destructive" : "default"}
+      variant={property.is_live_now ? "destructive" : "default"}
       className={`
-        ${property.isLiveNow ? 'bg-red-500' : property.liveDate ? 'bg-blue-500' : 'bg-violet-500'} 
+        ${property.is_live_now ? 'bg-red-500' : property.live_date ? 'bg-blue-500' : 'bg-violet-500'} 
         text-white flex items-center gap-1 text-xs
       `}
     >
-      {property.isLiveNow ? (
+      {property.is_live_now ? (
         <>
           <Circle className="w-1.5 h-1.5 fill-white animate-pulse" />
           En direct
         </>
-      ) : property.liveDate ? (
+      ) : property.live_date ? (
         <>
           <Calendar className="w-2.5 h-2.5" />
           Programmé

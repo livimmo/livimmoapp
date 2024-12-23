@@ -12,8 +12,8 @@ interface MapMarkerContentProps {
 export const MapMarkerContent = ({ property, selectedLiveType }: MapMarkerContentProps) => {
   const navigate = useNavigate();
 
-  const formattedDate = property.liveDate
-    ? new Date(property.liveDate).toLocaleDateString('fr-FR', {
+  const formattedDate = property.live_date
+    ? new Date(property.live_date).toLocaleDateString('fr-FR', {
         weekday: 'long',
         day: 'numeric',
         month: 'long',

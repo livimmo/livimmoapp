@@ -18,7 +18,7 @@ interface VirtualToursSectionProps {
 
 export const VirtualToursSection = ({ properties }: VirtualToursSectionProps) => {
   const propertiesWithVirtualTours = properties.filter(
-    (property) => property.virtualTour?.enabled
+    (property) => property.virtual_tour?.enabled
   );
 
   const plugin = useRef(
