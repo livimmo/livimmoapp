@@ -23,7 +23,15 @@ export const mockProperties: Property[] = [
       lat: 33.5731,
       lng: -7.6298
     },
-    agent: mockAgents[0],
+    agent: {
+      id: "1",
+      name: mockAgents[0].name,
+      email: mockAgents[0].email,
+      phone: mockAgents[0].phone,
+      avatar: mockAgents[0].avatar,
+      location: mockAgents[0].location,
+      type: "agent"
+    },
     hasLive: true,
     transactionType: "Vente",
     status: "available"
@@ -113,3 +121,10 @@ export const mockProperties: Property[] = [
     status: "available"
   }
 ];
+
+export const addCoordinatesToProperties = (properties: Omit<Property, "coordinates">[]) => {
+  return properties.map(property => ({
+    ...property,
+    coordinates: generateMockCoordinates()
+  }));
+};
