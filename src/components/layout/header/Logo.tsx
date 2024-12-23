@@ -1,17 +1,11 @@
 import { Video } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
 
 export const Logo = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   const handleLogoClick = () => {
     navigate('/');
-    toast({
-      title: "Bienvenue",
-      description: "Vous êtes sur la page d'accueil",
-    });
   };
 
   return (
