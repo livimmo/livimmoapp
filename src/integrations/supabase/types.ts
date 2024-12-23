@@ -9,7 +9,96 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      properties: {
+        Row: {
+          agent_id: string | null
+          bathrooms: number
+          coordinates: Json | null
+          created_at: string | null
+          description: string | null
+          features: string[] | null
+          has_live: boolean | null
+          has_scheduled_live: boolean | null
+          id: string
+          images: string[] | null
+          is_live_now: boolean | null
+          is_replay: boolean | null
+          live_date: string | null
+          location: string
+          price: number
+          private_notes: Json | null
+          remaining_seats: number | null
+          rooms: number
+          status: string | null
+          surface: number
+          tags: string[] | null
+          title: string
+          transaction_type: string
+          type: string
+          updated_at: string | null
+          viewers: number | null
+          virtual_tour: Json | null
+        }
+        Insert: {
+          agent_id?: string | null
+          bathrooms: number
+          coordinates?: Json | null
+          created_at?: string | null
+          description?: string | null
+          features?: string[] | null
+          has_live?: boolean | null
+          has_scheduled_live?: boolean | null
+          id?: string
+          images?: string[] | null
+          is_live_now?: boolean | null
+          is_replay?: boolean | null
+          live_date?: string | null
+          location: string
+          price: number
+          private_notes?: Json | null
+          remaining_seats?: number | null
+          rooms: number
+          status?: string | null
+          surface: number
+          tags?: string[] | null
+          title: string
+          transaction_type: string
+          type: string
+          updated_at?: string | null
+          viewers?: number | null
+          virtual_tour?: Json | null
+        }
+        Update: {
+          agent_id?: string | null
+          bathrooms?: number
+          coordinates?: Json | null
+          created_at?: string | null
+          description?: string | null
+          features?: string[] | null
+          has_live?: boolean | null
+          has_scheduled_live?: boolean | null
+          id?: string
+          images?: string[] | null
+          is_live_now?: boolean | null
+          is_replay?: boolean | null
+          live_date?: string | null
+          location?: string
+          price?: number
+          private_notes?: Json | null
+          remaining_seats?: number | null
+          rooms?: number
+          status?: string | null
+          surface?: number
+          tags?: string[] | null
+          title?: string
+          transaction_type?: string
+          type?: string
+          updated_at?: string | null
+          viewers?: number | null
+          virtual_tour?: Json | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

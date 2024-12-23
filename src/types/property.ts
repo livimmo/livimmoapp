@@ -14,10 +14,9 @@ export interface Property {
   is_replay: boolean;
   has_scheduled_live: boolean;
   live_date: string | null;
-  status: 'available' | 'pending' | 'sold' | 'rented';
-  created_at: string;
-  updated_at: string;
-  agent_id: string | null;
+  is_live_now: boolean;
+  remaining_seats: number | null;
+  viewers: number;
   coordinates: {
     lat: number;
     lng: number;
@@ -28,15 +27,46 @@ export interface Property {
     url?: string;
     platform?: "matterport" | "klapty";
     type: "360" | "video" | "live";
+    hotspots?: Array<{
+      title: string;
+      description: string;
+      position: { x: number; y: number };
+      details?: Array<{ label: string; value: string }>;
+    }>;
+    floorPlan?: {
+      url: string;
+      rooms: Array<{
+        id: string;
+        name: string;
+        area: number;
+        coordinates: { x: number; y: number };
+      }>;
+    };
+    statistics?: {
+      totalVisits: number;
+      averageTime: string;
+      popularRooms: Array<{ name: string; visits: number }>;
+      lastVisits: Array<{ date: string; duration: string }>;
+    };
   } | null;
   private_notes: {
     ownerName?: string;
     location?: string;
     notes?: string;
   } | null;
-  viewers?: number;
-  is_live_now?: boolean;
-  remaining_seats?: number;
-  is_user_registered?: boolean;
-  tags?: string[];
+  agent_id: string | null;
+  status: 'available' | 'pending' | 'sold' | 'rented';
+  created_at: string;
+  updated_at: string;
+  tags: string[] | null;
 }
+
+// Type for the PropertyCard component props
+export type PropertyCardProps = Property & {
+  viewers?: number;
+  isLiveNow?: boolean;
+  remainingSeats?: number;
+  isUserRegistered?: boolean;
+  offers?: number;
+  className?: string;
+};

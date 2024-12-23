@@ -28,15 +28,15 @@ export const PropertyCard = ({
   type,
   surface,
   rooms,
-  hasLive,
-  liveDate,
+  has_live,
+  live_date,
   viewers = 0,
   isLiveNow,
   remainingSeats = 15,
   isUserRegistered = false,
   offers = 0,
-  agent,
-  virtualTour,
+  agent_id,
+  virtual_tour,
   className,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
@@ -65,16 +65,16 @@ export const PropertyCard = ({
         <PropertyCardImage
           id={id}
           title={title}
-          image={images[0]}
-          hasLive={hasLive}
-          liveDate={liveDate}
+          image={images?.[0] || ''}
+          has_live={has_live}
+          live_date={live_date}
           viewers={viewers}
           currentUrl={currentUrl}
           isLiveNow={isLiveNow}
           isUserRegistered={isUserRegistered}
           remainingSeats={remainingSeats}
           offers={offers}
-          virtualTour={virtualTour}
+          virtual_tour={virtual_tour}
           tags={tags}
           onVirtualTourClick={handleVirtualTour}
           onUnauthorized={() => setShowAuthDialog(true)}
@@ -88,15 +88,15 @@ export const PropertyCard = ({
           type={type}
           surface={surface}
           rooms={rooms}
-          hasLive={hasLive}
-          liveDate={liveDate}
+          has_live={has_live}
+          live_date={live_date}
           onJoinLive={handleJoinLive}
           isLiveNow={isLiveNow}
           remainingSeats={remainingSeats}
           isUserRegistered={isUserRegistered}
         />
         
-        <PropertyCardAgent agent={agent} district={district} />
+        <PropertyCardAgent agent_id={agent_id} district={district} />
       </div>
 
       <PropertyCardAuthDialog 
@@ -110,7 +110,7 @@ export const PropertyCard = ({
             tourUrl="TzhRashYdRt"
             propertyId={id}
             propertyTitle={title}
-            agentName={agent.name}
+            agentId={agent_id}
             onContactAgent={() => {}}
             onBookVisit={() => setShowAuthDialog(true)}
           />
