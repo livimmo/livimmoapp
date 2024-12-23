@@ -1,28 +1,25 @@
-import { type Visit as DatabaseVisit } from "@/types/database";
+import { type Profile } from "./database/profile";
 
-export interface Visit extends DatabaseVisit {
-  propertyId: string;
-  propertyTitle: string;
-  propertyImage: string;
-  propertyLocation: string;
+export interface Visit {
+  id: string;
+  property_id: string;
+  visitor_id: string;
+  type: string | null;
+  date: string | null;
+  time: string | null;
+  status: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+  property: {
+    title: string;
+    location: string;
+    image: string;
+    agent: Profile;
+  };
   visitor: {
     id: string;
     name: string;
     avatar: string;
   };
 }
-
-export const enrichVisitWithPropertyData = (visit: DatabaseVisit, property: any): Visit => {
-  return {
-    ...visit,
-    propertyId: property.id,
-    propertyTitle: property.title,
-    propertyImage: property.images[0],
-    propertyLocation: property.location,
-    visitor: {
-      id: visit.visitor_id || "",
-      name: "Visitor Name", // This should come from the profile data
-      avatar: "https://i.pravatar.cc/150",
-    }
-  };
-};

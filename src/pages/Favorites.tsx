@@ -9,10 +9,25 @@ import { HomeMap } from "@/components/home/HomeMap";
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState<Property[]>(
-    addCoordinatesToProperties(mockFavoritesData.map(property => ({
+    mockFavoritesData.map(property => ({
       ...property,
-      transactionType: "Vente" as const
-    })))
+      id: property.id.toString(),
+      has_live: property.hasLive || false,
+      is_replay: false,
+      has_scheduled_live: false,
+      live_date: null,
+      is_live_now: false,
+      remaining_seats: null,
+      viewers: 0,
+      transaction_type: "Vente",
+      virtual_tour: null,
+      private_notes: null,
+      agent_id: null,
+      status: "available",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      tags: []
+    }))
   );
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filterType, setFilterType] = useState<string>("all");

@@ -14,7 +14,6 @@ const mockAgent: Profile = {
   avatar_url: "https://i.pravatar.cc/150?u=sarah",
   company: "Luxury Real Estate",
   phone: "+212 6 12 34 56 78",
-  email: "sarah.martin@example.com",
   role: "agent",
   verified: true,
   rating: 4.8,
@@ -140,6 +139,14 @@ export const mockProperties: Property[] = [
     tags: []
   },
 ];
+
+// Function to add coordinates to properties
+export const addCoordinatesToProperties = (properties: Omit<PropertyWithAgent, "coordinates">[]) => {
+  return properties.map(property => ({
+    ...property,
+    coordinates: generateMockCoordinates()
+  }));
+};
 
 // Function to add agent data to properties
 export const addAgentToProperties = (properties: Property[]): PropertyWithAgent[] => {

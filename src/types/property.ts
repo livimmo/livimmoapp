@@ -1,3 +1,5 @@
+import { type Profile } from "@/types/database/profile";
+
 export interface Property {
   id: string;
   title: string;
@@ -38,6 +40,10 @@ export interface Property {
   created_at: string;
   updated_at: string;
   tags: string[] | null;
+}
+
+export interface PropertyWithAgent extends Property {
+  agent: Profile;
 }
 
 export interface AuthContextType {
