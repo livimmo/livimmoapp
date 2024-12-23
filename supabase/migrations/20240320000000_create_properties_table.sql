@@ -22,7 +22,12 @@ create table "public"."properties" (
     coordinates jsonb,
     transaction_type text not null,
     virtual_tour jsonb,
-    private_notes jsonb
+    private_notes jsonb,
+    viewers integer default 0,
+    is_live_now boolean default false,
+    remaining_seats integer default 15,
+    is_user_registered boolean default false,
+    tags text[]
 );
 
 -- Enable Row Level Security

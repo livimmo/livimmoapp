@@ -34,4 +34,9 @@ export interface Property {
     location?: string;
     notes?: string;
   } | null;
+  viewers?: number;
+  is_live_now?: boolean;
+  remaining_seats?: number;
+  is_user_registered?: boolean;
+  tags?: string[];
 }
