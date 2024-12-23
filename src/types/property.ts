@@ -1,3 +1,8 @@
+import { type Agent } from "./agent";
+
+export type PropertyStatus = "available" | "pending" | "sold" | "rented";
+export type TransactionType = "Vente" | "Location";
+
 export interface Property {
   id: string;
   title: string;
@@ -10,67 +15,21 @@ export interface Property {
   description: string;
   features: string[];
   images: string[];
-  hasLive?: boolean;
-  isReplay?: boolean;
-  liveDate?: Date;
-  status?: 'available' | 'pending' | 'sold' | 'rented';
-  createdAt?: Date;
-  ownerId?: string;
-  agent: {
-    id?: string;
-    name: string;
-    image: string;
-    phone: string;
-    email: string;
-    company?: string;
-    verified?: boolean;
-  };
   coordinates: {
     lat: number;
     lng: number;
   };
-  viewers?: number;
+  hasLive?: boolean;
   isLiveNow?: boolean;
+  liveDate?: Date;
+  viewers?: number;
   remainingSeats?: number;
   isUserRegistered?: boolean;
-  transactionType: "Vente" | "Location";
-  tags?: string[];
+  agent: Agent;
   virtualTour?: {
     enabled: boolean;
-    url?: string;
-    platform?: 'matterport' | 'klapty';
-    type: "360" | "video" | "live";
-    hotspots?: Array<{
-      title: string;
-      description: string;
-      position: { x: number; y: number };
-      details?: Array<{ label: string; value: string }>;
-    }>;
-    floorPlan?: {
-      url: string;
-      rooms: Array<{
-        id: string;
-        name: string;
-        area: number;
-        coordinates: { x: number; y: number };
-      }>;
-    };
-    statistics?: {
-      totalVisits: number;
-      averageTime: string;
-      popularRooms: Array<{
-        name: string;
-        visits: number;
-      }>;
-      lastVisits: Array<{
-        date: string;
-        duration: string;
-      }>;
-    };
+    type: "360" | "video";
   };
-  privateNotes?: {
-    ownerName?: string;
-    location?: string;
-    notes?: string;
-  };
+  status?: PropertyStatus;
+  transactionType: TransactionType;
 }
