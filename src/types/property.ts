@@ -1,5 +1,7 @@
 import { type Agent } from "./agent";
 
+export type PropertyStatus = "available" | "pending" | "sold" | "rented" | "en_cours";
+
 export interface Property {
   id: string;
   title: string;
@@ -20,5 +22,37 @@ export interface Property {
     lng: number;
   };
   transactionType: "Vente" | "Location";
-  virtualTour?: boolean;
+  status?: PropertyStatus;
+  isLiveNow?: boolean;
+  remainingSeats?: number;
+  viewers?: number;
+  isReplay?: boolean;
+  tags?: string[];
+  ownerId?: string;
+  privateNotes?: {
+    ownerName?: string;
+    location?: string;
+    notes?: string;
+  };
+  virtualTour?: {
+    enabled: boolean;
+    url?: string;
+    platform?: string;
+    type?: string;
+    floorPlan?: {
+      url: string;
+      rooms: Array<{
+        id: string;
+        name: string;
+        area: number;
+        coordinates: { x: number; y: number };
+      }>;
+    };
+    statistics?: {
+      totalVisits: number;
+      averageTime: string;
+      popularRooms: Array<{ name: string; visits: number }>;
+      lastVisits: Array<{ date: string; duration: string }>;
+    };
+  };
 }

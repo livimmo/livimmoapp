@@ -35,6 +35,7 @@ export const Properties = () => {
         email: "sarah.martin@example.com",
         phone: "+212 6 12 34 56 78",
         avatar: "https://i.pravatar.cc/150?u=sarah",
+        image: "https://i.pravatar.cc/150?u=sarah",
         location: "Marrakech",
         type: "agent"
       },

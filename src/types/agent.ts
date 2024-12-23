@@ -10,6 +10,13 @@ export interface Agent {
   location: string;
   type: AgentType;
   company?: string;
+  companyLogo?: string;
   verified?: boolean;
   description?: string;
+  rating?: number;
+  totalReviews?: number;
+  activeProperties?: number;
+  completedLives?: number;
+  scheduledLives?: number;
+  soldProperties?: number;
 }
