@@ -1,4 +1,4 @@
-export type AgentType = "agent" | "promoter";
+export type AgentType = "agent" | "promoter" | "developer";
 
 export interface Agent {
   id: string;

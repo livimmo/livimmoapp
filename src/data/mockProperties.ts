@@ -23,15 +23,7 @@ export const mockProperties: Property[] = [
       lat: 33.5731,
       lng: -7.6298
     },
-    agent: {
-      id: "1",
-      name: mockAgents[0].name,
-      email: mockAgents[0].email,
-      phone: mockAgents[0].phone,
-      avatar: mockAgents[0].avatar,
-      location: mockAgents[0].location,
-      type: "agent"
-    },
+    agent: mockAgents[0],
     hasLive: true,
     transactionType: "Vente",
     status: "available"
