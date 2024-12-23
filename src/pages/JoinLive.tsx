@@ -1,160 +1,179 @@
+import { useNavigate } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { LiveInfo } from "./LiveInfo";
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { LiveChat } from "@/components/live/LiveChat";
-import { LiveInfo } from "@/components/live/LiveInfo";
-import { LiveStream } from "@/components/live/LiveStream";
-import { useToast } from "@/hooks/use-toast";
-import { type Property } from "@/types/property";
-import { generateMockCoordinates } from "@/data/mockProperties";
-import { useAuth } from "@/contexts/AuthContext";
+import { LiveCarousel } from "./LiveCarousel";
+import { ReplayCarousel } from "./ReplayCarousel";
 import { liveStreams } from "@/data/mockLives";
+import { cn } from "@/lib/utils";
+import { LiveHeader } from "./LiveHeader";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { AIChat } from "./AIChat";
+import { LiveChapters } from "./LiveChapters";
+import { LiveVideoPlayer } from "./LiveVideoPlayer";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { Property } from "@/types/property";
 
-const mockLiveData = {
-  viewerCount: 45,
-  messages: [
-    { id: 1, user: "Sophie Martin", message: "Quelle est la superficie du jardin ?", timestamp: new Date() },
-    { id: 2, user: "Agent", message: "Le jardin fait 500m²", timestamp: new Date() },
-  ],
+const mockProperty: Property = {
+  id: "1",
+  title: "Villa Moderne avec Piscine",
+  price: 2500000,
+  location: "Marrakech",
+  type: "Villa",
+  surface: 350,
+  rooms: 5,
+  bathrooms: 3,
+  description: "Magnifique villa moderne avec piscine et jardin paysager",
+  features: ["Piscine", "Jardin", "Garage"],
+  images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9"],
+  hasLive: true,
+  liveDate: new Date(),
+  agent: {
+    id: "1",
+    name: "Karim Benjelloun",
+    avatar: "https://i.pravatar.cc/150?u=karim",
+    image: "https://i.pravatar.cc/150?u=karim",
+    phone: "+212 6 00 11 22 33",
+    email: "karim.benjelloun@example.com",
+    location: "Marrakech",
+    type: "agent"
+  },
+  coordinates: {
+    lat: 31.7917,
+    lng: -7.0926,
+  },
+  transactionType: "Vente",
 };
 
-export const JoinLive = () => {
-  const { id } = useParams();
+interface LiveStreamProps {
+  videoId: string;
+  currentLiveId: number;
+  otherLives: any[];
+  onLiveChange: (liveId: number) => void;
+  isReplay?: boolean;
+}
+
+export const LiveStream = ({ 
+  videoId, 
+  currentLiveId,
+  otherLives,
+  onLiveChange,
+  isReplay = false,
+}: LiveStreamProps) => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const isMobile = useIsMobile();
+  const [showOtherLives, setShowOtherLives] = useState(true);
+  const [showAIChat, setShowAIChat] = useState(false);
   const { isAuthenticated } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
-  const [showChat, setShowChat] = useState(false);
-  const [showOfferForm, setShowOfferForm] = useState(false);
-  const [property, setProperty] = useState<Property | null>(null);
-  const [viewerCount, setViewerCount] = useState(mockLiveData.viewerCount);
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const currentLiveId = id;
-  const otherLives = liveStreams.filter(live => live.id.toString() !== id);
-
-  const handleLiveChange = (newLiveId: number) => {
-    navigate(`/live/${newLiveId}`);
-  };
-
-  const handleToggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-  };
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!isAuthenticated) {
       toast({
-        title: "Accès refusé",
-        description: "Vous devez être connecté pour accéder à ce live",
+        title: "Connexion requise",
+        description: "Vous devez être connecté pour accéder au live",
         variant: "destructive",
       });
       navigate("/login");
-      return;
     }
+  }, [isAuthenticated, navigate, toast]);
 
-    // Simulate loading property data
-    const timer = setTimeout(() => {
-      const location = "Marrakech";
-      setProperty({
-        id: "1",
-        title: "Villa Moderne avec Piscine",
-        price: 2500000,
-        location: location,
-        type: "Villa",
-        surface: 350,
-        rooms: 5,
-        bathrooms: 3,
-        description: "Magnifique villa moderne avec piscine et jardin paysager",
-        features: ["Piscine", "Jardin", "Garage"],
-        images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9"],
-        hasLive: true,
-        liveDate: new Date(),
-        agent: {
-          name: "Karim Benjelloun",
-          image: "https://i.pravatar.cc/150?u=karim",
-          phone: "+212 6 00 11 22 33",
-          email: "karim.benjelloun@example.com",
-        },
-        coordinates: generateMockCoordinates(location),
-        transactionType: "Vente" as const,
-      });
-      setIsLoading(false);
-    }, 1500);
+  const currentLive = liveStreams.find(live => live.id === currentLiveId);
+  const startTime = currentLive ? format(new Date(currentLive.date), "'En live depuis' HH'h'mm", { locale: fr }) : '';
 
-    // Simulate viewer count updates
-    const viewerInterval = setInterval(() => {
-      setViewerCount(prev => {
-        const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
-        return Math.max(0, prev + change);
-      });
-    }, 5000);
-
-    return () => {
-      clearTimeout(timer);
-      clearInterval(viewerInterval);
-    };
-  }, [id, isAuthenticated, navigate, toast]);
-
-  const handleMakeOffer = () => {
-    setShowOfferForm(true);
+  const handleLiveSelect = (liveId: number) => {
+    navigate(`/live/${liveId}`);
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-lg">Connexion au live en cours...</p>
-          <p className="text-sm text-muted-foreground">Préparez-vous pour la visite en direct</p>
-        </div>
-      </div>
-    );
+  const handleChapterClick = (timestamp: string) => {
+    console.log("Navigation vers le timestamp:", timestamp);
+  };
+
+  if (!isAuthenticated) {
+    return null;
   }
 
-  if (!property) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-lg text-red-500">Live non disponible</p>
-          <Button onClick={() => navigate(-1)} className="mt-4">
-            Retour
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  const processedLives = liveStreams.map(live => ({
+    ...live,
+    date: new Date(live.date instanceof Date ? live.date : new Date(live.date))
+  }));
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="relative h-[calc(100vh-4rem)]">
-        <LiveStream 
-          videoId="n3wtxcO_0GQ" 
-          currentLiveId={currentLiveId}
-          otherLives={otherLives}
-          onLiveChange={handleLiveChange}
-        />
+    <div className="fixed inset-0 bg-black flex flex-col">
+      <LiveHeader 
+        otherLivesCount={otherLives.length}
+        isMobile={isMobile}
+        onClose={() => navigate(-1)}
+        onToggleOtherLives={() => setShowOtherLives(!showOtherLives)}
+      />
 
-        <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+      {!isReplay && (
+        <div className="absolute top-20 right-4 z-[52] bg-black/60 text-white px-3 py-1.5 rounded-full text-sm backdrop-blur-sm">
+          {startTime}
+        </div>
+      )}
+
+      <div className="flex-1 flex flex-col relative">
+        <div className={cn(
+          "flex-1 relative z-[1] group",
+          isMobile ? "p-0" : "p-4 pb-24"
+        )}>
+          <div className={cn(
+            "relative w-full h-full overflow-hidden",
+            !isMobile && "rounded-xl border-2 border-primary/20 shadow-lg"
+          )}>
+            <LiveVideoPlayer 
+              videoId={videoId} 
+              isReplay={isReplay}
+            />
+          </div>
+        </div>
+
+        <div className="absolute bottom-[84px] left-0 right-0 z-[51]">
+          {isReplay ? (
+            <ReplayCarousel
+              replays={processedLives}
+              currentReplayId={currentLiveId}
+              onReplaySelect={handleLiveSelect}
+            />
+          ) : (
+            <LiveCarousel
+              lives={processedLives}
+              currentLiveId={currentLiveId}
+              onLiveSelect={handleLiveSelect}
+            />
+          )}
+        </div>
+
+        <div className={cn(
+          "absolute bottom-0 left-0 right-0 z-[52]",
+          "bg-gradient-to-t from-black/80 to-transparent pt-8"
+        )}>
           <LiveInfo 
-            property={property} 
-            onMakeOffer={() => setShowOfferForm(true)} 
-            viewerCount={viewerCount}
-            onToggleChat={() => setShowChat(!showChat)}
+            property={mockProperty}
+            onMakeOffer={() => {}}
+            viewerCount={Math.floor(Math.random() * 1000)}
+            onToggleChat={() => setShowAIChat(!showAIChat)}
+            isReplay={isReplay}
             liveId={currentLiveId}
           />
         </div>
 
-        {showChat && (
+        {showAIChat && (
           <div className="absolute top-0 right-0 bottom-0 w-80 z-[100]">
-            <LiveChat 
-              messages={mockLiveData.messages} 
-              onClose={() => setShowChat(false)}
+            <AIChat 
+              property={mockProperty}
+              onClose={() => setShowAIChat(false)}
             />
           </div>
         )}
+
+        <div className="absolute top-20 left-4 bottom-[200px] w-80 space-y-4 z-[51]">
+          {isReplay && <LiveChapters onChapterClick={handleChapterClick} isReplay={true} />}
+        </div>
       </div>
     </div>
   );
 };
-
-export default JoinLive;
