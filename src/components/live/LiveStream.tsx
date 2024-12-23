@@ -10,19 +10,21 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { mockProperties } from "@/data/mockProperties";
 
-const LiveStream = ({ 
-  videoId, 
-  currentLiveId,
-  otherLives,
-  onLiveChange,
-  isReplay = false,
-}: {
+interface LiveStreamProps {
   videoId: string;
   currentLiveId: number;
   otherLives: LiveEvent[];
   onLiveChange: (liveId: number) => void;
   isReplay?: boolean;
-}) => {
+}
+
+export const LiveStream = ({ 
+  videoId, 
+  currentLiveId,
+  otherLives,
+  onLiveChange,
+  isReplay = false,
+}: LiveStreamProps) => {
   const navigate = useNavigate();
   const [showChat, setShowChat] = useState(false);
   const [showDescription, setShowDescription] = useState(true);

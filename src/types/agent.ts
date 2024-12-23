@@ -1,28 +1,15 @@
-export type AgentType = "agent" | "promoter" | "developer";
+export type AgentType = "agent" | "promoter" | "developer" | "owner" | "admin";
 
 export interface Agent {
-  id: string;  // Changed from number to string
+  id: string;
   name: string;
-  email: string;
-  phone: string;
   avatar: string;
-  image?: string;
+  image: string;
+  phone: string;
+  email: string;
   location: string;
   type: AgentType;
   company?: string;
-  companyLogo?: string;
   verified?: boolean;
-  rating?: number;
-  totalReviews?: number;
-  activeProperties?: number;
-  completedLives?: number;
-  scheduledLives?: number;
-  soldProperties?: number;
   description?: string;
-  specialties?: string[];
-  social?: {
-    facebook?: string;
-    instagram?: string;
-    linkedin?: string;
-  };
 }

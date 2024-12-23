@@ -1,4 +1,6 @@
-import { AccountType } from "@/types/user";
+import { useState } from "react";
+
+export type AccountType = "owner" | "buyer" | "agent" | "developer";
 
 interface AccountTypeSelectorProps {
   value: AccountType;
@@ -6,15 +8,20 @@ interface AccountTypeSelectorProps {
 }
 
 export const AccountTypeSelector = ({ value, onChange }: AccountTypeSelectorProps) => {
-  const accountTypes: AccountType[] = ["user", "agent", "promoter", "developer", "owner", "buyer", "tenant", "admin"];
+  const [selectedType, setSelectedType] = useState<AccountType>(value);
+
+  const handleChange = (type: AccountType) => {
+    setSelectedType(type);
+    onChange(type);
+  };
 
   return (
-    <div className="flex gap-4">
-      {accountTypes.map((type) => (
+    <div className="flex space-x-4">
+      {(["owner", "buyer", "agent", "developer"] as AccountType[]).map((type) => (
         <button
           key={type}
-          className={`py-2 px-4 rounded ${value === type ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-          onClick={() => onChange(type)}
+          className={`p-2 border rounded ${selectedType === type ? "bg-blue-500 text-white" : "bg-white text-black"}`}
+          onClick={() => handleChange(type)}
         >
           {type.charAt(0).toUpperCase() + type.slice(1)}
         </button>

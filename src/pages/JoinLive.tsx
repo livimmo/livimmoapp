@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { liveStreams } from "@/data/mockLives";
 import { type LiveEvent } from "@/types/live";
-import { LiveStream } from "@/components/live/LiveStream";
+import LiveStream from "@/components/live/LiveStream";
 
 const JoinLive = () => {
   const { id } = useParams();
