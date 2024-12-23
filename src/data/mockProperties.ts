@@ -1,4 +1,4 @@
-import { type Property } from "@/types/property";
+import { type Property } from "@/types/database";
 import { addDays } from "date-fns";
 
 const cities = [
@@ -42,25 +42,6 @@ const propertyImages = [
   "https://images.unsplash.com/photo-1496307653780-42ee777d4833",
   "https://images.unsplash.com/photo-1433832597046-4f10e10ac764",
   "https://images.unsplash.com/photo-1493397212122-2b85dda8106b"
-];
-
-const agents = [
-  {
-    name: "Sarah Martin",
-    image: "https://i.pravatar.cc/150?u=sarah",
-    phone: "+212 6 12 34 56 78",
-    email: "sarah.martin@example.com",
-    company: "Luxury Real Estate",
-    verified: true
-  },
-  {
-    name: "Mohammed Alami",
-    image: "https://i.pravatar.cc/150?u=mohamed",
-    phone: "+212 6 23 45 67 89",
-    email: "m.alami@example.com",
-    company: "Premium Properties",
-    verified: true
-  }
 ];
 
 const generateRandomPrice = (min: number, max: number) => {

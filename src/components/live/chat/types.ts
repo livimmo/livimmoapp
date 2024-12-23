@@ -1,3 +1,5 @@
+import { type Property } from "@/types/database";
+
 export interface Message {
   id: number;
   text: string;

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { type Property } from "@/types/property";
+import { type Property } from "@/types/database";
 import { mockProperties } from "@/data/mockProperties";
 
 export const useProperties = () => {
@@ -11,10 +11,13 @@ export const useProperties = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("properties")
-        .select("*");
+        .select(`
+          *,
+          agent:profiles(*)
+        `);
 
       if (error) throw error;
-      return (data || []) as Property[];
+      return (data || []) as (Property & { agent: Profile })[];
     },
     initialData: mockProperties,
   });
