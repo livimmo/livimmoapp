@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NotificationHeader } from "@/components/notifications/NotificationHeader";
 import { NotificationTabs } from "@/components/notifications/NotificationTabs";
+import { VisitsCalendarSection } from "@/components/notifications/VisitsCalendarSection";
 import { Notification } from "@/types/notification";
 
 // Données de démonstration
