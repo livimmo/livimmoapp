@@ -1,5 +1,3 @@
-export type AgentType = "agent" | "promoter" | "developer" | "owner" | "admin";
-
 export interface Agent {
   id: string;
   name: string;
@@ -8,15 +6,22 @@ export interface Agent {
   avatar: string;
   image: string;
   location: string;
-  type: AgentType;
+  type: "agent" | "promoter";
   company?: string;
-  companyLogo?: string;
-  description?: string;
-  rating?: number;
-  totalReviews?: number;
-  activeProperties?: number;
-  completedLives?: number;
-  scheduledLives?: number;
-  soldProperties?: number;
   verified?: boolean;
+  description?: string;
+  specialties?: string[];
+  languages?: string[];
+  experience?: number;
+  rating?: number;
+  reviews?: number;
+  properties?: number;
+  clients?: number;
+  sales?: number;
+  social?: {
+    facebook?: string;
+    twitter?: string;
+    linkedin?: string;
+    instagram?: string;
+  };
 }

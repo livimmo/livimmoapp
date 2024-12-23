@@ -1,8 +1,11 @@
-import { type Property, type PropertyCardProps } from "@/types/property";
+import { type Property } from "@/types/property";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
+export interface PropertyCardProps {
+  property: Property;
+}
 
 export const PropertyCard = ({ property }: PropertyCardProps) => {
   const navigate = useNavigate();

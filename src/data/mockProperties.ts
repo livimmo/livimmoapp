@@ -46,28 +46,7 @@ export const mockProperties: Property[] = [
     virtualTour: {
       enabled: true,
       type: "360",
-      url: "https://example.com/tour",
-      floorPlan: {
-        url: "https://example.com/floorplan",
-        rooms: [
-          {
-            id: "room1",
-            name: "Living Room",
-            area: 40,
-            coordinates: { x: 50, y: 50 }
-          }
-        ]
-      },
-      statistics: {
-        totalVisits: 150,
-        averageTime: "15 minutes",
-        popularRooms: [
-          { name: "Living Room", visits: 80 }
-        ],
-        lastVisits: [
-          { date: "2024-03-20", duration: "12 minutes" }
-        ]
-      }
+      url: "https://example.com/tour"
     }
   },
   {

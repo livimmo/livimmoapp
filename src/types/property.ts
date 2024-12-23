@@ -21,14 +21,13 @@ export interface Property {
     lng: number;
   };
   transactionType: "Vente" | "Location";
-  // New fields
   status?: PropertyStatus;
   tags?: string[];
   virtualTour?: {
     enabled: boolean;
-    url: string;
+    url?: string;
     platform?: 'matterport' | 'other';
-    type: "360" | "3d";
+    type?: "360" | "3d";
     floorPlan?: {
       url: string;
       rooms: Array<{
@@ -56,6 +55,7 @@ export interface Property {
     location?: string;
     notes?: string;
   };
+  offers?: number;
 }
 
 export interface PropertyCardProps {
