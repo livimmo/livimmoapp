@@ -2,10 +2,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageSquare, Send, CheckSquare, XSquare, AlertOctagon } from "lucide-react";
+import { MessageSquare, Send, CheckSquare, XSquare, AlertOctagon, Phone, Calendar } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
-// Types temporaires pour la démonstration
+// Types pour les offres
 interface Offer {
   id: string;
   propertyTitle: string;
@@ -14,8 +17,10 @@ interface Offer {
   status: "pending" | "accepted" | "rejected";
   agent: string;
   address: string;
+  buyerName?: string;
 }
 
+// Données de démonstration
 const mockOffers: Offer[] = [
   {
     id: "1",
@@ -24,7 +29,8 @@ const mockOffers: Offer[] = [
     date: new Date(),
     status: "pending",
     agent: "Agent Youssef",
-    address: "Rue des Fleurs, Maarif, Casablanca"
+    address: "Rue des Fleurs, Maarif, Casablanca",
+    buyerName: "Mohammed Alami"
   },
   {
     id: "2",
@@ -33,12 +39,18 @@ const mockOffers: Offer[] = [
     date: new Date(Date.now() - 86400000),
     status: "accepted",
     agent: "Agent Sarah",
-    address: "Boulevard Principal, Californie, Casablanca"
+    address: "Boulevard Principal, Californie, Casablanca",
+    buyerName: "Karim Bennani"
   }
 ];
 
 export const OffersSection = () => {
   const [activeTab, setActiveTab] = useState("received");
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const isAgent = user?.role === "agent" || user?.role === "promoter";
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -66,6 +78,38 @@ export const OffersSection = () => {
     }
   };
 
+  const handleAcceptOffer = (offerId: string) => {
+    toast({
+      title: "Offre acceptée",
+      description: "L'offre a été acceptée avec succès.",
+    });
+  };
+
+  const handleRejectOffer = (offerId: string) => {
+    toast({
+      title: "Offre refusée",
+      description: "L'offre a été refusée.",
+    });
+  };
+
+  const handleModifyOffer = (offerId: string) => {
+    toast({
+      title: "Modification de l'offre",
+      description: "Vous allez être redirigé vers le formulaire de modification.",
+    });
+  };
+
+  const handleContactPerson = (offerId: string) => {
+    toast({
+      title: "Contact",
+      description: "La messagerie va s'ouvrir.",
+    });
+  };
+
+  const handleScheduleVisit = (offerId: string) => {
+    navigate(`/properties/${offerId}/visit`);
+  };
+
   const renderOffer = (offer: Offer) => (
     <Card key={offer.id} className="p-4 mb-4">
       <div className="flex items-start justify-between">
@@ -76,9 +120,15 @@ export const OffersSection = () => {
             <p className="font-medium">
               {offer.amount.toLocaleString()} MAD
             </p>
-            <p className="text-sm text-muted-foreground">
-              {offer.agent} - {offer.date.toLocaleDateString()}
-            </p>
+            {isAgent ? (
+              <p className="text-sm text-muted-foreground">
+                {offer.buyerName} - {offer.date.toLocaleDateString()}
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                {offer.agent} - {offer.date.toLocaleDateString()}
+              </p>
+            )}
           </div>
         </div>
         <div className="flex flex-col items-end">
@@ -90,19 +140,34 @@ export const OffersSection = () => {
           </div>
         </div>
       </div>
-      {offer.status === "pending" && (
-        <div className="flex gap-2 mt-4">
-          <Button size="sm" variant="outline" className="flex-1">
-            Accepter
-          </Button>
-          <Button size="sm" variant="outline" className="flex-1">
-            Refuser
-          </Button>
-          <Button size="sm" variant="outline" className="flex-1">
-            Modifier
-          </Button>
-        </div>
-      )}
+      <div className="flex flex-wrap gap-2 mt-4">
+        {isAgent && offer.status === "pending" ? (
+          <>
+            <Button size="sm" variant="outline" onClick={() => handleAcceptOffer(offer.id)}>
+              Accepter
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => handleRejectOffer(offer.id)}>
+              Refuser
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => handleModifyOffer(offer.id)}>
+              Modifier
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button size="sm" variant="outline" onClick={() => handleContactPerson(offer.id)} className="flex items-center gap-2">
+              <Phone className="h-4 w-4" />
+              Contacter {isAgent ? "l'acheteur" : "l'agent"}
+            </Button>
+            {!isAgent && (
+              <Button size="sm" variant="outline" onClick={() => handleScheduleVisit(offer.id)} className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                Planifier une visite
+              </Button>
+            )}
+          </>
+        )}
+      </div>
     </Card>
   );
 
@@ -112,33 +177,29 @@ export const OffersSection = () => {
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="received" className="flex items-center gap-2">
             <MessageSquare className="h-4 w-4" />
-            Reçues
+            {isAgent ? "Reçues" : "En cours"}
           </TabsTrigger>
-          <TabsTrigger value="sent" className="flex items-center gap-2">
-            <Send className="h-4 w-4" />
-            Envoyées
-          </TabsTrigger>
-          <TabsTrigger value="archived" className="flex items-center gap-2">
+          <TabsTrigger value="accepted" className="flex items-center gap-2">
             <CheckSquare className="h-4 w-4" />
-            Archivées
+            Acceptées
+          </TabsTrigger>
+          <TabsTrigger value="rejected" className="flex items-center gap-2">
+            <XSquare className="h-4 w-4" />
+            Refusées
           </TabsTrigger>
         </TabsList>
 
         <ScrollArea className="h-[calc(100vh-300px)] mt-4">
           <TabsContent value="received">
-            {mockOffers.map(renderOffer)}
+            {mockOffers.filter(o => o.status === "pending").map(renderOffer)}
           </TabsContent>
 
-          <TabsContent value="sent">
-            <div className="text-center py-8 text-muted-foreground">
-              Aucune offre envoyée
-            </div>
+          <TabsContent value="accepted">
+            {mockOffers.filter(o => o.status === "accepted").map(renderOffer)}
           </TabsContent>
 
-          <TabsContent value="archived">
-            <div className="text-center py-8 text-muted-foreground">
-              Aucune offre archivée
-            </div>
+          <TabsContent value="rejected">
+            {mockOffers.filter(o => o.status === "rejected").map(renderOffer)}
           </TabsContent>
         </ScrollArea>
       </Tabs>
