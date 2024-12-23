@@ -31,8 +31,8 @@ export const PropertyCard = ({
   has_live,
   live_date,
   viewers = 0,
-  is_live_now: isLiveNow,
-  remaining_seats: remainingSeats = 15,
+  is_live_now,
+  remaining_seats = 15,
   isUserRegistered = false,
   offers = 0,
   agent_id,
@@ -67,13 +67,13 @@ export const PropertyCard = ({
           id={id}
           title={title}
           image={images?.[0] || ''}
-          hasLive={has_live}
-          liveDate={live_date}
+          has_live={has_live}
+          live_date={live_date}
           viewers={viewers}
           currentUrl={currentUrl}
-          isLiveNow={isLiveNow}
+          isLiveNow={is_live_now}
           isUserRegistered={isUserRegistered}
-          remainingSeats={remainingSeats}
+          remainingSeats={remaining_seats}
           offers={offers}
           virtualTour={virtual_tour}
           tags={tags}
@@ -89,11 +89,11 @@ export const PropertyCard = ({
           type={type}
           surface={surface}
           rooms={rooms}
-          hasLive={has_live}
-          liveDate={live_date}
+          has_live={has_live}
+          live_date={live_date}
           onJoinLive={handleJoinLive}
-          isLiveNow={isLiveNow}
-          remainingSeats={remainingSeats}
+          is_live_now={is_live_now}
+          remaining_seats={remaining_seats}
           isUserRegistered={isUserRegistered}
         />
         
