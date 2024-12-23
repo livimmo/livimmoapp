@@ -1,14 +1,9 @@
+import { useState } from "react";
 import { PropertyList } from "@/components/properties/PropertyList";
 import { type Property } from "@/types/property";
 import { useIsMobile } from "@/hooks/use-mobile";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { PropertyCard } from "../PropertyCard";
+import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
+import { PropertyMapView } from "@/components/map/PropertyMapView";
 
 interface SearchSectionProps {
   filteredProperties: Property[];
@@ -20,6 +15,7 @@ export const SearchSection = ({
   defaultProperties 
 }: SearchSectionProps) => {
   const isMobile = useIsMobile();
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
   
   const displayProperties = filteredProperties.length > 0 
     ? filteredProperties 
@@ -34,32 +30,16 @@ export const SearchSection = ({
             : "Tous nos biens"
           }
         </h2>
+        <PropertyViewToggle view={viewMode} onViewChange={setViewMode} />
       </div>
       
-      <div className="relative">
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-            skipSnaps: false,
-            slidesToScroll: isMobile ? 1 : 3,
-          }}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-2 md:-ml-4">
-            {displayProperties.map((property) => (
-              <CarouselItem 
-                key={property.id} 
-                className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
-              >
-                <PropertyCard {...property} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="hidden md:flex -left-12" />
-          <CarouselNext className="hidden md:flex -right-12" />
-        </Carousel>
-      </div>
+      {viewMode === "list" ? (
+        <PropertyList properties={displayProperties} />
+      ) : (
+        <div className="h-[600px] rounded-lg overflow-hidden">
+          <PropertyMapView properties={displayProperties} />
+        </div>
+      )}
     </section>
   );
 };
