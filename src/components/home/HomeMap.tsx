@@ -72,11 +72,7 @@ export const HomeMap = ({ properties }: HomeMapProps) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Map Section */}
         <div className="w-full h-[500px] rounded-lg overflow-hidden shadow-lg">
-          <GoogleMapContainer
-            properties={properties}
-            selectedLive={selectedLive}
-            onMarkerClick={handleMarkerClick}
-          />
+          <GoogleMapContainer properties={properties} />
         </div>
 
         {/* Live Slider Section */}

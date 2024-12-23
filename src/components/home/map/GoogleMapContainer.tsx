@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
-import { type Property } from "@/types/property";
-import { PropertyCard } from '../PropertyCard';
-import { ScrollArea } from '../ui/scroll-area';
-import { Badge } from '../ui/badge';
+import { PropertyCard } from '@/components/PropertyCard';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
 import { Clock } from 'lucide-react';
-import { Skeleton } from '../ui/skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
+import { type Property } from '@/types/property';
 
 interface GoogleMapContainerProps {
   properties: Property[];
@@ -24,8 +24,8 @@ export function GoogleMapContainer({ properties }: GoogleMapContainerProps) {
   
   const center = properties.length > 0
     ? {
-        lat: properties.reduce((sum, p) => sum + p.coordinates.lat, 0) / properties.length,
-        lng: properties.reduce((sum, p) => sum + p.coordinates.lng, 0) / properties.length,
+        lat: properties.reduce((sum, p) => sum + (p.coordinates?.lat || 0), 0) / properties.length,
+        lng: properties.reduce((sum, p) => sum + (p.coordinates?.lng || 0), 0) / properties.length,
       }
     : defaultCenter;
 
@@ -70,8 +70,8 @@ export function GoogleMapContainer({ properties }: GoogleMapContainerProps) {
               <Marker
                 key={property.id}
                 position={{
-                  lat: property.coordinates.lat,
-                  lng: property.coordinates.lng
+                  lat: property.coordinates?.lat || defaultCenter.lat,
+                  lng: property.coordinates?.lng || defaultCenter.lng
                 }}
                 onClick={() => handlePropertyClick(property)}
               />
@@ -80,15 +80,15 @@ export function GoogleMapContainer({ properties }: GoogleMapContainerProps) {
             {selectedProperty && (
               <InfoWindow
                 position={{
-                  lat: selectedProperty.coordinates.lat,
-                  lng: selectedProperty.coordinates.lng
+                  lat: selectedProperty.coordinates?.lat || defaultCenter.lat,
+                  lng: selectedProperty.coordinates?.lng || defaultCenter.lng
                 }}
                 onCloseClick={() => setSelectedProperty(null)}
               >
                 <div className="p-2 max-w-[300px]">
                   <div className="relative mb-2">
                     <img 
-                      src={selectedProperty.images[0]} 
+                      src={selectedProperty.images?.[0]} 
                       alt={selectedProperty.title}
                       className="w-full h-[150px] object-cover rounded-lg"
                     />
