@@ -4,11 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { User, Mail, Phone } from "lucide-react";
+import { User, Mail, Phone, Calendar } from "lucide-react";
 import { TermsDialog } from "./TermsDialog";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { Textarea } from "@/components/ui/textarea";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface ReservationFormProps {
   live: {
@@ -25,6 +30,9 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   const [showTerms, setShowTerms] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [selectedTime, setSelectedTime] = useState("");
+  const [comment, setComment] = useState("");
   const [formData, setFormData] = useState({
     name: user ? `${user.firstName} ${user.lastName}` : "",
     email: user?.email || "",
@@ -75,6 +83,15 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
       return;
     }
 
+    if (!selectedDate || !selectedTime) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez sélectionner une date et une heure pour la visite.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -82,8 +99,8 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       toast({
-        title: "Inscription confirmée !",
-        description: `Votre place pour "${live.title}" a été réservée. Vous recevrez un email de confirmation.`,
+        title: "Visite confirmée !",
+        description: `Votre visite virtuelle pour "${live.title}" a été réservée pour le ${format(selectedDate, 'dd MMMM yyyy', { locale: fr })} à ${selectedTime}. Vous recevrez un email de confirmation.`,
       });
 
       if (onClose) {
@@ -92,7 +109,7 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
     } catch (error) {
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'inscription. Veuillez réessayer.",
+        description: "Une erreur est survenue lors de la réservation. Veuillez réessayer.",
         variant: "destructive",
       });
     } finally {
@@ -105,7 +122,7 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
       <Dialog open onOpenChange={onClose}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Réserver votre place pour le live</DialogTitle>
+            <DialogTitle>Réserver votre visite virtuelle</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
@@ -155,11 +172,56 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
                 </div>
               </div>
 
-              {live.availableSeats && live.availableSeats > 0 && (
-                <p className="text-sm text-muted-foreground">
-                  {live.availableSeats} places disponibles
-                </p>
-              )}
+              <div className="space-y-2">
+                <Label>Date de la visite *</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-left font-normal"
+                    >
+                      <Calendar className="mr-2 h-4 w-4" />
+                      {selectedDate ? (
+                        format(selectedDate, 'dd MMMM yyyy', { locale: fr })
+                      ) : (
+                        <span>Sélectionner une date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <CalendarComponent
+                      mode="single"
+                      selected={selectedDate}
+                      onSelect={setSelectedDate}
+                      disabled={(date) => date < new Date()}
+                      initialFocus
+                      locale={fr}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="time">Heure de la visite *</Label>
+                <Input
+                  id="time"
+                  type="time"
+                  value={selectedTime}
+                  onChange={(e) => setSelectedTime(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="comment">Commentaire (optionnel)</Label>
+                <Textarea
+                  id="comment"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Ajoutez des informations supplémentaires pour votre visite..."
+                  className="min-h-[100px]"
+                />
+              </div>
 
               <div className="flex items-start space-x-2">
                 <Checkbox
@@ -173,7 +235,7 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
                   htmlFor="terms" 
                   className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  En m'inscrivant, j'accepte de recevoir des rappels pour ce live et j'accepte les{" "}
+                  En réservant cette visite, j'accepte les{" "}
                   <button
                     type="button"
                     onClick={() => setShowTerms(true)}
@@ -190,7 +252,7 @@ export const ReservationForm = ({ live, onClose }: ReservationFormProps) => {
               className="w-full" 
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Inscription en cours..." : "Confirmer mon inscription"}
+              {isSubmitting ? "Réservation en cours..." : "Confirmer ma réservation"}
             </Button>
           </form>
         </DialogContent>
