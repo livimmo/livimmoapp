@@ -10,11 +10,11 @@ interface PropertyInfoProps {
   type: string;
   surface: number;
   rooms: number;
-  hasLive?: boolean;
-  liveDate?: string | null;
+  has_live?: boolean;
+  live_date?: string | null;
   onJoinLive?: () => void;
-  isLiveNow?: boolean;
-  remainingSeats?: number;
+  is_live_now?: boolean;
+  remaining_seats?: number;
   isUserRegistered?: boolean;
 }
 
@@ -26,11 +26,11 @@ export const PropertyInfo = ({
   type,
   surface,
   rooms,
-  hasLive,
-  liveDate,
+  has_live,
+  live_date,
   onJoinLive,
-  isLiveNow,
-  remainingSeats,
+  is_live_now,
+  remaining_seats,
   isUserRegistered,
 }: PropertyInfoProps) => {
   return (
@@ -53,14 +53,14 @@ export const PropertyInfo = ({
       </div>
       <div className="grid grid-cols-2 gap-2">
         <OfferDialog title={title} price={price} />
-        {hasLive && onJoinLive && (
+        {has_live && onJoinLive && (
           <LiveButton
             id={id}
             title={title}
-            liveDate={liveDate}
+            liveDate={live_date}
             onJoinLive={onJoinLive}
-            isLiveNow={isLiveNow}
-            remainingSeats={remainingSeats}
+            isLiveNow={is_live_now}
+            remainingSeats={remaining_seats}
             isUserRegistered={isUserRegistered}
           />
         )}

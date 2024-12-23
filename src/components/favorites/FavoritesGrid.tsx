@@ -1,8 +1,8 @@
 import { PropertyCard } from "@/components/PropertyCard";
-import { type Property } from "@/types/property";
+import { type PropertyWithAgent } from "@/types/property";
 
 interface FavoritesGridProps {
-  properties: Property[];
+  properties: PropertyWithAgent[];
 }
 
 export const FavoritesGrid = ({ properties }: FavoritesGridProps) => {

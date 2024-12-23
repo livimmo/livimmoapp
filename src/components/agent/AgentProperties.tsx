@@ -1,8 +1,8 @@
 import { PropertyCard } from "@/components/PropertyCard";
-import { Property } from "@/types/property";
+import { type PropertyWithAgent } from "@/types/property";
 
 interface AgentPropertiesProps {
-  properties: Property[];
+  properties: PropertyWithAgent[];
 }
 
 export const AgentProperties = ({ properties }: AgentPropertiesProps) => {

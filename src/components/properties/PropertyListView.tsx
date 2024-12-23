@@ -1,9 +1,9 @@
-import { Property } from "@/types/property";
+import { type PropertyWithAgent } from "@/types/property";
 import { PropertyCard } from "@/components/PropertyCard";
 
 interface PropertyListViewProps {
-  properties: Property[];
-  onPropertyClick?: (property: Property) => void;
+  properties: PropertyWithAgent[];
+  onPropertyClick?: (property: PropertyWithAgent) => void;
 }
 
 export const PropertyListView = ({ properties, onPropertyClick }: PropertyListViewProps) => {

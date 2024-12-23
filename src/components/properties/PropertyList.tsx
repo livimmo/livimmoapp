@@ -1,9 +1,9 @@
 import { PropertyCard } from "@/components/PropertyCard";
-import { type Property } from "@/types/property";
+import { type PropertyWithAgent } from "@/types/property";
 import { cn } from "@/lib/utils";
 
 interface PropertyListProps {
-  properties: Property[];
+  properties: PropertyWithAgent[];
   viewMode?: "grid" | "list";
   className?: string;
 }
