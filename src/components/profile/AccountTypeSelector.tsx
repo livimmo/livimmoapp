@@ -1,5 +1,6 @@
 import { type AccountType } from "@/types/user";
-import { RadioGroup } from "@/components/ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 interface AccountTypeSelectorProps {
   value: AccountType;
@@ -18,35 +19,43 @@ export const AccountTypeSelector = ({
         onValueChange={onChange}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
       >
-        <RadioGroup.Item value="user" className="flex items-center">
-          <RadioGroup.Indicator className="h-4 w-4 border rounded-full" />
-          <span className="ml-2">Utilisateur</span>
-        </RadioGroup.Item>
-        <RadioGroup.Item value="agent" className="flex items-center">
-          <RadioGroup.Indicator className="h-4 w-4 border rounded-full" />
-          <span className="ml-2">Agent</span>
-        </RadioGroup.Item>
-        <RadioGroup.Item value="promoter" className="flex items-center">
-          <RadioGroup.Indicator className="h-4 w-4 border rounded-full" />
-          <span className="ml-2">Promoteur</span>
-        </RadioGroup.Item>
-        <RadioGroup.Item value="developer" className="flex items-center">
-          <RadioGroup.Indicator className="h-4 w-4 border rounded-full" />
-          <span className="ml-2">Développeur</span>
-        </RadioGroup.Item>
-        <RadioGroup.Item value="owner" className="flex items-center">
-          <RadioGroup.Indicator className="h-4 w-4 border rounded-full" />
-          <span className="ml-2">Propriétaire</span>
-        </RadioGroup.Item>
-        <RadioGroup.Item value="admin" className="flex items-center">
-          <RadioGroup.Indicator className="h-4 w-4 border rounded-full" />
-          <span className="ml-2">Administrateur</span>
-        </RadioGroup.Item>
-        <RadioGroup.Item value="tenant" className="flex items-center">
-          <RadioGroup.Indicator className="h-4 w-4 border rounded-full" />
-          <span className="ml-2">Locataire</span>
-        </RadioGroup.Item>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="user" id="user" />
+          <Label htmlFor="user">Utilisateur</Label>
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="agent" id="agent" />
+          <Label htmlFor="agent">Agent</Label>
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="promoter" id="promoter" />
+          <Label htmlFor="promoter">Promoteur</Label>
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="developer" id="developer" />
+          <Label htmlFor="developer">Développeur</Label>
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="owner" id="owner" />
+          <Label htmlFor="owner">Propriétaire</Label>
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="admin" id="admin" />
+          <Label htmlFor="admin">Administrateur</Label>
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="tenant" id="tenant" />
+          <Label htmlFor="tenant">Locataire</Label>
+        </div>
       </RadioGroup>
     </div>
   );
 };
+
+export type { AccountType };
