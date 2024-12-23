@@ -45,7 +45,7 @@ export const mockAgents: Agent[] = [
     specialties: ["Résidentiel", "Commercial", "Projets Neufs"],
     verified: true,
     contact: {
-      phone: "+212 6 23 45 67 89",
+      phone: "+212662122992",
       email: "h.berrada@lamap.ma",
       social: {
         linkedin: "https://linkedin.com/in/hicham-berrada",
