@@ -10,9 +10,17 @@ export interface PropertyCardProps {
 export const PropertyCard = ({ property }: PropertyCardProps) => {
   const navigate = useNavigate();
 
+  if (!property) {
+    return null;
+  }
+
   return (
     <div className="border rounded-lg overflow-hidden shadow-md">
-      <img src={property.images[0]} alt={property.title} className="w-full h-48 object-cover" />
+      <img 
+        src={property.images[0]} 
+        alt={property.title} 
+        className="w-full h-48 object-cover" 
+      />
       <div className="p-4">
         <h3 className="text-lg font-semibold">{property.title}</h3>
         <p className="text-gray-500">{property.location}</p>
@@ -23,7 +31,10 @@ export const PropertyCard = ({ property }: PropertyCardProps) => {
           ))}
         </div>
         <div className="mt-4">
-          <Button onClick={() => navigate(`/property/${property.id}`)} className="w-full">
+          <Button 
+            onClick={() => navigate(`/property/${property.id}`)} 
+            className="w-full"
+          >
             Voir les détails
           </Button>
         </div>

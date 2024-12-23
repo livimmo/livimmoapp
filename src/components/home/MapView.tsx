@@ -49,7 +49,7 @@ export const MapView = ({ properties }: MapViewProps) => {
             onCloseClick={() => setSelectedProperty(null)}
           >
             <div className="w-[280px]">
-              <PropertyCard {...selectedProperty} />
+              <PropertyCard property={selectedProperty} />
             </div>
           </InfoWindow>
         )}
