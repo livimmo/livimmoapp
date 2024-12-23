@@ -1,4 +1,4 @@
-import { Home, Search, Video, Heart, User, Building2 } from "lucide-react";
+import { Home, Search, Video, Heart, User, Book } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
@@ -25,7 +25,7 @@ export const BottomNav = () => {
       path: "/lives",
       badge: activeLivesCount > 0 ? activeLivesCount : undefined 
     },
-    { icon: Building2, label: "Promoteurs", path: "/developers" },
+    { icon: Book, label: "Annuaire", path: "/directory" },
     { 
       icon: Heart, 
       label: "Favoris", 
@@ -33,7 +33,7 @@ export const BottomNav = () => {
       badge: isAuthenticated && favoritesCount > 0 ? favoritesCount : undefined
     },
     ...(isAgent ? [{ 
-      icon: Building2, 
+      icon: Book, 
       label: "Mes Biens", 
       path: "/my-properties" 
     }] : []),

@@ -1,4 +1,4 @@
-import { Bell, User } from "lucide-react";
+import { Bell, User, Book } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -35,6 +35,22 @@ export const UserButtons = () => {
         </TooltipProvider>
       )}
       <SupportButton />
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => navigate('/directory')}
+            >
+              <Book className="h-4 w-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Annuaire Promoteurs & Agents</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <Button 
         variant="ghost" 
         size="sm"

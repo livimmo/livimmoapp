@@ -16,9 +16,8 @@ import PropertyDetail from "./pages/PropertyDetail";
 import JoinLive from "./pages/JoinLive";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import Developers from "./pages/Developers";
+import Directory from "./pages/Directory";
 import DeveloperDetail from "./pages/DeveloperDetail";
-import Agents from "./pages/Agents";
 import AgentDetail from "./pages/AgentDetail";
 import PropertyManagement from "./pages/PropertyManagement";
 import OwnerDashboard from "./pages/OwnerDashboard";
@@ -42,9 +41,8 @@ function App() {
               <Route path="/live/:id" element={<JoinLive />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/developers" element={<Developers />} />
+              <Route path="/directory" element={<Directory />} />
               <Route path="/developer/:id" element={<DeveloperDetail />} />
-              <Route path="/agents" element={<Agents />} />
               <Route path="/agent/:id" element={<AgentDetail />} />
               <Route path="/my-properties" element={<PropertyManagement />} />
               <Route path="/owner-dashboard" element={<OwnerDashboard />} />
