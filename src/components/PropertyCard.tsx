@@ -10,14 +10,14 @@ import { getRandomTags } from "@/utils/propertyTags";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { VirtualTourViewer360 } from "@/components/virtual-tour/VirtualTourViewer360";
 
-type PropertyCardProps = PropertyWithAgent & {
+interface PropertyCardProps extends PropertyWithAgent {
   viewers?: number;
   isLiveNow?: boolean;
   remainingSeats?: number;
   isUserRegistered?: boolean;
   offers?: number;
   className?: string;
-};
+}
 
 export const PropertyCard = ({
   id,
