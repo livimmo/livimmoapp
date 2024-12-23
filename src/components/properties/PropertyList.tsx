@@ -13,6 +13,11 @@ export const PropertyList = ({
   viewMode = "grid",
   className
 }: PropertyListProps) => {
+  // Filter out properties with "en_cours" status
+  const visibleProperties = properties.filter(
+    property => property.status !== "en_cours"
+  );
+
   return (
     <div className={cn(
       viewMode === "grid" 
@@ -20,7 +25,7 @@ export const PropertyList = ({
         : "space-y-4",
       className
     )}>
-      {properties.map((property) => (
+      {visibleProperties.map((property) => (
         <PropertyCard 
           key={property.id} 
           {...property} 

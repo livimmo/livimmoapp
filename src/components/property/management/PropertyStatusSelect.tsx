@@ -5,28 +5,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-type PropertyStatus = "available" | "pending" | "sold" | "rented";
+import { type PropertyStatus } from "@/types/property";
 
 interface PropertyStatusSelectProps {
-  value: PropertyStatus;
-  onValueChange: (value: PropertyStatus) => void;
+  status: PropertyStatus;
+  onStatusChange: (status: PropertyStatus) => void;
 }
 
 export const PropertyStatusSelect = ({
-  value,
-  onValueChange,
+  status,
+  onStatusChange,
 }: PropertyStatusSelectProps) => {
   return (
-    <Select value={value} onValueChange={onValueChange}>
+    <Select value={status} onValueChange={onStatusChange}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue />
+        <SelectValue placeholder="Sélectionner un statut" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="available">Disponible</SelectItem>
-        <SelectItem value="pending">En cours</SelectItem>
+        <SelectItem value="pending">Sous offre</SelectItem>
         <SelectItem value="sold">Vendu</SelectItem>
         <SelectItem value="rented">Loué</SelectItem>
+        <SelectItem value="en_cours">En cours</SelectItem>
       </SelectContent>
     </Select>
   );

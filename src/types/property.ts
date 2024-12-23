@@ -1,6 +1,6 @@
 import { Agent } from "./agent";
 
-export type PropertyStatus = "available" | "pending" | "sold" | "rented";
+export type PropertyStatus = "available" | "pending" | "sold" | "rented" | "en_cours";
 export type TransactionType = "Vente" | "Location";
 
 export interface Property {
