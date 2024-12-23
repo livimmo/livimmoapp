@@ -1,4 +1,5 @@
 import { type Profile } from "@/types/database/profile";
+import { Json } from "@/integrations/supabase/types";
 
 export interface Property {
   id: string;
@@ -18,7 +19,7 @@ export interface Property {
   live_date: string | null;
   is_live_now: boolean;
   remaining_seats: number | null;
-  viewers: number;
+  viewers: number | null;
   coordinates: {
     lat: number;
     lng: number;
@@ -44,16 +45,4 @@ export interface Property {
 
 export interface PropertyWithAgent extends Property {
   agent: Profile;
-}
-
-export interface AuthContextType {
-  user: any | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>;
-  switchRole: (role: string) => Promise<void>;
 }

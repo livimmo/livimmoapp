@@ -1,12 +1,12 @@
-import { type Profile } from "./database/profile";
 import { type Property } from "./property";
+import { type Profile } from "./database/profile";
 
 export interface Visit {
   id: string;
-  property_id: string;
-  visitor_id: string;
+  property_id: string | null;
+  visitor_id: string | null;
   type: string | null;
-  date: string;
+  date: string | null;
   time: string | null;
   status: string | null;
   notes: string | null;

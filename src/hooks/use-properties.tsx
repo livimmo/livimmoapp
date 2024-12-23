@@ -14,7 +14,7 @@ export const useProperties = () => {
         `);
 
       if (error) throw error;
-      return data as PropertyWithAgent[];
+      return data as unknown as PropertyWithAgent[];
     },
   });
 
