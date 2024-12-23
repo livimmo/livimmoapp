@@ -43,12 +43,13 @@ export const PropertyFilters = ({
 
   return (
     <div className="space-y-4 mb-6 w-full max-w-7xl mx-auto px-4">
-      <div className="flex gap-2 w-full">
-        <SmartSearchBar
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          suggestions={suggestions}
-        />
+      <SmartSearchBar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        suggestions={suggestions}
+      />
+      
+      <div className="flex items-center justify-between w-full">
         <Button
           variant="outline"
           size="icon"
