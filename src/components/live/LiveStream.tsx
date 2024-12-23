@@ -16,7 +16,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
 const mockProperty = {
-  id: 1,
+  id: "1",
   title: "Villa Moderne avec Piscine",
   price: 2500000,
   location: "Marrakech",
@@ -28,12 +28,16 @@ const mockProperty = {
   features: ["Piscine", "Jardin", "Garage"],
   images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9"],
   hasLive: true,
-  liveDate: new Date(),  // Keep as Date object
+  liveDate: new Date(),
   agent: {
+    id: "1",
     name: "Karim Benjelloun",
+    avatar: "https://i.pravatar.cc/150?u=karim",
     image: "https://i.pravatar.cc/150?u=karim",
     phone: "+212 6 00 11 22 33",
     email: "karim.benjelloun@example.com",
+    location: "Marrakech",
+    type: "agent"
   },
   coordinates: {
     lat: 31.7917,
@@ -90,7 +94,6 @@ export const LiveStream = ({
     return null;
   }
 
-  // Convert dates to proper format for components
   const processedLives = liveStreams.map(live => ({
     ...live,
     date: new Date(live.date instanceof Date ? live.date : new Date(live.date))
@@ -114,7 +117,7 @@ export const LiveStream = ({
       <div className="flex-1 flex flex-col relative">
         <div className={cn(
           "flex-1 relative z-[1] group",
-          isMobile ? "p-0" : "p-4 pb-20"
+          isMobile ? "p-0" : "p-4 pb-24"
         )}>
           <div className={cn(
             "relative w-full h-full overflow-hidden",
@@ -127,7 +130,7 @@ export const LiveStream = ({
           </div>
         </div>
 
-        <div className="absolute bottom-[64px] left-0 right-0 z-[51]">
+        <div className="absolute bottom-[84px] left-0 right-0 z-[51]">
           {isReplay ? (
             <ReplayCarousel
               replays={processedLives}
@@ -143,7 +146,10 @@ export const LiveStream = ({
           )}
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 z-[52]">
+        <div className={cn(
+          "absolute bottom-0 left-0 right-0 z-[52]",
+          "bg-gradient-to-t from-black/80 to-transparent pt-8"
+        )}>
           <LiveInfo 
             property={mockProperty}
             onMakeOffer={() => {}}
