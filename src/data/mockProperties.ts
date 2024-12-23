@@ -1,129 +1,161 @@
-import { type Property } from "@/types/database";
+import { type PropertyWithAgent } from "@/types/database";
 import { addDays } from "date-fns";
 
 const cities = [
-  { city: "Casablanca", districts: ["Ain Diab", "Gauthier", "Maarif", "Anfa", "Bourgogne"] },
-  { city: "Marrakech", districts: ["Guéliz", "Hivernage", "Palmeraie", "Médina"] },
-  { city: "Tanger", districts: ["Malabata", "Centre-ville", "Boukhalef", "Cap Spartel"] },
-  { city: "Rabat", districts: ["Agdal", "Hassan", "Hay Riad", "Les Orangers"] }
+  { name: "Marrakech", lat: 31.6295, lng: -7.9811 },
+  { name: "Casablanca", lat: 33.5731, lng: -7.5898 },
+  { name: "Rabat", lat: 34.0209, lng: -6.8416 },
+  { name: "Tanger", lat: 35.7595, lng: -5.8340 },
+  { name: "Agadir", lat: 30.4278, lng: -9.5981 },
+  { name: "Fès", lat: 34.0181, lng: -5.0078 },
 ];
 
-const propertyTypes = [
-  { 
-    type: "Usine", 
-    features: ["Zone industrielle", "Quai de chargement", "Bureaux intégrés", "Parking"]
+const images = [
+  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+  "https://images.unsplash.com/photo-1613977257363-707ba9348227",
+  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+  "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
+];
+
+export const mockProperties: PropertyWithAgent[] = [
+  {
+    id: "1",
+    title: "Villa Moderne avec Piscine",
+    price: 2500000,
+    location: "Marrakech",
+    type: "Villa",
+    surface: 350,
+    rooms: 5,
+    bathrooms: 3,
+    description: "Magnifique villa moderne avec piscine et jardin paysager",
+    features: ["Piscine", "Jardin", "Garage"],
+    images: [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+    ],
+    has_live: true,
+    is_replay: false,
+    has_scheduled_live: true,
+    live_date: addDays(new Date(), 7).toISOString(),
+    is_live_now: false,
+    remaining_seats: 15,
+    viewers: 0,
+    coordinates: {
+      lat: 31.6295,
+      lng: -7.9811
+    },
+    transaction_type: "Vente",
+    virtual_tour: {
+      enabled: true,
+      url: "TzhRashYdRt",
+      platform: "matterport",
+      type: "360"
+    },
+    private_notes: null,
+    agent_id: "1",
+    status: "available",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    tags: ["Luxe", "Piscine", "Jardin"],
+    agent: {
+      id: "1",
+      full_name: "Sarah Martin",
+      avatar_url: "https://i.pravatar.cc/150?u=sarah",
+      phone: "+212 6 12 34 56 78",
+      company: "Luxury Real Estate",
+      role: "agent",
+      verified: true,
+      rating: 4.8,
+      specialties: ["Luxury", "Villas"],
+      description: "Luxury real estate specialist",
+      location: "Marrakech",
+      social_links: {
+        facebook: "https://facebook.com/sarahmartin",
+        instagram: "https://instagram.com/sarahmartin"
+      },
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    }
   },
-  { 
-    type: "Penthouse", 
-    features: ["Vue panoramique", "Terrasse privée", "Ascenseur privé", "Domotique"]
-  },
-  { 
-    type: "Terrain", 
-    features: ["Constructible", "Viabilisé", "Vue dégagée", "Accès facile"]
-  },
-  { 
-    type: "Hôtel", 
-    features: ["Piscine", "Restaurant", "Spa", "Salle de conférence"]
-  },
-  { 
-    type: "Villa", 
-    features: ["Jardin", "Piscine", "Garage", "Sécurité"]
-  },
-  { 
-    type: "Appartement", 
-    features: ["Ascenseur", "Parking", "Gardiennage", "Cave"]
+  {
+    id: "2",
+    title: "Appartement Vue Mer",
+    price: 1800000,
+    location: "Tanger",
+    type: "Appartement",
+    surface: 120,
+    rooms: 3,
+    bathrooms: 2,
+    description: "Superbe appartement avec vue panoramique sur la mer",
+    features: ["Vue mer", "Terrasse", "Parking"],
+    images: [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
+    ],
+    has_live: false,
+    is_replay: false,
+    has_scheduled_live: false,
+    live_date: null,
+    is_live_now: false,
+    remaining_seats: null,
+    viewers: 0,
+    coordinates: {
+      lat: 35.7595,
+      lng: -5.8340
+    },
+    transaction_type: "Location",
+    virtual_tour: {
+      enabled: true,
+      url: "SxQL3iGyvQk",
+      platform: "matterport",
+      type: "360"
+    },
+    private_notes: null,
+    agent_id: "2",
+    status: "available",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    tags: ["Vue Mer", "Moderne"],
+    agent: {
+      id: "2",
+      full_name: "Mohammed Alami",
+      avatar_url: "https://i.pravatar.cc/150?u=mohammed",
+      phone: "+212 6 23 45 67 89",
+      company: "Coastal Properties",
+      role: "agent",
+      verified: true,
+      rating: 4.6,
+      specialties: ["Appartements", "Vue Mer"],
+      description: "Spécialiste de l'immobilier côtier",
+      location: "Tanger",
+      social_links: {
+        facebook: "https://facebook.com/mohammedalami",
+        instagram: "https://instagram.com/mohammedalami"
+      },
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    }
   }
 ];
 
-const propertyImages = [
-  "https://images.unsplash.com/photo-1487958449943-2429e8be8625",
-  "https://images.unsplash.com/photo-1524230572899-a752b3835840",
-  "https://images.unsplash.com/photo-1431576901776-e539bd916ba2",
-  "https://images.unsplash.com/photo-1496307653780-42ee777d4833",
-  "https://images.unsplash.com/photo-1433832597046-4f10e10ac764",
-  "https://images.unsplash.com/photo-1493397212122-2b85dda8106b"
-];
-
-const generateRandomPrice = (min: number, max: number) => {
-  return Math.floor(Math.random() * (max - min + 1) + min) * 1000;
-};
-
-const generateRandomSurface = (min: number, max: number) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
-export const generateMockCoordinates = (location: string) => {
-  const defaultCoords = {
-    lat: 33.5731104,
-    lng: -7.6425486
-  };
-
-  const cityCoords: Record<string, { lat: number; lng: number }> = {
-    "Casablanca": { lat: 33.5731104, lng: -7.6425486 },
-    "Marrakech": { lat: 31.6294723, lng: -7.9810845 },
-    "Rabat": { lat: 34.0209, lng: -6.8416 },
-    "Tanger": { lat: 35.7595, lng: -5.8340 }
-  };
-
-  return cityCoords[location.split(',')[0]] || defaultCoords;
-};
-
-const generateUUID = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    const r = Math.random() * 16 | 0;
-    const v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-};
-
-export const mockProperties: Property[] = Array.from({ length: 20 }, () => {
-  const randomCity = cities[Math.floor(Math.random() * cities.length)];
-  const randomDistrict = randomCity.districts[Math.floor(Math.random() * randomCity.districts.length)];
-  const randomPropertyType = propertyTypes[Math.floor(Math.random() * propertyTypes.length)];
-  const has_live = Math.random() > 0.5;
-  const is_live_now = has_live && Math.random() > 0.5;
-  const live_date = has_live && !is_live_now ? addDays(new Date(), Math.floor(Math.random() * 14) + 1).toISOString() : null;
-
-  return {
-    id: generateUUID(),
-    title: `${randomPropertyType.type} ${randomCity.city} - ${randomDistrict}`,
-    price: Math.floor(Math.random() * 9500000) + 500000,
-    location: `${randomCity.city}, ${randomDistrict}`,
-    type: randomPropertyType.type,
-    surface: Math.floor(Math.random() * 950) + 50,
-    rooms: Math.floor(Math.random() * 10) + 1,
-    bathrooms: Math.floor(Math.random() * 5) + 1,
-    description: `Magnifique ${randomPropertyType.type.toLowerCase()} situé dans le quartier prisé de ${randomDistrict}, ${randomCity.city}.`,
-    features: randomPropertyType.features,
-    images: [propertyImages[Math.floor(Math.random() * propertyImages.length)]],
-    coordinates: generateMockCoordinates(randomCity.city),
-    has_live,
-    is_replay: false,
-    has_scheduled_live: has_live && !is_live_now,
-    live_date,
-    is_live_now,
-    remaining_seats: !is_live_now && has_live ? Math.floor(Math.random() * 20) + 5 : null,
-    viewers: is_live_now ? Math.floor(Math.random() * 100) : 0,
-    transaction_type: Math.random() > 0.3 ? "Vente" : "Location",
-    virtual_tour: Math.random() > 0.7 ? {
-      enabled: true,
-      type: "360",
-      url: "TzhRashYdRt"
-    } : null,
-    private_notes: null,
-    agent_id: generateUUID(),
-    status: Math.random() > 0.5 ? "available" : "pending",
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    tags: []
-  };
-});
-
-export const mockProperty: Property = mockProperties[0];
-
-export const addCoordinatesToProperties = (properties: Omit<Property, 'coordinates'>[]): Property[] => {
+export const addCoordinatesToProperties = (properties: Omit<PropertyWithAgent, "coordinates">[]) => {
   return properties.map(property => ({
     ...property,
     coordinates: generateMockCoordinates(property.location)
   }));
+};
+
+export const generateMockCoordinates = (location: string) => {
+  const city = cities.find(city => location.includes(city.name));
+  if (city) {
+    return {
+      lat: city.lat + (Math.random() - 0.5) * 0.1,
+      lng: city.lng + (Math.random() - 0.5) * 0.1
+    };
+  }
+  return {
+    lat: 31.7917,
+    lng: -7.0926
+  };
 };

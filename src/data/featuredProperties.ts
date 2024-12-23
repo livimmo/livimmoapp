@@ -1,8 +1,8 @@
-import { Property } from "@/types/property";
+import { type PropertyWithAgent } from "@/types/database";
 
-export const featuredProperties: Property[] = [
+export const featuredProperties: PropertyWithAgent[] = [
   {
-    id: 1,
+    id: "1",
     title: "Villa Moderne avec Piscine",
     price: 2500000,
     location: "Marrakech",
@@ -17,70 +17,52 @@ export const featuredProperties: Property[] = [
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
       "https://images.unsplash.com/photo-1613977257363-707ba9348227",
     ],
-    hasLive: true,
-    liveDate: new Date("2024-03-15"),
-    agent: {
-      id: 1,
-      name: "Karim Benjelloun",
-      image: "https://i.pravatar.cc/150?u=karim",
-      phone: "+212 6 00 11 22 33",
-      email: "karim.benjelloun@example.com",
-    },
+    has_live: true,
+    is_replay: false,
+    has_scheduled_live: true,
+    live_date: new Date("2024-03-15").toISOString(),
+    is_live_now: false,
+    remaining_seats: 15,
+    viewers: 0,
     coordinates: {
       lat: 31.6295,
       lng: -7.9811
     },
-    transactionType: "Vente",
-    virtualTour: {
+    transaction_type: "Vente",
+    virtual_tour: {
       enabled: true,
       url: "TzhRashYdRt",
-      platform: 'matterport',
-      type: "360",
-      hotspots: [
-        {
-          title: "Salon",
-          description: "Spacieux salon avec vue sur la piscine",
-          position: { x: 30, y: 40 },
-          details: [
-            { label: "Surface", value: "45m²" },
-            { label: "Exposition", value: "Sud" }
-          ]
-        }
-      ],
-      floorPlan: {
-        url: "https://example.com/floorplan.svg",
-        rooms: [
-          {
-            id: "salon",
-            name: "Salon",
-            area: 45,
-            coordinates: { x: 30, y: 40 }
-          },
-          {
-            id: "cuisine",
-            name: "Cuisine",
-            area: 20,
-            coordinates: { x: 60, y: 40 }
-          }
-        ]
+      platform: "matterport",
+      type: "360"
+    },
+    private_notes: null,
+    agent_id: "1",
+    status: "available",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    tags: ["Luxe", "Piscine", "Jardin"],
+    agent: {
+      id: "1",
+      full_name: "Karim Benjelloun",
+      avatar_url: "https://i.pravatar.cc/150?u=karim",
+      phone: "+212 6 00 11 22 33",
+      company: "Luxury Real Estate",
+      role: "agent",
+      verified: true,
+      rating: 4.9,
+      specialties: ["Luxury", "Villas"],
+      description: "Expert en immobilier de luxe",
+      location: "Marrakech",
+      social_links: {
+        facebook: "https://facebook.com/karimbenjelloun",
+        instagram: "https://instagram.com/karimbenjelloun"
       },
-      statistics: {
-        totalVisits: 245,
-        averageTime: "8:30",
-        popularRooms: [
-          { name: "Salon", visits: 180 },
-          { name: "Cuisine", visits: 150 },
-          { name: "Chambre principale", visits: 120 }
-        ],
-        lastVisits: [
-          { date: "2024-03-10", duration: "10:15" },
-          { date: "2024-03-09", duration: "7:45" }
-        ]
-      }
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     }
   },
   {
-    id: 2,
+    id: "2",
     title: "Appartement Vue Mer",
     price: 1800000,
     location: "Tanger",
@@ -95,63 +77,48 @@ export const featuredProperties: Property[] = [
       "https://images.unsplash.com/photo-1613977257363-707ba9348227",
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
     ],
-    hasLive: false,
-    agent: {
-      id: 2,
-      name: "Sophia Martinez",
-      image: "https://i.pravatar.cc/150?u=sophia",
-      phone: "+212 6 11 22 33 44",
-      email: "sophia.martinez@example.com",
-    },
+    has_live: false,
+    is_replay: false,
+    has_scheduled_live: false,
+    live_date: null,
+    is_live_now: false,
+    remaining_seats: null,
+    viewers: 0,
     coordinates: {
       lat: 35.7595,
       lng: -5.8340
     },
-    transactionType: "Location",
-    virtualTour: {
+    transaction_type: "Location",
+    virtual_tour: {
       enabled: true,
       url: "https://my.matterport.com/show/?m=SxQL3iGyvQk",
-      type: "360",
-      hotspots: [
-        {
-          title: "Chambre",
-          description: "Chambre spacieuse avec vue sur la mer",
-          position: { x: 50, y: 50 },
-          details: [
-            { label: "Surface", value: "30m²" },
-            { label: "Exposition", value: "Est" }
-          ]
-        }
-      ],
-      floorPlan: {
-        url: "https://example.com/floorplan2.svg",
-        rooms: [
-          {
-            id: "salon",
-            name: "Salon",
-            area: 35,
-            coordinates: { x: 30, y: 40 }
-          },
-          {
-            id: "chambre",
-            name: "Chambre principale",
-            area: 20,
-            coordinates: { x: 60, y: 40 }
-          }
-        ]
+      platform: "matterport",
+      type: "360"
+    },
+    private_notes: null,
+    agent_id: "2",
+    status: "available",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    tags: ["Vue Mer", "Terrasse", "Ascenseur"],
+    agent: {
+      id: "2",
+      full_name: "Sophia Martinez",
+      avatar_url: "https://i.pravatar.cc/150?u=sophia",
+      phone: "+212 6 11 22 33 44",
+      company: "Real Estate Group",
+      role: "agent",
+      verified: true,
+      rating: 4.7,
+      specialties: ["Appartements", "Locations"],
+      description: "Spécialiste des appartements en bord de mer",
+      location: "Tanger",
+      social_links: {
+        facebook: "https://facebook.com/sophiamartinez",
+        instagram: "https://instagram.com/sophiamartinez"
       },
-      statistics: {
-        totalVisits: 180,
-        averageTime: "6:45",
-        popularRooms: [
-          { name: "Salon", visits: 150 },
-          { name: "Chambre principale", visits: 120 }
-        ],
-        lastVisits: [
-          { date: "2024-03-10", duration: "7:15" },
-          { date: "2024-03-09", duration: "6:30" }
-        ]
-      }
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     }
   }
 ];

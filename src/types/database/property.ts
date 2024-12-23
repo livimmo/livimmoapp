@@ -39,3 +39,7 @@ export interface Property {
   updated_at: string;
   tags: string[] | null;
 }
+
+export interface PropertyWithAgent extends Property {
+  agent: Profile;
+}
