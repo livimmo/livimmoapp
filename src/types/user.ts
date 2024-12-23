@@ -1,10 +1,14 @@
-export type AccountType = "agent" | "promoter" | "developer" | "owner" | "buyer" | "admin" | "user";
+export type AccountType = "agent" | "promoter" | "developer" | "owner" | "buyer" | "tenant" | "admin" | "user";
+
+export type UserRole = AccountType;
 
 export interface User {
   id: string;
   email: string;
-  name: string;
-  role: AccountType;
+  firstName: string;
+  lastName: string;
+  role: UserRole;
+  accountType: AccountType;
   avatar?: string;
   phone?: string;
   location?: string;

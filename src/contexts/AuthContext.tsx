@@ -27,7 +27,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         firstName: 'John',
         lastName: 'Doe',
         role: role || 'buyer',
-        accountType: 'user',
+        accountType: role || 'buyer',
+        verified: true
       });
       
       toast({
@@ -53,7 +54,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         firstName,
         lastName,
         role,
-        accountType: 'user',
+        accountType: role,
+        verified: true
       });
       
       toast({
@@ -76,7 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser({ 
         ...user, 
         role: newRole,
-        accountType: newRole === 'buyer' || newRole === 'owner' || newRole === 'tenant' ? 'user' : newRole as AccountType
+        accountType: newRole
       });
       toast({
         title: "Rôle mis à jour",
