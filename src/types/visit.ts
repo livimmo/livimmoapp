@@ -15,3 +15,12 @@ export interface Visit {
   property?: Property;
   visitor?: Profile;
 }
+
+export interface VisitWithDetails extends Visit {
+  propertyTitle?: string;
+  propertyImage?: string;
+  propertyLocation?: string;
+  agent?: Profile;
+  isLive?: boolean;
+  liveUrl?: string;
+}

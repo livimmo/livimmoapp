@@ -16,9 +16,9 @@ interface PropertyVirtualTourStatsProps {
 }
 
 export const PropertyVirtualTourStats = ({ property }: PropertyVirtualTourStatsProps) => {
-  if (!property.virtualTour?.statistics) return null;
+  if (!property.virtual_tour?.statistics) return null;
 
-  const { totalVisits, averageTime, popularRooms, lastVisits } = property.virtualTour.statistics;
+  const { totalVisits, averageTime, popularRooms, lastVisits } = property.virtual_tour.statistics;
 
   return (
     <div className="space-y-6">
