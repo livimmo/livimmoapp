@@ -27,27 +27,6 @@ export interface Property {
     url?: string;
     platform?: "matterport" | "klapty";
     type: "360" | "video" | "live";
-    hotspots?: Array<{
-      title: string;
-      description: string;
-      position: { x: number; y: number };
-      details?: Array<{ label: string; value: string }>;
-    }>;
-    floorPlan?: {
-      url: string;
-      rooms: Array<{
-        id: string;
-        name: string;
-        area: number;
-        coordinates: { x: number; y: number };
-      }>;
-    };
-    statistics?: {
-      totalVisits: number;
-      averageTime: string;
-      popularRooms: Array<{ name: string; visits: number }>;
-      lastVisits: Array<{ date: string; duration: string }>;
-    };
   } | null;
   private_notes: {
     ownerName?: string;

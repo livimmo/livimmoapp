@@ -4,15 +4,15 @@ import { LiveButton } from "./property/LiveButton";
 import { MapPin, Home, Maximize2 } from "lucide-react";
 
 interface PropertyInfoProps {
-  id: number;
+  id: string;
   title: string;
   price: number;
   location: string;
   type: string;
   surface: number;
   rooms: number;
-  hasLive?: boolean;
-  liveDate?: Date;
+  has_live?: boolean;
+  live_date?: string | null;
   onJoinLive?: () => void;
   isLiveNow?: boolean;
   remainingSeats?: number;
@@ -27,7 +27,7 @@ export const PropertyInfo = ({
   type,
   surface,
   rooms,
-  hasLive,
+  has_live,
   onJoinLive,
   isLiveNow,
   isUserRegistered,
@@ -63,7 +63,7 @@ export const PropertyInfo = ({
         </div>
       </div>
       <div className="grid grid-cols-1 gap-2">
-        {hasLive && onJoinLive && (
+        {has_live && onJoinLive && (
           <LiveButton
             id={id}
             title={title}
