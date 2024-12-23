@@ -9,6 +9,7 @@ interface AuthContextType {
   login: (email: string, password: string, role?: UserRole) => Promise<void>;
   signup: (email: string, password: string, firstName: string, lastName: string, role: UserRole) => Promise<void>;
   logout: () => void;
+  switchRole: (newRole: UserRole) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,6 +18,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const switchRole = (newRole: UserRole) => {
+    if (!user) return;
+    
+    setUser({
+      ...user,
+      role: newRole,
+      accountType: newRole === 'promoter' || newRole === 'agent' ? 'agent' : 
+                  newRole === 'owner' ? 'owner' : 'buyer'
+    });
+
+    toast({
+      title: "Rôle modifié",
+      description: `Vous êtes maintenant en mode ${newRole}`,
+    });
+  };
 
   const login = async (email: string, password: string, role?: UserRole) => {
     try {
@@ -86,7 +103,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, signup, logout }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      isAuthenticated: !!user, 
+      login, 
+      signup, 
+      logout,
+      switchRole 
+    }}>
       {children}
     </AuthContext.Provider>
   );

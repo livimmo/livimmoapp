@@ -1,4 +1,4 @@
-import { Home, Search, Video, Heart, User, Book } from "lucide-react";
+import { Home, Search, Video, Heart, User, Building2 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
@@ -12,7 +12,7 @@ export const BottomNav = () => {
     return location.pathname === path;
   };
 
-  const isAgent = user?.role === "agent" || user?.role === "promoter";
+  const isPropertyManager = user?.role === "agent" || user?.role === "promoter" || user?.role === "owner";
   const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
   const favoritesCount = mockFavoritesData.length;
 
@@ -25,15 +25,14 @@ export const BottomNav = () => {
       path: "/lives",
       badge: activeLivesCount > 0 ? activeLivesCount : undefined 
     },
-    { icon: Book, label: "Annuaire", path: "/directory" },
     { 
       icon: Heart, 
       label: "Favoris", 
       path: "/favorites",
       badge: isAuthenticated && favoritesCount > 0 ? favoritesCount : undefined
     },
-    ...(isAgent ? [{ 
-      icon: Book, 
+    ...(isPropertyManager ? [{ 
+      icon: Building2, 
       label: "Mes Biens", 
       path: "/my-properties" 
     }] : []),

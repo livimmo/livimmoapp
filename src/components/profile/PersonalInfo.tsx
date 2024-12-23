@@ -2,16 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AccountType } from "./AccountTypeSelector";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Facebook, Instagram, Youtube, MessageCircle, Building2, Home } from "lucide-react";
-import { LiveManagement } from "./LiveManagement";
-import { PrivateVisitButton } from "./PrivateVisitButton";
-import { PrivateVisitsManagement } from "./PrivateVisitsManagement";
-import { ValidatedProperties } from "./ValidatedProperties";
-import { OwnerProperties } from "@/components/owner/OwnerProperties";
-import { OwnerStats } from "@/components/owner/OwnerStats";
-import { OwnerCalendar } from "@/components/owner/OwnerCalendar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RoleSwitcher } from "./RoleSwitcher";
 
 interface PersonalInfoProps {
   firstName: string;
@@ -28,7 +19,6 @@ export const PersonalInfo = ({
   lastName,
   email,
   phone,
-  accountType,
   onSubmit,
   onChange,
 }: PersonalInfoProps) => {
@@ -76,119 +66,9 @@ export const PersonalInfo = ({
         </div>
       </div>
 
-      {accountType === "owner" && (
-        <>
-          <div className="space-y-4 border-t pt-4">
-            <OwnerStats />
-          </div>
-          
-          <div className="space-y-4 border-t pt-4">
-            <Tabs defaultValue="properties" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="properties">
-                  <Building2 className="h-4 w-4 mr-2" />
-                  Mes Biens
-                </TabsTrigger>
-                <TabsTrigger value="calendar">
-                  <Home className="h-4 w-4 mr-2" />
-                  Calendrier des Visites
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="properties">
-                <OwnerProperties />
-              </TabsContent>
-              
-              <TabsContent value="calendar">
-                <OwnerCalendar />
-              </TabsContent>
-            </Tabs>
-          </div>
-        </>
-      )}
+      <RoleSwitcher />
 
-      {accountType === "buyer" && (
-        <>
-          <div className="space-y-4 border-t pt-4">
-            <h3 className="text-lg font-semibold">Visites privées</h3>
-            <PrivateVisitButton />
-          </div>
-          
-          <div className="space-y-4 border-t pt-4">
-            <ValidatedProperties />
-          </div>
-        </>
-      )}
-
-      {accountType === "agent" && (
-        <>
-          <div className="space-y-4 border-t pt-4">
-            <h3 className="text-lg font-semibold">
-              Informations professionnelles
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                
-                <Label htmlFor="company">Nom de l'entreprise</Label>
-                <Input id="company" placeholder="Votre entreprise" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="license">Numéro de licence</Label>
-                <Input id="license" placeholder="XXX-XXX-XXX" />
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-4 border-t pt-4">
-            <LiveManagement />
-          </div>
-
-          <div className="space-y-4 border-t pt-4">
-            <PrivateVisitsManagement />
-          </div>
-
-          <div className="space-y-4 border-t pt-4">
-            <h3 className="text-lg font-semibold">
-              Plateformes de Live préférées
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="youtube" />
-                <Label htmlFor="youtube" className="flex items-center gap-2">
-                  <Youtube className="h-4 w-4" />
-                  YouTube Live
-                </Label>
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                <Checkbox id="facebook" />
-                <Label htmlFor="facebook" className="flex items-center gap-2">
-                  <Facebook className="h-4 w-4" />
-                  Facebook Live
-                </Label>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox id="instagram" />
-                <Label htmlFor="instagram" className="flex items-center gap-2">
-                  <Instagram className="h-4 w-4" />
-                  Instagram Live
-                </Label>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox id="whatsapp" />
-                <Label htmlFor="whatsapp" className="flex items-center gap-2">
-                  <MessageCircle className="h-4 w-4" />
-                  WhatsApp Video
-                </Label>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-
-      <Button type="submit" className="w-full">
+      <Button type="submit">
         Enregistrer les modifications
       </Button>
     </form>
