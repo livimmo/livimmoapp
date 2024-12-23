@@ -6,17 +6,12 @@ export const Logo = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogoClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLElement;
-    if (target.closest('.camera-icon')) {
-      navigate('/lives?filter=live');
-      toast({
-        title: "Lives en cours",
-        description: "Affichage des biens en live direct",
-      });
-    } else {
-      navigate('/');
-    }
+  const handleLogoClick = () => {
+    navigate('/');
+    toast({
+      title: "Bienvenue",
+      description: "Vous êtes sur la page d'accueil",
+    });
   };
 
   return (
