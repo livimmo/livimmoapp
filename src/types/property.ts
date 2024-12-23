@@ -46,12 +46,6 @@ export interface Property {
       position: { x: number; y: number };
       details?: Array<{ label: string; value: string }>;
     }>;
-    annotations?: Array<{
-      title: string;
-      description: string;
-      position: { x: number; y: number };
-      details?: Array<{ label: string; value: string }>;
-    }>;
     floorPlan?: {
       url: string;
       rooms: Array<{
