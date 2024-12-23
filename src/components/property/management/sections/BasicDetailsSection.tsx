@@ -11,12 +11,16 @@ interface BasicDetailsSectionProps {
   surface: string;
   rooms: string;
   propertyType: string;
+  transactionType: "Vente" | "Location";
+  features: string[];
   onTitleChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
   onPriceChange: (value: string) => void;
   onSurfaceChange: (value: string) => void;
   onRoomsChange: (value: string) => void;
   onPropertyTypeChange: (value: string) => void;
+  onTransactionTypeChange: (value: "Vente" | "Location") => void;
+  onFeaturesChange: (value: string[]) => void;
 }
 
 export const BasicDetailsSection = ({
@@ -26,12 +30,16 @@ export const BasicDetailsSection = ({
   surface,
   rooms,
   propertyType,
+  transactionType,
+  features,
   onTitleChange,
   onDescriptionChange,
   onPriceChange,
   onSurfaceChange,
   onRoomsChange,
   onPropertyTypeChange,
+  onTransactionTypeChange,
+  onFeaturesChange,
 }: BasicDetailsSectionProps) => {
   return (
     <div className="space-y-4">
@@ -58,6 +66,19 @@ export const BasicDetailsSection = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="transactionType">Type de transaction*</Label>
+          <Select value={transactionType} onValueChange={onTransactionTypeChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sélectionner" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Vente">Vente</SelectItem>
+              <SelectItem value="Location">Location</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         <div>
           <Label htmlFor="price">Prix (MAD)*</Label>
           <Input
