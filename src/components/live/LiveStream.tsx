@@ -14,6 +14,7 @@ import { LiveChapters } from "./LiveChapters";
 import { LiveVideoPlayer } from "./LiveVideoPlayer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { type LiveEvent } from "@/types/live";
 
 const mockProperty = {
   id: "1",
@@ -49,7 +50,7 @@ const mockProperty = {
 interface LiveStreamProps {
   videoId: string;
   currentLiveId: number;
-  otherLives: any[];
+  otherLives: LiveEvent[];
   onLiveChange: (liveId: number) => void;
   isReplay?: boolean;
 }

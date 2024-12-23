@@ -25,8 +25,35 @@ export const mockProperties: Property[] = [
     },
     agent: mockAgents[0],
     hasLive: true,
+    ownerId: "owner1",
     transactionType: "Vente",
-    status: "available"
+    status: "available",
+    virtualTour: {
+      enabled: true,
+      type: "360",
+      url: "https://example.com/tour",
+      floorPlan: {
+        url: "https://example.com/floorplan",
+        rooms: [
+          {
+            id: "room1",
+            name: "Living Room",
+            area: 40,
+            coordinates: { x: 50, y: 50 }
+          }
+        ]
+      },
+      statistics: {
+        totalVisits: 150,
+        averageTime: "15 minutes",
+        popularRooms: [
+          { name: "Living Room", visits: 80 }
+        ],
+        lastVisits: [
+          { date: "2024-03-20", duration: "12 minutes" }
+        ]
+      }
+    }
   },
   {
     id: "2",
@@ -46,8 +73,9 @@ export const mockProperties: Property[] = [
     },
     agent: mockAgents[1],
     hasLive: false,
+    ownerId: "owner2",
     transactionType: "Vente",
-    status: "available"
+    status: "available",
   },
   {
     id: "3",
@@ -67,8 +95,9 @@ export const mockProperties: Property[] = [
     },
     agent: mockAgents[2],
     hasLive: false,
+    ownerId: "owner3",
     transactionType: "Vente",
-    status: "available"
+    status: "available",
   },
   {
     id: "4",
@@ -88,8 +117,9 @@ export const mockProperties: Property[] = [
     },
     agent: mockAgents[0],
     hasLive: true,
+    ownerId: "owner1",
     transactionType: "Vente",
-    status: "available"
+    status: "available",
   },
   {
     id: "5",
@@ -109,8 +139,9 @@ export const mockProperties: Property[] = [
     },
     agent: mockAgents[1],
     hasLive: false,
+    ownerId: "owner2",
     transactionType: "Location",
-    status: "available"
+    status: "available",
   }
 ];
 

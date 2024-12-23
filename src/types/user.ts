@@ -1,6 +1,5 @@
 export type UserRole = "owner" | "buyer" | "tenant" | "agent" | "promoter" | "developer";
-
-export type AccountType = "user" | "agent" | "promoter" | "developer";
+export type AccountType = "owner" | "buyer" | "tenant" | "agent" | "promoter" | "developer";
 
 export interface User {
   id: string;

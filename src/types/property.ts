@@ -28,11 +28,41 @@ export interface Property {
   isUserRegistered?: boolean;
   tags?: string[];
   isReplay?: boolean;
+  ownerId?: string; // Added for owner identification
   virtualTour?: {
     enabled: boolean;
     type: "360" | "video";
     url?: string;
     platform?: string;
+    floorPlan?: {
+      url: string;
+      rooms: Array<{
+        id: string;
+        name: string;
+        area: number;
+        coordinates: {
+          x: number;
+          y: number;
+        };
+      }>;
+    };
+    statistics?: {
+      totalVisits: number;
+      averageTime: string;
+      popularRooms: Array<{
+        name: string;
+        visits: number;
+      }>;
+      lastVisits: Array<{
+        date: string;
+        duration: string;
+      }>;
+    };
+  };
+  privateNotes?: {
+    ownerName?: string;
+    location?: string;
+    notes?: string;
   };
   transactionType: TransactionType;
   status?: PropertyStatus;

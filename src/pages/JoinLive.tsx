@@ -1,25 +1,35 @@
 import { LiveStream } from "@/components/live/LiveStream";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { liveStreams } from "@/data/mockLives";
+import { type LiveEvent } from "@/types/live";
 
-export const LiveStream = () => {
+const JoinLive = () => {
   const { id } = useParams();
-  const currentLive = liveStreams.find(live => live.id === Number(id));
-  const otherLives = liveStreams.filter(live => live.id !== Number(id));
+  const navigate = useNavigate();
+  const [currentLive, setCurrentLive] = useState<LiveEvent | null>(null);
+  const [otherLives, setOtherLives] = useState<LiveEvent[]>([]);
 
-  if (!currentLive) {
-    return <div>Live non trouvé</div>;
-  }
+  useEffect(() => {
+    const live = liveStreams.find(live => live.id === Number(id));
+    if (!live) {
+      navigate("/lives");
+      return;
+    }
+    setCurrentLive(live);
+    setOtherLives(liveStreams.filter(l => l.id !== Number(id)));
+  }, [id, navigate]);
+
+  if (!currentLive) return null;
 
   return (
     <LiveStream
       videoId={currentLive.videoId || ""}
-      currentLiveId={currentLive.id}
+      currentLiveId={Number(id)}
       otherLives={otherLives}
-      onLiveChange={(liveId) => {
-        // Handle live change
-        console.log("Changing to live:", liveId);
-      }}
+      onLiveChange={(liveId) => navigate(`/live/${liveId}`)}
     />
   );
 };
+
+export default JoinLive;
