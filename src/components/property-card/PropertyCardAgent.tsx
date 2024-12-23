@@ -1,15 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { AgentCertificationBadge } from "../agent/AgentCertificationBadge";
+import { Agent } from "@/types/agent";
 
 interface PropertyCardAgentProps {
-  agent: {
-    id?: number;
-    name: string;
-    image: string;
-    company?: string;
-    verified?: boolean;
-  };
+  agent: Agent;
   district?: string;
 }
 
@@ -46,7 +41,7 @@ export const PropertyCardAgent = ({ agent, district }: PropertyCardAgentProps) =
         </div>
       </div>
       {agent.verified && (
-        <AgentCertificationBadge rating={4.8} showLevel={false} />
+        <AgentCertificationBadge rating={agent.rating || 0} showLevel={false} />
       )}
     </div>
   );
