@@ -1,69 +1,33 @@
-import { useNavigate } from "react-router-dom";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { AgentCertificationBadge } from "../agent/AgentCertificationBadge";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { type Profile } from "@/types/database";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle2 } from "lucide-react";
 
 interface PropertyCardAgentProps {
-  agent_id: string | null;
-  district?: string;
+  agent: Profile;
+  district: string;
 }
 
-export const PropertyCardAgent = ({ agent_id, district }: PropertyCardAgentProps) => {
-  const navigate = useNavigate();
-
-  const { data: agent, isLoading } = useQuery({
-    queryKey: ['agent', agent_id],
-    queryFn: async () => {
-      if (!agent_id) return null;
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', agent_id)
-        .maybeSingle();
-        
-      if (error) {
-        console.error('Error fetching agent:', error);
-        return null;
-      }
-      return data;
-    },
-    enabled: !!agent_id
-  });
-
-  const handleAgentClick = () => {
-    if (agent_id) {
-      navigate(`/agent/${agent_id}`);
-    }
-  };
-
-  if (!agent || isLoading) return null;
-
+export const PropertyCardAgent = ({ agent, district }: PropertyCardAgentProps) => {
   return (
-    <div 
-      className="px-4 py-3 border-t flex items-center justify-between bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors"
-      onClick={handleAgentClick}
-    >
+    <div className="p-4 border-t flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <Avatar className="h-8 w-8 border border-gray-200">
-          <AvatarImage src={agent.avatar_url} alt={agent.full_name} />
-          <AvatarFallback>{agent.full_name?.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+        <Avatar className="h-8 w-8">
+          <AvatarImage src={agent.avatar_url || ''} alt={agent.full_name || ''} />
+          <AvatarFallback>
+            {agent.full_name?.split(' ').map(n => n[0]).join('') || 'A'}
+          </AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <span className="text-sm font-medium text-gray-900">{agent.full_name}</span>
-          <div className="flex items-center gap-1">
-            <span className="text-xs text-gray-500">{agent.company || 'Agent indépendant'}</span>
-            {district && (
-              <>
-                <span className="text-xs text-gray-400">•</span>
-                <span className="text-xs text-gray-500">{district}</span>
-              </>
-            )}
-          </div>
+          <span className="text-sm font-medium">{agent.full_name}</span>
+          <span className="text-xs text-muted-foreground">{district}</span>
         </div>
       </div>
       {agent.verified && (
-        <AgentCertificationBadge rating={4.8} showLevel={false} />
+        <Badge variant="secondary" className="flex items-center gap-1">
+          <CheckCircle2 className="h-3 w-3" />
+          <span className="text-xs">Vérifié</span>
+        </Badge>
       )}
     </div>
   );
