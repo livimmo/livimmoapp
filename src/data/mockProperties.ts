@@ -1,7 +1,8 @@
 import { type Property, type PropertyWithAgent } from "@/types/property";
 import { generateMockCoordinates } from "@/utils/coordinates";
+import { type Profile } from "@/types/database/profile";
 
-const mockAgent = {
+const mockAgent: Profile = {
   id: "1",
   full_name: "Sarah Martin",
   avatar_url: "https://i.pravatar.cc/150?u=sarah",
