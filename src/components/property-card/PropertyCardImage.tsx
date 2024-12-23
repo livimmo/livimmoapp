@@ -23,6 +23,8 @@ interface PropertyCardImageProps {
   virtualTour?: {
     enabled: boolean;
     url?: string;
+    platform?: "matterport" | "klapty";
+    type: "360" | "video" | "live";
   } | null;
   tags?: string[];
   onVirtualTourClick?: () => void;
@@ -35,7 +37,7 @@ export const PropertyCardImage = ({
   image,
   hasLive,
   liveDate,
-  viewers,
+  viewers = 0,
   currentUrl,
   isLiveNow,
   isUserRegistered,
