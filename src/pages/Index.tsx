@@ -47,12 +47,12 @@ const Index = () => {
     const matchesType = !propertyType || property.type === propertyType;
     const matchesPriceRange = property.price >= priceRange[0] && property.price <= priceRange[1];
     const matchesSurfaceRange = property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
-    const matchesTransactionType = transactionType.includes(property.transactionType);
+    const matchesTransactionType = transactionType.includes(property.transaction_type);
     const matchesViewType = viewType === "all" ? true :
-      viewType === "live" ? (property.hasLive && !property.isReplay) :
-      viewType === "replay" ? (property.hasLive && property.isReplay) :
-      viewType === "scheduled" ? property.hasScheduledLive :
-      property.virtualTour?.enabled;
+      viewType === "live" ? (property.has_live && !property.is_replay) :
+      viewType === "replay" ? (property.has_live && property.is_replay) :
+      viewType === "scheduled" ? property.has_scheduled_live :
+      property.virtual_tour?.enabled;
 
     return matchesSearch && matchesType && matchesPriceRange && 
            matchesSurfaceRange && matchesTransactionType && matchesViewType;

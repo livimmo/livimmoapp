@@ -1,5 +1,5 @@
 export interface Property {
-  id: number;
+  id: string;
   title: string;
   price: number;
   location: string;
@@ -7,70 +7,31 @@ export interface Property {
   surface: number;
   rooms: number;
   bathrooms: number;
-  description: string;
-  features: string[];
-  images: string[];
-  hasLive?: boolean;
-  isReplay?: boolean;
-  hasScheduledLive?: boolean;
-  liveDate?: Date;
-  status?: 'available' | 'pending' | 'sold' | 'rented';
-  createdAt?: Date;
-  agent: {
-    id?: number;
-    name: string;
-    image: string;
-    phone: string;
-    email: string;
-    company?: string;
-    verified?: boolean;
-  };
+  description: string | null;
+  features: string[] | null;
+  images: string[] | null;
+  has_live: boolean;
+  is_replay: boolean;
+  has_scheduled_live: boolean;
+  live_date: string | null;
+  status: 'available' | 'pending' | 'sold' | 'rented';
+  created_at: string;
+  updated_at: string;
+  agent_id: string | null;
   coordinates: {
     lat: number;
     lng: number;
-  };
-  viewers?: number;
-  isLiveNow?: boolean;
-  remainingSeats?: number;
-  isUserRegistered?: boolean;
-  transactionType: "Vente" | "Location";
-  tags?: string[];
-  virtualTour?: {
+  } | null;
+  transaction_type: string;
+  virtual_tour: {
     enabled: boolean;
     url?: string;
     platform?: "matterport" | "klapty";
     type: "360" | "video" | "live";
-    hotspots?: Array<{
-      title: string;
-      description: string;
-      position: { x: number; y: number };
-      details: Array<{ label: string; value: string }>;
-    }>;
-    floorPlan?: {
-      url: string;
-      rooms: Array<{
-        id: string;
-        name: string;
-        area: number;
-        coordinates: { x: number; y: number };
-      }>;
-    };
-    statistics?: {
-      totalVisits: number;
-      averageTime: string;
-      popularRooms: Array<{
-        name: string;
-        visits: number;
-      }>;
-      lastVisits: Array<{
-        date: string;
-        duration: string;
-      }>;
-    };
-  };
-  privateNotes?: {
+  } | null;
+  private_notes: {
     ownerName?: string;
     location?: string;
     notes?: string;
-  };
+  } | null;
 }

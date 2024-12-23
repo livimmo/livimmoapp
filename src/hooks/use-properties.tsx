@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import type { Database, Property } from '@/integrations/supabase/database.types';
+import type { Property } from '@/types/property';
 
 export const useProperties = () => {
   const queryClient = useQueryClient();
@@ -19,7 +19,7 @@ export const useProperties = () => {
   });
 
   const createProperty = useMutation({
-    mutationFn: async (newProperty: Database['public']['Tables']['properties']['Insert']) => {
+    mutationFn: async (newProperty: Omit<Property, 'id' | 'created_at' | 'updated_at'>) => {
       const { data, error } = await supabase
         .from('properties')
         .insert([newProperty])
