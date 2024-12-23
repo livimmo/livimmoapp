@@ -52,12 +52,18 @@ export const VirtualTourViewer360 = ({
   };
 
   const toggleFullscreen = async () => {
-    if (!document.fullscreenElement) {
-      await containerRef.current?.requestFullscreen();
-      setIsFullscreen(true);
-    } else {
-      await document.exitFullscreen();
-      setIsFullscreen(false);
+    try {
+      if (!document.fullscreenElement) {
+        await containerRef.current?.requestFullscreen();
+        setIsFullscreen(true);
+      } else {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+          setIsFullscreen(false);
+        }
+      }
+    } catch (err) {
+      console.error("Error toggling fullscreen:", err);
     }
   };
 
@@ -67,6 +73,16 @@ export const VirtualTourViewer360 = ({
 
   const handleMakeOffer = () => {
     setShowOfferDialog(true);
+  };
+
+  const handleClose = () => {
+    try {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    } catch (err) {
+      console.error("Error exiting fullscreen:", err);
+    }
   };
 
   return (
@@ -109,7 +125,7 @@ export const VirtualTourViewer360 = ({
             onBookVisit={handleQuickBook}
             onMakeOffer={handleMakeOffer}
             onToggleChat={() => setShowChat(!showChat)}
-            onClose={() => document.exitFullscreen()}
+            onClose={handleClose}
           />
         </>
       )}
