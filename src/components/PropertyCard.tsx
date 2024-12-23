@@ -64,33 +64,33 @@ export const PropertyCard = ({
         className
       )}>
         <PropertyCardImage
-          id={typeof id === 'string' ? id : id.toString()}
+          id={id}
           title={title}
           image={images?.[0] || ''}
-          has_live={has_live}
-          live_date={live_date}
+          hasLive={has_live}
+          liveDate={live_date}
           viewers={viewers}
           currentUrl={currentUrl}
           isLiveNow={isLiveNow}
           isUserRegistered={isUserRegistered}
           remainingSeats={remainingSeats}
           offers={offers}
-          virtual_tour={virtual_tour}
+          virtualTour={virtual_tour}
           tags={tags}
           onVirtualTourClick={handleVirtualTour}
           onUnauthorized={() => setShowAuthDialog(true)}
         />
         
         <PropertyInfo
-          id={typeof id === 'string' ? id : id.toString()}
+          id={id}
           title={title}
           price={price}
           location={location}
           type={type}
           surface={surface}
           rooms={rooms}
-          has_live={has_live}
-          live_date={live_date}
+          hasLive={has_live}
+          liveDate={live_date}
           onJoinLive={handleJoinLive}
           isLiveNow={isLiveNow}
           remainingSeats={remainingSeats}
@@ -109,9 +109,9 @@ export const PropertyCard = ({
         <DialogContent className="max-w-[95vw] md:max-w-6xl h-[90vh] p-0 md:p-6">
           <VirtualTourViewer360
             tourUrl="TzhRashYdRt"
-            propertyId={typeof id === 'string' ? id : id.toString()}
+            propertyId={id}
             propertyTitle={title}
-            agentId={agent_id}
+            agentName={agent.full_name}
             onContactAgent={() => {}}
             onBookVisit={() => setShowAuthDialog(true)}
           />

@@ -9,11 +9,11 @@ import { VirtualTourButton } from "../property/VirtualTourButton";
 import { OffersCounter } from "../property/OffersCounter";
 
 interface PropertyCardImageProps {
-  id: number;
+  id: string;
   title: string;
   image: string;
   hasLive?: boolean;
-  liveDate?: Date;
+  liveDate?: string | null;
   viewers?: number;
   currentUrl?: string;
   isLiveNow?: boolean;
@@ -23,7 +23,7 @@ interface PropertyCardImageProps {
   virtualTour?: {
     enabled: boolean;
     url?: string;
-  };
+  } | null;
   tags?: string[];
   onVirtualTourClick?: () => void;
   onUnauthorized?: () => void;
