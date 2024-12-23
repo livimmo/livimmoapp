@@ -8,7 +8,7 @@ export const generateMockCoordinates = () => ({
 
 export const mockProperties: Property[] = [
   {
-    id: "1",
+    id: "1", // Changed to string
     title: "Villa moderne avec piscine",
     price: 2500000,
     location: "Casablanca, Anfa",

@@ -80,7 +80,7 @@ const Index = () => {
 
   // Convert lives to Property format for the map
   const currentLiveProperties: Property[] = currentLives.map(live => ({
-    id: live.id,
+    id: live.id.toString(), // Convert to string
     title: live.title,
     price: parseInt(live.price.replace(/[^\d]/g, "")),
     location: live.location,
@@ -94,10 +94,14 @@ const Index = () => {
     hasLive: true,
     liveDate: live.date,
     agent: {
+      id: `agent-${live.id}`, // Add required agent fields
       name: live.agent,
-      image: "",
+      avatar: `https://i.pravatar.cc/150?u=${live.agent.toLowerCase().replace(/\s/g, '')}`,
+      image: `https://i.pravatar.cc/150?u=${live.agent.toLowerCase().replace(/\s/g, '')}`,
       phone: "",
       email: "",
+      location: "",
+      type: "agent",
     },
     coordinates: {
       lat: 31.7917 + Math.random() * 2 - 1,

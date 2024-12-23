@@ -4,7 +4,7 @@ export type PropertyStatus = "available" | "pending" | "sold" | "rented" | "en_c
 export type TransactionType = "Vente" | "Location";
 
 export interface Property {
-  id: string;
+  id: string;  // Changed from number to string
   title: string;
   price: number;
   location: string;
@@ -33,42 +33,7 @@ export interface Property {
     type: "360" | "video";
     url?: string;
     platform?: string;
-    floorPlan?: {
-      url: string;
-      rooms: {
-        id: string;
-        name: string;
-        area: number;
-        coordinates: {
-          x: number;
-          y: number;
-        };
-      }[];
-    };
-    statistics?: {
-      views: number;
-      likes: number;
-      shares: number;
-      totalVisits?: number;
-      averageTime?: string;
-      popularRooms?: {
-        name: string;
-        visits: number;
-      }[];
-      lastVisits?: {
-        date: string;
-        duration: string;
-      }[];
-    };
   };
   transactionType: TransactionType;
   status?: PropertyStatus;
-  createdAt?: Date;
-  updatedAt?: Date;
-  ownerId?: string;
-  privateNotes?: {
-    ownerName?: string;
-    location?: string;
-    notes?: string;
-  };
 }
