@@ -14,10 +14,10 @@ function App() {
       <AuthProvider>
         <div className="min-h-screen bg-background">
           <Header />
-          <div className={`${isMobile ? 'pb-16' : ''}`}>
+          <div className="pb-16">
             <Routes />
           </div>
-          {isMobile && <BottomNav />}
+          <BottomNav />
           <Toaster />
         </div>
       </AuthProvider>
