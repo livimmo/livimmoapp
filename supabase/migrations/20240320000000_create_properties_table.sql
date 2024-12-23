@@ -1,3 +1,4 @@
+-- Create properties table
 create table "public"."properties" (
     id uuid default gen_random_uuid() primary key,
     title text not null,
@@ -11,15 +12,17 @@ create table "public"."properties" (
     features text[],
     images text[],
     has_live boolean default false,
-    is_live_now boolean default false,
+    is_replay boolean default false,
+    has_scheduled_live boolean default false,
     live_date timestamp with time zone,
-    viewers integer default 0,
-    remaining_seats integer,
-    transaction_type text not null,
+    status text default 'available',
+    created_at timestamp with time zone default timezone('utc'::text, now()),
+    updated_at timestamp with time zone default timezone('utc'::text, now()),
+    agent_id uuid references auth.users(id),
     coordinates jsonb,
-    created_at timestamp with time zone default timezone('utc'::text, now()) not null,
-    updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
-    agent_id uuid references auth.users(id)
+    transaction_type text not null,
+    virtual_tour jsonb,
+    private_notes jsonb
 );
 
 -- Enable Row Level Security
