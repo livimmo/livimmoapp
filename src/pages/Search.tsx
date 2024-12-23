@@ -19,6 +19,8 @@ const Search = () => {
     setShowLiveOnly,
     setShowFilters,
     setTransactionType,
+    setCity,
+    setNeighborhood,
   } = useSearchFilters();
 
   const filteredProperties = mockProperties.filter((property) => {
@@ -57,6 +59,8 @@ const Search = () => {
           setSurfaceRange,
           setShowLiveOnly,
           setTransactionType,
+          setCity,
+          setNeighborhood,
         }}
         setShowFilters={setShowFilters}
       />
