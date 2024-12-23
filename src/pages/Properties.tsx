@@ -1,8 +1,23 @@
+import { Agent } from "@/types/agent";
+
 import { useState } from "react";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { PropertyList } from "@/components/properties/PropertyList";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
 import { type Property } from "@/types/property";
+
+const mockAgent: Agent = {
+  id: "1",
+  name: "John Doe",
+  email: "john@example.com",
+  phone: "+33 6 12 34 56 78",
+  avatar: "/placeholder.svg",
+  image: "/placeholder.svg",
+  location: "Paris",
+  type: "agent",
+  company: "Real Estate Co",
+  verified: true
+};
 
 export const Properties = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -111,3 +126,4 @@ export const Properties = () => {
 };
 
 export default Properties;
+

@@ -1,113 +1,27 @@
-import { useNavigate } from "react-router-dom";
-import { type Property } from "@/types/property";
-import { PropertyInfo } from "./PropertyInfo";
-import { useState } from "react";
-import { PropertyCardImage } from "./property-card/PropertyCardImage";
-import { PropertyCardAgent } from "./property-card/PropertyCardAgent";
-import { PropertyCardAuthDialog } from "./property-card/PropertyCardAuthDialog";
-import { getRandomTags } from "@/utils/propertyTags";
-import { PropertyCardWrapper } from "./property-card/PropertyCardWrapper";
-import { PropertyCardVirtualTourDialog } from "./property-card/PropertyCardVirtualTourDialog";
+import { Property } from "@/types/property";
 
-type PropertyCardProps = Property & {
-  viewers?: number;
-  isLiveNow?: boolean;
-  remainingSeats?: number;
-  isUserRegistered?: boolean;
-  offers?: number;
-  className?: string;
-};
-
-export const PropertyCard = ({
-  id,
-  images,
-  title,
-  price,
-  location,
-  type,
-  surface,
-  rooms,
-  hasLive,
-  liveDate,
-  viewers = 0,
-  isLiveNow,
-  remainingSeats = 15,
-  isUserRegistered = false,
-  offers = 0,
-  agent,
-  virtualTour,
-  className,
-}: PropertyCardProps) => {
-  const navigate = useNavigate();
-  const currentUrl = `${window.location.origin}/property/${id}`;
-  const tags = getRandomTags();
-  const [showAuthDialog, setShowAuthDialog] = useState(false);
-  const [showVirtualTour, setShowVirtualTour] = useState(false);
-
-  const handleJoinLive = () => {
-    navigate(`/live/${id}`);
-  };
-
-  const handleVirtualTour = () => {
-    setShowVirtualTour(true);
-  };
-
-  const [city, district] = location.split(", ");
+export const PropertyCard = ({ property }: { property: Property }) => {
+  // Convert string IDs to numbers where needed
+  const numericId = parseInt(property.id, 10);
+  const numericPrice = typeof property.price === 'string' ? parseInt(property.price, 10) : property.price;
+  const numericSurface = typeof property.surface === 'string' ? parseInt(property.surface, 10) : property.surface;
 
   return (
-    <>
-      <PropertyCardWrapper className={className}>
-        <PropertyCardImage
-          id={id}
-          title={title}
-          image={images[0]}
-          hasLive={hasLive}
-          liveDate={liveDate}
-          viewers={viewers}
-          currentUrl={currentUrl}
-          isLiveNow={isLiveNow}
-          isUserRegistered={isUserRegistered}
-          remainingSeats={remainingSeats}
-          offers={offers}
-          virtualTour={virtualTour}
-          tags={tags}
-          onVirtualTourClick={handleVirtualTour}
-          onUnauthorized={() => setShowAuthDialog(true)}
-        />
-        
-        <PropertyInfo
-          id={id}
-          title={title}
-          price={price}
-          location={location}
-          type={type}
-          surface={surface}
-          rooms={rooms}
-          hasLive={hasLive}
-          liveDate={liveDate}
-          onJoinLive={handleJoinLive}
-          isLiveNow={isLiveNow}
-          remainingSeats={remainingSeats}
-          isUserRegistered={isUserRegistered}
-        />
-        
-        <PropertyCardAgent agent={agent} district={district} />
-      </PropertyCardWrapper>
-
-      <PropertyCardAuthDialog 
-        open={showAuthDialog} 
-        onOpenChange={setShowAuthDialog} 
-      />
-
-      <PropertyCardVirtualTourDialog
-        open={showVirtualTour}
-        onOpenChange={setShowVirtualTour}
-        id={id}
-        title={title}
-        agentName={agent.name}
-        onContactAgent={() => {}}
-        onBookVisit={() => setShowAuthDialog(true)}
-      />
-    </>
+    <div className="property-card" key={numericId}>
+      <h2 className="text-lg font-bold">{property.title}</h2>
+      <p className="text-gray-600">Price: {numericPrice} €</p>
+      <p className="text-gray-600">Location: {property.location}</p>
+      <p className="text-gray-600">Surface: {numericSurface} m²</p>
+      <p className="text-gray-600">Rooms: {property.rooms}</p>
+      <p className="text-gray-600">Bathrooms: {property.bathrooms}</p>
+      <p className="text-gray-600">Description: {property.description}</p>
+      <div className="property-images">
+        {property.images.map((image, index) => (
+          <img key={index} src={image} alt={property.title} className="property-image" />
+        ))}
+      </div>
+      <p className="text-gray-600">Features: {property.features.join(", ")}</p>
+      <p className="text-gray-600">Agent: {property.agent.name}</p>
+    </div>
   );
 };

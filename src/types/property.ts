@@ -1,6 +1,4 @@
-import { type Agent } from "./agent";
-
-export type PropertyStatus = "available" | "pending" | "sold" | "rented" | "en_cours";
+import { Agent } from "./agent";
 
 export interface Property {
   id: string;
@@ -14,45 +12,11 @@ export interface Property {
   description: string;
   features: string[];
   images: string[];
+  hasLive: boolean;
+  agent: Agent;
   coordinates: {
     lat: number;
     lng: number;
   };
-  agent: Agent;
-  hasLive?: boolean;
-  liveDate?: Date;
   transactionType: "Vente" | "Location";
-  status?: PropertyStatus;
-  isLiveNow?: boolean;
-  remainingSeats?: number;
-  viewers?: number;
-  isReplay?: boolean;
-  tags?: string[];
-  ownerId?: string;
-  privateNotes?: {
-    ownerName?: string;
-    location?: string;
-    notes?: string;
-  };
-  virtualTour?: {
-    enabled: boolean;
-    url?: string;
-    platform?: string;
-    type?: string;
-    floorPlan?: {
-      url: string;
-      rooms: Array<{
-        id: string;
-        name: string;
-        area: number;
-        coordinates: { x: number; y: number };
-      }>;
-    };
-    statistics?: {
-      totalVisits: number;
-      averageTime: string;
-      popularRooms: Array<{ name: string; visits: number }>;
-      lastVisits: Array<{ date: string; duration: string }>;
-    };
-  };
 }
