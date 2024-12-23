@@ -2,9 +2,10 @@ import { Agent } from "@/types/agent";
 
 export const mockAgents: Agent[] = [
   {
-    id: 1,
+    id: "1",
     name: "Sarah Martin",
     avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
     company: "Immobilier Premium",
     companyLogo: "https://example.com/premium-logo.png",
     location: "Casablanca",
@@ -17,6 +18,8 @@ export const mockAgents: Agent[] = [
     soldProperties: 89,
     specialties: ["Résidentiel", "Luxe", "Villas"],
     verified: true,
+    email: "sarah.martin@premium.ma",
+    phone: "+212 6 12 34 56 78",
     contact: {
       phone: "+212 6 12 34 56 78",
       email: "sarah.martin@premium.ma",
@@ -29,9 +32,10 @@ export const mockAgents: Agent[] = [
     description: "Spécialiste de l'immobilier de luxe à Casablanca avec plus de 10 ans d'expérience."
   },
   {
-    id: 2,
+    id: "2",
     name: "Hicham Berrada",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+    image: "/lovable-uploads/2c5cdac7-efc4-4b21-af73-7e198de56621.png",
     company: "Lamap",
     companyLogo: "/lovable-uploads/2c5cdac7-efc4-4b21-af73-7e198de56621.png",
     location: "Rabat",
@@ -44,6 +48,8 @@ export const mockAgents: Agent[] = [
     soldProperties: 167,
     specialties: ["Résidentiel", "Commercial", "Projets Neufs"],
     verified: true,
+    email: "h.berrada@lamap.ma",
+    phone: "+212 6 23 45 67 89",
     contact: {
       phone: "+212 6 23 45 67 89",
       email: "h.berrada@lamap.ma",
@@ -56,7 +62,7 @@ export const mockAgents: Agent[] = [
     description: "Expert immobilier chez Lamap, spécialisé dans l'accompagnement personnalisé pour vos projets immobiliers."
   },
   {
-    id: 3,
+    id: "3",
     name: "Yasmine Idrissi",
     avatar: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e",
     location: "Marrakech",
@@ -69,6 +75,8 @@ export const mockAgents: Agent[] = [
     soldProperties: 124,
     specialties: ["Riads", "Villas", "Propriétés de Luxe"],
     verified: true,
+    email: "yasmine.idrissi@gmail.com",
+    phone: "+212 6 34 56 78 90",
     contact: {
       phone: "+212 6 34 56 78 90",
       email: "yasmine.idrissi@gmail.com",
@@ -80,7 +88,7 @@ export const mockAgents: Agent[] = [
     description: "Experte en riads et propriétés de prestige à Marrakech depuis 15 ans. Ma connaissance approfondie de la médina et des quartiers prisés de Marrakech, combinée à mon réseau exclusif, me permet d'offrir un service sur mesure à une clientèle internationale exigeante. Spécialisée dans les transactions de luxe et la rénovation de riads historiques."
   },
   {
-    id: 4,
+    id: "4",
     name: "Karim Benjelloun",
     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
     company: "KB Immobilier",
@@ -94,6 +102,8 @@ export const mockAgents: Agent[] = [
     soldProperties: 95,
     specialties: ["Vue Mer", "Appartements", "Investissement"],
     verified: true,
+    email: "karim@kbimmobilier.ma",
+    phone: "+212 6 45 67 89 01",
     contact: {
       phone: "+212 6 45 67 89 01",
       email: "karim@kbimmobilier.ma",
@@ -105,7 +115,7 @@ export const mockAgents: Agent[] = [
     description: "Expert immobilier spécialisé dans les biens avec vue mer à Tanger. Fort de 8 ans d'expérience, je conseille particulièrement les investisseurs et les acquéreurs à la recherche de propriétés à fort potentiel. Ma connaissance du marché local et mon réseau étendu me permettent d'identifier les meilleures opportunités pour mes clients."
   },
   {
-    id: 5,
+    id: "5",
     name: "Sofia El Mansouri",
     avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956",
     company: "Mansouri Développement",
@@ -119,6 +129,8 @@ export const mockAgents: Agent[] = [
     soldProperties: 245,
     specialties: ["Résidentiel Haut Standing", "Bureaux", "Retail"],
     verified: true,
+    email: "sofia@mansouri-dev.ma",
+    phone: "+212 6 56 78 90 12",
     contact: {
       phone: "+212 6 56 78 90 12",
       email: "sofia@mansouri-dev.ma",

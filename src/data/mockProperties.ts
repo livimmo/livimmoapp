@@ -50,6 +50,7 @@ const propertyImages = [
 // Agents immobiliers
 const agents = [
   {
+    id: "1",
     name: "Sarah Martin",
     image: "https://i.pravatar.cc/150?u=sarah",
     phone: "+212 6 12 34 56 78",
@@ -58,6 +59,7 @@ const agents = [
     verified: true
   },
   {
+    id: "2",
     name: "Mohammed Alami",
     image: "https://i.pravatar.cc/150?u=mohamed",
     phone: "+212 6 23 45 67 89",
@@ -95,7 +97,6 @@ export const generateMockCoordinates = (location: string) => {
 };
 
 // Génération de 20 propriétés aléatoires
-
 export const mockProperties: Property[] = Array.from({ length: 20 }, (_, index) => {
   const randomCity = cities[Math.floor(Math.random() * cities.length)];
   const randomDistrict = randomCity.districts[Math.floor(Math.random() * randomCity.districts.length)];
@@ -125,7 +126,18 @@ export const mockProperties: Property[] = Array.from({ length: 20 }, (_, index) 
     remainingSeats: !isLiveNow && hasLive ? Math.floor(Math.random() * 20) + 5 : undefined,
     isUserRegistered: Math.random() > 0.7,
     transactionType: Math.random() > 0.3 ? "Vente" : "Location",
-    agent: randomAgent,
+    agent: {
+      id: randomAgent.id,
+      name: randomAgent.name,
+      avatar: randomAgent.image,
+      image: randomAgent.image,
+      email: randomAgent.email,
+      phone: randomAgent.phone,
+      location: randomAgent.location,
+      type: randomAgent.type,
+      company: randomAgent.company,
+      verified: randomAgent.verified
+    },
     virtualTour: {
       enabled: Math.random() > 0.7,
       type: "360"
@@ -133,9 +145,6 @@ export const mockProperties: Property[] = Array.from({ length: 20 }, (_, index) 
     status: Math.random() > 0.5 ? "available" : "pending"
   };
 });
-
-// Propriété de base pour la compatibilité
-export const mockProperty: Property = mockProperties[0];
 
 // Helper function to add coordinates to properties
 export const addCoordinatesToProperties = (properties: Omit<Property, 'coordinates'>[]): Property[] => {
