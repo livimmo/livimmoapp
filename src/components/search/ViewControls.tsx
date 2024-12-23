@@ -11,10 +11,10 @@ export const ViewControls = ({ viewMode, setViewMode }: ViewControlsProps) => {
   return (
     <div className="flex gap-1">
       <Button
-        variant={viewMode === "list" ? "default" : "outline"}
+        variant={viewMode === "grid" ? "default" : "outline"}
         size="sm"
-        className={viewMode === "list" ? "bg-primary text-white hover:bg-primary/90" : ""}
-        onClick={() => setViewMode("list")}
+        className={viewMode === "grid" ? "bg-primary text-white hover:bg-primary/90" : ""}
+        onClick={() => setViewMode("grid")}
       >
         <List className="h-4 w-4 mr-2" />
         Liste
