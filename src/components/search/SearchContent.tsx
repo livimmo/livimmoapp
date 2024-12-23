@@ -1,9 +1,9 @@
-import { PropertyList } from "@/components/properties/PropertyList";
 import { type Property } from "@/types/property";
+import { SearchMap } from "./SearchMap";
 
 interface SearchContentProps {
   filteredProperties: Property[];
-  viewMode: "grid" | "list";
+  viewMode: "grid" | "list" | "map";
 }
 
 export const SearchContent = ({ filteredProperties, viewMode }: SearchContentProps) => {
@@ -15,5 +15,9 @@ export const SearchContent = ({ filteredProperties, viewMode }: SearchContentPro
     );
   }
 
-  return <PropertyList properties={filteredProperties} viewMode={viewMode} />;
+  return (
+    <div className="w-full">
+      <SearchMap properties={filteredProperties} />
+    </div>
+  );
 };

@@ -8,7 +8,7 @@ import { useSearchFilters } from "@/hooks/useSearchFilters";
 import { mockProperties } from "@/data/mockProperties";
 
 const Search = () => {
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [viewMode, setViewMode] = useState<ViewMode>("map");
   const {
     filters,
     showFilters,
