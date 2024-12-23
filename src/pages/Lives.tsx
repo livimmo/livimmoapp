@@ -3,9 +3,13 @@ import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { PropertyList } from "@/components/properties/PropertyList";
 import { mockProperties } from "@/data/mockProperties";
 import { ViewType } from "@/types/search";
+import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { PropertyMapView } from "@/components/map/PropertyMapView";
 
 const Lives = () => {
   const [viewType, setViewType] = useState<ViewType>("all");
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
@@ -31,21 +35,47 @@ const Lives = () => {
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <PropertyFilters
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        propertyType={propertyType}
-        setPropertyType={setPropertyType}
-        priceRange={priceRange}
-        setPriceRange={setPriceRange}
-        surfaceRange={surfaceRange}
-        setSurfaceRange={setSurfaceRange}
-        viewType={viewType}
-        setViewType={setViewType}
-        transactionType={transactionType}
-        setTransactionType={setTransactionType}
-      />
-      <PropertyList properties={filteredProperties} />
+      <div className="flex justify-between items-center mb-6">
+        <PropertyFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          propertyType={propertyType}
+          setPropertyType={setPropertyType}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          surfaceRange={surfaceRange}
+          setSurfaceRange={setSurfaceRange}
+          viewType={viewType}
+          setViewType={setViewType}
+          transactionType={transactionType}
+          setTransactionType={setTransactionType}
+        />
+        <PropertyViewToggle view={viewMode} onViewChange={setViewMode} />
+      </div>
+
+      {viewMode === "map" ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[calc(100vh-200px)] min-h-[600px]">
+          <div className="relative h-[400px] lg:h-full rounded-lg overflow-hidden">
+            <PropertyMapView 
+              properties={filteredProperties}
+            />
+          </div>
+          <ScrollArea className="h-[400px] lg:h-full bg-white rounded-lg shadow-lg p-4">
+            <div className="space-y-4">
+              {filteredProperties.map((property) => (
+                <div
+                  key={property.id}
+                  className="cursor-pointer transition-all hover:ring-2 hover:ring-primary rounded-lg"
+                >
+                  <PropertyList properties={[property]} viewMode="list" />
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
+      ) : (
+        <PropertyList properties={filteredProperties} />
+      )}
     </div>
   );
 };
