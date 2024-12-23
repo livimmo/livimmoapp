@@ -49,3 +49,19 @@ export type PropertyCardProps = Property & {
   offers?: number;
   className?: string;
 };
+
+// Helper type for mock data
+export type MockProperty = Omit<Property, 'id'> & {
+  id: string;
+};
+
+// Type for the auth context
+export interface AuthContextType {
+  user: any | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  switchRole?: (role: string) => Promise<void>;
+}

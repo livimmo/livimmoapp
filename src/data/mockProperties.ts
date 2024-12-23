@@ -8,7 +8,6 @@ const cities = [
   { city: "Rabat", districts: ["Agdal", "Hassan", "Hay Riad", "Les Orangers"] }
 ];
 
-// Types de propriétés étendus
 const propertyTypes = [
   { 
     type: "Usine", 
@@ -36,7 +35,6 @@ const propertyTypes = [
   }
 ];
 
-// Images de propriétés depuis Unsplash
 const propertyImages = [
   "https://images.unsplash.com/photo-1487958449943-2429e8be8625",
   "https://images.unsplash.com/photo-1524230572899-a752b3835840",
@@ -46,7 +44,6 @@ const propertyImages = [
   "https://images.unsplash.com/photo-1493397212122-2b85dda8106b"
 ];
 
-// Agents immobiliers
 const agents = [
   {
     name: "Sarah Martin",
@@ -66,17 +63,14 @@ const agents = [
   }
 ];
 
-// Fonction pour générer des prix aléatoires
 const generateRandomPrice = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1) + min) * 1000;
 };
 
-// Fonction pour générer des surfaces aléatoires
 const generateRandomSurface = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-// Fonction pour générer des coordonnées selon la ville
 export const generateMockCoordinates = (location: string) => {
   const defaultCoords = {
     lat: 33.5731104,
@@ -93,7 +87,6 @@ export const generateMockCoordinates = (location: string) => {
   return cityCoords[location.split(',')[0]] || defaultCoords;
 };
 
-// Helper function to generate a UUID
 const generateUUID = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     const r = Math.random() * 16 | 0;
@@ -102,14 +95,13 @@ const generateUUID = () => {
   });
 };
 
-// Generate mock properties with correct types
-export const mockProperties: Property[] = Array.from({ length: 20 }, (_, index) => {
+export const mockProperties: Property[] = Array.from({ length: 20 }, () => {
   const randomCity = cities[Math.floor(Math.random() * cities.length)];
   const randomDistrict = randomCity.districts[Math.floor(Math.random() * randomCity.districts.length)];
   const randomPropertyType = propertyTypes[Math.floor(Math.random() * propertyTypes.length)];
-  const hasLive = Math.random() > 0.5;
-  const isLiveNow = hasLive && Math.random() > 0.5;
-  const liveDate = hasLive && !isLiveNow ? addDays(new Date(), Math.floor(Math.random() * 14) + 1).toISOString() : null;
+  const has_live = Math.random() > 0.5;
+  const is_live_now = has_live && Math.random() > 0.5;
+  const live_date = has_live && !is_live_now ? addDays(new Date(), Math.floor(Math.random() * 14) + 1).toISOString() : null;
 
   return {
     id: generateUUID(),
@@ -124,13 +116,13 @@ export const mockProperties: Property[] = Array.from({ length: 20 }, (_, index) 
     features: randomPropertyType.features,
     images: [propertyImages[Math.floor(Math.random() * propertyImages.length)]],
     coordinates: generateMockCoordinates(randomCity.city),
-    has_live: hasLive,
+    has_live,
     is_replay: false,
-    has_scheduled_live: hasLive && !isLiveNow,
-    live_date: liveDate,
-    is_live_now: isLiveNow,
-    remaining_seats: !isLiveNow && hasLive ? Math.floor(Math.random() * 20) + 5 : null,
-    viewers: isLiveNow ? Math.floor(Math.random() * 100) : 0,
+    has_scheduled_live: has_live && !is_live_now,
+    live_date,
+    is_live_now,
+    remaining_seats: !is_live_now && has_live ? Math.floor(Math.random() * 20) + 5 : null,
+    viewers: is_live_now ? Math.floor(Math.random() * 100) : 0,
     transaction_type: Math.random() > 0.3 ? "Vente" : "Location",
     virtual_tour: Math.random() > 0.7 ? {
       enabled: true,
@@ -146,10 +138,8 @@ export const mockProperties: Property[] = Array.from({ length: 20 }, (_, index) 
   };
 });
 
-// Base property for compatibility
 export const mockProperty: Property = mockProperties[0];
 
-// Helper function to add coordinates to properties
 export const addCoordinatesToProperties = (properties: Omit<Property, 'coordinates'>[]): Property[] => {
   return properties.map(property => ({
     ...property,
