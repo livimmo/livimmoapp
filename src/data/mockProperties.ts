@@ -36,7 +36,7 @@ export const mockProperties: Property[] = [
       email: mockAgents[0].email,
       phone: mockAgents[0].phone,
       avatar: mockAgents[0].avatar,
-      image: mockAgents[0].avatar, // For backward compatibility
+      image: mockAgents[0].avatar,
       location: "Casablanca",
       type: "agent"
     },

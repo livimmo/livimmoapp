@@ -50,7 +50,7 @@ export interface Property {
       likes: number;
       shares: number;
       totalVisits?: number;
-      averageTime?: number;
+      averageTime?: string;
       popularRooms?: {
         name: string;
         visits: number;

@@ -1,12 +1,14 @@
+export type AgentType = "agent" | "promoter";
+
 export interface Agent {
   id: string;
   name: string;
   email: string;
   phone: string;
   avatar: string;
-  image?: string; // Adding for backward compatibility
+  image?: string; // For backward compatibility
   location: string;
-  type: "agent" | "promoter";
+  type: AgentType;
   company?: string;
   companyLogo?: string;
   description?: string;
