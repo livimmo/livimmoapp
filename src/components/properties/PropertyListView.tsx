@@ -15,7 +15,7 @@ export const PropertyListView = ({ properties, onPropertyClick }: PropertyListVi
           onClick={() => onPropertyClick?.(property)}
           className="cursor-pointer"
         >
-          <PropertyCard {...property} />
+          <PropertyCard property={property} />
         </div>
       ))}
     </div>
