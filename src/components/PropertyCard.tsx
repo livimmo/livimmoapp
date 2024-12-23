@@ -64,7 +64,7 @@ export const PropertyCard = ({
         className
       )}>
         <PropertyCardImage
-          id={id}
+          id={typeof id === 'string' ? id : id.toString()}
           title={title}
           image={images?.[0] || ''}
           has_live={has_live}
@@ -82,7 +82,7 @@ export const PropertyCard = ({
         />
         
         <PropertyInfo
-          id={id}
+          id={typeof id === 'string' ? id : id.toString()}
           title={title}
           price={price}
           location={location}
@@ -109,7 +109,7 @@ export const PropertyCard = ({
         <DialogContent className="max-w-[95vw] md:max-w-6xl h-[90vh] p-0 md:p-6">
           <VirtualTourViewer360
             tourUrl="TzhRashYdRt"
-            propertyId={id}
+            propertyId={typeof id === 'string' ? id : id.toString()}
             propertyTitle={title}
             agentId={agent_id}
             onContactAgent={() => {}}
