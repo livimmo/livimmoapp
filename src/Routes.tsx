@@ -8,7 +8,7 @@ import AgentDetail from "@/pages/AgentDetail";
 import Developers from "@/pages/Developers";
 import DeveloperDetail from "@/pages/DeveloperDetail";
 import Lives from "@/pages/Lives";
-import { LiveStream } from "@/pages/JoinLive";
+import LiveStream from "@/pages/JoinLive";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import Profile from "@/pages/Profile";
@@ -17,6 +17,7 @@ import PropertyManagement from "@/pages/PropertyManagement";
 import OwnerDashboard from "@/pages/OwnerDashboard";
 import Notifications from "@/pages/Notifications";
 import DeveloperDashboard from "@/pages/DeveloperDashboard";
+import Directory from "@/pages/Directory";
 
 export const Routes = () => {
   return (
@@ -39,6 +40,7 @@ export const Routes = () => {
       <Route path="/property-management" element={<PropertyManagement />} />
       <Route path="/owner-dashboard" element={<OwnerDashboard />} />
       <Route path="/notifications" element={<Notifications />} />
+      <Route path="/directory" element={<Directory />} />
     </RouterRoutes>
   );
 };

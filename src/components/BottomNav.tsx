@@ -1,91 +1,60 @@
-import { Home, Search, Video, Heart, Building2, Plus, Building } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import { liveStreams } from "@/data/mockLives";
-import { mockFavoritesData } from "@/data/mockFavorites";
-import { mockProperties } from "@/data/mockProperties";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Home, Search, Video, Book, User } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const BottomNav = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, user } = useAuth();
 
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
-  const isAgent = user?.role === "agent" || user?.role === "promoter";
-  const isOwner = user?.role === "owner";
-  const showMyProperties = isAgent || isOwner;
-  
-  const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
-  const favoritesCount = mockFavoritesData.length;
-  const myPropertiesCount = mockProperties.filter(property => 
-    (isAgent && property.agent?.id === user?.id) || 
-    (isOwner && property.ownerId === user?.id)
-  ).length;
-
-  const getSubmitButtonLabel = () => {
-    if (isOwner) return "Déposer";
-    if (user?.role === "agent") return "Ajouter";
-    if (user?.role === "promoter") return "Projet";
-    return "Déposer";
-  };
-
   const navItems = [
-    { icon: Home, label: "Accueil", path: "/" },
-    { icon: Search, label: "Recherche", path: "/search" },
-    { 
-      icon: Video, 
-      label: "Lives", 
+    {
+      icon: Home,
+      label: "Accueil",
+      path: "/",
+    },
+    {
+      icon: Search,
+      label: "Rechercher",
+      path: "/search",
+    },
+    {
+      icon: Video,
+      label: "Lives",
       path: "/lives",
-      badge: activeLivesCount > 0 ? activeLivesCount : undefined 
     },
-    { 
-      icon: Heart, 
-      label: "Favoris", 
-      path: "/favorites",
-      badge: isAuthenticated && favoritesCount > 0 ? favoritesCount : undefined
+    {
+      icon: Book,
+      label: "Annuaire",
+      path: "/directory",
     },
-    ...(user?.role === "promoter" ? [{
-      icon: Building,
-      label: "Mes Projets",
-      path: "/developer-dashboard",
-      badge: myPropertiesCount > 0 ? myPropertiesCount : undefined
-    }] : []),
-    ...(showMyProperties && user?.role !== "promoter" ? [{ 
-      icon: Building2, 
-      label: "Mes Biens", 
-      path: isOwner ? "/owner-dashboard" : "/my-properties",
-      badge: myPropertiesCount > 0 ? myPropertiesCount : undefined
-    }] : []),
-    ...(isAgent || isOwner ? [{
-      icon: Plus,
-      label: getSubmitButtonLabel(),
-      path: "/submit-property"
-    }] : [])
+    {
+      icon: User,
+      label: "Profil",
+      path: "/profile",
+    },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 z-50">
-      <div className="flex justify-around items-center max-w-screen-xl mx-auto">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 md:hidden">
+      <div className="flex justify-between items-center px-4 py-2">
         {navItems.map((item) => (
-          <Link
+          <button
             key={item.path}
-            to={item.path}
-            className={`flex flex-col items-center p-2 relative ${
+            onClick={() => navigate(item.path)}
+            className={cn(
+              "flex flex-col items-center gap-1 p-2 text-sm",
               isActive(item.path)
                 ? "text-primary"
-                : "text-gray-500 hover:text-primary"
-            }`}
+                : "text-gray-500 hover:text-gray-900"
+            )}
           >
             <item.icon className="w-5 h-5" />
-            {item.badge !== undefined && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
-                {item.badge}
-              </span>
-            )}
-            <span className="text-xs mt-1">{item.label}</span>
-          </Link>
+            <span className="text-xs">{item.label}</span>
+          </button>
         ))}
       </div>
     </nav>
