@@ -2,7 +2,7 @@ import { Property } from "@/types/property";
 
 export const featuredProperties: Property[] = [
   {
-    id: 1,
+    id: "1",
     title: "Villa Moderne avec Piscine",
     price: 2500000,
     location: "Marrakech",
@@ -20,7 +20,7 @@ export const featuredProperties: Property[] = [
     hasLive: true,
     liveDate: new Date("2024-03-15"),
     agent: {
-      id: 1,
+      id: "1",
       name: "Karim Benjelloun",
       image: "https://i.pravatar.cc/150?u=karim",
       phone: "+212 6 00 11 22 33",
@@ -80,7 +80,7 @@ export const featuredProperties: Property[] = [
     }
   },
   {
-    id: 2,
+    id: "2",
     title: "Appartement Vue Mer",
     price: 1800000,
     location: "Tanger",
@@ -97,7 +97,7 @@ export const featuredProperties: Property[] = [
     ],
     hasLive: false,
     agent: {
-      id: 2,
+      id: "2",
       name: "Sophia Martinez",
       image: "https://i.pravatar.cc/150?u=sophia",
       phone: "+212 6 11 22 33 44",
