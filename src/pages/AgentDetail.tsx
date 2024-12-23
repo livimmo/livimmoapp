@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
-import { Agent } from "@/types/agent";
+import { type Agent } from "@/types/agent";
 import { AgentHeader } from "@/components/agent/AgentHeader";
 import { AgentStats } from "@/components/agent/AgentStats";
-import { AgentProperties } from "@/components/agents/AgentProperties";
-import { AgentLives } from "@/components/agents/AgentLives";
+import { AgentProperties } from "@/components/agent/AgentProperties";
+import { AgentLives } from "@/components/agent/AgentLives";
 import { mockAgents } from "@/data/mockAgents";
 import { mockProperties } from "@/data/mockProperties";
 

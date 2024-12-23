@@ -19,4 +19,10 @@ export interface Agent {
   completedLives?: number;
   scheduledLives?: number;
   soldProperties?: number;
+  specialties?: string[];
+  social?: {
+    facebook?: string;
+    instagram?: string;
+    linkedin?: string;
+  };
 }

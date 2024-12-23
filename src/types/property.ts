@@ -14,13 +14,13 @@ export interface Property {
   description: string;
   features: string[];
   images: string[];
-  hasLive?: boolean;
-  liveDate?: Date;
-  agent: Agent;
   coordinates: {
     lat: number;
     lng: number;
   };
+  agent: Agent;
+  hasLive?: boolean;
+  liveDate?: Date;
   transactionType: "Vente" | "Location";
   status?: PropertyStatus;
   isLiveNow?: boolean;
