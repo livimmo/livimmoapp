@@ -1,4 +1,6 @@
-export type AccountType = "agent" | "developer" | "owner" | "tenant" | "buyer" | "user";
+export type AccountType = "agent" | "promoter" | "developer" | "owner" | "tenant" | "buyer" | "user";
+
+export type UserRole = AccountType; // Pour la rétrocompatibilité
 
 export interface User {
   id: string;
@@ -9,4 +11,8 @@ export interface User {
   role: AccountType;
   avatar?: string;
   verified?: boolean;
+  location?: string;
+  description?: string;
+  company?: string;
+  companyLogo?: string;
 }
