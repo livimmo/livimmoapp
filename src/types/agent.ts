@@ -8,6 +8,7 @@ export interface Agent {
   location: string;
   type: string;
   company?: string;
+  companyLogo?: string;
   verified?: boolean;
   rating?: number;
   totalReviews?: number;
@@ -16,9 +17,15 @@ export interface Agent {
   scheduledLives?: number;
   soldProperties?: number;
   description?: string;
+  specialties?: string[];
   contact?: {
     phone: string;
     email: string;
     whatsapp?: string;
+    social?: {
+      facebook?: string;
+      instagram?: string;
+      linkedin?: string;
+    };
   };
 }
