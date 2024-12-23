@@ -40,7 +40,7 @@ export interface Property {
   tags: string[] | null;
 }
 
-// Type pour les props du PropertyCard
+// Type for the PropertyCard props
 export type PropertyCardProps = Property & {
   viewers?: number;
   isLiveNow?: boolean;
