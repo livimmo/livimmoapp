@@ -6,6 +6,8 @@ import { NotificationSettings } from "./NotificationSettings";
 import { VisitsCalendarSection } from "./VisitsCalendarSection";
 import { OffersSection } from "./OffersSection";
 import { Notification } from "@/types/notification";
+import { Bell, Calendar, Home, MessageCircle, Settings, DollarSign } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface NotificationTabsProps {
   notifications: Notification[];
@@ -24,6 +26,9 @@ export const NotificationTabs = ({
   setActiveTab,
   onMarkAsRead,
 }: NotificationTabsProps) => {
+  const { user } = useAuth();
+  const isAgent = user?.role === "agent" || user?.role === "promoter";
+
   const getFilteredNotifications = (tab: string) => {
     if (tab === "all") return notifications;
     return notifications.filter(n => n.type === tab);
@@ -32,7 +37,8 @@ export const NotificationTabs = ({
   return (
     <Tabs defaultValue="all" className="w-full" value={activeTab} onValueChange={setActiveTab}>
       <TabsList className="grid w-full grid-cols-6 mb-4">
-        <TabsTrigger value="all">
+        <TabsTrigger value="all" className="flex items-center gap-2">
+          <Bell className="h-4 w-4" />
           Tout
           {unreadCount > 0 && (
             <Badge variant="secondary" className="ml-2">
@@ -40,7 +46,8 @@ export const NotificationTabs = ({
             </Badge>
           )}
         </TabsTrigger>
-        <TabsTrigger value="live">
+        <TabsTrigger value="live" className="flex items-center gap-2">
+          <Calendar className="h-4 w-4" />
           Lives
           {unreadLiveCount > 0 && (
             <Badge variant="secondary" className="ml-2">
@@ -48,10 +55,22 @@ export const NotificationTabs = ({
             </Badge>
           )}
         </TabsTrigger>
-        <TabsTrigger value="favorite">Favoris</TabsTrigger>
-        <TabsTrigger value="offer">Offres</TabsTrigger>
-        <TabsTrigger value="general">Général</TabsTrigger>
-        <TabsTrigger value="settings">Paramètres</TabsTrigger>
+        <TabsTrigger value="favorite" className="flex items-center gap-2">
+          <Home className="h-4 w-4" />
+          Favoris
+        </TabsTrigger>
+        <TabsTrigger value="offer" className="flex items-center gap-2">
+          <DollarSign className="h-4 w-4" />
+          Offres
+        </TabsTrigger>
+        <TabsTrigger value="general" className="flex items-center gap-2">
+          <MessageCircle className="h-4 w-4" />
+          Général
+        </TabsTrigger>
+        <TabsTrigger value="settings" className="flex items-center gap-2">
+          <Settings className="h-4 w-4" />
+          Paramètres
+        </TabsTrigger>
       </TabsList>
 
       {["all", "live", "favorite", "general"].map((tab) => (

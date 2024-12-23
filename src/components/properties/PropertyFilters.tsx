@@ -42,15 +42,14 @@ export const PropertyFilters = ({
   const [showFilters, setShowFilters] = useState(false);
 
   return (
-    <div className="space-y-4 mb-6">
-      <div className="flex gap-2">
-        <div className="relative flex-1">
-          <SmartSearchBar
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            suggestions={suggestions}
-          />
-        </div>
+    <div className="space-y-4 mb-6 w-full max-w-7xl mx-auto px-4">
+      <SmartSearchBar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        suggestions={suggestions}
+      />
+      
+      <div className="flex items-center justify-between w-full">
         <Button
           variant="outline"
           size="icon"

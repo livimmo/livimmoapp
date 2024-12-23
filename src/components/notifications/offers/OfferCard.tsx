@@ -1,26 +1,28 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckSquare, XSquare, AlertOctagon } from "lucide-react";
+import { Phone, Calendar, CheckSquare, XSquare, AlertOctagon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface OfferCardProps {
   offer: any;
-  isAgent: boolean;
-  onAccept?: () => void;
-  onReject?: () => void;
-  onModify?: () => void;
-  onContact?: () => void;
-  onScheduleVisit?: () => void;
+  onAccept: (offerId: string) => void;
+  onReject: (offerId: string) => void;
+  onModify: (offerId: string) => void;
+  onContact: (offerId: string) => void;
 }
 
-export const OfferCard = ({
-  offer,
-  isAgent,
-  onAccept,
-  onReject,
-  onModify,
-  onContact,
-  onScheduleVisit,
+export const OfferCard = ({ 
+  offer, 
+  onAccept, 
+  onReject, 
+  onModify, 
+  onContact 
 }: OfferCardProps) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const isAgent = user?.role === "agent" || user?.role === "promoter";
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "pending":
@@ -47,6 +49,10 @@ export const OfferCard = ({
     }
   };
 
+  const handleScheduleVisit = () => {
+    navigate(`/properties/${offer.id}/visit`);
+  };
+
   return (
     <Card className="p-4 mb-4">
       <div className="flex items-start justify-between">
@@ -57,9 +63,15 @@ export const OfferCard = ({
             <p className="font-medium">
               {offer.amount.toLocaleString()} MAD
             </p>
-            <p className="text-sm text-muted-foreground">
-              {isAgent ? `Acheteur: ${offer.buyer}` : `Agent: ${offer.agent}`} - {offer.date.toLocaleDateString()}
-            </p>
+            {isAgent ? (
+              <p className="text-sm text-muted-foreground">
+                {offer.buyerName} - {new Date(offer.date).toLocaleDateString()}
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                {offer.agent} - {new Date(offer.date).toLocaleDateString()}
+              </p>
+            )}
           </div>
         </div>
         <div className="flex flex-col items-end">
@@ -72,30 +84,53 @@ export const OfferCard = ({
         </div>
       </div>
       
-      {isAgent && offer.status === "pending" && (
-        <div className="flex gap-2 mt-4">
-          <Button size="sm" variant="outline" className="flex-1" onClick={onAccept}>
-            Accepter
-          </Button>
-          <Button size="sm" variant="outline" className="flex-1" onClick={onReject}>
-            Refuser
-          </Button>
-          <Button size="sm" variant="outline" className="flex-1" onClick={onModify}>
-            Modifier
-          </Button>
-        </div>
-      )}
-      
-      {!isAgent && offer.status === "accepted" && (
-        <div className="flex gap-2 mt-4">
-          <Button size="sm" variant="outline" className="flex-1" onClick={onContact}>
-            Contacter l'agent
-          </Button>
-          <Button size="sm" variant="outline" className="flex-1" onClick={onScheduleVisit}>
-            Planifier une visite
-          </Button>
-        </div>
-      )}
+      <div className="flex flex-wrap gap-2 mt-4">
+        {isAgent && offer.status === "pending" ? (
+          <>
+            <Button size="sm" variant="outline" onClick={() => onAccept(offer.id)}>
+              Accepter
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => onReject(offer.id)}>
+              Refuser
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => onModify(offer.id)}>
+              Modifier
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              onClick={() => onContact(offer.id)} 
+              className="flex items-center gap-2"
+            >
+              <Phone className="h-4 w-4" />
+              Contacter {isAgent ? "l'acheteur" : "l'agent"}
+            </Button>
+            {!isAgent && (
+              <>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={() => onModify(offer.id)}
+                >
+                  Modifier l'offre
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={handleScheduleVisit} 
+                  className="flex items-center gap-2"
+                >
+                  <Calendar className="h-4 w-4" />
+                  Planifier une visite
+                </Button>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </Card>
   );
 };
