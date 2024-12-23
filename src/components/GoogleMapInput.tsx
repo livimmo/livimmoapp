@@ -14,10 +14,11 @@ const defaultCenter = {
   lng: -7.0926
 };
 
-const libraries = ["places", "geometry"] as ["places", "geometry"];
+const libraries: ("places" | "geometry")[] = ["places", "geometry"];
 
 export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: GoogleMapInputProps) => {
   const [markerPosition, setMarkerPosition] = useState(defaultCenter);
+  const mapRef = useRef<google.maps.Map | null>(null);
   
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -25,14 +26,35 @@ export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: 
   });
 
   const handleMapClick = async (e: google.maps.MapMouseEvent) => {
-    if (!e.latLng) return;
+    if (!e.latLng || !isLoaded) return;
     
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
     setMarkerPosition({ lat, lng });
 
     try {
-      const geocoder = new google.maps.Geocoder();
+      const geocoder = new window.google.maps.Geocoder();
+      const response = await geocoder.geocode({ location: { lat, lng } });
+      
+      if (response.results[0]) {
+        const location = response.results[0].formatted_address;
+        onLocationSelect?.(location);
+        onChange?.(location);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la géocodification:", error);
+    }
+  };
+
+  const handleMarkerDragEnd = async (e: google.maps.MapMouseEvent) => {
+    if (!e.latLng || !isLoaded) return;
+    
+    const lat = e.latLng.lat();
+    const lng = e.latLng.lng();
+    setMarkerPosition({ lat, lng });
+    
+    try {
+      const geocoder = new window.google.maps.Geocoder();
       const response = await geocoder.geocode({ location: { lat, lng } });
       
       if (response.results[0]) {
@@ -59,6 +81,9 @@ export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: 
       center={defaultCenter}
       zoom={5}
       onClick={handleMapClick}
+      onLoad={(map) => {
+        mapRef.current = map;
+      }}
       options={{
         zoomControl: true,
         streetViewControl: false,
@@ -69,21 +94,7 @@ export const GoogleMapInput = ({ onLocationSelect, value, onChange, required }: 
       <Marker
         position={markerPosition}
         draggable={true}
-        onDragEnd={async (e) => {
-          if (!e.latLng) return;
-          const lat = e.latLng.lat();
-          const lng = e.latLng.lng();
-          setMarkerPosition({ lat, lng });
-          
-          const geocoder = new google.maps.Geocoder();
-          const response = await geocoder.geocode({ location: { lat, lng } });
-          
-          if (response.results[0]) {
-            const location = response.results[0].formatted_address;
-            onLocationSelect?.(location);
-            onChange?.(location);
-          }
-        }}
+        onDragEnd={handleMarkerDragEnd}
       />
     </GoogleMap>
   );
