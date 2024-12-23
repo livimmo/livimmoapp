@@ -15,8 +15,9 @@ export interface Property {
   liveDate?: Date;
   status?: 'available' | 'pending' | 'sold' | 'rented';
   createdAt?: Date;
+  ownerId?: string;
   agent: {
-    id?: number;
+    id?: string;
     name: string;
     image: string;
     phone: string;
