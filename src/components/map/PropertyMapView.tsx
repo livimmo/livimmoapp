@@ -10,10 +10,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface PropertyMapViewProps {
   properties: Property[];
   onMarkerClick?: (property: Property) => void;
-  hoveredProperty?: Property | null;
 }
 
-export const PropertyMapView = ({ properties, onMarkerClick, hoveredProperty }: PropertyMapViewProps) => {
+export const PropertyMapView = ({ properties, onMarkerClick }: PropertyMapViewProps) => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const { toast } = useToast();
 
@@ -65,7 +64,7 @@ export const PropertyMapView = ({ properties, onMarkerClick, hoveredProperty }: 
         lat: properties.reduce((sum, p) => sum + p.coordinates.lat, 0) / properties.length,
         lng: properties.reduce((sum, p) => sum + p.coordinates.lng, 0) / properties.length,
       }
-    : { lat: 31.7917, lng: -7.0926 };
+    : { lat: 31.7917, lng: -7.0926 }; // Centre du Maroc par défaut
 
   return (
     <>
@@ -103,16 +102,16 @@ export const PropertyMapView = ({ properties, onMarkerClick, hoveredProperty }: 
           />
         ))}
 
-        {(hoveredProperty || selectedProperty) && (
+        {selectedProperty && (
           <InfoWindow
             position={{
-              lat: (hoveredProperty || selectedProperty)!.coordinates.lat,
-              lng: (hoveredProperty || selectedProperty)!.coordinates.lng
+              lat: selectedProperty.coordinates.lat,
+              lng: selectedProperty.coordinates.lng
             }}
             onCloseClick={() => setSelectedProperty(null)}
           >
             <div className="w-[280px]">
-              <PropertyCard {...(hoveredProperty || selectedProperty)!} />
+              <PropertyCard {...selectedProperty} />
             </div>
           </InfoWindow>
         )}

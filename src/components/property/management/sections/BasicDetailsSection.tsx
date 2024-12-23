@@ -1,26 +1,26 @@
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { EyeOff, Eye } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 
 interface BasicDetailsSectionProps {
   title: string;
   description: string;
   price: string;
   surface: string;
+  rooms: string;
   propertyType: string;
-  status: string;
-  visitType: string;
+  transactionType: "Vente" | "Location";
+  features: string[];
   onTitleChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
   onPriceChange: (value: string) => void;
   onSurfaceChange: (value: string) => void;
+  onRoomsChange: (value: string) => void;
   onPropertyTypeChange: (value: string) => void;
-  onStatusChange: (value: string) => void;
-  onVisitTypeChange: (value: string) => void;
+  onTransactionTypeChange: (value: "Vente" | "Location") => void;
+  onFeaturesChange: (value: string[]) => void;
 }
 
 export const BasicDetailsSection = ({
@@ -28,120 +28,110 @@ export const BasicDetailsSection = ({
   description,
   price,
   surface,
+  rooms,
   propertyType,
-  status,
-  visitType,
+  transactionType,
+  features,
   onTitleChange,
   onDescriptionChange,
   onPriceChange,
   onSurfaceChange,
+  onRoomsChange,
   onPropertyTypeChange,
-  onStatusChange,
-  onVisitTypeChange,
+  onTransactionTypeChange,
+  onFeaturesChange,
 }: BasicDetailsSectionProps) => {
-  const [showPrice, setShowPrice] = useState(true);
-
   return (
-    <div className="space-y-6">
-      <div className="space-y-4">
+    <div className="space-y-4">
+      <div>
+        <Label htmlFor="title">Titre*</Label>
+        <Input
+          id="title"
+          value={title}
+          onChange={(e) => onTitleChange(e.target.value)}
+          placeholder="Ex: Appartement moderne avec vue sur mer"
+          required
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="description">Description*</Label>
+        <Textarea
+          id="description"
+          value={description}
+          onChange={(e) => onDescriptionChange(e.target.value)}
+          placeholder="Description détaillée du bien..."
+          required
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="title">Titre*</Label>
+          <Label htmlFor="transactionType">Type de transaction*</Label>
+          <Select value={transactionType} onValueChange={onTransactionTypeChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sélectionner" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Vente">Vente</SelectItem>
+              <SelectItem value="Location">Location</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
+          <Label htmlFor="price">Prix (MAD)*</Label>
           <Input
-            id="title"
-            value={title}
-            onChange={(e) => onTitleChange(e.target.value)}
-            placeholder="Ex: Appartement moderne au centre-ville"
+            id="price"
+            type="number"
+            value={price}
+            onChange={(e) => onPriceChange(e.target.value)}
+            placeholder="Prix en MAD"
             required
           />
-        </div>
-
-        <div>
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            value={description}
-            onChange={(e) => onDescriptionChange(e.target.value)}
-            placeholder="Décrivez votre bien..."
-            className="h-32"
-          />
-        </div>
-
-        <div className="relative">
-          <Label htmlFor="price">Prix*</Label>
-          <div className="relative">
-            <Input
-              id="price"
-              type={showPrice ? "text" : "password"}
-              value={price}
-              onChange={(e) => onPriceChange(e.target.value)}
-              placeholder="Ex: 500000"
-              required
-              className="pr-10"
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-1/2 -translate-y-1/2"
-              onClick={() => setShowPrice(!showPrice)}
-            >
-              {showPrice ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </Button>
-          </div>
         </div>
 
         <div>
           <Label htmlFor="surface">Surface (m²)*</Label>
           <Input
             id="surface"
+            type="number"
             value={surface}
             onChange={(e) => onSurfaceChange(e.target.value)}
-            placeholder="Ex: 75"
+            placeholder="Surface en m²"
             required
           />
         </div>
 
         <div>
+          <Label htmlFor="rooms">Nombre de pièces*</Label>
+          <Select value={rooms} onValueChange={onRoomsChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sélectionner" />
+            </SelectTrigger>
+            <SelectContent>
+              {Array.from({ length: 10 }, (_, i) => (
+                <SelectItem key={i + 1} value={(i + 1).toString()}>
+                  {i + 1} {i === 0 ? "pièce" : "pièces"}
+                </SelectItem>
+              ))}
+              <SelectItem value="10+">10+ pièces</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
           <Label htmlFor="propertyType">Type de bien*</Label>
-          <Select value={propertyType} onValueChange={onPropertyTypeChange} required>
-            <SelectTrigger id="propertyType">
-              <SelectValue placeholder="Sélectionnez un type" />
+          <Select value={propertyType} onValueChange={onPropertyTypeChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sélectionner le type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="apartment">Appartement</SelectItem>
-              <SelectItem value="house">Maison</SelectItem>
-              <SelectItem value="villa">Villa</SelectItem>
-              <SelectItem value="land">Terrain</SelectItem>
-              <SelectItem value="commercial">Local commercial</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <Label htmlFor="status">Statut</Label>
-          <Select value={status} onValueChange={onStatusChange}>
-            <SelectTrigger id="status">
-              <SelectValue placeholder="Sélectionnez un statut" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="available">Disponible</SelectItem>
-              <SelectItem value="pending">En attente</SelectItem>
-              <SelectItem value="sold">Vendu</SelectItem>
-              <SelectItem value="rented">Loué</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <Label htmlFor="visitType">Type de visite</Label>
-          <Select value={visitType} onValueChange={onVisitTypeChange}>
-            <SelectTrigger id="visitType">
-              <SelectValue placeholder="Sélectionnez un type de visite" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="live">Live</SelectItem>
-              <SelectItem value="physical">Physique</SelectItem>
-              <SelectItem value="virtual">Virtuelle</SelectItem>
+              {PROPERTY_TYPES.map((type) => (
+                <SelectItem key={type} value={type}>
+                  {type}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

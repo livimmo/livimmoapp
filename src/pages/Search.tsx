@@ -8,13 +8,9 @@ import { useSearchFilters } from "@/hooks/useSearchFilters";
 import { mockProperties } from "@/data/mockProperties";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Header } from "@/components/layout/Header";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { PropertyMapView } from "@/components/map/PropertyMapView";
-import { PropertyList } from "@/components/properties/PropertyList";
 
 const Search = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
-  const [hoveredProperty, setHoveredProperty] = useState<Property | null>(null);
   const {
     filters,
     showFilters,
@@ -79,35 +75,10 @@ const Search = () => {
             setViewMode={setViewMode}
             resultsCount={filteredProperties.length}
           />
-          {viewMode === "map" ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[calc(100vh-200px)] min-h-[600px]">
-              <div className="relative h-[400px] lg:h-full rounded-lg overflow-hidden">
-                <PropertyMapView 
-                  properties={filteredProperties}
-                  hoveredProperty={hoveredProperty}
-                />
-              </div>
-              <ScrollArea className="h-[400px] lg:h-full bg-white rounded-lg shadow-lg p-4">
-                <div className="space-y-4">
-                  {filteredProperties.map((property) => (
-                    <div
-                      key={property.id}
-                      className="cursor-pointer transition-all hover:ring-2 hover:ring-primary rounded-lg"
-                      onMouseEnter={() => setHoveredProperty(property)}
-                      onMouseLeave={() => setHoveredProperty(null)}
-                    >
-                      <PropertyList properties={[property]} viewMode="list" />
-                    </div>
-                  ))}
-                </div>
-              </ScrollArea>
-            </div>
-          ) : (
-            <SearchContent
-              filteredProperties={filteredProperties}
-              viewMode={viewMode}
-            />
-          )}
+          <SearchContent
+            filteredProperties={filteredProperties}
+            viewMode={viewMode}
+          />
         </div>
       </div>
     </AuthProvider>

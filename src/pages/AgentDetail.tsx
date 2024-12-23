@@ -3,7 +3,7 @@ import { mockAgents } from "@/data/mockAgents";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { mockProperties } from "@/data/mockProperties";
-import { scheduledLives, replayLives } from "@/data/mockLives";
+import { scheduledLives } from "@/data/mockLives";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Phone, Mail, Facebook, Instagram, Linkedin } from "lucide-react";
 import { AgentHeader } from "@/components/agent/AgentHeader";
@@ -31,11 +31,6 @@ const AgentDetail = () => {
   // Filtrer les lives programmés de l'agent
   const agentLives = scheduledLives.filter(live => 
     live.agent === agent.name
-  );
-
-  // Filtrer les replays de l'agent
-  const agentReplays = replayLives.filter(replay =>
-    replay.agent === agent.name
   );
 
   return (
@@ -102,7 +97,6 @@ const AgentDetail = () => {
           <TabsList className="w-full justify-start">
             <TabsTrigger value="properties">Biens actifs</TabsTrigger>
             <TabsTrigger value="lives">Lives programmés</TabsTrigger>
-            <TabsTrigger value="replays">Replays</TabsTrigger>
             <TabsTrigger value="sold">Biens vendus</TabsTrigger>
           </TabsList>
           
@@ -112,10 +106,6 @@ const AgentDetail = () => {
 
           <TabsContent value="lives" className="mt-6">
             <AgentLives lives={agentLives} />
-          </TabsContent>
-
-          <TabsContent value="replays" className="mt-6">
-            <AgentLives lives={agentReplays} />
           </TabsContent>
 
           <TabsContent value="sold" className="mt-6">

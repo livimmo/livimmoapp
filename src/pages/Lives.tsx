@@ -1,86 +1,300 @@
 import { useState } from "react";
+import { Map, List } from "lucide-react";
+import { LiveCalendarView } from "@/components/live/LiveCalendarView";
+import { ScheduledLivesList } from "@/components/live/ScheduledLivesList";
+import { ReplayCard } from "@/components/live/ReplayCard";
+import { Button } from "@/components/ui/button";
+import { PropertyCard } from "@/components/PropertyCard";
+import { LiveGoogleMap } from "@/components/live/LiveGoogleMap";
+import { scheduledLives, liveStreams, replayLives } from "@/data/mockLives";
+import { type Property } from "@/types/property";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
-import { PropertyList } from "@/components/properties/PropertyList";
-import { mockProperties } from "@/data/mockProperties";
-import { ViewType } from "@/types/search";
-import { Property } from "@/types/property"; // Fixed import path
-import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { PropertyMapView } from "@/components/map/PropertyMapView";
+import { HeroBanner } from "@/components/home/HeroBanner";
 
 const Lives = () => {
-  const [viewType, setViewType] = useState<ViewType>("all");
-  const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  const [currentLivesViewMode, setCurrentLivesViewMode] = useState<"list" | "map">("list");
+  const [scheduledViewMode, setScheduledViewMode] = useState<"list" | "map">("list");
+  const [replayViewMode, setReplayViewMode] = useState<"list" | "map">("list");
+  
+  // Filter states
   const [searchTerm, setSearchTerm] = useState("");
-  const [propertyType, setPropertyType] = useState("");
+  const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
-  const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
+  const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
+  const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
-  const [hoveredProperty, setHoveredProperty] = useState<Property | null>(null);
 
-  const filteredProperties = mockProperties.filter((property) => {
-    const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      property.location.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = !propertyType || property.type === propertyType;
-    const matchesPriceRange = property.price >= priceRange[0] && property.price <= priceRange[1];
-    const matchesSurfaceRange = property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
-    const matchesTransactionType = transactionType.includes(property.transactionType);
-    const matchesViewType = viewType === "all" ? true :
-      viewType === "live" ? property.hasLive :
-      viewType === "replay" ? property.isReplay :
-      viewType === "scheduled" ? property.hasScheduledLive :
-      property.virtualTour?.enabled;
+  // Filter function for both current and scheduled lives
+  const filterLives = (lives: any[]) => {
+    return lives.filter((live) => {
+      const matchesSearch = live.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          live.location.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesType = propertyType === "all" || live.type === propertyType;
+      const price = typeof live.price === 'string' 
+        ? parseInt(live.price.replace(/[^\d]/g, ""))
+        : live.price;
+      const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
+      
+      return matchesSearch && matchesType && matchesPrice;
+    });
+  };
 
-    return matchesSearch && matchesType && matchesPriceRange && 
-           matchesSurfaceRange && matchesTransactionType && matchesViewType;
-  });
+  const filteredCurrentLives = filterLives(liveStreams);
+  const filteredScheduledLives = filterLives(scheduledLives);
+  const filteredReplayLives = filterLives(replayLives);
+
+  // Convert current lives to Property format for the map
+  const currentLiveProperties: Property[] = filteredCurrentLives.map((live) => ({
+    id: live.id,
+    title: live.title,
+    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
+    location: live.location,
+    type: live.type,
+    surface: 0,
+    rooms: 0,
+    bathrooms: 0,
+    description: live.description || "",
+    features: [],
+    images: [live.thumbnail],
+    hasLive: true,
+    liveDate: live.date,
+    agent: {
+      name: live.agent,
+      image: "",
+      phone: "",
+      email: "",
+    },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2 - 1,
+      lng: -7.0926 + Math.random() * 2 - 1,
+    },
+    isLiveNow: true,
+    viewers: live.viewers,
+    remainingSeats: live.availableSeats,
+    transactionType: Math.random() > 0.5 ? "Vente" : "Location"
+  }));
+
+  // Convert scheduled lives to Property format for the map
+  const scheduledLiveProperties: Property[] = filteredScheduledLives.map((live) => ({
+    id: live.id,
+    title: live.title,
+    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
+    location: live.location,
+    type: live.type,
+    surface: 0,
+    rooms: 0,
+    bathrooms: 0,
+    description: "",
+    features: [],
+    images: [live.thumbnail],
+    hasLive: true,
+    liveDate: live.date,
+    agent: {
+      name: live.agent,
+      image: "",
+      phone: "",
+      email: "",
+    },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2 - 1,
+      lng: -7.0926 + Math.random() * 2 - 1,
+    },
+    isLiveNow: false,
+    viewers: 0,
+    remainingSeats: live.availableSeats,
+    transactionType: "Vente"
+  }));
+
+  // Convert replay lives to Property format for the map
+  const replayLiveProperties: Property[] = filteredReplayLives.map((live) => ({
+    id: live.id,
+    title: live.title,
+    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
+    location: live.location,
+    type: live.type,
+    surface: 0,
+    rooms: 0,
+    bathrooms: 0,
+    description: live.description || "",
+    features: [],
+    images: [live.thumbnail],
+    hasLive: true,
+    liveDate: live.date,
+    agent: {
+      name: live.agent,
+      image: "",
+      phone: "",
+      email: "",
+    },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2 - 1,
+      lng: -7.0926 + Math.random() * 2 - 1,
+    },
+    isLiveNow: false,
+    viewers: live.viewers,
+    remainingSeats: live.availableSeats,
+    transactionType: "Vente"
+  }));
+
+  // Suggestions based on available locations and types
+  const suggestions = Array.from(new Set([
+    ...liveStreams.map(live => live.location),
+    ...liveStreams.map(live => live.type),
+    ...scheduledLives.map(live => live.location),
+    ...scheduledLives.map(live => live.type),
+    ...replayLives.map(live => live.location),
+    ...replayLives.map(live => live.type),
+  ]));
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="flex justify-between items-center mb-6">
-        <PropertyFilters
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          propertyType={propertyType}
-          setPropertyType={setPropertyType}
-          priceRange={priceRange}
-          setPriceRange={setPriceRange}
-          surfaceRange={surfaceRange}
-          setSurfaceRange={setSurfaceRange}
-          viewType={viewType}
-          setViewType={setViewType}
-          transactionType={transactionType}
-          setTransactionType={setTransactionType}
-        />
-        <PropertyViewToggle view={viewMode} onViewChange={setViewMode} />
-      </div>
+    <div className="container mx-auto px-4 py-8 mt-12 space-y-8">
+      {/* Hero Banner */}
+      <HeroBanner properties={currentLiveProperties} />
 
-      {viewMode === "map" ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[calc(100vh-200px)] min-h-[600px]">
-          <div className="relative h-[400px] lg:h-full rounded-lg overflow-hidden">
-            <PropertyMapView 
-              properties={filteredProperties}
-              hoveredProperty={hoveredProperty}
-            />
+      <PropertyFilters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        propertyType={propertyType}
+        setPropertyType={setPropertyType}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+        surfaceRange={surfaceRange}
+        setSurfaceRange={setSurfaceRange}
+        viewType={viewType}
+        setViewType={setViewType}
+        suggestions={suggestions}
+        transactionType={transactionType}
+        setTransactionType={setTransactionType}
+      />
+
+      {/* Section des lives en cours */}
+      <section>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <span className="inline-block w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+            Lives en cours
+            <span className="ml-2 text-sm font-normal text-muted-foreground">
+              ({filteredCurrentLives.length})
+            </span>
+          </h2>
+          <div className="flex gap-2">
+            <Button
+              variant={currentLivesViewMode === "list" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setCurrentLivesViewMode("list")}
+            >
+              <List className="h-4 w-4 mr-2" />
+              Liste
+            </Button>
+            <Button
+              variant={currentLivesViewMode === "map" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setCurrentLivesViewMode("map")}
+            >
+              <Map className="h-4 w-4 mr-2" />
+              Carte
+            </Button>
           </div>
-          <ScrollArea className="h-[400px] lg:h-full bg-white rounded-lg shadow-lg p-4">
-            <div className="space-y-4">
-              {filteredProperties.map((property) => (
-                <div
-                  key={property.id}
-                  className="cursor-pointer transition-all hover:ring-2 hover:ring-primary rounded-lg"
-                  onMouseEnter={() => setHoveredProperty(property)}
-                  onMouseLeave={() => setHoveredProperty(null)}
-                >
-                  <PropertyList properties={[property]} viewMode="list" />
-                </div>
+        </div>
+        
+        {filteredCurrentLives.length > 0 ? (
+          currentLivesViewMode === "list" ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {currentLiveProperties.map((property) => (
+                <PropertyCard key={property.id} {...property} />
               ))}
             </div>
-          </ScrollArea>
+          ) : (
+            <div className="h-[500px] rounded-lg overflow-hidden">
+              <LiveGoogleMap properties={currentLiveProperties} />
+            </div>
+          )
+        ) : (
+          <div className="text-center text-muted-foreground">
+            Aucun live en cours pour le moment
+          </div>
+        )}
+      </section>
+
+      {/* Section des lives programmés */}
+      <section>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">
+            Lives programmés
+            <span className="ml-2 text-sm font-normal text-muted-foreground">
+              ({filteredScheduledLives.length})
+            </span>
+          </h2>
+          <div className="flex gap-2">
+            <Button
+              variant={scheduledViewMode === "list" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setScheduledViewMode("list")}
+            >
+              <List className="h-4 w-4 mr-2" />
+              Liste
+            </Button>
+            <Button
+              variant={scheduledViewMode === "map" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setScheduledViewMode("map")}
+            >
+              <Map className="h-4 w-4 mr-2" />
+              Carte
+            </Button>
+          </div>
         </div>
-      ) : (
-        <PropertyList properties={filteredProperties} />
-      )}
+
+        {scheduledViewMode === "list" ? (
+          <ScheduledLivesList lives={filteredScheduledLives} />
+        ) : (
+          <div className="h-[500px] rounded-lg overflow-hidden">
+            <LiveGoogleMap properties={scheduledLiveProperties} />
+          </div>
+        )}
+      </section>
+
+      {/* Section des replays */}
+      <section>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">
+            Replays disponibles
+            <span className="ml-2 text-sm font-normal text-muted-foreground">
+              ({filteredReplayLives.length})
+            </span>
+          </h2>
+          <div className="flex gap-2">
+            <Button
+              variant={replayViewMode === "list" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setReplayViewMode("list")}
+            >
+              <List className="h-4 w-4 mr-2" />
+              Liste
+            </Button>
+            <Button
+              variant={replayViewMode === "map" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setReplayViewMode("map")}
+            >
+              <Map className="h-4 w-4 mr-2" />
+              Carte
+            </Button>
+          </div>
+        </div>
+
+        {replayViewMode === "list" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredReplayLives.map((live) => (
+              <ReplayCard key={live.id} live={live} />
+            ))}
+          </div>
+        ) : (
+          <div className="h-[500px] rounded-lg overflow-hidden">
+            <LiveGoogleMap properties={replayLiveProperties} />
+          </div>
+        )}
+      </section>
     </div>
   );
 };

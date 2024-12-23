@@ -31,7 +31,7 @@ export const mockAgents: Agent[] = [
   {
     id: 2,
     name: "Hicham Berrada",
-    avatar: "/lovable-uploads/009eb69b-be84-4085-a673-f3175f51a1fd.png",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
     company: "Lamap",
     companyLogo: "/lovable-uploads/2c5cdac7-efc4-4b21-af73-7e198de56621.png",
     location: "Rabat",
@@ -45,7 +45,7 @@ export const mockAgents: Agent[] = [
     specialties: ["Résidentiel", "Commercial", "Projets Neufs"],
     verified: true,
     contact: {
-      phone: "+212662122992",
+      phone: "+212 6 23 45 67 89",
       email: "h.berrada@lamap.ma",
       social: {
         linkedin: "https://linkedin.com/in/hicham-berrada",
