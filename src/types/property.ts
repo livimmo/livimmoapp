@@ -18,6 +18,8 @@ export interface Property {
     id?: number;
     name: string;
     image: string;
+    phone: string;
+    email: string;
     company?: string;
     verified?: boolean;
   };
@@ -28,39 +30,16 @@ export interface Property {
   viewers?: number;
   remainingSeats?: number;
   transactionType: string;
-  virtualTour?: {
-    enabled: boolean;
-    url?: string;
-    type?: string;
-    platform?: string;
-    hotspots?: Array<{
-      title: string;
-      description: string;
-      position: { x: number; y: number };
-      details: Array<{ label: string; value: string }>;
-    }>;
-    floorPlan?: {
-      url: string;
-      rooms: Array<{
-        id: string;
-        name: string;
-        area: number;
-        coordinates: { x: number; y: number };
-      }>;
-    };
-    statistics?: {
-      totalVisits: number;
-      averageTime: string;
-      popularRooms: Array<{ name: string; visits: number }>;
-      lastVisits: Array<{ date: string; duration: string }>;
-    };
-  };
   owner?: {
     id: number;
     name: string;
+    email: string;
+    phone: string;
   };
   privateNotes?: string;
   tags?: string[];
   status?: "available" | "pending" | "sold" | "rented";
   createdAt?: Date;
 }
+
+export type PropertyStatus = "available" | "pending" | "sold" | "rented";

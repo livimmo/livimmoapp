@@ -28,30 +28,32 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <Header />
-          <div className="pt-16 pb-20 min-h-screen">
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/lives" element={<Lives />} />
-              <Route path="/favorites" element={<Favorites />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/notifications" element={<Notifications />} />
-              <Route path="/properties" element={<Properties />} />
-              <Route path="/property/:id" element={<PropertyDetail />} />
-              <Route path="/live/:id" element={<JoinLive />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/developers" element={<Developers />} />
-              <Route path="/developer/:id" element={<DeveloperDetail />} />
-              <Route path="/agents" element={<Agents />} />
-              <Route path="/agent/:id" element={<AgentDetail />} />
-              <Route path="/my-properties" element={<PropertyManagement />} />
-              <Route path="/owner-dashboard" element={<OwnerDashboard />} />
-            </Routes>
+          <div className="relative min-h-screen">
+            <Header />
+            <main className="pt-16 pb-24">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/lives" element={<Lives />} />
+                <Route path="/favorites" element={<Favorites />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/notifications" element={<Notifications />} />
+                <Route path="/properties" element={<Properties />} />
+                <Route path="/property/:id" element={<PropertyDetail />} />
+                <Route path="/live/:id" element={<JoinLive />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/developers" element={<Developers />} />
+                <Route path="/developer/:id" element={<DeveloperDetail />} />
+                <Route path="/agents" element={<Agents />} />
+                <Route path="/agent/:id" element={<AgentDetail />} />
+                <Route path="/my-properties" element={<PropertyManagement />} />
+                <Route path="/owner-dashboard" element={<OwnerDashboard />} />
+              </Routes>
+            </main>
+            <BottomNav />
+            <Toaster />
           </div>
-          <BottomNav />
-          <Toaster />
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
