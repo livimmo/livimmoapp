@@ -1,27 +1,28 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import type { Property } from '@/types/property';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { type Property } from "@/types/property";
+import { mockProperties } from "@/data/mockProperties";
 
 export const useProperties = () => {
   const queryClient = useQueryClient();
 
   const { data: properties, isLoading, error } = useQuery({
-    queryKey: ['properties'],
+    queryKey: ["properties"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('properties')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("properties")
+        .select("*");
 
       if (error) throw error;
-      return data as Property[];
+      return (data || []) as Property[];
     },
+    initialData: mockProperties,
   });
 
   const createProperty = useMutation({
-    mutationFn: async (newProperty: Omit<Property, 'id' | 'created_at' | 'updated_at'>) => {
+    mutationFn: async (newProperty: Omit<Property, "id" | "created_at" | "updated_at">) => {
       const { data, error } = await supabase
-        .from('properties')
+        .from("properties")
         .insert([newProperty])
         .select()
         .single();
@@ -30,16 +31,16 @@ export const useProperties = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['properties'] });
+      queryClient.invalidateQueries({ queryKey: ["properties"] });
     },
   });
 
   const updateProperty = useMutation({
-    mutationFn: async ({ id, ...property }: Property) => {
+    mutationFn: async (property: Partial<Property> & { id: string }) => {
       const { data, error } = await supabase
-        .from('properties')
+        .from("properties")
         .update(property)
-        .eq('id', id)
+        .eq("id", property.id)
         .select()
         .single();
 
@@ -47,7 +48,7 @@ export const useProperties = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['properties'] });
+      queryClient.invalidateQueries({ queryKey: ["properties"] });
     },
   });
 

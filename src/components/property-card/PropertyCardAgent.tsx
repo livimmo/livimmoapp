@@ -1,26 +1,38 @@
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { AgentCertificationBadge } from "../agent/AgentCertificationBadge";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PropertyCardAgentProps {
-  agent: {
-    id?: number;
-    name: string;
-    image: string;
-    company?: string;
-    verified?: boolean;
-  };
+  agent_id: string | null;
   district?: string;
 }
 
-export const PropertyCardAgent = ({ agent, district }: PropertyCardAgentProps) => {
+export const PropertyCardAgent = ({ agent_id, district }: PropertyCardAgentProps) => {
   const navigate = useNavigate();
 
+  const { data: agent } = useQuery({
+    queryKey: ['agent', agent_id],
+    queryFn: async () => {
+      if (!agent_id) return null;
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', agent_id)
+        .single();
+      return data;
+    },
+    enabled: !!agent_id
+  });
+
   const handleAgentClick = () => {
-    if (agent.id) {
-      navigate(`/agent/${agent.id}`);
+    if (agent_id) {
+      navigate(`/agent/${agent_id}`);
     }
   };
+
+  if (!agent) return null;
 
   return (
     <div 
@@ -29,11 +41,11 @@ export const PropertyCardAgent = ({ agent, district }: PropertyCardAgentProps) =
     >
       <div className="flex items-center gap-2">
         <Avatar className="h-8 w-8 border border-gray-200">
-          <AvatarImage src={agent.image} alt={agent.name} />
-          <AvatarFallback>{agent.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+          <AvatarImage src={agent.avatar_url} alt={agent.full_name} />
+          <AvatarFallback>{agent.full_name?.split(' ').map(n => n[0]).join('')}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <span className="text-sm font-medium text-gray-900">{agent.name}</span>
+          <span className="text-sm font-medium text-gray-900">{agent.full_name}</span>
           <div className="flex items-center gap-1">
             <span className="text-xs text-gray-500">{agent.company || 'Agent indépendant'}</span>
             {district && (

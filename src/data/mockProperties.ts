@@ -1,7 +1,6 @@
 import { type Property } from "@/types/property";
 import { addDays } from "date-fns";
 
-// Définition des villes et districts
 const cities = [
   { city: "Casablanca", districts: ["Ain Diab", "Gauthier", "Maarif", "Anfa", "Bourgogne"] },
   { city: "Marrakech", districts: ["Guéliz", "Hivernage", "Palmeraie", "Médina"] },
@@ -94,46 +93,60 @@ export const generateMockCoordinates = (location: string) => {
   return cityCoords[location.split(',')[0]] || defaultCoords;
 };
 
-// Génération de 20 propriétés aléatoires
+// Helper function to generate a UUID
+const generateUUID = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+};
+
+// Generate mock properties with correct types
 export const mockProperties: Property[] = Array.from({ length: 20 }, (_, index) => {
   const randomCity = cities[Math.floor(Math.random() * cities.length)];
   const randomDistrict = randomCity.districts[Math.floor(Math.random() * randomCity.districts.length)];
   const randomPropertyType = propertyTypes[Math.floor(Math.random() * propertyTypes.length)];
-  const randomAgent = agents[Math.floor(Math.random() * agents.length)];
   const hasLive = Math.random() > 0.5;
   const isLiveNow = hasLive && Math.random() > 0.5;
-  const liveDate = hasLive && !isLiveNow ? addDays(new Date(), Math.floor(Math.random() * 14) + 1) : undefined;
+  const liveDate = hasLive && !isLiveNow ? addDays(new Date(), Math.floor(Math.random() * 14) + 1).toISOString() : null;
 
   return {
-    id: index + 1,
+    id: generateUUID(),
     title: `${randomPropertyType.type} ${randomCity.city} - ${randomDistrict}`,
-    price: generateRandomPrice(500, 10000),
+    price: Math.floor(Math.random() * 9500000) + 500000,
     location: `${randomCity.city}, ${randomDistrict}`,
     type: randomPropertyType.type,
-    surface: generateRandomSurface(50, 1000),
+    surface: Math.floor(Math.random() * 950) + 50,
     rooms: Math.floor(Math.random() * 10) + 1,
     bathrooms: Math.floor(Math.random() * 5) + 1,
     description: `Magnifique ${randomPropertyType.type.toLowerCase()} situé dans le quartier prisé de ${randomDistrict}, ${randomCity.city}.`,
     features: randomPropertyType.features,
     images: [propertyImages[Math.floor(Math.random() * propertyImages.length)]],
     coordinates: generateMockCoordinates(randomCity.city),
-    hasLive,
-    isLiveNow,
-    liveDate,
+    has_live: hasLive,
+    is_replay: false,
+    has_scheduled_live: hasLive && !isLiveNow,
+    live_date: liveDate,
+    is_live_now: isLiveNow,
+    remaining_seats: !isLiveNow && hasLive ? Math.floor(Math.random() * 20) + 5 : null,
     viewers: isLiveNow ? Math.floor(Math.random() * 100) : 0,
-    remainingSeats: !isLiveNow && hasLive ? Math.floor(Math.random() * 20) + 5 : undefined,
-    isUserRegistered: Math.random() > 0.7,
-    transactionType: Math.random() > 0.3 ? "Vente" : "Location",
-    agent: randomAgent,
-    virtualTour: {
-      enabled: Math.random() > 0.7,
-      type: "360"
-    },
-    status: Math.random() > 0.5 ? "available" : "pending"
+    transaction_type: Math.random() > 0.3 ? "Vente" : "Location",
+    virtual_tour: Math.random() > 0.7 ? {
+      enabled: true,
+      type: "360",
+      url: "TzhRashYdRt"
+    } : null,
+    private_notes: null,
+    agent_id: generateUUID(),
+    status: Math.random() > 0.5 ? "available" : "pending",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    tags: []
   };
 });
 
-// Propriété de base pour la compatibilité
+// Base property for compatibility
 export const mockProperty: Property = mockProperties[0];
 
 // Helper function to add coordinates to properties
