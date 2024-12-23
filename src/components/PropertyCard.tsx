@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { type PropertyWithAgent } from "@/types/database";
+import { type PropertyWithAgent } from "@/types/property";
 import { PropertyInfo } from "./PropertyInfo";
 import { cn } from "@/lib/utils";
 import { useState } from "react";

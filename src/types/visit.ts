@@ -1,27 +1,28 @@
-import { Agent } from "./agent";
+import { type Visit as DatabaseVisit } from "@/types/database";
 
-export type VisitStatus = "pending" | "confirmed" | "ongoing" | "completed" | "cancelled";
-export type VisitType = "physical" | "remote" | "virtual";
-
-export interface Visitor {
-  name: string;
-  phone: string;
-  email: string;
-  message?: string;
-}
-
-export interface Visit {
-  id: number;
-  propertyId: number;
+export interface Visit extends DatabaseVisit {
+  propertyId: string;
   propertyTitle: string;
   propertyImage: string;
   propertyLocation: string;
-  date: Date;
-  time: string;
-  status: VisitStatus;
-  type: VisitType;
-  agent: Agent;
-  visitor: Visitor;
-  isLive?: boolean;
-  liveUrl?: string;
+  visitor: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
 }
+
+export const enrichVisitWithPropertyData = (visit: DatabaseVisit, property: any): Visit => {
+  return {
+    ...visit,
+    propertyId: property.id,
+    propertyTitle: property.title,
+    propertyImage: property.images[0],
+    propertyLocation: property.location,
+    visitor: {
+      id: visit.visitor_id || "",
+      name: "Visitor Name", // This should come from the profile data
+      avatar: "https://i.pravatar.cc/150",
+    }
+  };
+};

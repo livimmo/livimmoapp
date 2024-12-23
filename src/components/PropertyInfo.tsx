@@ -34,7 +34,6 @@ export const PropertyInfo = ({
   remainingSeats,
   isUserRegistered,
 }: PropertyInfoProps) => {
-  // Extract city and district from location
   const [city, district] = location.split(", ");
 
   return (
