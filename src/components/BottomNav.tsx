@@ -1,4 +1,4 @@
-import { Home, Search, Video, Heart, Building2 } from "lucide-react";
+import { Home, Search, Video, Heart, Building2, Plus } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
@@ -20,8 +20,8 @@ export const BottomNav = () => {
   const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
   const favoritesCount = mockFavoritesData.length;
   const myPropertiesCount = mockProperties.filter(property => 
-    property.agent?.id === user?.id || 
-    (isOwner && property.owner?.id === user?.id)
+    (isAgent && property.agent?.id === user?.id) || 
+    (isOwner && property.ownerId === user?.id)
   ).length;
 
   const navItems = [
@@ -45,6 +45,11 @@ export const BottomNav = () => {
       path: isOwner ? "/owner-dashboard" : "/my-properties",
       badge: myPropertiesCount > 0 ? myPropertiesCount : undefined
     }] : []),
+    ...(isAgent || isOwner ? [{
+      icon: Plus,
+      label: "Déposer",
+      path: "/submit-property"
+    }] : [])
   ];
 
   return (

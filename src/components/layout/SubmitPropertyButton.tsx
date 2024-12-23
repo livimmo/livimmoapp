@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { HousePlus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Dialog,
   DialogContent,
@@ -16,11 +17,16 @@ export const SubmitPropertyButton = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Si l'utilisateur est un agent ou un promoteur, on ne montre pas le bouton
-  if (user?.role === "agent" || user?.role === "promoter") {
+  const isAgent = user?.role === "agent" || user?.role === "promoter";
+  const isOwner = user?.role === "owner";
+  const showButton = isAgent || isOwner;
+
+  // Si l'utilisateur n'est pas un agent, propriétaire ou promoteur, on ne montre pas le bouton
+  if (!showButton) {
     return null;
   }
 
@@ -58,6 +64,10 @@ export const SubmitPropertyButton = () => {
     }
   };
 
+  if (isMobile) {
+    return null; // Le bouton est géré par la BottomNav sur mobile
+  }
+
   return (
     <>
       <Button
@@ -66,7 +76,7 @@ export const SubmitPropertyButton = () => {
         size="sm"
         className="hidden md:flex items-center gap-2"
       >
-        <HousePlus className="h-4 w-4" />
+        <Plus className="h-4 w-4" />
         Déposer Votre Bien
       </Button>
 
