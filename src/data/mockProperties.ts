@@ -6,13 +6,6 @@ export const generateMockCoordinates = () => ({
   lng: -7.0926 + (Math.random() - 0.5) * 2,
 });
 
-export const addCoordinatesToProperties = (properties: Omit<Property, "coordinates">[]) => {
-  return properties.map(property => ({
-    ...property,
-    coordinates: generateMockCoordinates(),
-  }));
-};
-
 export const mockProperties: Property[] = [
   {
     id: "1",
@@ -30,16 +23,7 @@ export const mockProperties: Property[] = [
       lat: 33.5731,
       lng: -7.6298
     },
-    agent: {
-      id: "1",
-      name: mockAgents[0].name,
-      email: mockAgents[0].email,
-      phone: mockAgents[0].phone,
-      avatar: mockAgents[0].avatar,
-      image: mockAgents[0].avatar,
-      location: "Casablanca",
-      type: "agent"
-    },
+    agent: mockAgents[0],
     hasLive: true,
     transactionType: "Vente",
     status: "available"

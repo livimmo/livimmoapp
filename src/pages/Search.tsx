@@ -3,7 +3,7 @@ import { SearchFilters } from "@/components/search/SearchFilters";
 import { ViewControls } from "@/components/search/ViewControls";
 import { SearchContent } from "@/components/search/SearchContent";
 import { type Property } from "@/types/property";
-import { addCoordinatesToProperties } from "@/data/mockProperties";
+import { mockAgents } from "@/data/mockAgents";
 import { useToast } from "@/components/ui/use-toast";
 
 const placeholderImages = [
@@ -19,7 +19,7 @@ const placeholderImages = [
   "https://images.unsplash.com/photo-1500375592092-40eb2168fd21"
 ];
 
-const mockProperties: Property[] = addCoordinatesToProperties([
+const mockProperties: Property[] = [
   {
     id: "1",
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
@@ -34,16 +34,15 @@ const mockProperties: Property[] = addCoordinatesToProperties([
     features: ["Piscine", "Jardin", "Garage"],
     hasLive: true,
     tags: ["Coup de fusil", "Nouveauté"],
-    agent: {
-      name: "Sarah Martin",
-      image: "https://i.pravatar.cc/150?u=sarah",
-      phone: "+212 6 12 34 56 78",
-      email: "sarah.martin@example.com",
+    agent: mockAgents[0],
+    coordinates: {
+      lat: 31.6295,
+      lng: -7.9811
     },
     transactionType: "Vente",
   },
   {
-    id: 2,
+    id: "2",
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Appartement vue mer à Tanger",
     price: 1800000,
@@ -56,16 +55,15 @@ const mockProperties: Property[] = addCoordinatesToProperties([
     features: ["Vue mer", "Terrasse", "Parking"],
     hasLive: false,
     tags: ["Exclusivité"],
-    agent: {
-      name: "Mohammed Alami",
-      image: "https://i.pravatar.cc/150?u=mohammed",
-      phone: "+212 6 23 45 67 89",
-      email: "mohammed.alami@example.com",
+    agent: mockAgents[1],
+    coordinates: {
+      lat: 35.7595,
+      lng: -5.8340
     },
-    transactionType: "Location" as const,
+    transactionType: "Location",
   },
   {
-    id: 3,
+    id: "3",
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Riad traditionnel",
     price: 3200000,
@@ -78,16 +76,15 @@ const mockProperties: Property[] = addCoordinatesToProperties([
     features: ["Piscine", "Terrasse", "Patio"],
     hasLive: true,
     tags: ["Nouveauté"],
-    agent: {
-      name: "Fatima Zahra",
-      image: "https://i.pravatar.cc/150?u=fatima",
-      phone: "+212 6 34 56 78 90",
-      email: "fatima.zahra@example.com",
+    agent: mockAgents[2],
+    coordinates: {
+      lat: 31.6342,
+      lng: -8.0079
     },
-    transactionType: "Vente" as const,
+    transactionType: "Vente",
   },
   {
-    id: 4,
+    id: "4",
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Bureau moderne",
     price: 1500000,
@@ -100,16 +97,15 @@ const mockProperties: Property[] = addCoordinatesToProperties([
     features: ["Parking", "Sécurité", "Climatisation"],
     hasLive: true,
     tags: ["Coup de fusil"],
-    agent: {
-      name: "Karim Idrissi",
-      image: "https://i.pravatar.cc/150?u=karim",
-      phone: "+212 6 45 67 89 01",
-      email: "karim.idrissi@example.com",
+    agent: mockAgents[3],
+    coordinates: {
+      lat: 33.5731,
+      lng: -7.5898
     },
-    transactionType: "Location" as const,
+    transactionType: "Location",
   },
   {
-    id: 5,
+    id: "5",
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Villa avec piscine",
     price: 4500000,
@@ -122,17 +118,14 @@ const mockProperties: Property[] = addCoordinatesToProperties([
     features: ["Piscine", "Jardin", "Garage", "Sécurité"],
     hasLive: false,
     tags: ["Exclusivité", "Nouveauté"],
-    agent: {
-      name: "Yasmine Benjelloun",
-      image: "https://i.pravatar.cc/150?u=yasmine",
-      phone: "+212 6 56 78 90 12",
-      email: "yasmine.benjelloun@example.com",
+    agent: mockAgents[0],
+    coordinates: {
+      lat: 34.0209,
+      lng: -6.8416
     },
-    transactionType: "Vente" as const,
+    transactionType: "Vente",
   }
-]);
-
-type ViewMode = "grid" | "list";
+];
 
 const Search = () => {
   const { toast } = useToast();
@@ -142,7 +135,7 @@ const Search = () => {
   const [surfaceRange, setSurfaceRange] = useState([0, 500]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [transactionType, setTransactionType] = useState<"buy" | "rent">("buy");
 
   const filteredProperties = mockProperties.filter((property) => {
