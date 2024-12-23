@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { NotificationItem } from "./NotificationItem";
 import { NotificationSettings } from "./NotificationSettings";
 import { VisitsCalendarSection } from "./VisitsCalendarSection";
+import { OffersSection } from "./OffersSection";
 import { Notification } from "@/types/notification";
 
 interface NotificationTabsProps {
@@ -30,7 +31,7 @@ export const NotificationTabs = ({
 
   return (
     <Tabs defaultValue="all" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-      <TabsList className="grid w-full grid-cols-5 mb-4">
+      <TabsList className="grid w-full grid-cols-6 mb-4">
         <TabsTrigger value="all">
           Tout
           {unreadCount > 0 && (
@@ -49,10 +50,11 @@ export const NotificationTabs = ({
         </TabsTrigger>
         <TabsTrigger value="favorite">Favoris</TabsTrigger>
         <TabsTrigger value="offer">Offres</TabsTrigger>
+        <TabsTrigger value="general">Général</TabsTrigger>
         <TabsTrigger value="settings">Paramètres</TabsTrigger>
       </TabsList>
 
-      {["all", "live", "favorite", "offer"].map((tab) => (
+      {["all", "live", "favorite", "general"].map((tab) => (
         <TabsContent key={tab} value={tab}>
           <ScrollArea className="h-[calc(100vh-200px)]">
             {getFilteredNotifications(tab).length > 0 ? (
@@ -71,6 +73,10 @@ export const NotificationTabs = ({
           </ScrollArea>
         </TabsContent>
       ))}
+
+      <TabsContent value="offer">
+        <OffersSection />
+      </TabsContent>
 
       <TabsContent value="settings">
         <NotificationSettings />
