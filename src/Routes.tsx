@@ -8,10 +8,10 @@ import AgentDetail from "@/pages/AgentDetail";
 import Developers from "@/pages/Developers";
 import DeveloperDetail from "@/pages/DeveloperDetail";
 import Lives from "@/pages/Lives";
-import JoinLive from "@/pages/JoinLive";
+import { LiveStream } from "@/pages/JoinLive";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
-import { Profile } from "@/pages/Profile";
+import Profile from "@/pages/Profile";
 import Favorites from "@/pages/Favorites";
 import PropertyManagement from "@/pages/PropertyManagement";
 import OwnerDashboard from "@/pages/OwnerDashboard";
@@ -31,7 +31,7 @@ export const Routes = () => {
       <Route path="/developers/:id" element={<DeveloperDetail />} />
       <Route path="/developer-dashboard" element={<DeveloperDashboard />} />
       <Route path="/lives" element={<Lives />} />
-      <Route path="/lives/:id" element={<JoinLive />} />
+      <Route path="/lives/:id" element={<LiveStream />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/profile" element={<Profile />} />

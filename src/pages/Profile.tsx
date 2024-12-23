@@ -1,8 +1,8 @@
 import { useState, FormEvent } from "react";
 import { AccountTypeSelector } from "@/components/profile/AccountTypeSelector";
-import { type AccountType } from "@/components/profile/AccountTypeSelector";
+import { type AccountType } from "@/types/user";
 
-const Profile = () => {
+export const Profile = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -11,7 +11,7 @@ const Profile = () => {
     accountType: "user" as AccountType,
   });
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const info = {
@@ -20,7 +20,7 @@ const Profile = () => {
       email: formData.get("email") as string,
       phone: formData.get("phone") as string,
     };
-    await onSubmit(info);
+    console.log("Submitting form:", info);
   };
 
   const handleFieldChange = (field: string, value: string) => {
