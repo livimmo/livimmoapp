@@ -3,12 +3,6 @@ import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { PropertyList } from "@/components/properties/PropertyList";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
 import { ViewType } from "@/types/search";
-import { HeroBanner } from "@/components/home/HeroBanner";
-import { CurrentLivesSection } from "@/components/home/sections/CurrentLivesSection";
-import { ScheduledLivesSection } from "@/components/home/sections/ScheduledLivesSection";
-import { ReplayLivesSection } from "@/components/home/sections/ReplayLivesSection";
-import { VirtualToursSection } from "@/components/home/VirtualToursSection";
-import { currentLives, scheduledLives, replayLives } from "@/data/mockLives";
 
 const Index = () => {
   const [viewType, setViewType] = useState<ViewType>("all");
@@ -17,7 +11,6 @@ const Index = () => {
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
-  const [currentLiveViewMode, setCurrentLiveViewMode] = useState<"map" | "list">("list");
 
   const mockProperties = addCoordinatesToProperties([
     {
@@ -89,48 +82,22 @@ const Index = () => {
   });
 
   return (
-    <div className="space-y-8">
-      <HeroBanner 
-        properties={filteredProperties} 
-        currentLives={currentLives}
-        replays={replayLives}
+    <div>
+      <PropertyFilters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        propertyType={propertyType}
+        setPropertyType={setPropertyType}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+        surfaceRange={surfaceRange}
+        setSurfaceRange={setSurfaceRange}
+        viewType={viewType}
+        setViewType={setViewType}
+        transactionType={transactionType}
+        setTransactionType={setTransactionType}
       />
-      
-      <div className="container mx-auto px-4">
-        <PropertyFilters
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          propertyType={propertyType}
-          setPropertyType={setPropertyType}
-          priceRange={priceRange}
-          setPriceRange={setPriceRange}
-          surfaceRange={surfaceRange}
-          setSurfaceRange={setSurfaceRange}
-          viewType={viewType}
-          setViewType={setViewType}
-          transactionType={transactionType}
-          setTransactionType={setTransactionType}
-        />
-
-        <div className="space-y-12">
-          <CurrentLivesSection
-            currentLives={currentLives}
-            currentLiveProperties={filteredProperties}
-            currentLiveViewMode={currentLiveViewMode}
-            setCurrentLiveViewMode={setCurrentLiveViewMode}
-          />
-
-          <ScheduledLivesSection
-            scheduledLives={scheduledLives}
-          />
-
-          <VirtualToursSection properties={filteredProperties} />
-
-          <ReplayLivesSection
-            replayLives={replayLives}
-          />
-        </div>
-      </div>
+      <PropertyList properties={filteredProperties} />
     </div>
   );
 };

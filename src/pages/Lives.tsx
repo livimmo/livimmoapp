@@ -3,15 +3,10 @@ import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { PropertyList } from "@/components/properties/PropertyList";
 import { mockProperties } from "@/data/mockProperties";
 import { ViewType } from "@/types/search";
-import { Property } from "@/types/property";
+import { Property } from "@/types/property"; // Fixed import path
 import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PropertyMapView } from "@/components/map/PropertyMapView";
-import { LiveSlider } from "@/components/live/LiveSlider";
-import { currentLives, scheduledLives, replayLives } from "@/data/mockLives";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LiveCard } from "@/components/live/LiveCard";
-import { ReplayCard } from "@/components/live/ReplayCard";
 
 const Lives = () => {
   const [viewType, setViewType] = useState<ViewType>("all");
@@ -60,56 +55,32 @@ const Lives = () => {
         <PropertyViewToggle view={viewMode} onViewChange={setViewMode} />
       </div>
 
-      <Tabs defaultValue="current" className="space-y-8">
-        <TabsList>
-          <TabsTrigger value="current">Lives en cours</TabsTrigger>
-          <TabsTrigger value="scheduled">Lives programmés</TabsTrigger>
-          <TabsTrigger value="replay">Replays</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="current" className="space-y-8">
-          <LiveSlider lives={currentLives} />
-          {viewMode === "map" ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[calc(100vh-200px)] min-h-[600px]">
-              <div className="relative h-[400px] lg:h-full rounded-lg overflow-hidden">
-                <PropertyMapView 
-                  properties={filteredProperties}
-                  hoveredProperty={hoveredProperty}
-                />
-              </div>
-              <ScrollArea className="h-[400px] lg:h-full bg-white rounded-lg shadow-lg p-4">
-                <div className="space-y-4">
-                  {currentLives.map((live) => (
-                    <LiveCard key={live.id} live={live} />
-                  ))}
+      {viewMode === "map" ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[calc(100vh-200px)] min-h-[600px]">
+          <div className="relative h-[400px] lg:h-full rounded-lg overflow-hidden">
+            <PropertyMapView 
+              properties={filteredProperties}
+              hoveredProperty={hoveredProperty}
+            />
+          </div>
+          <ScrollArea className="h-[400px] lg:h-full bg-white rounded-lg shadow-lg p-4">
+            <div className="space-y-4">
+              {filteredProperties.map((property) => (
+                <div
+                  key={property.id}
+                  className="cursor-pointer transition-all hover:ring-2 hover:ring-primary rounded-lg"
+                  onMouseEnter={() => setHoveredProperty(property)}
+                  onMouseLeave={() => setHoveredProperty(null)}
+                >
+                  <PropertyList properties={[property]} viewMode="list" />
                 </div>
-              </ScrollArea>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {currentLives.map((live) => (
-                <LiveCard key={live.id} live={live} />
               ))}
             </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="scheduled">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {scheduledLives.map((live) => (
-              <LiveCard key={live.id} live={live} />
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="replay">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {replayLives.map((live) => (
-              <ReplayCard key={live.id} live={live} />
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
+          </ScrollArea>
+        </div>
+      ) : (
+        <PropertyList properties={filteredProperties} />
+      )}
     </div>
   );
 };
