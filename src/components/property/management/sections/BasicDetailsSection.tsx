@@ -1,26 +1,25 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
+import { Home, MapPin, Banknote, Square, Video, Calendar, Eye, Hide } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface BasicDetailsSectionProps {
   title: string;
   description: string;
   price: string;
   surface: string;
-  rooms: string;
   propertyType: string;
-  transactionType: "Vente" | "Location";
-  features: string[];
+  status: string;
+  visitType: string;
   onTitleChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
   onPriceChange: (value: string) => void;
   onSurfaceChange: (value: string) => void;
-  onRoomsChange: (value: string) => void;
   onPropertyTypeChange: (value: string) => void;
-  onTransactionTypeChange: (value: "Vente" | "Location") => void;
-  onFeaturesChange: (value: string[]) => void;
+  onStatusChange: (value: string) => void;
+  onVisitTypeChange: (value: string) => void;
 }
 
 export const BasicDetailsSection = ({
@@ -28,102 +27,36 @@ export const BasicDetailsSection = ({
   description,
   price,
   surface,
-  rooms,
   propertyType,
-  transactionType,
-  features,
+  status,
+  visitType,
   onTitleChange,
   onDescriptionChange,
   onPriceChange,
   onSurfaceChange,
-  onRoomsChange,
   onPropertyTypeChange,
-  onTransactionTypeChange,
-  onFeaturesChange,
+  onStatusChange,
+  onVisitTypeChange,
 }: BasicDetailsSectionProps) => {
   return (
-    <div className="space-y-4">
-      <div>
+    <div className="space-y-6">
+      <div className="space-y-2">
         <Label htmlFor="title">Titre*</Label>
         <Input
           id="title"
           value={title}
           onChange={(e) => onTitleChange(e.target.value)}
-          placeholder="Ex: Appartement moderne avec vue sur mer"
+          placeholder="Ex: Villa contemporaine à Marrakech"
           required
         />
       </div>
 
-      <div>
-        <Label htmlFor="description">Description*</Label>
-        <Textarea
-          id="description"
-          value={description}
-          onChange={(e) => onDescriptionChange(e.target.value)}
-          placeholder="Description détaillée du bien..."
-          required
-        />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="transactionType">Type de transaction*</Label>
-          <Select value={transactionType} onValueChange={onTransactionTypeChange}>
-            <SelectTrigger>
-              <SelectValue placeholder="Sélectionner" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Vente">Vente</SelectItem>
-              <SelectItem value="Location">Location</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <Label htmlFor="price">Prix (MAD)*</Label>
-          <Input
-            id="price"
-            type="number"
-            value={price}
-            onChange={(e) => onPriceChange(e.target.value)}
-            placeholder="Prix en MAD"
-            required
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="surface">Surface (m²)*</Label>
-          <Input
-            id="surface"
-            type="number"
-            value={surface}
-            onChange={(e) => onSurfaceChange(e.target.value)}
-            placeholder="Surface en m²"
-            required
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="rooms">Nombre de pièces*</Label>
-          <Select value={rooms} onValueChange={onRoomsChange}>
-            <SelectTrigger>
-              <SelectValue placeholder="Sélectionner" />
-            </SelectTrigger>
-            <SelectContent>
-              {Array.from({ length: 10 }, (_, i) => (
-                <SelectItem key={i + 1} value={(i + 1).toString()}>
-                  {i + 1} {i === 0 ? "pièce" : "pièces"}
-                </SelectItem>
-              ))}
-              <SelectItem value="10+">10+ pièces</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <Label htmlFor="propertyType">Type de bien*</Label>
-          <Select value={propertyType} onValueChange={onPropertyTypeChange}>
-            <SelectTrigger>
+      <div className="space-y-2">
+        <Label htmlFor="propertyType">Type de bien*</Label>
+        <div className="relative">
+          <Home className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Select value={propertyType} onValueChange={onPropertyTypeChange} required>
+            <SelectTrigger className="pl-8">
               <SelectValue placeholder="Sélectionner le type" />
             </SelectTrigger>
             <SelectContent>
@@ -135,6 +68,107 @@ export const BasicDetailsSection = ({
             </SelectContent>
           </Select>
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Statut du bien*</Label>
+        <Select value={status} onValueChange={onStatusChange} required>
+          <SelectTrigger>
+            <SelectValue placeholder="Sélectionner le statut" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="available">
+              <div className="flex items-center gap-2">
+                <Eye className="h-4 w-4" />
+                <span>Disponible</span>
+              </div>
+            </SelectItem>
+            <SelectItem value="hidden">
+              <div className="flex items-center gap-2">
+                <Hide className="h-4 w-4" />
+                <span>Caché</span>
+              </div>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Type de visite*</Label>
+        <RadioGroup value={visitType} onValueChange={onVisitTypeChange} className="grid grid-cols-2 gap-4">
+          <div className="flex items-center space-x-2 rounded-lg border p-4">
+            <RadioGroupItem value="live" id="live" />
+            <Label htmlFor="live" className="flex items-center gap-2">
+              <Video className="h-4 w-4 text-red-500" />
+              Live
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2 rounded-lg border p-4">
+            <RadioGroupItem value="scheduled" id="scheduled" />
+            <Label htmlFor="scheduled" className="flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-blue-500" />
+              Visite programmée
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2 rounded-lg border p-4">
+            <RadioGroupItem value="virtual" id="virtual" />
+            <Label htmlFor="virtual" className="flex items-center gap-2">
+              <Eye className="h-4 w-4 text-purple-500" />
+              Visite virtuelle
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2 rounded-lg border p-4">
+            <RadioGroupItem value="replay" id="replay" />
+            <Label htmlFor="replay" className="flex items-center gap-2">
+              <Video className="h-4 w-4 text-emerald-500" />
+              Replay
+            </Label>
+          </div>
+        </RadioGroup>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="price">Prix*</Label>
+          <div className="relative">
+            <Banknote className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              id="price"
+              type="number"
+              value={price}
+              onChange={(e) => onPriceChange(e.target.value)}
+              placeholder="Prix en MAD"
+              required
+              className="pl-8"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="surface">Surface*</Label>
+          <div className="relative">
+            <Square className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              id="surface"
+              type="number"
+              value={surface}
+              onChange={(e) => onSurfaceChange(e.target.value)}
+              placeholder="Surface en m²"
+              required
+              className="pl-8"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="description">Description</Label>
+        <Input
+          id="description"
+          value={description}
+          onChange={(e) => onDescriptionChange(e.target.value)}
+          placeholder="Description détaillée du bien"
+        />
       </div>
     </div>
   );

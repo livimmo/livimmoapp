@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -7,6 +6,7 @@ import { BasicDetailsSection } from "./management/sections/BasicDetailsSection";
 import { LocationSection } from "./management/sections/LocationSection";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState } from "react";
 
 interface AddPropertyDialogProps {
   open: boolean;
@@ -22,16 +22,15 @@ export const AddPropertyDialog = ({ open, onOpenChange }: AddPropertyDialogProps
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [surface, setSurface] = useState("");
-  const [rooms, setRooms] = useState("");
   const [propertyType, setPropertyType] = useState("");
+  const [status, setStatus] = useState("available");
+  const [visitType, setVisitType] = useState("live");
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
-  const [transactionType, setTransactionType] = useState<"Vente" | "Location">("Vente");
-  const [features, setFeatures] = useState<string[]>([]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !description || !price || !surface || !rooms || !propertyType || !city || !district) {
+    if (!title || !price || !surface || !propertyType || !city || !district) {
       toast({
         title: "Erreur",
         description: "Veuillez remplir tous les champs obligatoires",
@@ -47,12 +46,11 @@ export const AddPropertyDialog = ({ open, onOpenChange }: AddPropertyDialogProps
         description,
         price,
         surface,
-        rooms,
         propertyType,
+        status,
+        visitType,
         city,
         district,
-        transactionType,
-        features,
         images,
         video,
       });
@@ -102,18 +100,16 @@ export const AddPropertyDialog = ({ open, onOpenChange }: AddPropertyDialogProps
                       description={description}
                       price={price}
                       surface={surface}
-                      rooms={rooms}
                       propertyType={propertyType}
-                      transactionType={transactionType}
-                      features={features}
+                      status={status}
+                      visitType={visitType}
                       onTitleChange={setTitle}
                       onDescriptionChange={setDescription}
                       onPriceChange={setPrice}
                       onSurfaceChange={setSurface}
-                      onRoomsChange={setRooms}
                       onPropertyTypeChange={setPropertyType}
-                      onTransactionTypeChange={setTransactionType}
-                      onFeaturesChange={setFeatures}
+                      onStatusChange={setStatus}
+                      onVisitTypeChange={setVisitType}
                     />
                   </TabsContent>
 
