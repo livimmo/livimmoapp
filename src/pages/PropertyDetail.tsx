@@ -17,7 +17,7 @@ const PropertyDetail = () => {
   const { toast } = useToast();
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const property = mockProperties.find((p) => p.id === Number(id));
+  const property = mockProperties.find((p) => p.id === id);
 
   if (!property) {
     return (

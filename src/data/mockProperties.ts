@@ -105,7 +105,7 @@ export const mockProperties: Property[] = Array.from({ length: 20 }, (_, index) 
   const liveDate = hasLive && !isLiveNow ? addDays(new Date(), Math.floor(Math.random() * 14) + 1) : undefined;
 
   return {
-    id: index + 1,
+    id: (index + 1).toString(),
     title: `${randomPropertyType.type} ${randomCity.city} - ${randomDistrict}`,
     price: generateRandomPrice(500, 10000),
     location: `${randomCity.city}, ${randomDistrict}`,

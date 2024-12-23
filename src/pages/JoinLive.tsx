@@ -30,8 +30,8 @@ export const JoinLive = () => {
   const [viewerCount, setViewerCount] = useState(mockLiveData.viewerCount);
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const currentLiveId = Number(id);
-  const otherLives = liveStreams.filter(live => live.id !== currentLiveId);
+  const currentLiveId = id;
+  const otherLives = liveStreams.filter(live => live.id.toString() !== id);
 
   const handleLiveChange = (newLiveId: number) => {
     navigate(`/live/${newLiveId}`);
@@ -56,7 +56,7 @@ export const JoinLive = () => {
     const timer = setTimeout(() => {
       const location = "Marrakech";
       setProperty({
-        id: 1,
+        id: "1",
         title: "Villa Moderne avec Piscine",
         price: 2500000,
         location: location,

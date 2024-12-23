@@ -1,93 +1,64 @@
-import { useState, useCallback, useEffect } from "react";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { useEffect, useState } from "react";
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import { Property } from "@/types/property";
-import { LiveEvent } from "@/types/live";
-import { MapMarker } from "./MapMarker";
 
 interface GoogleMapContainerProps {
   properties: Property[];
-  selectedLive?: LiveEvent | null;
-  onMarkerClick?: (live: LiveEvent | null) => void;
+  selectedPropertyId: string | null;
+  onPropertySelect: (propertyId: string) => void;
 }
 
-const containerStyle = {
-  width: "100%",
-  height: "100%",
-  minHeight: "600px",
-};
-
-const defaultCenter = {
-  lat: 31.7917,
-  lng: -7.0926,
-};
-
-export const GoogleMapContainer = ({
-  properties,
-  onMarkerClick,
-}: GoogleMapContainerProps) => {
-  const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
+const GoogleMapContainer = ({ properties, selectedPropertyId, onPropertySelect }: GoogleMapContainerProps) => {
+  const [map, setMap] = useState<google.maps.Map | null>(null);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
-  const [hoveredMarkerId, setHoveredMarkerId] = useState<number | null>(null);
 
-  const onLoad = useCallback((map: google.maps.Map) => {
-    setMapRef(map);
-  }, []);
+  const center = {
+    lat: 31.6295,
+    lng: -7.9811,
+  };
+
+  const handleMarkerClick = (property: Property) => {
+    setSelectedProperty(property);
+    onPropertySelect(property.id);
+  };
 
   useEffect(() => {
-    if (mapRef && properties.length > 0) {
-      const bounds = new google.maps.LatLngBounds();
-      properties.forEach((property) => {
-        bounds.extend({
-          lat: property.coordinates.lat,
-          lng: property.coordinates.lng,
-        });
-      });
-      mapRef.fitBounds(bounds);
+    if (selectedPropertyId) {
+      const property = properties.find(p => p.id === selectedPropertyId);
+      setSelectedProperty(property || null);
+    } else {
+      setSelectedProperty(null);
     }
-  }, [mapRef, properties]);
+  }, [selectedPropertyId, properties]);
 
   return (
-    <div className="w-full h-full min-h-[600px] rounded-lg overflow-hidden shadow-lg">
-      <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={
-            properties.length > 0
-              ? {
-                  lat: properties[0].coordinates.lat,
-                  lng: properties[0].coordinates.lng,
-                }
-              : defaultCenter
-          }
-          zoom={6}
-          onLoad={onLoad}
-          options={{
-            disableDefaultUI: false,
-            zoomControl: true,
-            fullscreenControl: true,
-            mapTypeControl: true,
-          }}
+    <GoogleMap
+      onLoad={map => setMap(map)}
+      center={center}
+      zoom={10}
+      mapContainerClassName="h-full w-full"
+    >
+      {properties.map(property => (
+        <Marker
+          key={property.id}
+          position={property.coordinates}
+          onClick={() => handleMarkerClick(property)}
+        />
+      ))}
+
+      {selectedProperty && (
+        <InfoWindow
+          position={selectedProperty.coordinates}
+          onCloseClick={() => setSelectedProperty(null)}
         >
-          {properties.map((property) => (
-            <MapMarker
-              key={property.id}
-              property={property}
-              isSelected={selectedProperty?.id === property.id}
-              isHovered={hoveredMarkerId === property.id}
-              onClick={() => {
-                setSelectedProperty(property);
-                onMarkerClick?.(null);
-              }}
-              onMouseOver={() => setHoveredMarkerId(property.id)}
-              onMouseOut={() => setHoveredMarkerId(null)}
-              onInfoWindowClose={() => {
-                setSelectedProperty(null);
-                setHoveredMarkerId(null);
-              }}
-            />
-          ))}
-        </GoogleMap>
-      </LoadScript>
-    </div>
+          <div>
+            <h3>{selectedProperty.title}</h3>
+            <p>{selectedProperty.location}</p>
+          </div>
+        </InfoWindow>
+      )}
+    </GoogleMap>
   );
 };
+
+export default GoogleMapContainer;
