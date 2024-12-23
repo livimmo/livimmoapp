@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { User, UserRole, AccountType } from '@/types/user';
+import { User, UserRole } from '@/types/user';
 
 interface AuthContextType {
   user: User | null;
@@ -9,7 +9,7 @@ interface AuthContextType {
   login: (email: string, password: string, role?: UserRole) => Promise<void>;
   signup: (email: string, password: string, firstName: string, lastName: string, role: UserRole) => Promise<void>;
   logout: () => void;
-  switchRole: (newRole: UserRole) => void;
+  switchRole: (newRole: UserRole) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,19 +19,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const switchRole = (newRole: UserRole) => {
+  const switchRole = async (newRole: UserRole) => {
     if (!user) return;
+    
+    // Simuler un délai d'API
+    await new Promise(resolve => setTimeout(resolve, 500));
     
     setUser({
       ...user,
       role: newRole,
       accountType: newRole === 'promoter' || newRole === 'agent' ? 'agent' : 
                   newRole === 'owner' ? 'owner' : 'buyer'
-    });
-
-    toast({
-      title: "Rôle modifié",
-      description: `Vous êtes maintenant en mode ${newRole}`,
     });
   };
 
