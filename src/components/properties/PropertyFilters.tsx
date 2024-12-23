@@ -17,8 +17,8 @@ interface PropertyFiltersProps {
   setPriceRange: (value: number[]) => void;
   surfaceRange: number[];
   setSurfaceRange: (value: number[]) => void;
-  viewType: "all" | "live" | "replay";
-  setViewType: (value: "all" | "live" | "replay") => void;
+  viewType: "all" | "live" | "scheduled" | "virtual" | "replay";
+  setViewType: (value: "all" | "live" | "scheduled" | "virtual" | "replay") => void;
   suggestions?: string[];
   transactionType: string[];
   setTransactionType: (value: string[]) => void;
