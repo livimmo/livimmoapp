@@ -3,10 +3,12 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
 import { mockFavoritesData } from "@/data/mockFavorites";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const BottomNav = () => {
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
+  const isMobile = useIsMobile();
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -36,7 +38,11 @@ export const BottomNav = () => {
       label: "Mes Biens", 
       path: "/my-properties" 
     }] : []),
-    { icon: User, label: "Profil", path: "/profile" },
+    ...((!isMobile || location.pathname !== "/profile") ? [{ 
+      icon: User, 
+      label: "Profil", 
+      path: "/profile" 
+    }] : []),
   ];
 
   return (
