@@ -1,6 +1,16 @@
 import { Property } from "@/types/property";
 import { mockAgents } from "./mockAgents";
 
+export const addCoordinatesToProperties = (properties: Omit<Property, "coordinates">[]) => {
+  return properties.map(property => ({
+    ...property,
+    coordinates: {
+      lat: 31.7917 + (Math.random() - 0.5) * 2, // Random coordinates around Morocco
+      lng: -7.0926 + (Math.random() - 0.5) * 2,
+    }
+  }));
+};
+
 export const mockProperties: Property[] = [
   {
     id: "1",
@@ -18,7 +28,17 @@ export const mockProperties: Property[] = [
       lat: 33.5731,
       lng: -7.6298
     },
-    agent: mockAgents[0],
+    agent: {
+      id: "1",
+      name: mockAgents[0].name,
+      avatar: mockAgents[0].image,
+      location: "Casablanca",
+      type: "agent",
+      contact: {
+        email: mockAgents[0].email,
+        phone: mockAgents[0].phone
+      }
+    },
     hasLive: true,
     transactionType: "Vente",
     status: "available"
@@ -108,3 +128,8 @@ export const mockProperties: Property[] = [
     status: "available"
   }
 ];
+
+export const generateMockCoordinates = () => ({
+  lat: 31.7917 + (Math.random() - 0.5) * 2,
+  lng: -7.0926 + (Math.random() - 0.5) * 2,
+});
