@@ -9,6 +9,8 @@ export const useSearchFilters = () => {
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [transactionType, setTransactionType] = useState("buy");
+  const [city, setCity] = useState("");
+  const [neighborhood, setNeighborhood] = useState("");
 
   const filters: SearchFilters = {
     searchTerm,
@@ -17,6 +19,8 @@ export const useSearchFilters = () => {
     surfaceRange,
     showLiveOnly,
     transactionType,
+    city,
+    neighborhood,
   };
 
   return {
@@ -29,5 +33,7 @@ export const useSearchFilters = () => {
     setShowLiveOnly,
     setShowFilters,
     setTransactionType,
+    setCity,
+    setNeighborhood,
   };
 };

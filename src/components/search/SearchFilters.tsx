@@ -2,12 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
-import { SlidersHorizontal } from "lucide-react";
+import { MapPin, SlidersHorizontal } from "lucide-react";
 import { SmartSearchBar } from "./SmartSearchBar";
 import { TransactionTypeFilter } from "./filters/TransactionTypeFilter";
 import { type SearchFilters } from "@/types/search";
+import { useToast } from "@/hooks/use-toast";
 
-interface PropertyFiltersProps {
+interface SearchFiltersProps {
   filters: SearchFilters;
   showFilters: boolean;
   onFiltersChange: {
@@ -17,6 +18,8 @@ interface PropertyFiltersProps {
     setSurfaceRange: (value: number[]) => void;
     setShowLiveOnly: (value: boolean) => void;
     setTransactionType: (value: string) => void;
+    setCity: (value: string) => void;
+    setNeighborhood: (value: string) => void;
   };
   setShowFilters: (value: boolean) => void;
 }
@@ -26,7 +29,8 @@ export const SearchFilters = ({
   showFilters,
   onFiltersChange,
   setShowFilters,
-}: PropertyFiltersProps) => {
+}: SearchFiltersProps) => {
+  const { toast } = useToast();
   const suggestions = [
     "Casablanca",
     "Rabat",
@@ -39,6 +43,39 @@ export const SearchFilters = ({
     "Bureau",
     "Riad",
   ];
+
+  const neighborhoods = {
+    Casablanca: ["Maarif", "Anfa", "Bourgogne", "Gauthier", "Ain Diab"],
+    Rabat: ["Agdal", "Hassan", "Les Orangers", "Hay Riad"],
+    Marrakech: ["Guéliz", "Hivernage", "Palmeraie", "Médina"],
+  };
+
+  const handleGeolocation = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          toast({
+            title: "Localisation réussie",
+            description: "Nous affichons les biens à proximité de votre position.",
+          });
+          // Ici vous pouvez utiliser position.coords.latitude et position.coords.longitude
+        },
+        () => {
+          toast({
+            variant: "destructive",
+            title: "Erreur de localisation",
+            description: "Impossible d'accéder à votre position. Veuillez vérifier vos paramètres.",
+          });
+        }
+      );
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Géolocalisation non supportée",
+        description: "Votre navigateur ne supporte pas la géolocalisation.",
+      });
+    }
+  };
 
   return (
     <div className="space-y-4 mb-6">
@@ -57,6 +94,13 @@ export const SearchFilters = ({
         >
           <SlidersHorizontal className="h-4 w-4" />
         </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleGeolocation}
+        >
+          <MapPin className="h-4 w-4" />
+        </Button>
       </div>
 
       {showFilters && (
@@ -65,6 +109,38 @@ export const SearchFilters = ({
             value={filters.transactionType}
             onChange={onFiltersChange.setTransactionType}
           />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Select value={filters.city} onValueChange={onFiltersChange.setCity}>
+              <SelectTrigger className="w-full bg-white">
+                <SelectValue placeholder="Ville" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Toutes les villes</SelectItem>
+                <SelectItem value="Casablanca">Casablanca</SelectItem>
+                <SelectItem value="Rabat">Rabat</SelectItem>
+                <SelectItem value="Marrakech">Marrakech</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select 
+              value={filters.neighborhood} 
+              onValueChange={onFiltersChange.setNeighborhood}
+              disabled={!filters.city}
+            >
+              <SelectTrigger className="w-full bg-white">
+                <SelectValue placeholder="Quartier" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Tous les quartiers</SelectItem>
+                {filters.city && neighborhoods[filters.city as keyof typeof neighborhoods]?.map((neighborhood) => (
+                  <SelectItem key={neighborhood} value={neighborhood}>
+                    {neighborhood}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
           <div className="flex items-center gap-4">
             <Select value={filters.propertyType} onValueChange={onFiltersChange.setPropertyType}>

@@ -7,4 +7,6 @@ export interface SearchFilters {
   surfaceRange: number[];
   showLiveOnly: boolean;
   transactionType: string;
+  city: string;
+  neighborhood: string;
 }
