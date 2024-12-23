@@ -38,7 +38,7 @@ export const BottomNav = () => {
       label: "Mes Biens", 
       path: "/my-properties" 
     }] : []),
-    ...((!isMobile || location.pathname !== "/profile") ? [{ 
+    ...(!isPropertyManager && (!isMobile || location.pathname !== "/profile") ? [{ 
       icon: User, 
       label: "Profil", 
       path: "/profile" 
