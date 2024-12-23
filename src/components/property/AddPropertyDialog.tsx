@@ -74,74 +74,77 @@ export const AddPropertyDialog = ({ open, onOpenChange }: AddPropertyDialogProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] p-0">
-        <DialogHeader className="p-6 pb-0">
-          <DialogTitle>Ajouter un bien</DialogTitle>
+      <DialogContent className="max-w-4xl max-h-[95vh] p-0 md:h-auto">
+        <DialogHeader className="p-6 pb-2">
+          <DialogTitle className="text-xl font-semibold">Ajouter un bien</DialogTitle>
         </DialogHeader>
         
-        <ScrollArea className="max-h-[calc(90vh-8rem)]">
-          <div className="p-6 pt-0">
+        <ScrollArea className="flex-1 h-full max-h-[calc(95vh-8rem)] overflow-y-auto">
+          <div className="p-6 pt-2">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="w-full">
-                  <TabsTrigger value="basic" className="flex-1">
-                    Informations de base
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="w-full grid grid-cols-3 mb-6">
+                  <TabsTrigger value="basic" className="text-sm md:text-base">
+                    Informations
                   </TabsTrigger>
-                  <TabsTrigger value="location" className="flex-1">
+                  <TabsTrigger value="location" className="text-sm md:text-base">
                     Localisation
                   </TabsTrigger>
-                  <TabsTrigger value="media" className="flex-1">
+                  <TabsTrigger value="media" className="text-sm md:text-base">
                     Médias
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="basic">
-                  <BasicDetailsSection
-                    title={title}
-                    description={description}
-                    price={price}
-                    surface={surface}
-                    rooms={rooms}
-                    propertyType={propertyType}
-                    transactionType={transactionType}
-                    features={features}
-                    onTitleChange={setTitle}
-                    onDescriptionChange={setDescription}
-                    onPriceChange={setPrice}
-                    onSurfaceChange={setSurface}
-                    onRoomsChange={setRooms}
-                    onPropertyTypeChange={setPropertyType}
-                    onTransactionTypeChange={setTransactionType}
-                    onFeaturesChange={setFeatures}
-                  />
-                </TabsContent>
+                <div className="mt-4">
+                  <TabsContent value="basic" className="m-0">
+                    <BasicDetailsSection
+                      title={title}
+                      description={description}
+                      price={price}
+                      surface={surface}
+                      rooms={rooms}
+                      propertyType={propertyType}
+                      transactionType={transactionType}
+                      features={features}
+                      onTitleChange={setTitle}
+                      onDescriptionChange={setDescription}
+                      onPriceChange={setPrice}
+                      onSurfaceChange={setSurface}
+                      onRoomsChange={setRooms}
+                      onPropertyTypeChange={setPropertyType}
+                      onTransactionTypeChange={setTransactionType}
+                      onFeaturesChange={setFeatures}
+                    />
+                  </TabsContent>
 
-                <TabsContent value="location">
-                  <LocationSection
-                    city={city}
-                    district={district}
-                    onCityChange={setCity}
-                    onDistrictChange={setDistrict}
-                  />
-                </TabsContent>
+                  <TabsContent value="location" className="m-0">
+                    <LocationSection
+                      city={city}
+                      district={district}
+                      onCityChange={setCity}
+                      onDistrictChange={setDistrict}
+                    />
+                  </TabsContent>
 
-                <TabsContent value="media">
-                  <MediaSection
-                    onImagesChange={setImages}
-                    onVideoChange={setVideo}
-                  />
-                </TabsContent>
+                  <TabsContent value="media" className="m-0">
+                    <MediaSection
+                      onImagesChange={setImages}
+                      onVideoChange={setVideo}
+                    />
+                  </TabsContent>
+                </div>
               </Tabs>
 
-              <div className="flex justify-end gap-2 pt-4">
+              <div className="flex justify-end gap-2 pt-4 sticky bottom-0 bg-white p-4 border-t">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => onOpenChange(false)}
+                  className="w-full md:w-auto"
                 >
                   Annuler
                 </Button>
-                <Button type="submit">
+                <Button type="submit" className="w-full md:w-auto">
                   Ajouter le bien
                 </Button>
               </div>
