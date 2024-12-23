@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { Property } from "@/types/property";
 import { PropertyCard } from "@/components/PropertyCard";
 import { useToast } from "@/hooks/use-toast";
@@ -14,8 +14,12 @@ interface PropertyMapViewProps {
 
 export const PropertyMapView = ({ properties, onMarkerClick }: PropertyMapViewProps) => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries: ["places", "geometry"]
+  });
 
   const handleGeolocation = () => {
     if ("geolocation" in navigator) {
@@ -43,71 +47,75 @@ export const PropertyMapView = ({ properties, onMarkerClick }: PropertyMapViewPr
     }
   };
 
+  if (loadError) {
+    return (
+      <div className="p-4 text-center text-red-500">
+        Erreur de chargement de la carte
+      </div>
+    );
+  }
+
+  if (!isLoaded) {
+    return <Skeleton className="w-full h-full rounded-lg" />;
+  }
+
   const center = properties.length > 0
     ? {
         lat: properties.reduce((sum, p) => sum + p.coordinates.lat, 0) / properties.length,
         lng: properties.reduce((sum, p) => sum + p.coordinates.lng, 0) / properties.length,
       }
-    : { lat: 31.7917, lng: -7.0926 };
+    : { lat: 31.7917, lng: -7.0926 }; // Centre du Maroc par défaut
 
   return (
     <>
-      {isLoading && (
-        <Skeleton className="w-full h-full rounded-lg" />
-      )}
-      <LoadScript 
-        googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-        onLoad={() => setIsLoading(false)}
+      <Button 
+        variant="outline" 
+        size="icon" 
+        className="absolute top-4 right-4 z-10 bg-white"
+        onClick={handleGeolocation}
       >
-        <GoogleMap
-          mapContainerStyle={{ width: '100%', height: '100%' }}
-          center={center}
-          zoom={6}
-          options={{
-            zoomControl: true,
-            streetViewControl: false,
-            mapTypeControl: true,
-            fullscreenControl: true,
-          }}
-        >
-          <Button 
-            variant="outline" 
-            size="icon" 
-            className="absolute top-4 right-4 z-10 bg-white"
-            onClick={handleGeolocation}
+        <MapPin className="h-4 w-4" />
+      </Button>
+
+      <GoogleMap
+        mapContainerClassName="w-full h-full"
+        center={center}
+        zoom={6}
+        options={{
+          zoomControl: true,
+          streetViewControl: false,
+          mapTypeControl: true,
+          fullscreenControl: true,
+        }}
+      >
+        {properties.map((property) => (
+          <Marker
+            key={property.id}
+            position={{
+              lat: property.coordinates.lat,
+              lng: property.coordinates.lng
+            }}
+            onClick={() => {
+              setSelectedProperty(property);
+              onMarkerClick?.(property);
+            }}
+          />
+        ))}
+
+        {selectedProperty && (
+          <InfoWindow
+            position={{
+              lat: selectedProperty.coordinates.lat,
+              lng: selectedProperty.coordinates.lng
+            }}
+            onCloseClick={() => setSelectedProperty(null)}
           >
-            <MapPin className="h-4 w-4" />
-          </Button>
-
-          {properties.map((property) => (
-            <Marker
-              key={property.id}
-              position={{
-                lat: property.coordinates.lat,
-                lng: property.coordinates.lng
-              }}
-              onClick={() => {
-                setSelectedProperty(property);
-                onMarkerClick?.(property);
-              }}
-            />
-          ))}
-
-          {selectedProperty && (
-            <InfoWindow
-              position={{
-                lat: selectedProperty.coordinates.lat,
-                lng: selectedProperty.coordinates.lng
-              }}
-              onCloseClick={() => setSelectedProperty(null)}
-            >
-              <div className="w-[280px]">
-                <PropertyCard {...selectedProperty} />
-              </div>
-            </InfoWindow>
-          )}
-        </GoogleMap>
-      </LoadScript>
+            <div className="w-[280px]">
+              <PropertyCard {...selectedProperty} />
+            </div>
+          </InfoWindow>
+        )}
+      </GoogleMap>
     </>
   );
 };

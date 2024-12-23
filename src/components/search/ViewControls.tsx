@@ -13,7 +13,7 @@ export const ViewControls = ({ viewMode, setViewMode }: ViewControlsProps) => {
       <Button
         variant={viewMode === "list" ? "default" : "outline"}
         size="sm"
-        className="bg-primary text-white hover:bg-primary/90"
+        className={viewMode === "list" ? "bg-primary text-white hover:bg-primary/90" : ""}
         onClick={() => setViewMode("list")}
       >
         <List className="h-4 w-4 mr-2" />
@@ -22,6 +22,7 @@ export const ViewControls = ({ viewMode, setViewMode }: ViewControlsProps) => {
       <Button
         variant={viewMode === "map" ? "default" : "outline"}
         size="sm"
+        className={viewMode === "map" ? "bg-primary text-white hover:bg-primary/90" : ""}
         onClick={() => setViewMode("map")}
       >
         <Map className="h-4 w-4 mr-2" />

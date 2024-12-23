@@ -1,7 +1,7 @@
 import { PropertyList } from "@/components/properties/PropertyList";
-import { MapView } from "./MapView";
 import { type Property } from "@/types/property";
 import { type ViewMode } from "@/types/search";
+import { PropertyMapView } from "@/components/map/PropertyMapView";
 
 interface SearchContentProps {
   filteredProperties: Property[];
@@ -18,7 +18,13 @@ export const SearchContent = ({ filteredProperties, viewMode }: SearchContentPro
   }
 
   if (viewMode === "map") {
-    return <MapView properties={filteredProperties} />;
+    return (
+      <div className="h-[calc(100vh-200px)] min-h-[600px] rounded-lg overflow-hidden">
+        <PropertyMapView 
+          properties={filteredProperties}
+        />
+      </div>
+    );
   }
 
   return <PropertyList properties={filteredProperties} viewMode={viewMode} />;
