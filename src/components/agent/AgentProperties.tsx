@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { type Agent } from "@/types/agent";
 import { type Property } from "@/types/property";
 import { PropertyCard } from "@/components/PropertyCard";

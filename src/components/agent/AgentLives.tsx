@@ -7,9 +7,10 @@ interface AgentLivesProps {
 export const AgentLives = ({ agent }: AgentLivesProps) => {
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-semibold">Lives programmés</h2>
-      <div className="text-gray-500">
-        Aucun live programmé pour le moment
+      <h2 className="text-2xl font-semibold">Lives ({agent.completedLives || 0})</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Live content will be implemented later */}
+        <div className="text-muted-foreground">Aucun live disponible pour le moment</div>
       </div>
     </div>
   );
