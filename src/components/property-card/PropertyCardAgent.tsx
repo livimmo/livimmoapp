@@ -12,15 +12,20 @@ interface PropertyCardAgentProps {
 export const PropertyCardAgent = ({ agent_id, district }: PropertyCardAgentProps) => {
   const navigate = useNavigate();
 
-  const { data: agent } = useQuery({
+  const { data: agent, isLoading } = useQuery({
     queryKey: ['agent', agent_id],
     queryFn: async () => {
       if (!agent_id) return null;
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', agent_id)
-        .single();
+        .maybeSingle();
+        
+      if (error) {
+        console.error('Error fetching agent:', error);
+        return null;
+      }
       return data;
     },
     enabled: !!agent_id
@@ -32,7 +37,7 @@ export const PropertyCardAgent = ({ agent_id, district }: PropertyCardAgentProps
     }
   };
 
-  if (!agent) return null;
+  if (!agent || isLoading) return null;
 
   return (
     <div 
