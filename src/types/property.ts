@@ -12,6 +12,7 @@ export interface Property {
   images: string[];
   hasLive?: boolean;
   isReplay?: boolean;
+  hasScheduledLive?: boolean;
   liveDate?: Date;
   status?: 'available' | 'pending' | 'sold' | 'rented';
   createdAt?: Date;
@@ -37,19 +38,13 @@ export interface Property {
   virtualTour?: {
     enabled: boolean;
     url?: string;
-    platform?: 'matterport' | 'klapty';
+    platform?: "matterport" | "klapty";
     type: "360" | "video" | "live";
     hotspots?: Array<{
       title: string;
       description: string;
       position: { x: number; y: number };
-      details?: Array<{ label: string; value: string }>;
-    }>;
-    annotations?: Array<{
-      title: string;
-      description: string;
-      position: { x: number; y: number };
-      details?: Array<{ label: string; value: string }>;
+      details: Array<{ label: string; value: string }>;
     }>;
     floorPlan?: {
       url: string;

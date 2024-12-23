@@ -2,13 +2,14 @@ import { useState } from "react";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { PropertyList } from "@/components/properties/PropertyList";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
+import { ViewType } from "@/types/search";
 
 export const Properties = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
-  const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
+  const [viewType, setViewType] = useState<ViewType>("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
   const mockProperties = addCoordinatesToProperties([
@@ -72,7 +73,9 @@ export const Properties = () => {
     const matchesTransactionType = transactionType.includes(property.transactionType);
     const matchesViewType = viewType === "all" ? true :
       viewType === "live" ? (property.hasLive && !property.isReplay) :
-      (property.hasLive && property.isReplay);
+      viewType === "replay" ? (property.hasLive && property.isReplay) :
+      viewType === "scheduled" ? property.hasScheduledLive :
+      property.virtualTour?.enabled;
 
     return matchesSearch && matchesType && matchesPriceRange && 
            matchesSurfaceRange && matchesTransactionType && matchesViewType;

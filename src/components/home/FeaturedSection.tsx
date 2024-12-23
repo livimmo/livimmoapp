@@ -28,7 +28,7 @@ export const FeaturedSection = ({ properties }: FeaturedSectionProps) => {
 
   return (
     <section className="mb-12">
-      <h2 className="text-2xl font-bold mb-6">Lives populaires</h2>
+      <h2 className="text-2xl font-bold mb-6">Biens populaires</h2>
       <Carousel
         plugins={[plugin.current]}
         className="w-full"

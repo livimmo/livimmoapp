@@ -1,171 +1,103 @@
-import { useState, useEffect } from "react";
-import { type Property } from "@/types/property";
-import { HomeHeader } from "@/components/home/HomeHeader";
+import { useState } from "react";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
-import { LiveSection } from "@/components/home/LiveSection";
-import { FeaturedSection } from "@/components/home/FeaturedSection";
-import { CTASection } from "@/components/home/CTASection";
-import { VirtualToursSection } from "@/components/home/VirtualToursSection";
-import { SearchSection } from "@/components/home/SearchSection";
-import { featuredProperties } from "@/data/featuredProperties";
-import { liveStreams, scheduledLives } from "@/data/mockLives";
-import { HeroBanner } from "@/components/home/HeroBanner";
-import { CurrentLivesSection } from "@/components/home/sections/CurrentLivesSection";
-import { ScheduledLivesSection } from "@/components/home/sections/ScheduledLivesSection";
-import { ReplayLivesSection } from "@/components/home/sections/ReplayLivesSection";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { PropertyList } from "@/components/properties/PropertyList";
+import { addCoordinatesToProperties } from "@/data/mockProperties";
+import { ViewType } from "@/types/search";
 
 const Index = () => {
+  const [viewType, setViewType] = useState<ViewType>("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [propertyType, setPropertyType] = useState("all");
+  const [propertyType, setPropertyType] = useState("");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
-  const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
-  const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
+  const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
-  const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
-  const [currentLiveViewMode, setCurrentLiveViewMode] = useState<"list" | "map">("list");
-  const isMobile = useIsMobile();
 
-  const suggestions = [
-    "Casablanca", "Rabat", "Marrakech", "Tanger",
-    "Agadir", "Fès", "Villa", "Appartement", "Bureau", "Riad",
-  ];
-
-  // Filter lives by status
-  const currentLives = liveStreams.filter(live => live.status === "live");
-  const replayLives = liveStreams.filter(live => live.status === "replay");
-
-  // Effect to filter properties based on search criteria
-  useEffect(() => {
-    const filterProperties = () => {
-      let filtered = [...featuredProperties];
-
-      if (searchTerm) {
-        const searchLower = searchTerm.toLowerCase();
-        filtered = filtered.filter(property => 
-          property.location.toLowerCase().includes(searchLower) ||
-          property.type.toLowerCase().includes(searchLower) ||
-          property.title.toLowerCase().includes(searchLower)
-        );
-      }
-
-      if (propertyType !== "all") {
-        filtered = filtered.filter(property => 
-          property.type.toLowerCase() === propertyType.toLowerCase()
-        );
-      }
-
-      filtered = filtered.filter(property => 
-        property.price >= priceRange[0] && 
-        property.price <= priceRange[1]
-      );
-
-      filtered = filtered.filter(property => 
-        property.surface >= surfaceRange[0] && 
-        property.surface <= surfaceRange[1]
-      );
-
-      if (transactionType.length > 0) {
-        filtered = filtered.filter(property => 
-          transactionType.includes(property.transactionType)
-        );
-      }
-
-      setFilteredProperties(filtered);
-    };
-
-    filterProperties();
-  }, [searchTerm, propertyType, priceRange, surfaceRange, transactionType]);
-
-  // Convert lives to Property format for the map
-  const currentLiveProperties: Property[] = currentLives.map(live => ({
-    id: live.id,
-    title: live.title,
-    price: parseInt(live.price.replace(/[^\d]/g, "")),
-    location: live.location,
-    type: live.type,
-    surface: 0,
-    rooms: 0,
-    bathrooms: 0,
-    description: live.description || "",
-    features: [],
-    images: [live.thumbnail],
-    hasLive: true,
-    liveDate: live.date,
-    agent: {
-      name: live.agent,
-      image: "",
-      phone: "",
-      email: "",
+  const mockProperties = addCoordinatesToProperties([
+    {
+      id: 1,
+      title: "Villa moderne avec piscine",
+      type: "Villa",
+      price: 2500000,
+      location: "Marrakech",
+      surface: 250,
+      rooms: 4,
+      bathrooms: 3,
+      description: "Magnifique villa moderne avec piscine",
+      features: ["Piscine", "Jardin", "Garage"],
+      images: [
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+      ],
+      hasLive: true,
+      liveDate: new Date("2024-03-20"),
+      agent: {
+        name: "Sarah Martin",
+        image: "https://i.pravatar.cc/150?u=sarah",
+        phone: "+212 6 12 34 56 78",
+        email: "sarah.martin@example.com",
+      },
+      transactionType: "Vente" as const,
     },
-    coordinates: {
-      lat: 31.7917 + Math.random() * 2 - 1,
-      lng: -7.0926 + Math.random() * 2 - 1,
+    {
+      id: 2,
+      title: "Appartement vue mer",
+      type: "Appartement",
+      price: 1800000,
+      location: "Tanger",
+      surface: 120,
+      rooms: 3,
+      bathrooms: 2,
+      description: "Superbe appartement avec vue sur mer",
+      features: ["Vue mer", "Terrasse", "Parking"],
+      images: [
+        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
+      ],
+      hasLive: false,
+      agent: {
+        name: "Mohammed Alami",
+        image: "https://i.pravatar.cc/150?u=mohammed",
+        phone: "+212 6 23 45 67 89",
+        email: "mohammed.alami@example.com",
+      },
+      transactionType: "Location" as const,
     },
-    isLiveNow: true,
-    viewers: live.viewers,
-    remainingSeats: live.availableSeats,
-    transactionType: "Vente",
-  }));
+  ]);
+
+  const filteredProperties = mockProperties.filter((property) => {
+    const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      property.location.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = !propertyType || property.type === propertyType;
+    const matchesPriceRange = property.price >= priceRange[0] && property.price <= priceRange[1];
+    const matchesSurfaceRange = property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
+    const matchesTransactionType = transactionType.includes(property.transactionType);
+    const matchesViewType = viewType === "all" ? true :
+      viewType === "live" ? (property.hasLive && !property.isReplay) :
+      viewType === "replay" ? (property.hasLive && property.isReplay) :
+      viewType === "scheduled" ? property.hasScheduledLive :
+      property.virtualTour?.enabled;
+
+    return matchesSearch && matchesType && matchesPriceRange && 
+           matchesSurfaceRange && matchesTransactionType && matchesViewType;
+  });
 
   return (
-    <div className="min-h-screen bg-background">
-      <HomeHeader />
-
-      <main className={`container mx-auto px-4 ${isMobile ? 'pt-4' : 'pt-20'} max-w-7xl`}>
-        <div className="max-w-[1400px] mx-auto space-y-12">
-          <HeroBanner 
-            properties={featuredProperties}
-            currentLives={currentLives}
-            replays={replayLives}
-          />
-
-          <PropertyFilters
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            propertyType={propertyType}
-            setPropertyType={setPropertyType}
-            priceRange={priceRange}
-            setPriceRange={setPriceRange}
-            surfaceRange={surfaceRange}
-            setSurfaceRange={setSurfaceRange}
-            viewType={viewType}
-            setViewType={setViewType}
-            suggestions={suggestions}
-            transactionType={transactionType}
-            setTransactionType={setTransactionType}
-          />
-
-          <div className="space-y-12">
-            <CurrentLivesSection
-              currentLives={currentLives}
-              currentLiveProperties={currentLiveProperties}
-              currentLiveViewMode={currentLiveViewMode}
-              setCurrentLiveViewMode={setCurrentLiveViewMode}
-            />
-
-            <ScheduledLivesSection scheduledLives={scheduledLives} />
-
-            <ReplayLivesSection replayLives={replayLives} />
-
-            <ScrollArea className="h-full pb-8">
-              <VirtualToursSection properties={featuredProperties} />
-            </ScrollArea>
-
-            <div className="pb-12">
-              <FeaturedSection properties={featuredProperties} />
-            </div>
-
-            <SearchSection 
-              filteredProperties={filteredProperties} 
-              defaultProperties={featuredProperties}
-            />
-
-            <CTASection />
-          </div>
-        </div>
-      </main>
+    <div>
+      <PropertyFilters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        propertyType={propertyType}
+        setPropertyType={setPropertyType}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+        surfaceRange={surfaceRange}
+        setSurfaceRange={setSurfaceRange}
+        viewType={viewType}
+        setViewType={setViewType}
+        transactionType={transactionType}
+        setTransactionType={setTransactionType}
+      />
+      <PropertyList properties={filteredProperties} />
     </div>
   );
 };

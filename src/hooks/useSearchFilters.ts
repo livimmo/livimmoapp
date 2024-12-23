@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type SearchFilters } from "@/types/search";
+import { type SearchFilters, type ViewType } from "@/types/search";
 
 export const useSearchFilters = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,6 +11,7 @@ export const useSearchFilters = () => {
   const [transactionType, setTransactionType] = useState("buy");
   const [city, setCity] = useState("all");
   const [neighborhood, setNeighborhood] = useState("all");
+  const [viewType, setViewType] = useState<ViewType>("all");
 
   const filters: SearchFilters = {
     searchTerm,
@@ -21,6 +22,7 @@ export const useSearchFilters = () => {
     transactionType,
     city,
     neighborhood,
+    viewType,
   };
 
   return {
@@ -35,5 +37,6 @@ export const useSearchFilters = () => {
     setTransactionType,
     setCity,
     setNeighborhood,
+    setViewType,
   };
 };

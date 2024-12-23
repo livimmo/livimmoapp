@@ -3,6 +3,7 @@ import { Phone, X, MessageSquare, Calendar } from "lucide-react";
 
 interface VirtualTourControlsProps {
   agentName: string;
+  onContactAgent?: () => void;
   onBookVisit: () => void;
   onMakeOffer: () => void;
   onToggleChat: () => void;
@@ -11,6 +12,7 @@ interface VirtualTourControlsProps {
 
 export const VirtualTourControls = ({
   agentName,
+  onContactAgent,
   onBookVisit,
   onMakeOffer,
   onToggleChat,

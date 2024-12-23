@@ -3,16 +3,19 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
 import { mockFavoritesData } from "@/data/mockFavorites";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const BottomNav = () => {
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
+  const isMobile = useIsMobile();
 
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
-  const isPropertyManager = user?.role === "agent" || user?.role === "promoter" || user?.role === "owner";
+  // Only show "Mes Biens" for agents and promoters, not for owners
+  const isPropertyManager = user?.role === "agent" || user?.role === "promoter";
   const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
   const favoritesCount = mockFavoritesData.length;
 
@@ -36,7 +39,11 @@ export const BottomNav = () => {
       label: "Mes Biens", 
       path: "/my-properties" 
     }] : []),
-    { icon: User, label: "Profil", path: "/profile" },
+    ...(!isPropertyManager && (!isMobile || location.pathname !== "/profile") ? [{ 
+      icon: User, 
+      label: "Profil", 
+      path: "/profile" 
+    }] : []),
   ];
 
   return (
