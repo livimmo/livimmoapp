@@ -1,11 +1,13 @@
 import { PropertyCard } from "@/components/PropertyCard";
 import { Property } from "@/types/property";
+import { Agent } from "@/types/agent";
 
 interface AgentPropertiesProps {
   properties: Property[];
+  agent: Agent;  // Added agent prop
 }
 
-export const AgentProperties = ({ properties }: AgentPropertiesProps) => {
+export const AgentProperties = ({ properties, agent }: AgentPropertiesProps) => {
   if (properties.length === 0) {
     return (
       <p className="col-span-full text-center text-muted-foreground py-8">

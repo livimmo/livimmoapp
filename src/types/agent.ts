@@ -1,7 +1,7 @@
 export type AgentType = "agent" | "promoter" | "developer";
 
 export interface Agent {
-  id: string;
+  id: string;  // Changed from number to string
   name: string;
   email: string;
   phone: string;

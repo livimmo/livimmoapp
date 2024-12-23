@@ -4,7 +4,7 @@ export type PropertyStatus = "available" | "pending" | "sold" | "rented" | "en_c
 export type TransactionType = "Vente" | "Location";
 
 export interface Property {
-  id: string;
+  id: string;  // Changed from number to string
   title: string;
   price: number;
   location: string;

@@ -1,6 +1,4 @@
-import { useState } from "react";
-
-export type AccountType = "user" | "agent" | "promoter" | "developer";
+import { AccountType } from "@/types/user";
 
 interface AccountTypeSelectorProps {
   value: AccountType;
@@ -8,7 +6,7 @@ interface AccountTypeSelectorProps {
 }
 
 export const AccountTypeSelector = ({ value, onChange }: AccountTypeSelectorProps) => {
-  const accountTypes: AccountType[] = ["user", "agent", "promoter", "developer"];
+  const accountTypes: AccountType[] = ["user", "agent", "promoter", "developer", "owner", "buyer", "tenant", "admin"];
 
   return (
     <div className="flex gap-4">
