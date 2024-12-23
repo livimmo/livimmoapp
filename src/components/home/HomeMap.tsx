@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { LiveStream, ScheduledLive } from '@/types/live';
 import { Button } from '../ui/button';
 import { ReservationForm } from './ReservationForm';
-import { GoogleMapContainer } from './map/GoogleMapContainer';
+import GoogleMapContainer from './map/GoogleMapContainer';
 import { Property } from '@/types/property';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { LiveSlider } from '../live/LiveSlider';

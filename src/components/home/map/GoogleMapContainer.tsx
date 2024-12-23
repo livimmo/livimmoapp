@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import { Property } from "@/types/property";
 import { LiveStream, ScheduledLive } from "@/types/live";
@@ -9,7 +9,7 @@ interface GoogleMapContainerProps {
   onMarkerClick: (live: LiveStream | ScheduledLive | null) => void;
 }
 
-export const GoogleMapContainer = ({ properties, selectedLive, onMarkerClick }: GoogleMapContainerProps) => {
+const GoogleMapContainer = ({ properties, selectedLive, onMarkerClick }: GoogleMapContainerProps) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
   const center = {
@@ -18,7 +18,8 @@ export const GoogleMapContainer = ({ properties, selectedLive, onMarkerClick }: 
   };
 
   const handleMarkerClick = (property: Property) => {
-    const live = properties.find(p => p.id === property.id);
+    // Find the corresponding live stream for this property
+    const live = properties.find(p => p.id === property.id) as unknown as (LiveStream | ScheduledLive);
     onMarkerClick(live || null);
   };
 
@@ -51,3 +52,5 @@ export const GoogleMapContainer = ({ properties, selectedLive, onMarkerClick }: 
     </GoogleMap>
   );
 };
+
+export default GoogleMapContainer;
