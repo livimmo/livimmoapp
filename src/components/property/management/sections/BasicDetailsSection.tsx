@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
-import { Home, MapPin, Banknote, Square, Video, Calendar, Eye, Hide } from "lucide-react";
+import { Home, MapPin, Banknote, Square, Video, Calendar, Eye, EyeOff } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface BasicDetailsSectionProps {
@@ -85,7 +85,7 @@ export const BasicDetailsSection = ({
             </SelectItem>
             <SelectItem value="hidden">
               <div className="flex items-center gap-2">
-                <Hide className="h-4 w-4" />
+                <EyeOff className="h-4 w-4" />
                 <span>Caché</span>
               </div>
             </SelectItem>
