@@ -121,4 +121,4 @@ const AgentDetail = () => {
   );
 };
 
-export default AgentDetail;
+export { AgentDetail as default };

@@ -1,21 +1,21 @@
 import { Routes as RouterRoutes, Route } from "react-router-dom";
-import { Index } from "@/pages/Index";
+import Index from "@/pages/Index";
 import { Properties } from "@/pages/Properties";
-import { PropertyDetail } from "@/pages/PropertyDetail";
-import { Search } from "@/pages/Search";
-import { Agents } from "@/pages/Agents";
-import { AgentDetail } from "@/pages/AgentDetail";
-import { Developers } from "@/pages/Developers";
-import { DeveloperDetail } from "@/pages/DeveloperDetail";
-import { Lives } from "@/pages/Lives";
-import { JoinLive } from "@/pages/JoinLive";
-import { Login } from "@/pages/Login";
-import { Signup } from "@/pages/Signup";
-import { Profile } from "@/pages/Profile";
-import { Favorites } from "@/pages/Favorites";
-import { PropertyManagement } from "@/pages/PropertyManagement";
-import { OwnerDashboard } from "@/pages/OwnerDashboard";
-import { Notifications } from "@/pages/Notifications";
+import PropertyDetail from "@/pages/PropertyDetail";
+import Search from "@/pages/Search";
+import Agents from "@/pages/Agents";
+import AgentDetail from "@/pages/AgentDetail";
+import Developers from "@/pages/Developers";
+import DeveloperDetail from "@/pages/DeveloperDetail";
+import Lives from "@/pages/Lives";
+import JoinLive from "@/pages/JoinLive";
+import Login from "@/pages/Login";
+import Signup from "@/pages/Signup";
+import Profile from "@/pages/Profile";
+import Favorites from "@/pages/Favorites";
+import PropertyManagement from "@/pages/PropertyManagement";
+import OwnerDashboard from "@/pages/OwnerDashboard";
+import Notifications from "@/pages/Notifications";
 
 export const Routes = () => {
   return (
