@@ -1,1 +1,0 @@
-export { mockFavoritesData } from './mockFavoritesData';

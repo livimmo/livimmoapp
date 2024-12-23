@@ -16,7 +16,7 @@ const PropertyManagement = () => {
 
   const isAgent = user?.role === "agent" || user?.role === "promoter";
 
-  const handleStatusChange = (propertyId: string, status: "available" | "pending" | "sold" | "rented") => {
+  const handleStatusChange = (propertyId: number, status: "available" | "pending" | "sold" | "rented") => {
     setProperties(prev =>
       prev.map(property =>
         property.id === propertyId ? { ...property, status } : property
@@ -28,7 +28,7 @@ const PropertyManagement = () => {
     });
   };
 
-  const handleDelete = (propertyId: string) => {
+  const handleDelete = (propertyId: number) => {
     setProperties(prev => prev.filter(property => property.id !== propertyId));
     toast({
       title: "Bien supprimé",
@@ -41,7 +41,7 @@ const PropertyManagement = () => {
     // TODO: Implémenter l'édition
   };
 
-  const handleNotesChange = (propertyId: string, notes: any) => {
+  const handleNotesChange = (propertyId: number, notes: any) => {
     setProperties(prev =>
       prev.map(property =>
         property.id === propertyId

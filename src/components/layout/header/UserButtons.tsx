@@ -5,14 +5,16 @@ import { useAuth } from "@/contexts/AuthContext";
 import { AddLiveDialog } from "@/components/AddLiveDialog";
 import { SubmitPropertyButton } from "../SubmitPropertyButton";
 import { SupportButton } from "./SupportButton";
-import { ChatbotButton } from "@/components/chat/ChatbotButton";
-import { useState } from "react";
-import { ChatWindow } from "@/components/chat/ChatWindow";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const UserButtons = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [showChat, setShowChat] = useState(false);
 
   const isAgentOrPromoter = user?.role === 'agent' || user?.role === 'promoter';
   const isOwner = user?.role === 'owner';
@@ -21,10 +23,18 @@ export const UserButtons = () => {
     <>
       {isOwner && <SubmitPropertyButton />}
       {isAgentOrPromoter && (
-        <AddLiveDialog />
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <AddLiveDialog />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Démarrer ou programmer un live</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       )}
       <SupportButton />
-      <ChatbotButton onClick={() => setShowChat(true)} />
       <Button 
         variant="ghost" 
         size="sm"
@@ -43,8 +53,6 @@ export const UserButtons = () => {
       >
         <User className="h-4 w-4" />
       </Button>
-
-      {showChat && <ChatWindow onClose={() => setShowChat(false)} />}
     </>
   );
 };

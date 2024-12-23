@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search as SearchIcon } from "lucide-react";
+import { Search as SearchIcon, User, Building2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Command,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/command";
 import { useNavigate } from "react-router-dom";
 import { mockAgents } from "@/data/mockAgents";
+import { developers } from "@/data/mockDevelopers";
 
 interface SmartSearchBarProps {
   searchTerm: string;
@@ -30,7 +31,12 @@ export const SmartSearchBar = ({
   const filteredAgents = mockAgents.filter(agent =>
     agent.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     agent.location.toLowerCase().includes(searchTerm.toLowerCase())
-  ).slice(0, 5);
+  ).slice(0, 3);
+
+  const filteredDevelopers = developers.filter(developer =>
+    developer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    developer.location.toLowerCase().includes(searchTerm.toLowerCase())
+  ).slice(0, 3);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -48,12 +54,17 @@ export const SmartSearchBar = ({
     setOpen(false);
   };
 
+  const handleDeveloperSelect = (developerId: number) => {
+    navigate(`/developer/${developerId}`);
+    setOpen(false);
+  };
+
   return (
     <div className="relative w-full">
       <div className="relative">
         <SearchIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Rechercher un agent par nom ou localisation... (⌘+K)"
+          placeholder="Rechercher par ville, région, agent ou promoteur... (⌘+K)"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="pl-9 pr-4"
@@ -62,9 +73,25 @@ export const SmartSearchBar = ({
       </div>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <Command className="rounded-lg border shadow-md">
-          <CommandInput placeholder="Rechercher un agent..." />
+          <CommandInput placeholder="Que recherchez-vous ?" />
           <CommandList>
-            <CommandEmpty>Aucun agent trouvé.</CommandEmpty>
+            <CommandEmpty>Aucun résultat trouvé.</CommandEmpty>
+            {suggestions.length > 0 && (
+              <CommandGroup heading="Biens immobiliers">
+                {suggestions.map((suggestion) => (
+                  <CommandItem
+                    key={suggestion}
+                    onSelect={() => {
+                      setSearchTerm(suggestion);
+                      setOpen(false);
+                    }}
+                  >
+                    <SearchIcon className="mr-2 h-4 w-4" />
+                    {suggestion}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
             {filteredAgents.length > 0 && (
               <CommandGroup heading="Agents">
                 {filteredAgents.map((agent) => (
@@ -72,8 +99,21 @@ export const SmartSearchBar = ({
                     key={`agent-${agent.id}`}
                     onSelect={() => handleAgentSelect(agent.id)}
                   >
-                    <SearchIcon className="mr-2 h-4 w-4" />
+                    <User className="mr-2 h-4 w-4" />
                     {agent.name} - {agent.location}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
+            {filteredDevelopers.length > 0 && (
+              <CommandGroup heading="Promoteurs">
+                {filteredDevelopers.map((developer) => (
+                  <CommandItem
+                    key={`developer-${developer.id}`}
+                    onSelect={() => handleDeveloperSelect(developer.id)}
+                  >
+                    <Building2 className="mr-2 h-4 w-4" />
+                    {developer.name} - {developer.location}
                   </CommandItem>
                 ))}
               </CommandGroup>

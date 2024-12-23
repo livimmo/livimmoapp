@@ -1,58 +1,93 @@
-import { useState } from "react";
-import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
+import { useState, useCallback, useEffect } from "react";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { Property } from "@/types/property";
-import { LiveStream, ScheduledLive } from "@/types/live";
+import { LiveEvent } from "@/types/live";
+import { MapMarker } from "./MapMarker";
 
 interface GoogleMapContainerProps {
   properties: Property[];
-  selectedLive: LiveStream | ScheduledLive | null;
-  onMarkerClick: (live: LiveStream | ScheduledLive | null) => void;
+  selectedLive?: LiveEvent | null;
+  onMarkerClick?: (live: LiveEvent | null) => void;
 }
 
-const GoogleMapContainer = ({ properties, selectedLive, onMarkerClick }: GoogleMapContainerProps) => {
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-
-  const center = {
-    lat: 31.6295,
-    lng: -7.9811,
-  };
-
-  const handleMarkerClick = (property: Property) => {
-    // Find the corresponding live stream for this property
-    const live = properties.find(p => p.id === property.id) as unknown as (LiveStream | ScheduledLive);
-    onMarkerClick(live || null);
-  };
-
-  return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-      <GoogleMap
-        onLoad={map => setMap(map)}
-        center={center}
-        zoom={10}
-        mapContainerClassName="h-full w-full"
-      >
-        {properties.map(property => (
-          <Marker
-            key={property.id}
-            position={property.coordinates}
-            onClick={() => handleMarkerClick(property)}
-          />
-        ))}
-
-        {selectedLive && (
-          <InfoWindow
-            position={properties.find(p => p.id === selectedLive.id)?.coordinates || center}
-            onCloseClick={() => onMarkerClick(null)}
-          >
-            <div>
-              <h3 className="font-semibold">{selectedLive.title}</h3>
-              <p className="text-sm text-gray-600">{selectedLive.location}</p>
-            </div>
-          </InfoWindow>
-        )}
-      </GoogleMap>
-    </LoadScript>
-  );
+const containerStyle = {
+  width: "100%",
+  height: "100%",
+  minHeight: "600px",
 };
 
-export default GoogleMapContainer;
+const defaultCenter = {
+  lat: 31.7917,
+  lng: -7.0926,
+};
+
+export const GoogleMapContainer = ({
+  properties,
+  onMarkerClick,
+}: GoogleMapContainerProps) => {
+  const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [hoveredMarkerId, setHoveredMarkerId] = useState<number | null>(null);
+
+  const onLoad = useCallback((map: google.maps.Map) => {
+    setMapRef(map);
+  }, []);
+
+  useEffect(() => {
+    if (mapRef && properties.length > 0) {
+      const bounds = new google.maps.LatLngBounds();
+      properties.forEach((property) => {
+        bounds.extend({
+          lat: property.coordinates.lat,
+          lng: property.coordinates.lng,
+        });
+      });
+      mapRef.fitBounds(bounds);
+    }
+  }, [mapRef, properties]);
+
+  return (
+    <div className="w-full h-full min-h-[600px] rounded-lg overflow-hidden shadow-lg">
+      <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={
+            properties.length > 0
+              ? {
+                  lat: properties[0].coordinates.lat,
+                  lng: properties[0].coordinates.lng,
+                }
+              : defaultCenter
+          }
+          zoom={6}
+          onLoad={onLoad}
+          options={{
+            disableDefaultUI: false,
+            zoomControl: true,
+            fullscreenControl: true,
+            mapTypeControl: true,
+          }}
+        >
+          {properties.map((property) => (
+            <MapMarker
+              key={property.id}
+              property={property}
+              isSelected={selectedProperty?.id === property.id}
+              isHovered={hoveredMarkerId === property.id}
+              onClick={() => {
+                setSelectedProperty(property);
+                onMarkerClick?.(null);
+              }}
+              onMouseOver={() => setHoveredMarkerId(property.id)}
+              onMouseOut={() => setHoveredMarkerId(null)}
+              onInfoWindowClose={() => {
+                setSelectedProperty(null);
+                setHoveredMarkerId(null);
+              }}
+            />
+          ))}
+        </GoogleMap>
+      </LoadScript>
+    </div>
+  );
+};

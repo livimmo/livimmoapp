@@ -1,9 +1,5 @@
-import { Agent } from "./agent";
-
-export type PropertyStatus = "available" | "pending" | "sold" | "rented" | "en_cours";
-
 export interface Property {
-  id: string;
+  id: number;
   title: string;
   price: number;
   location: string;
@@ -14,20 +10,47 @@ export interface Property {
   description: string;
   features: string[];
   images: string[];
-  hasLive: boolean;
-  agent: Agent;
+  hasLive?: boolean;
+  isReplay?: boolean;
+  liveDate?: Date;
+  status?: 'available' | 'pending' | 'sold' | 'rented';
+  createdAt?: Date;
+  agent: {
+    id?: number;
+    name: string;
+    image: string;
+    phone: string;
+    email: string;
+    company?: string;
+    verified?: boolean;
+  };
   coordinates: {
     lat: number;
     lng: number;
   };
+  viewers?: number;
+  isLiveNow?: boolean;
+  remainingSeats?: number;
+  isUserRegistered?: boolean;
   transactionType: "Vente" | "Location";
-  status?: PropertyStatus;
   tags?: string[];
   virtualTour?: {
     enabled: boolean;
     url?: string;
-    platform?: 'matterport' | 'other';
-    type?: "360" | "3d";
+    platform?: 'matterport' | 'klapty';
+    type: "360" | "video" | "live";
+    hotspots?: Array<{
+      title: string;
+      description: string;
+      position: { x: number; y: number };
+      details?: Array<{ label: string; value: string }>;
+    }>;
+    annotations?: Array<{
+      title: string;
+      description: string;
+      position: { x: number; y: number };
+      details?: Array<{ label: string; value: string }>;
+    }>;
     floorPlan?: {
       url: string;
       rooms: Array<{
@@ -40,24 +63,19 @@ export interface Property {
     statistics?: {
       totalVisits: number;
       averageTime: string;
-      popularRooms: Array<{ name: string; visits: number }>;
-      lastVisits: Array<{ date: string; duration: string }>;
+      popularRooms: Array<{
+        name: string;
+        visits: number;
+      }>;
+      lastVisits: Array<{
+        date: string;
+        duration: string;
+      }>;
     };
   };
-  isLiveNow?: boolean;
-  viewers?: number;
-  remainingSeats?: number;
-  liveDate?: Date;
-  isReplay?: boolean;
-  ownerId?: string;
   privateNotes?: {
     ownerName?: string;
     location?: string;
     notes?: string;
   };
-  offers?: number;
-}
-
-export interface PropertyCardProps {
-  property: Property;
 }

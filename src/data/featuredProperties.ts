@@ -2,7 +2,7 @@ import { Property } from "@/types/property";
 
 export const featuredProperties: Property[] = [
   {
-    id: "1",
+    id: 1,
     title: "Villa Moderne avec Piscine",
     price: 2500000,
     location: "Marrakech",
@@ -20,14 +20,11 @@ export const featuredProperties: Property[] = [
     hasLive: true,
     liveDate: new Date("2024-03-15"),
     agent: {
-      id: "1",
+      id: 1,
       name: "Karim Benjelloun",
-      avatar: "https://i.pravatar.cc/150?u=karim",
       image: "https://i.pravatar.cc/150?u=karim",
       phone: "+212 6 00 11 22 33",
       email: "karim.benjelloun@example.com",
-      location: "Marrakech",
-      type: "agent"
     },
     coordinates: {
       lat: 31.6295,
@@ -38,11 +35,52 @@ export const featuredProperties: Property[] = [
       enabled: true,
       url: "TzhRashYdRt",
       platform: 'matterport',
-      type: "360"
+      type: "360",
+      hotspots: [
+        {
+          title: "Salon",
+          description: "Spacieux salon avec vue sur la piscine",
+          position: { x: 30, y: 40 },
+          details: [
+            { label: "Surface", value: "45m²" },
+            { label: "Exposition", value: "Sud" }
+          ]
+        }
+      ],
+      floorPlan: {
+        url: "https://example.com/floorplan.svg",
+        rooms: [
+          {
+            id: "salon",
+            name: "Salon",
+            area: 45,
+            coordinates: { x: 30, y: 40 }
+          },
+          {
+            id: "cuisine",
+            name: "Cuisine",
+            area: 20,
+            coordinates: { x: 60, y: 40 }
+          }
+        ]
+      },
+      statistics: {
+        totalVisits: 245,
+        averageTime: "8:30",
+        popularRooms: [
+          { name: "Salon", visits: 180 },
+          { name: "Cuisine", visits: 150 },
+          { name: "Chambre principale", visits: 120 }
+        ],
+        lastVisits: [
+          { date: "2024-03-10", duration: "10:15" },
+          { date: "2024-03-09", duration: "7:45" }
+        ]
+      }
     }
   },
   {
-    id: "2",
+    id: 2,
     title: "Appartement Vue Mer",
     price: 1800000,
     location: "Tanger",
@@ -59,14 +97,11 @@ export const featuredProperties: Property[] = [
     ],
     hasLive: false,
     agent: {
-      id: "2",
+      id: 2,
       name: "Sophia Martinez",
-      avatar: "https://i.pravatar.cc/150?u=sophia",
       image: "https://i.pravatar.cc/150?u=sophia",
       phone: "+212 6 11 22 33 44",
       email: "sophia.martinez@example.com",
-      location: "Tanger",
-      type: "agent"
     },
     coordinates: {
       lat: 35.7595,
@@ -76,7 +111,47 @@ export const featuredProperties: Property[] = [
     virtualTour: {
       enabled: true,
       url: "https://my.matterport.com/show/?m=SxQL3iGyvQk",
-      type: "360"
+      type: "360",
+      hotspots: [
+        {
+          title: "Chambre",
+          description: "Chambre spacieuse avec vue sur la mer",
+          position: { x: 50, y: 50 },
+          details: [
+            { label: "Surface", value: "30m²" },
+            { label: "Exposition", value: "Est" }
+          ]
+        }
+      ],
+      floorPlan: {
+        url: "https://example.com/floorplan2.svg",
+        rooms: [
+          {
+            id: "salon",
+            name: "Salon",
+            area: 35,
+            coordinates: { x: 30, y: 40 }
+          },
+          {
+            id: "chambre",
+            name: "Chambre principale",
+            area: 20,
+            coordinates: { x: 60, y: 40 }
+          }
+        ]
+      },
+      statistics: {
+        totalVisits: 180,
+        averageTime: "6:45",
+        popularRooms: [
+          { name: "Salon", visits: 150 },
+          { name: "Chambre principale", visits: 120 }
+        ],
+        lastVisits: [
+          { date: "2024-03-10", duration: "7:15" },
+          { date: "2024-03-09", duration: "6:30" }
+        ]
+      }
     }
   }
 ];

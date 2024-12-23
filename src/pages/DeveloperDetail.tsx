@@ -5,7 +5,6 @@ import { replayLives, liveStreams, scheduledLives } from "@/data/mockLives";
 import { CurrentLivesSection } from "@/components/home/sections/CurrentLivesSection";
 import { ScheduledLivesSection } from "@/components/home/sections/ScheduledLivesSection";
 import { ReplayLivesSection } from "@/components/home/sections/ReplayLivesSection";
-import { type Property } from "@/types/property";
 
 const DeveloperDetail = () => {
   const { id } = useParams();
@@ -16,38 +15,35 @@ const DeveloperDetail = () => {
     return <div>Promoteur non trouvé</div>;
   }
 
+  // Filtrer les lives pour ce promoteur spécifique (simulation)
   const developerCurrentLives = liveStreams.slice(0, 2);
   const developerScheduledLives = scheduledLives.slice(0, 3);
   const developerReplayLives = replayLives.slice(0, 3);
 
-  const currentLiveProperties: Property[] = developerCurrentLives.map(live => ({
-    id: live.id.toString(),
+  // Mock properties for current lives (you can replace this with actual data)
+  const currentLiveProperties = developerCurrentLives.map(live => ({
+    id: live.id,
     title: live.title,
     price: parseInt(live.price.replace(/[^0-9]/g, '')),
     location: live.location,
     type: live.type,
-    surface: 150,
-    rooms: 4,
-    bathrooms: 2,
+    surface: 150, // Mock value
+    rooms: 4, // Mock value
+    bathrooms: 2, // Mock value
     description: live.description,
     features: [],
     images: [live.thumbnail],
-    hasLive: true,
     agent: {
-      id: "1",
       name: live.agent,
-      avatar: "https://example.com/agent.jpg",
       image: "https://example.com/agent.jpg",
       phone: "+212 600000000",
-      email: "agent@example.com",
-      location: "Marrakech",
-      type: "agent"
+      email: "agent@example.com"
     },
     coordinates: {
-      lat: 31.6295,
+      lat: 31.6295, // Mock coordinates for Marrakech
       lng: -7.9811
     },
-    transactionType: "Vente"
+    transactionType: "Vente" as const
   }));
 
   return (

@@ -16,7 +16,7 @@ export const LiveSection = () => {
 
   // Convertir les lives en format Property pour la carte
   const convertToProperty = (live: any): Property => ({
-    id: live.id.toString(),  // Convert to string
+    id: live.id,
     title: live.title,
     price: parseInt(live.price.replace(/[^\d]/g, "")),
     location: live.location,
@@ -30,14 +30,10 @@ export const LiveSection = () => {
     hasLive: true,
     liveDate: live.date,
     agent: {
-      id: `agent-${Math.random()}`,  // Generate a string ID
       name: live.agent,
-      avatar: `https://i.pravatar.cc/150?u=${live.agent}`,
-      image: `https://i.pravatar.cc/150?u=${live.agent}`,
-      email: `${live.agent.toLowerCase().replace(/\s/g, '.')}@example.com`,
-      phone: "+212 6XX XXX XXX",
-      location: "Marrakech",
-      type: "agent",
+      image: "",
+      phone: "",
+      email: "",
     },
     coordinates: {
       lat: 31.7917 + Math.random() * 2 - 1,

@@ -1,92 +1,181 @@
-import { useState, FormEvent } from "react";
-import { AccountTypeSelector } from "@/components/profile/AccountTypeSelector";
-import { type AccountType } from "@/types/user";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
+import { AccountTypeSelector, AccountType } from "@/components/profile/AccountTypeSelector";
+import { PersonalInfo } from "@/components/profile/PersonalInfo";
+import { SocialConnect } from "@/components/profile/SocialConnect";
+import { Button } from "@/components/ui/button";
+import { LogOut, Lock, Languages } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
-export const Profile = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    accountType: "user" as AccountType,
+interface UserProfile {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  accountType: AccountType;
+  avatar?: string;
+  isVerified: boolean;
+  language: string;
+}
+
+const Profile = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState<UserProfile>({
+    firstName: "John",
+    lastName: "Doe",
+    email: "john.doe@example.com",
+    phone: "+212 6XX XXX XXX",
+    accountType: "buyer",
+    isVerified: false,
+    language: "fr",
   });
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const info = {
-      firstName: formData.get("firstName") as string,
-      lastName: formData.get("lastName") as string,
-      email: formData.get("email") as string,
-      phone: formData.get("phone") as string,
-    };
-    console.log("Submitting form:", info);
+  const handleAccountTypeChange = (value: AccountType) => {
+    setProfile((prev) => ({ ...prev, accountType: value }));
+    toast({
+      title: "Type de compte mis à jour",
+      description: `Vous êtes maintenant enregistré en tant que ${
+        value === "buyer" ? "acheteur/locataire" : "agent/promoteur"
+      }.`,
+    });
   };
 
-  const handleFieldChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleLanguageChange = (value: string) => {
+    setProfile((prev) => ({ ...prev, language: value }));
+    toast({
+      title: "Langue mise à jour",
+      description: "La langue de l'interface a été modifiée avec succès.",
+    });
+  };
+
+  const handleProfileChange = (field: keyof UserProfile, value: string) => {
+    setProfile((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Profil mis à jour",
+      description: "Vos informations ont été enregistrées avec succès.",
+    });
+  };
+
+  const handleLogout = () => {
+    toast({
+      title: "Déconnexion réussie",
+      description: "À bientôt !",
+    });
+    navigate('/');
+  };
+
+  const handlePasswordChange = () => {
+    toast({
+      title: "Changement de mot de passe",
+      description: "Un email vous a été envoyé pour changer votre mot de passe.",
+    });
   };
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <h1 className="text-2xl font-bold">Mon Profil</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="firstName" className="block text-sm font-medium">Prénom</label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={(e) => handleFieldChange("firstName", e.target.value)}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            required
-          />
+    <div className="min-h-screen pb-20">
+      <div className="container px-4 py-8 max-w-2xl mx-auto space-y-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Mon Profil</h1>
+          <Select value={profile.language} onValueChange={handleLanguageChange}>
+            <SelectTrigger className="w-[140px]">
+              <Languages className="mr-2 h-4 w-4" />
+              <SelectValue placeholder="Langue" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="fr">Français</SelectItem>
+              <SelectItem value="en">English</SelectItem>
+              <SelectItem value="ar">العربية</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        <div>
-          <label htmlFor="lastName" className="block text-sm font-medium">Nom</label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={(e) => handleFieldChange("lastName", e.target.value)}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            required
+
+        <div className="space-y-8">
+          <ProfileAvatar
+            firstName={profile.firstName}
+            lastName={profile.lastName}
+            avatar={profile.avatar}
+            accountType={profile.accountType}
           />
-        </div>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={(e) => handleFieldChange("email", e.target.value)}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="phone" className="block text-sm font-medium">Téléphone</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={(e) => handleFieldChange("phone", e.target.value)}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            required
-          />
-        </div>
-        <div>
+
+          <div className="flex flex-col gap-4">
+            <Button
+              variant="outline"
+              className="w-full bg-white text-primary hover:bg-primary hover:text-white transition-colors"
+              onClick={handlePasswordChange}
+            >
+              <Lock className="mr-2 h-4 w-4" />
+              Changer le mot de passe
+            </Button>
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  className="w-full bg-white text-destructive hover:bg-destructive hover:text-white transition-colors"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Se déconnecter
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Se déconnecter ?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Êtes-vous sûr de vouloir vous déconnecter ? Vous devrez vous
+                    reconnecter pour accéder à votre compte.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleLogout} className="bg-destructive text-white hover:bg-destructive/90">
+                    Se déconnecter
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+
           <AccountTypeSelector
-            value={formData.accountType}
-            onChange={(value) => handleFieldChange("accountType", value)}
+            value={profile.accountType}
+            onChange={handleAccountTypeChange}
           />
+
+          <PersonalInfo
+            {...profile}
+            onSubmit={handleSubmit}
+            onChange={handleProfileChange}
+          />
+
+          <div className="border-t pt-8">
+            <h2 className="text-lg font-semibold mb-4">Connexion sociale</h2>
+            <SocialConnect />
+          </div>
         </div>
-        <button type="submit" className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">Mettre à jour</button>
-      </form>
+      </div>
     </div>
   );
 };

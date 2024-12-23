@@ -17,18 +17,11 @@ export const RoleSelector = ({ selectedRole, onSelect }: RoleSelectorProps) => {
       color: "bg-purple-500",
     },
     {
-      id: "buyer",
-      label: "Acheteur",
-      description: "Recherchez et achetez votre bien",
-      icon: ShoppingBag,
-      color: "bg-orange-500",
-    },
-    {
-      id: "tenant",
-      label: "Locataire",
-      description: "Trouvez votre location idéale",
-      icon: Home,
-      color: "bg-purple-500",
+      id: "promoter",
+      label: "Promoteur",
+      description: "Gérez vos projets immobiliers et organisez des lives",
+      icon: Building2,
+      color: "bg-blue-500",
     },
     {
       id: "agent",
@@ -38,11 +31,18 @@ export const RoleSelector = ({ selectedRole, onSelect }: RoleSelectorProps) => {
       color: "bg-green-500",
     },
     {
-      id: "promoter",
-      label: "Promoteur",
-      description: "Gérez vos projets immobiliers et organisez des lives",
-      icon: Building2,
-      color: "bg-blue-500",
+      id: "tenant",
+      label: "Locataire",
+      description: "Trouvez votre location idéale",
+      icon: Home,
+      color: "bg-purple-500",
+    },
+    {
+      id: "buyer",
+      label: "Acheteur",
+      description: "Recherchez et achetez votre bien",
+      icon: ShoppingBag,
+      color: "bg-orange-500",
     },
   ];
 

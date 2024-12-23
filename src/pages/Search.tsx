@@ -3,8 +3,7 @@ import { SearchFilters } from "@/components/search/SearchFilters";
 import { ViewControls } from "@/components/search/ViewControls";
 import { SearchContent } from "@/components/search/SearchContent";
 import { type Property } from "@/types/property";
-import { mockAgents } from "@/data/mockAgents";
-import { useToast } from "@/components/ui/use-toast";
+import { addCoordinatesToProperties } from "@/data/mockProperties";
 
 const placeholderImages = [
   "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
@@ -19,9 +18,9 @@ const placeholderImages = [
   "https://images.unsplash.com/photo-1500375592092-40eb2168fd21"
 ];
 
-const mockProperties: Property[] = [
+const mockProperties: Property[] = addCoordinatesToProperties([
   {
-    id: "1",
+    id: 1,
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Villa moderne à Marrakech",
     price: 2500000,
@@ -34,15 +33,16 @@ const mockProperties: Property[] = [
     features: ["Piscine", "Jardin", "Garage"],
     hasLive: true,
     tags: ["Coup de fusil", "Nouveauté"],
-    agent: mockAgents[0],
-    coordinates: {
-      lat: 31.6295,
-      lng: -7.9811
+    agent: {
+      name: "Sarah Martin",
+      image: "https://i.pravatar.cc/150?u=sarah",
+      phone: "+212 6 12 34 56 78",
+      email: "sarah.martin@example.com",
     },
-    transactionType: "Vente",
+    transactionType: "Vente" as const,
   },
   {
-    id: "2",
+    id: 2,
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Appartement vue mer à Tanger",
     price: 1800000,
@@ -55,15 +55,16 @@ const mockProperties: Property[] = [
     features: ["Vue mer", "Terrasse", "Parking"],
     hasLive: false,
     tags: ["Exclusivité"],
-    agent: mockAgents[1],
-    coordinates: {
-      lat: 35.7595,
-      lng: -5.8340
+    agent: {
+      name: "Mohammed Alami",
+      image: "https://i.pravatar.cc/150?u=mohammed",
+      phone: "+212 6 23 45 67 89",
+      email: "mohammed.alami@example.com",
     },
-    transactionType: "Location",
+    transactionType: "Location" as const,
   },
   {
-    id: "3",
+    id: 3,
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Riad traditionnel",
     price: 3200000,
@@ -76,15 +77,16 @@ const mockProperties: Property[] = [
     features: ["Piscine", "Terrasse", "Patio"],
     hasLive: true,
     tags: ["Nouveauté"],
-    agent: mockAgents[2],
-    coordinates: {
-      lat: 31.6342,
-      lng: -8.0079
+    agent: {
+      name: "Fatima Zahra",
+      image: "https://i.pravatar.cc/150?u=fatima",
+      phone: "+212 6 34 56 78 90",
+      email: "fatima.zahra@example.com",
     },
-    transactionType: "Vente",
+    transactionType: "Vente" as const,
   },
   {
-    id: "4",
+    id: 4,
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Bureau moderne",
     price: 1500000,
@@ -97,15 +99,16 @@ const mockProperties: Property[] = [
     features: ["Parking", "Sécurité", "Climatisation"],
     hasLive: true,
     tags: ["Coup de fusil"],
-    agent: mockAgents[3],
-    coordinates: {
-      lat: 33.5731,
-      lng: -7.5898
+    agent: {
+      name: "Karim Idrissi",
+      image: "https://i.pravatar.cc/150?u=karim",
+      phone: "+212 6 45 67 89 01",
+      email: "karim.idrissi@example.com",
     },
-    transactionType: "Location",
+    transactionType: "Location" as const,
   },
   {
-    id: "5",
+    id: 5,
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Villa avec piscine",
     price: 4500000,
@@ -118,25 +121,26 @@ const mockProperties: Property[] = [
     features: ["Piscine", "Jardin", "Garage", "Sécurité"],
     hasLive: false,
     tags: ["Exclusivité", "Nouveauté"],
-    agent: mockAgents[0],
-    coordinates: {
-      lat: 34.0209,
-      lng: -6.8416
+    agent: {
+      name: "Yasmine Benjelloun",
+      image: "https://i.pravatar.cc/150?u=yasmine",
+      phone: "+212 6 56 78 90 12",
+      email: "yasmine.benjelloun@example.com",
     },
-    transactionType: "Vente",
+    transactionType: "Vente" as const,
   }
-];
+]);
+
+type ViewMode = "grid" | "list";
 
 const Search = () => {
-  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 500]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [transactionType, setTransactionType] = useState<"buy" | "rent">("buy");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
 
   const filteredProperties = mockProperties.filter((property) => {
     const matchesSearch =
@@ -148,28 +152,15 @@ const Search = () => {
     const matchesSurface =
       property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
     const matchesLive = !showLiveOnly || property.hasLive;
-    const matchesTransactionType = 
-      (transactionType === "buy" && property.transactionType === "Vente") ||
-      (transactionType === "rent" && property.transactionType === "Location");
 
     return (
       matchesSearch &&
       matchesType &&
       matchesPrice &&
       matchesSurface &&
-      matchesLive &&
-      matchesTransactionType
+      matchesLive
     );
   });
-
-  // Show toast when no results are found
-  if (filteredProperties.length === 0 && searchTerm !== "") {
-    toast({
-      title: "Aucun résultat",
-      description: "Aucun bien ne correspond à vos critères. Essayez de modifier vos filtres.",
-      variant: "destructive",
-    });
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -186,20 +177,13 @@ const Search = () => {
         setShowLiveOnly={setShowLiveOnly}
         showFilters={showFilters}
         setShowFilters={setShowFilters}
-        transactionType={transactionType}
-        setTransactionType={setTransactionType}
       />
 
-      <div className="pt-[180px] px-3">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">
-            {filteredProperties.length > 0
-              ? `${filteredProperties.length} biens trouvés`
-              : "Aucun bien trouvé"}
-          </h2>
-          <ViewControls viewMode={viewMode} setViewMode={setViewMode} />
-        </div>
-        
+      <div className="pt-[60px] px-3">
+        <ViewControls 
+          viewMode={viewMode} 
+          setViewMode={setViewMode} 
+        />
         <SearchContent
           filteredProperties={filteredProperties}
           viewMode={viewMode}

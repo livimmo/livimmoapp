@@ -11,7 +11,7 @@ export const OwnerProperties = () => {
   const [isAddPropertyOpen, setIsAddPropertyOpen] = useState(false);
   const [properties, setProperties] = useState(mockProperties);
 
-  const handleStatusChange = (propertyId: string, status: "available" | "pending" | "sold" | "rented") => {
+  const handleStatusChange = (propertyId: number, status: "available" | "pending" | "sold" | "rented") => {
     setProperties(prev =>
       prev.map(property =>
         property.id === propertyId ? { ...property, status } : property
@@ -23,7 +23,7 @@ export const OwnerProperties = () => {
     });
   };
 
-  const handleDelete = (propertyId: string) => {
+  const handleDelete = (propertyId: number) => {
     setProperties(prev => prev.filter(property => property.id !== propertyId));
     toast({
       title: "Bien supprimé",
@@ -33,9 +33,10 @@ export const OwnerProperties = () => {
 
   const handleEdit = (property: any) => {
     console.log("Édition du bien:", property);
+    // TODO: Implémenter l'édition
   };
 
-  const handleNotesChange = (propertyId: string, notes: any) => {
+  const handleNotesChange = (propertyId: number, notes: any) => {
     setProperties(prev =>
       prev.map(property =>
         property.id === propertyId

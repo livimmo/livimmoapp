@@ -1,29 +1,27 @@
+import { Agent } from "./agent";
+
+export type VisitStatus = "pending" | "confirmed" | "ongoing" | "completed" | "cancelled";
+export type VisitType = "physical" | "remote" | "virtual";
+
+export interface Visitor {
+  name: string;
+  phone: string;
+  email: string;
+  message?: string;
+}
+
 export interface Visit {
-  id: string;
-  propertyId: string;
+  id: number;
+  propertyId: number;
   propertyTitle: string;
   propertyImage: string;
   propertyLocation: string;
   date: Date;
   time: string;
-  status: string;
-  type: string;
+  status: VisitStatus;
+  type: VisitType;
+  agent: Agent;
+  visitor: Visitor;
   isLive?: boolean;
   liveUrl?: string;
-  agent: {
-    name: string;
-    image: string;
-    phone: string;
-    email: string;
-    avatar?: string;
-    contact?: {
-      phone: string;
-      email: string;
-    };
-  };
-  visitor: {
-    name: string;
-    phone: string;
-    email: string;
-  };
 }

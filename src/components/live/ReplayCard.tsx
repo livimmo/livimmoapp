@@ -8,7 +8,7 @@ import { fr } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
-import LiveStream from "./LiveStream";
+import { LiveStream } from "./LiveStream";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { FavoriteButton } from "../property/FavoriteButton";
 import { ShareButtons } from "../properties/ShareButtons";

@@ -35,6 +35,17 @@ export const LiveButton = ({
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  const handleRegistration = () => {
+    setIsClicked(true);
+    setTimeout(() => {
+      toast({
+        title: "Inscription confirmée !",
+        description: `Votre place pour "${title}" a été réservée. Vous recevrez un email de confirmation.`,
+      });
+      setIsClicked(false);
+    }, 300);
+  };
+
   const handleClick = () => {
     if (!isAuthenticated) {
       setShowLoginDialog(true);
@@ -59,17 +70,6 @@ export const LiveButton = ({
         handleRegistration();
       }
     }
-  };
-
-  const handleRegistration = () => {
-    setIsClicked(true);
-    setTimeout(() => {
-      toast({
-        title: "Inscription confirmée !",
-        description: `Votre place pour "${title}" a été réservée. Vous recevrez un email de confirmation.`,
-      });
-      setIsClicked(false);
-    }, 300);
   };
 
   return (
@@ -125,7 +125,7 @@ export const LiveButton = ({
             <DialogTitle>Connexion requise</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <p>Pour accéder à ce contenu, vous devez avoir un compte Livimmo.</p>
+            <p>Pour accéder à ce live, vous devez avoir un compte Livimmo.</p>
             <div className="flex gap-4">
               <Button 
                 variant="outline" 

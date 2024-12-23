@@ -1,16 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 
 interface LiveVideoPlayerProps {
-  videoId?: string;
+  videoId: string;
   isReplay?: boolean;
   onLoad?: () => void;
 }
 
-export const LiveVideoPlayer = ({ 
-  videoId = "aMpQKOz0WXA", // Default example video
-  isReplay = false, 
-  onLoad 
-}: LiveVideoPlayerProps) => {
+export const LiveVideoPlayer = ({ videoId, isReplay = false, onLoad }: LiveVideoPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);

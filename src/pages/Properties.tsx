@@ -1,23 +1,7 @@
-import { Agent } from "@/types/agent";
-
 import { useState } from "react";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { PropertyList } from "@/components/properties/PropertyList";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
-import { type Property } from "@/types/property";
-
-const mockAgent: Agent = {
-  id: "1",
-  name: "John Doe",
-  email: "john@example.com",
-  phone: "+33 6 12 34 56 78",
-  avatar: "/placeholder.svg",
-  image: "/placeholder.svg",
-  location: "Paris",
-  type: "agent",
-  company: "Real Estate Co",
-  verified: true
-};
 
 export const Properties = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,9 +11,9 @@ export const Properties = () => {
   const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
-  const mockPropertiesData: Omit<Property, "coordinates">[] = [
+  const mockProperties = addCoordinatesToProperties([
     {
-      id: "1",
+      id: 1,
       title: "Villa moderne avec piscine",
       type: "Villa",
       price: 2500000,
@@ -44,21 +28,17 @@ export const Properties = () => {
         "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
       ],
       hasLive: true,
+      liveDate: new Date("2024-03-20"),
       agent: {
-        id: "1",
         name: "Sarah Martin",
-        email: "sarah.martin@example.com",
-        phone: "+212 6 12 34 56 78",
-        avatar: "https://i.pravatar.cc/150?u=sarah",
         image: "https://i.pravatar.cc/150?u=sarah",
-        location: "Marrakech",
-        type: "agent"
+        phone: "+212 6 12 34 56 78",
+        email: "sarah.martin@example.com",
       },
-      transactionType: "Vente",
-      status: "available"
+      transactionType: "Vente" as const,
     },
     {
-      id: "2",
+      id: 2,
       title: "Appartement vue mer",
       type: "Appartement",
       price: 1800000,
@@ -74,22 +54,16 @@ export const Properties = () => {
       ],
       hasLive: false,
       agent: {
-        id: "2",
         name: "Mohammed Alami",
-        email: "mohammed.alami@example.com",
+        image: "https://i.pravatar.cc/150?u=mohammed",
         phone: "+212 6 23 45 67 89",
-        avatar: "https://i.pravatar.cc/150?u=mohammed",
-        location: "Tanger",
-        type: "agent"
+        email: "mohammed.alami@example.com",
       },
-      transactionType: "Location",
-      status: "available"
+      transactionType: "Location" as const,
     },
-  ];
+  ]);
 
-  const properties = addCoordinatesToProperties(mockPropertiesData);
-
-  const filteredProperties = properties.filter((property) => {
+  const filteredProperties = mockProperties.filter((property) => {
     const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       property.location.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = !propertyType || property.type === propertyType;
@@ -126,4 +100,3 @@ export const Properties = () => {
 };
 
 export default Properties;
-
