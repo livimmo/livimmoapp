@@ -2,9 +2,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PROPERTY_TYPES } from "@/constants/propertyTypes";
-import { Home, MapPin, Banknote, Square, Video, Calendar, Eye, EyeOff } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { EyeOff, Eye } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 interface BasicDetailsSectionProps {
   title: string;
@@ -39,135 +39,111 @@ export const BasicDetailsSection = ({
   onStatusChange,
   onVisitTypeChange,
 }: BasicDetailsSectionProps) => {
+  const [showPrice, setShowPrice] = useState(true);
+
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <div className="grid gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="title">Titre</Label>
-            <div className="relative">
-              <Home className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-              <Input
-                id="title"
-                placeholder="Titre du bien"
-                value={title}
-                onChange={(e) => onTitleChange(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-          </div>
+        <div>
+          <Label htmlFor="title">Titre*</Label>
+          <Input
+            id="title"
+            value={title}
+            onChange={(e) => onTitleChange(e.target.value)}
+            placeholder="Ex: Appartement moderne au centre-ville"
+            required
+          />
+        </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              placeholder="Description détaillée du bien"
-              value={description}
-              onChange={(e) => onDescriptionChange(e.target.value)}
-              className="min-h-[100px]"
+        <div>
+          <Label htmlFor="description">Description</Label>
+          <Textarea
+            id="description"
+            value={description}
+            onChange={(e) => onDescriptionChange(e.target.value)}
+            placeholder="Décrivez votre bien..."
+            className="h-32"
+          />
+        </div>
+
+        <div className="relative">
+          <Label htmlFor="price">Prix*</Label>
+          <div className="relative">
+            <Input
+              id="price"
+              type={showPrice ? "text" : "password"}
+              value={price}
+              onChange={(e) => onPriceChange(e.target.value)}
+              placeholder="Ex: 500000"
+              required
+              className="pr-10"
             />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+              onClick={() => setShowPrice(!showPrice)}
+            >
+              {showPrice ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </Button>
           </div>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="price">Prix</Label>
-            <div className="relative">
-              <Banknote className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-              <Input
-                id="price"
-                placeholder="Prix"
-                value={price}
-                onChange={(e) => onPriceChange(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="surface">Surface</Label>
-            <div className="relative">
-              <Square className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-              <Input
-                id="surface"
-                placeholder="Surface en m²"
-                value={surface}
-                onChange={(e) => onSurfaceChange(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-          </div>
+        <div>
+          <Label htmlFor="surface">Surface (m²)*</Label>
+          <Input
+            id="surface"
+            value={surface}
+            onChange={(e) => onSurfaceChange(e.target.value)}
+            placeholder="Ex: 75"
+            required
+          />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="propertyType">Type de bien</Label>
-          <Select value={propertyType} onValueChange={onPropertyTypeChange}>
+        <div>
+          <Label htmlFor="propertyType">Type de bien*</Label>
+          <Select value={propertyType} onValueChange={onPropertyTypeChange} required>
             <SelectTrigger id="propertyType">
-              <SelectValue placeholder="Sélectionnez le type de bien" />
+              <SelectValue placeholder="Sélectionnez un type" />
             </SelectTrigger>
             <SelectContent>
-              {PROPERTY_TYPES.map((type) => (
-                <SelectItem key={type} value={type}>
-                  {type}
-                </SelectItem>
-              ))}
+              <SelectItem value="apartment">Appartement</SelectItem>
+              <SelectItem value="house">Maison</SelectItem>
+              <SelectItem value="villa">Villa</SelectItem>
+              <SelectItem value="land">Terrain</SelectItem>
+              <SelectItem value="commercial">Local commercial</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        <div className="space-y-2">
-          <Label>Statut</Label>
-          <RadioGroup
-            value={status}
-            onValueChange={onStatusChange}
-            className="flex flex-col space-y-1"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="available" id="available" />
-              <Label htmlFor="available" className="flex items-center gap-2">
-                <Eye className="h-4 w-4" />
-                Disponible
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="hidden" id="hidden" />
-              <Label htmlFor="hidden" className="flex items-center gap-2">
-                <EyeOff className="h-4 w-4" />
-                Caché
-              </Label>
-            </div>
-          </RadioGroup>
+        <div>
+          <Label htmlFor="status">Statut</Label>
+          <Select value={status} onValueChange={onStatusChange}>
+            <SelectTrigger id="status">
+              <SelectValue placeholder="Sélectionnez un statut" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="available">Disponible</SelectItem>
+              <SelectItem value="pending">En attente</SelectItem>
+              <SelectItem value="sold">Vendu</SelectItem>
+              <SelectItem value="rented">Loué</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        <div className="space-y-2">
-          <Label>Type de visite</Label>
-          <RadioGroup
-            value={visitType}
-            onValueChange={onVisitTypeChange}
-            className="flex flex-col space-y-1"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="live" id="live" />
-              <Label htmlFor="live" className="flex items-center gap-2">
-                <Video className="h-4 w-4" />
-                Live
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="scheduled" id="scheduled" />
-              <Label htmlFor="scheduled" className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                Visite programmée
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="virtual" id="virtual" />
-              <Label htmlFor="virtual" className="flex items-center gap-2">
-                <MapPin className="h-4 w-4" />
-                Visite virtuelle
-              </Label>
-            </div>
-          </RadioGroup>
+        <div>
+          <Label htmlFor="visitType">Type de visite</Label>
+          <Select value={visitType} onValueChange={onVisitTypeChange}>
+            <SelectTrigger id="visitType">
+              <SelectValue placeholder="Sélectionnez un type de visite" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="live">Live</SelectItem>
+              <SelectItem value="physical">Physique</SelectItem>
+              <SelectItem value="virtual">Virtuelle</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </div>
