@@ -7,9 +7,6 @@ import { BasicDetailsSection } from "./management/sections/BasicDetailsSection";
 import { LocationSection } from "./management/sections/LocationSection";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface AddPropertyDialogProps {
   open: boolean;
@@ -34,7 +31,6 @@ export const AddPropertyDialog = ({ open, onOpenChange }: AddPropertyDialogProps
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!title || !description || !price || !surface || !rooms || !propertyType || !city || !district) {
       toast({
         title: "Erreur",
@@ -76,159 +72,81 @@ export const AddPropertyDialog = ({ open, onOpenChange }: AddPropertyDialogProps
     }
   };
 
-  const cities = [
-    { name: "Casablanca", districts: ["Ain Diab", "Gauthier", "Maarif", "Anfa"] },
-    { name: "Marrakech", districts: ["Guéliz", "Hivernage", "Palmeraie", "Médina"] },
-    { name: "Rabat", districts: ["Agdal", "Hassan", "Hay Riad", "Les Orangers"] },
-    { name: "Tanger", districts: ["Malabata", "Centre-ville", "Boukhalef"] },
-  ];
-
-  const availableFeatures = [
-    "Piscine",
-    "Jardin",
-    "Terrasse",
-    "Parking",
-    "Ascenseur",
-    "Climatisation",
-    "Sécurité 24/7",
-    "Vue mer",
-  ];
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0">
-        <DialogHeader className="p-6 pb-2">
+        <DialogHeader className="p-6 pb-0">
           <DialogTitle>Ajouter un bien</DialogTitle>
         </DialogHeader>
+        
+        <ScrollArea className="max-h-[calc(90vh-8rem)]">
+          <div className="p-6 pt-0">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <Tabs value={activeTab} onValueChange={setActiveTab}>
+                <TabsList className="w-full">
+                  <TabsTrigger value="basic" className="flex-1">
+                    Informations de base
+                  </TabsTrigger>
+                  <TabsTrigger value="location" className="flex-1">
+                    Localisation
+                  </TabsTrigger>
+                  <TabsTrigger value="media" className="flex-1">
+                    Médias
+                  </TabsTrigger>
+                </TabsList>
 
-        <ScrollArea className="flex-1">
-          <form onSubmit={handleSubmit} className="p-6 pt-2">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="basic">Informations de base</TabsTrigger>
-                <TabsTrigger value="location">Localisation</TabsTrigger>
-                <TabsTrigger value="media">Médias</TabsTrigger>
-              </TabsList>
+                <TabsContent value="basic">
+                  <BasicDetailsSection
+                    title={title}
+                    description={description}
+                    price={price}
+                    surface={surface}
+                    rooms={rooms}
+                    propertyType={propertyType}
+                    transactionType={transactionType}
+                    features={features}
+                    onTitleChange={setTitle}
+                    onDescriptionChange={setDescription}
+                    onPriceChange={setPrice}
+                    onSurfaceChange={setSurface}
+                    onRoomsChange={setRooms}
+                    onPropertyTypeChange={setPropertyType}
+                    onTransactionTypeChange={setTransactionType}
+                    onFeaturesChange={setFeatures}
+                  />
+                </TabsContent>
 
-              <TabsContent value="basic" className="space-y-6">
-                <BasicDetailsSection
-                  title={title}
-                  description={description}
-                  price={price}
-                  surface={surface}
-                  rooms={rooms}
-                  propertyType={propertyType}
-                  onTitleChange={setTitle}
-                  onDescriptionChange={setDescription}
-                  onPriceChange={setPrice}
-                  onSurfaceChange={setSurface}
-                  onRoomsChange={setRooms}
-                  onPropertyTypeChange={setPropertyType}
-                />
+                <TabsContent value="location">
+                  <LocationSection
+                    city={city}
+                    district={district}
+                    onCityChange={setCity}
+                    onDistrictChange={setDistrict}
+                  />
+                </TabsContent>
 
-                <div className="space-y-2">
-                  <Label>Type de transaction*</Label>
-                  <Select value={transactionType} onValueChange={(value: "Vente" | "Location") => setTransactionType(value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner le type de transaction" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Vente">Vente</SelectItem>
-                      <SelectItem value="Location">Location</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <TabsContent value="media">
+                  <MediaSection
+                    onImagesChange={setImages}
+                    onVideoChange={setVideo}
+                  />
+                </TabsContent>
+              </Tabs>
 
-                <div className="space-y-2">
-                  <Label>Caractéristiques</Label>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                    {availableFeatures.map((feature) => (
-                      <Button
-                        key={feature}
-                        type="button"
-                        variant={features.includes(feature) ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => {
-                          setFeatures((prev) =>
-                            prev.includes(feature)
-                              ? prev.filter((f) => f !== feature)
-                              : [...prev, feature]
-                          );
-                        }}
-                      >
-                        {feature}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="location" className="space-y-6">
-                <div className="space-y-2">
-                  <Label>Ville*</Label>
-                  <Select value={city} onValueChange={setCity}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner une ville" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {cities.map((city) => (
-                        <SelectItem key={city.name} value={city.name}>
-                          {city.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Quartier*</Label>
-                  <Select 
-                    value={district} 
-                    onValueChange={setDistrict}
-                    disabled={!city}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner un quartier" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {cities
-                        .find((c) => c.name === city)
-                        ?.districts.map((district) => (
-                          <SelectItem key={district} value={district}>
-                            {district}
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <LocationSection
-                  location={`${city}${district ? `, ${district}` : ""}`}
-                  onLocationChange={() => {}}
-                />
-              </TabsContent>
-
-              <TabsContent value="media">
-                <MediaSection
-                  onImagesChange={setImages}
-                  onVideoChange={setVideo}
-                />
-              </TabsContent>
-            </Tabs>
-
-            <div className="flex justify-end gap-2 pt-6">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
-                Annuler
-              </Button>
-              <Button type="submit">
-                Ajouter le bien
-              </Button>
-            </div>
-          </form>
+              <div className="flex justify-end gap-2 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => onOpenChange(false)}
+                >
+                  Annuler
+                </Button>
+                <Button type="submit">
+                  Ajouter le bien
+                </Button>
+              </div>
+            </form>
+          </div>
         </ScrollArea>
       </DialogContent>
     </Dialog>
