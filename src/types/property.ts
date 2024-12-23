@@ -22,18 +22,42 @@ export interface Property {
   agent: Agent;
   hasLive: boolean;
   liveDate?: Date;
+  isLiveNow?: boolean;
+  viewers?: number;
+  remainingSeats?: number;
+  isUserRegistered?: boolean;
+  tags?: string[];
   virtualTour?: {
     enabled: boolean;
     type: "360" | "video";
     url?: string;
+    platform?: string;
+    floorPlan?: {
+      url: string;
+      rooms: {
+        id: string;
+        name: string;
+        area: number;
+        coordinates: {
+          x: number;
+          y: number;
+        };
+      }[];
+    };
     statistics?: {
       views: number;
       likes: number;
       shares: number;
       totalVisits?: number;
       averageTime?: number;
-      popularRooms?: string[];
-      lastVisits?: Date[];
+      popularRooms?: {
+        name: string;
+        visits: number;
+      }[];
+      lastVisits?: {
+        date: string;
+        duration: string;
+      }[];
     };
   };
   transactionType: TransactionType;
@@ -41,17 +65,10 @@ export interface Property {
   createdAt?: Date;
   updatedAt?: Date;
   ownerId?: string;
-  privateNotes?: string;
-  floorPlan?: {
-    url: string;
-    rooms: {
-      id: string;
-      name: string;
-      area: number;
-      coordinates: {
-        x: number;
-        y: number;
-      };
-    }[];
+  privateNotes?: {
+    ownerName?: string;
+    location?: string;
+    notes?: string;
   };
+  isReplay?: boolean;
 }

@@ -8,6 +8,7 @@ export interface Agent {
   location: string;
   type: string;
   company?: string;
+  companyLogo?: string;
   verified?: boolean;
   rating?: number;
   totalReviews?: number;
@@ -15,14 +16,18 @@ export interface Agent {
   specialties?: string[];
   languages?: string[];
   certifications?: string[];
-  availability?: {
-    start: string;
-    end: string;
-  };
-  socialMedia?: {
-    facebook?: string;
-    twitter?: string;
-    linkedin?: string;
-    instagram?: string;
+  activeProperties?: number;
+  completedLives?: number;
+  scheduledLives?: number;
+  soldProperties?: number;
+  contact?: {
+    phone: string;
+    email: string;
+    social?: {
+      facebook?: string;
+      twitter?: string;
+      linkedin?: string;
+      instagram?: string;
+    }
   };
 }
