@@ -1,10 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageSquare, Send, CheckSquare, XSquare, AlertOctagon } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { OfferCard } from "./offers/OfferCard";
+import { EditOfferDialog } from "./offers/EditOfferDialog";
+import { useToast } from "@/hooks/use-toast";
 
 // Types pour les offres
 interface Offer {
@@ -18,7 +19,6 @@ interface Offer {
   address: string;
 }
 
-// Données mockées pour la démonstration
 const mockAgentOffers: Offer[] = [
   {
     id: "1",
@@ -66,82 +66,64 @@ const mockBuyerOffers: Offer[] = [
 export const OffersSection = () => {
   const [activeTab, setActiveTab] = useState("received");
   const { user } = useAuth();
+  const { toast } = useToast();
   const isAgent = user?.role === "agent" || user?.role === "promoter";
+  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "pending":
-        return <AlertOctagon className="h-5 w-5 text-yellow-500" />;
-      case "accepted":
-        return <CheckSquare className="h-5 w-5 text-green-500" />;
-      case "rejected":
-        return <XSquare className="h-5 w-5 text-red-500" />;
-      default:
-        return null;
-    }
+  const handleAcceptOffer = (offer: Offer) => {
+    // Logique pour accepter l'offre
+    toast({
+      title: "Offre acceptée",
+      description: "L'offre a été acceptée avec succès.",
+    });
   };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case "pending":
-        return "En attente";
-      case "accepted":
-        return "Acceptée";
-      case "rejected":
-        return "Refusée";
-      default:
-        return status;
-    }
+  const handleRejectOffer = (offer: Offer) => {
+    // Logique pour refuser l'offre
+    toast({
+      title: "Offre refusée",
+      description: "L'offre a été refusée.",
+    });
+  };
+
+  const handleModifyOffer = (offer: Offer) => {
+    setSelectedOffer(offer);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleContactAgent = (offer: Offer) => {
+    // Logique pour contacter l'agent
+    toast({
+      title: "Contact agent",
+      description: "La demande de contact a été envoyée.",
+    });
+  };
+
+  const handleScheduleVisit = (offer: Offer) => {
+    // Logique pour planifier une visite
+    toast({
+      title: "Visite planifiée",
+      description: "La demande de visite a été envoyée.",
+    });
+  };
+
+  const handleUpdateOffer = (updatedOffer: Offer) => {
+    // Logique pour mettre à jour l'offre
+    console.log("Offre mise à jour:", updatedOffer);
   };
 
   const renderOffer = (offer: Offer) => (
-    <Card key={offer.id} className="p-4 mb-4">
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold">{offer.propertyTitle}</h3>
-          <p className="text-sm text-muted-foreground">{offer.address}</p>
-          <div className="mt-2">
-            <p className="font-medium">
-              {offer.amount.toLocaleString()} MAD
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {isAgent ? `Acheteur: ${offer.buyer}` : `Agent: ${offer.agent}`} - {offer.date.toLocaleDateString()}
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-col items-end">
-          <div className="flex items-center gap-2">
-            {getStatusIcon(offer.status)}
-            <span className="text-sm font-medium">
-              {getStatusText(offer.status)}
-            </span>
-          </div>
-        </div>
-      </div>
-      {isAgent && offer.status === "pending" && (
-        <div className="flex gap-2 mt-4">
-          <Button size="sm" variant="outline" className="flex-1">
-            Accepter
-          </Button>
-          <Button size="sm" variant="outline" className="flex-1">
-            Refuser
-          </Button>
-          <Button size="sm" variant="outline" className="flex-1">
-            Modifier
-          </Button>
-        </div>
-      )}
-      {!isAgent && offer.status === "accepted" && (
-        <div className="flex gap-2 mt-4">
-          <Button size="sm" variant="outline" className="flex-1">
-            Contacter l'agent
-          </Button>
-          <Button size="sm" variant="outline" className="flex-1">
-            Planifier une visite
-          </Button>
-        </div>
-      )}
-    </Card>
+    <OfferCard
+      key={offer.id}
+      offer={offer}
+      isAgent={isAgent}
+      onAccept={() => handleAcceptOffer(offer)}
+      onReject={() => handleRejectOffer(offer)}
+      onModify={() => handleModifyOffer(offer)}
+      onContact={() => handleContactAgent(offer)}
+      onScheduleVisit={() => handleScheduleVisit(offer)}
+    />
   );
 
   return (
@@ -211,6 +193,15 @@ export const OffersSection = () => {
           )}
         </ScrollArea>
       </Tabs>
+
+      {selectedOffer && (
+        <EditOfferDialog
+          isOpen={isEditDialogOpen}
+          onClose={() => setIsEditDialogOpen(false)}
+          offer={selectedOffer}
+          onSubmit={handleUpdateOffer}
+        />
+      )}
     </div>
   );
 };
