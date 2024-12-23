@@ -1,4 +1,4 @@
-export type ViewMode = "grid" | "list" | "map";
+export type ViewMode = "grid" | "list";
 
 export interface SearchFilters {
   searchTerm: string;

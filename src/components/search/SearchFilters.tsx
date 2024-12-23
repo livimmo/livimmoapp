@@ -6,11 +6,11 @@ import { SmartSearchBar } from "./SmartSearchBar";
 import { TransactionTypeFilter } from "./filters/TransactionTypeFilter";
 import { PropertyTypeFilter } from "./filters/PropertyTypeFilter";
 import { CityNeighborhoodFilter } from "./filters/CityNeighborhoodFilter";
-import { type SearchFilters as SearchFiltersType } from "@/types/search";
+import { type SearchFilters } from "@/types/search";
 import { useToast } from "@/hooks/use-toast";
 
 interface SearchFiltersProps {
-  filters: SearchFiltersType;
+  filters: SearchFilters;
   showFilters: boolean;
   onFiltersChange: {
     setSearchTerm: (value: string) => void;

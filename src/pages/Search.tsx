@@ -8,7 +8,7 @@ import { useSearchFilters } from "@/hooks/useSearchFilters";
 import { mockProperties } from "@/data/mockProperties";
 
 const Search = () => {
-  const [viewMode, setViewMode] = useState<ViewMode>("map");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const {
     filters,
     showFilters,
@@ -19,8 +19,6 @@ const Search = () => {
     setShowLiveOnly,
     setShowFilters,
     setTransactionType,
-    setCity,
-    setNeighborhood,
   } = useSearchFilters();
 
   const filteredProperties = mockProperties.filter((property) => {
@@ -59,8 +57,6 @@ const Search = () => {
           setSurfaceRange,
           setShowLiveOnly,
           setTransactionType,
-          setCity,
-          setNeighborhood,
         }}
         setShowFilters={setShowFilters}
       />
