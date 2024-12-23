@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { type Property } from "@/types/property";
+import { type PropertyWithAgent } from "@/types/database";
 import { PropertyInfo } from "./PropertyInfo";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -10,7 +10,7 @@ import { getRandomTags } from "@/utils/propertyTags";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { VirtualTourViewer360 } from "@/components/virtual-tour/VirtualTourViewer360";
 
-type PropertyCardProps = Property & {
+type PropertyCardProps = PropertyWithAgent & {
   viewers?: number;
   isLiveNow?: boolean;
   remainingSeats?: number;
@@ -38,6 +38,7 @@ export const PropertyCard = ({
   agent_id,
   virtual_tour,
   className,
+  agent,
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const currentUrl = `${window.location.origin}/property/${id}`;
@@ -96,7 +97,7 @@ export const PropertyCard = ({
           isUserRegistered={isUserRegistered}
         />
         
-        <PropertyCardAgent agent_id={agent_id} district={district} />
+        <PropertyCardAgent agent={agent} district={district} />
       </div>
 
       <PropertyCardAuthDialog 
