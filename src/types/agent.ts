@@ -6,12 +6,10 @@ export interface Agent {
   email: string;
   phone: string;
   avatar: string;
-  image?: string; // For backward compatibility
+  image?: string;
   location: string;
   type: AgentType;
   company?: string;
-  companyLogo?: string;
-  description?: string;
   verified?: boolean;
   rating?: number;
   totalReviews?: number;

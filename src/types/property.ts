@@ -1,6 +1,6 @@
 import { Agent } from "./agent";
 
-export type PropertyStatus = "available" | "pending" | "sold" | "rented";
+export type PropertyStatus = "available" | "pending" | "sold" | "rented" | "en_cours";
 export type TransactionType = "Vente" | "Location";
 
 export interface Property {
@@ -17,6 +17,12 @@ export interface Property {
   images: string[];
   hasLive: boolean;
   liveDate?: Date;
+  isLiveNow?: boolean;
+  viewers?: number;
+  remainingSeats?: number;
+  isUserRegistered?: boolean;
+  tags?: string[];
+  isReplay?: boolean;
   agent: Agent;
   coordinates: {
     lat: number;
@@ -27,7 +33,7 @@ export interface Property {
   status?: PropertyStatus;
   virtualTour?: {
     enabled: boolean;
-    type: "video" | "360";
+    type: "360" | "video";
     url?: string;
     platform?: string;
     floorPlan?: {
@@ -46,5 +52,9 @@ export interface Property {
       lastVisits: Array<{ date: string; duration: string }>;
     };
   };
-  privateNotes?: string;
+  privateNotes?: {
+    ownerName?: string;
+    location?: string;
+    notes?: string;
+  };
 }
