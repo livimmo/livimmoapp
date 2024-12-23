@@ -1,30 +1,25 @@
+import { LayoutGrid, List, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Grid, List } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { type ViewMode } from "@/types/search";
 
 interface ViewControlsProps {
-  viewMode: "grid" | "list";
-  setViewMode: (mode: "grid" | "list") => void;
+  viewMode: ViewMode;
+  setViewMode: (mode: ViewMode) => void;
 }
 
 export const ViewControls = ({ viewMode, setViewMode }: ViewControlsProps) => {
   return (
-    <div className="flex justify-end mb-3 gap-2">
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={() => setViewMode("grid")}
-        className={viewMode === "grid" ? "bg-accent" : ""}
-      >
-        <Grid className="h-4 w-4" />
-      </Button>
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={() => setViewMode("list")}
-        className={viewMode === "list" ? "bg-accent" : ""}
-      >
+    <ToggleGroup type="single" value={viewMode} onValueChange={(value: ViewMode) => value && setViewMode(value)}>
+      <ToggleGroupItem value="grid" aria-label="Grid view">
+        <LayoutGrid className="h-4 w-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="list" aria-label="List view">
         <List className="h-4 w-4" />
-      </Button>
-    </div>
+      </ToggleGroupItem>
+      <ToggleGroupItem value="map" aria-label="Map view">
+        <Map className="h-4 w-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
   );
 };

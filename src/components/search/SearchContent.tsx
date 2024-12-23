@@ -1,9 +1,11 @@
 import { PropertyList } from "@/components/properties/PropertyList";
+import { MapView } from "./MapView";
 import { type Property } from "@/types/property";
+import { type ViewMode } from "@/types/search";
 
 interface SearchContentProps {
   filteredProperties: Property[];
-  viewMode: "grid" | "list";
+  viewMode: ViewMode;
 }
 
 export const SearchContent = ({ filteredProperties, viewMode }: SearchContentProps) => {
@@ -13,6 +15,10 @@ export const SearchContent = ({ filteredProperties, viewMode }: SearchContentPro
         Aucun bien ne correspond à vos critères
       </div>
     );
+  }
+
+  if (viewMode === "map") {
+    return <MapView properties={filteredProperties} />;
   }
 
   return <PropertyList properties={filteredProperties} viewMode={viewMode} />;
