@@ -1,17 +1,12 @@
-export type UserRole = "owner" | "buyer" | "tenant" | "agent" | "promoter" | "developer";
-export type AccountType = "owner" | "buyer" | "tenant" | "agent" | "promoter" | "developer";
+export type AccountType = "buyer" | "seller" | "agent" | "promoter" | "owner";
 
 export interface User {
   id: string;
   email: string;
-  firstName?: string;
-  lastName?: string;
-  phone?: string;
-  avatar?: string;
-  role: UserRole;
+  firstName: string;
+  lastName: string;
   accountType: AccountType;
-  location?: string;
-  description?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  role?: UserRole;
 }
+
+export type UserRole = "user" | "admin" | "agent" | "promoter" | "owner" | "buyer";

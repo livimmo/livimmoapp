@@ -12,6 +12,7 @@ export interface BaseLive {
   availableSeats: number;
   viewers: number;
   tags?: string[];
+  videoId?: string;
 }
 
 export interface LiveStream extends BaseLive {

@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LiveInfo } from "./LiveInfo";
 import { useState, useEffect } from "react";
 import { LiveCarousel } from "./LiveCarousel";
 import { ReplayCarousel } from "./ReplayCarousel";
@@ -14,6 +13,7 @@ import { LiveChapters } from "./LiveChapters";
 import { LiveVideoPlayer } from "./LiveVideoPlayer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { LiveInfo } from "./LiveInfo";
 import { type LiveEvent } from "@/types/live";
 
 const mockProperty = {
