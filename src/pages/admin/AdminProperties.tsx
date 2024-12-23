@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Property } from "@/types/property";
 
 export default function AdminProperties() {
@@ -47,7 +47,7 @@ export default function AdminProperties() {
               <div>
                 <h3 className="font-semibold">{property.title}</h3>
                 <p className="text-sm text-muted-foreground">{property.location}</p>
-                <p className="text-sm">{property.price.toLocaleString()} DH</p>
+                <p className="text-sm">{property.price.toLocaleString()} €</p>
               </div>
               <div className="space-x-2">
                 <Button variant="outline" size="sm">Modifier</Button>

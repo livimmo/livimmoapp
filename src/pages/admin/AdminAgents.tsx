@@ -2,11 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function AdminAgents() {
   const { toast } = useToast();
-  
+
   const { data: agents, isLoading } = useQuery({
     queryKey: ["admin-agents"],
     queryFn: async () => {
@@ -43,17 +44,14 @@ export default function AdminAgents() {
       <div className="grid gap-4">
         {agents?.map((agent) => (
           <Card key={agent.id} className="p-4">
-            <div className="flex justify-between items-start">
-              <div className="flex items-center gap-4">
-                <img 
-                  src={agent.avatar_url || "/placeholder.svg"} 
-                  alt={agent.full_name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div>
-                  <h3 className="font-semibold">{agent.full_name}</h3>
-                  <p className="text-sm text-muted-foreground">{agent.email}</p>
-                </div>
+            <div className="flex items-center space-x-4">
+              <Avatar>
+                <AvatarImage src={agent.avatar_url} />
+                <AvatarFallback>{agent.full_name?.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <h3 className="font-semibold">{agent.full_name}</h3>
+                <p className="text-sm text-muted-foreground">{agent.company}</p>
               </div>
               <div className="space-x-2">
                 <Button variant="outline" size="sm">Modifier</Button>
