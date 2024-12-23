@@ -11,11 +11,8 @@ export interface Property {
   features: string[];
   images: string[];
   hasLive?: boolean;
-  isReplay?: boolean;
   liveDate?: Date;
-  status?: 'available' | 'pending' | 'sold' | 'rented';
-  createdAt?: Date;
-  agent?: {
+  agent: {
     id?: string | number;
     name: string;
     image: string;
@@ -24,64 +21,23 @@ export interface Property {
     company?: string;
     verified?: boolean;
   };
-  owner?: {
-    id?: string | number;
-    name: string;
-    email?: string;
-    phone?: string;
-  };
   coordinates: {
     lat: number;
     lng: number;
   };
-  viewers?: number;
   isLiveNow?: boolean;
+  viewers?: number;
   remainingSeats?: number;
-  isUserRegistered?: boolean;
-  transactionType: "Vente" | "Location";
-  tags?: string[];
+  transactionType: string;
   virtualTour?: {
     enabled: boolean;
     url?: string;
-    platform?: 'matterport' | 'klapty';
-    type: "360" | "video" | "live";
-    hotspots?: Array<{
-      title: string;
-      description: string;
-      position: { x: number; y: number };
-      details?: Array<{ label: string; value: string }>;
-    }>;
-    annotations?: Array<{
-      title: string;
-      description: string;
-      position: { x: number; y: number };
-      details?: Array<{ label: string; value: string }>;
-    }>;
-    floorPlan?: {
-      url: string;
-      rooms: Array<{
-        id: string;
-        name: string;
-        area: number;
-        coordinates: { x: number; y: number };
-      }>;
-    };
-    statistics?: {
-      totalVisits: number;
-      averageTime: string;
-      popularRooms: Array<{
-        name: string;
-        visits: number;
-      }>;
-      lastVisits: Array<{
-        date: string;
-        duration: string;
-      }>;
-    };
   };
-  privateNotes?: {
-    ownerName?: string;
-    location?: string;
-    notes?: string;
+  owner?: {
+    id: number;
+    name: string;
   };
+  privateNotes?: string;
+  tags?: string[];
+  isReplay?: boolean;
 }
