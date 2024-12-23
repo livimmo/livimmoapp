@@ -40,22 +40,6 @@ export interface Property {
   tags: string[] | null;
 }
 
-// Type for the PropertyCard props
-export type PropertyCardProps = Property & {
-  viewers?: number;
-  isLiveNow?: boolean;
-  remainingSeats?: number;
-  isUserRegistered?: boolean;
-  offers?: number;
-  className?: string;
-};
-
-// Helper type for mock data
-export type MockProperty = Omit<Property, 'id'> & {
-  id: string;
-};
-
-// Type for the auth context
 export interface AuthContextType {
   user: any | null;
   isAuthenticated: boolean;
@@ -63,5 +47,7 @@ export interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  switchRole?: (role: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  switchRole: (role: string) => Promise<void>;
 }

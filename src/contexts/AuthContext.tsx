@@ -9,6 +9,9 @@ const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   signup: async () => {},
   logout: async () => {},
+  signIn: async () => {},
+  signOut: async () => {},
+  switchRole: async () => {},
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -16,13 +19,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check active sessions and sets the user
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setIsLoading(false);
     });
 
-    // Listen for changes on auth state
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       setIsLoading(false);
@@ -52,6 +53,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (error) throw error;
   };
 
+  // Aliases for consistency
+  const signIn = login;
+  const signOut = logout;
+
+  const switchRole = async (role: string) => {
+    // Implement role switching logic here
+    console.log('Switching to role:', role);
+  };
+
   const value = {
     user,
     isAuthenticated: !!user,
@@ -59,6 +69,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     login,
     signup,
     logout,
+    signIn,
+    signOut,
+    switchRole,
   };
 
   return (

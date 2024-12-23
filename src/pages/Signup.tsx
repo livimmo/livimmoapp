@@ -1,149 +1,60 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { UserRole } from "@/types/user";
-import { SocialConnect } from "@/components/profile/SocialConnect";
-import { RoleSelector } from "@/components/auth/RoleSelector";
-import { ProgressSteps } from "@/components/auth/ProgressSteps";
-import { BasicInfoStep } from "@/components/auth/BasicInfoStep";
-import { RoleSpecificStep } from "@/components/auth/RoleSpecificStep";
-import { ConfirmationStep } from "@/components/auth/ConfirmationStep";
-
-const steps = ["Informations", "Rôle", "Détails", "Confirmation"];
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 export const Signup = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    // Role specific fields
-    companyName: "",
-    sector: "",
-    agency: "",
-    location: "",
-    propertyType: "",
-    budget: "",
-    desiredLocation: "",
-    phone: "",
-  });
-
   const { signup } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
-  const handleNext = () => {
-    setCurrentStep((prev) => prev + 1);
-  };
-
-  const handleBack = () => {
-    setCurrentStep((prev) => prev - 1);
-  };
-
-  const handleConfirm = async () => {
-    if (selectedRole) {
-      await signup(
-        formData.email,
-        formData.password,
-        formData.firstName,
-        formData.lastName,
-        selectedRole
-      );
-    }
-  };
-
-  const renderStep = () => {
-    switch (currentStep) {
-      case 0:
-        return (
-          <BasicInfoStep
-            formData={formData}
-            onChange={handleInputChange}
-            onNext={handleNext}
-          />
-        );
-      case 1:
-        return (
-          <RoleSelector
-            selectedRole={selectedRole}
-            onSelect={(role) => {
-              setSelectedRole(role);
-              handleNext();
-            }}
-          />
-        );
-      case 2:
-        return selectedRole ? (
-          <RoleSpecificStep
-            role={selectedRole}
-            formData={formData}
-            onChange={handleInputChange}
-            onNext={handleNext}
-            onBack={handleBack}
-          />
-        ) : null;
-      case 3:
-        return selectedRole ? (
-          <ConfirmationStep
-            role={selectedRole}
-            onConfirm={handleConfirm}
-            onBack={handleBack}
-          />
-        ) : null;
-      default:
-        return null;
+    try {
+      await signup(email, password);
+      navigate('/');
+      toast({
+        title: "Compte créé",
+        description: "Votre compte a été créé avec succès",
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur d'inscription",
+        description: "Une erreur est survenue lors de la création du compte",
+        variant: "destructive",
+      });
     }
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold tracking-tight">
-            Créez votre compte
-          </h1>
-          <p className="text-muted-foreground">
-            Rejoignez notre communauté en quelques étapes simples
-          </p>
+    <div className="container mx-auto py-8 px-4">
+      <h1 className="text-2xl font-bold mb-4">Créer un compte</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
+          />
         </div>
-
-        <ProgressSteps currentStep={currentStep} steps={steps} />
-
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          {renderStep()}
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
+          />
         </div>
-
-        {currentStep === 0 && (
-          <>
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t"></div>
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Ou inscrivez-vous avec
-                </span>
-              </div>
-            </div>
-
-            <SocialConnect />
-
-            <p className="text-center text-sm">
-              Vous avez déjà un compte ?{" "}
-              <Link to="/login" className="text-primary hover:underline font-medium">
-                Connectez-vous ici
-              </Link>
-            </p>
-          </>
-        )}
-      </div>
+        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">S'inscrire</button>
+      </form>
     </div>
   );
 };
