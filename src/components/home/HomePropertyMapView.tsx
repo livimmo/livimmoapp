@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, Marker, InfoWindow, useLoadScript } from '@react-google-maps/api';
 import { Property } from "@/types/property";
 import { PropertyCard } from "@/components/PropertyCard";
 import { useToast } from "@/hooks/use-toast";
@@ -11,10 +11,16 @@ interface HomePropertyMapViewProps {
   properties: Property[];
 }
 
+const libraries = ["places", "geometry"] as ["places", "geometry"];
+
 export const HomePropertyMapView = ({ properties }: HomePropertyMapViewProps) => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries,
+  });
 
   const handleGeolocation = () => {
     if ("geolocation" in navigator) {
@@ -49,11 +55,16 @@ export const HomePropertyMapView = ({ properties }: HomePropertyMapViewProps) =>
       }
     : { lat: 31.7917, lng: -7.0926 };
 
+  if (loadError) {
+    return <div>Error loading maps</div>;
+  }
+
+  if (!isLoaded) {
+    return <Skeleton className="w-full h-[600px] rounded-lg" />;
+  }
+
   return (
     <div className="relative h-[600px] rounded-lg overflow-hidden">
-      {isLoading && (
-        <Skeleton className="w-full h-full rounded-lg" />
-      )}
       <Button 
         variant="outline" 
         size="icon" 
@@ -62,47 +73,42 @@ export const HomePropertyMapView = ({ properties }: HomePropertyMapViewProps) =>
       >
         <MapPin className="h-4 w-4" />
       </Button>
-      <LoadScript 
-        googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-        onLoad={() => setIsLoading(false)}
+      <GoogleMap
+        mapContainerStyle={{ width: '100%', height: '100%' }}
+        center={center}
+        zoom={6}
+        options={{
+          zoomControl: true,
+          streetViewControl: false,
+          mapTypeControl: true,
+          fullscreenControl: true,
+        }}
       >
-        <GoogleMap
-          mapContainerStyle={{ width: '100%', height: '100%' }}
-          center={center}
-          zoom={6}
-          options={{
-            zoomControl: true,
-            streetViewControl: false,
-            mapTypeControl: true,
-            fullscreenControl: true,
-          }}
-        >
-          {properties.map((property) => (
-            <Marker
-              key={property.id}
-              position={{
-                lat: property.coordinates.lat,
-                lng: property.coordinates.lng
-              }}
-              onClick={() => setSelectedProperty(property)}
-            />
-          ))}
+        {properties.map((property) => (
+          <Marker
+            key={property.id}
+            position={{
+              lat: property.coordinates.lat,
+              lng: property.coordinates.lng
+            }}
+            onClick={() => setSelectedProperty(property)}
+          />
+        ))}
 
-          {selectedProperty && (
-            <InfoWindow
-              position={{
-                lat: selectedProperty.coordinates.lat,
-                lng: selectedProperty.coordinates.lng
-              }}
-              onCloseClick={() => setSelectedProperty(null)}
-            >
-              <div className="w-[280px]">
-                <PropertyCard {...selectedProperty} />
-              </div>
-            </InfoWindow>
-          )}
-        </GoogleMap>
-      </LoadScript>
+        {selectedProperty && (
+          <InfoWindow
+            position={{
+              lat: selectedProperty.coordinates.lat,
+              lng: selectedProperty.coordinates.lng
+            }}
+            onCloseClick={() => setSelectedProperty(null)}
+          >
+            <div className="w-[280px]">
+              <PropertyCard {...selectedProperty} />
+            </div>
+          </InfoWindow>
+        )}
+      </GoogleMap>
     </div>
   );
 };
