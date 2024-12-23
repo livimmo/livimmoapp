@@ -27,6 +27,7 @@ export interface Property {
   remainingSeats?: number;
   isUserRegistered?: boolean;
   tags?: string[];
+  isReplay?: boolean;
   virtualTour?: {
     enabled: boolean;
     type: "360" | "video";
@@ -70,5 +71,4 @@ export interface Property {
     location?: string;
     notes?: string;
   };
-  isReplay?: boolean;
 }
