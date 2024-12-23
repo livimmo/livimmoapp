@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MapPin, SlidersHorizontal } from "lucide-react";
 import { SmartSearchBar } from "./SmartSearchBar";
 import { TransactionTypeFilter } from "./filters/TransactionTypeFilter";
+import { PropertyTypeFilter } from "./filters/PropertyTypeFilter";
+import { CityNeighborhoodFilter } from "./filters/CityNeighborhoodFilter";
 import { type SearchFilters } from "@/types/search";
 import { useToast } from "@/hooks/use-toast";
 
@@ -44,12 +45,6 @@ export const SearchFilters = ({
     "Riad",
   ];
 
-  const neighborhoods = {
-    Casablanca: ["Maarif", "Anfa", "Bourgogne", "Gauthier", "Ain Diab"],
-    Rabat: ["Agdal", "Hassan", "Les Orangers", "Hay Riad"],
-    Marrakech: ["Guéliz", "Hivernage", "Palmeraie", "Médina"],
-  };
-
   const handleGeolocation = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -58,7 +53,6 @@ export const SearchFilters = ({
             title: "Localisation réussie",
             description: "Nous affichons les biens à proximité de votre position.",
           });
-          // Ici vous pouvez utiliser position.coords.latitude et position.coords.longitude
         },
         () => {
           toast({
@@ -110,60 +104,25 @@ export const SearchFilters = ({
             onChange={onFiltersChange.setTransactionType}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Select value={filters.city} onValueChange={onFiltersChange.setCity}>
-              <SelectTrigger className="w-full bg-white">
-                <SelectValue placeholder="Ville" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">Toutes les villes</SelectItem>
-                <SelectItem value="Casablanca">Casablanca</SelectItem>
-                <SelectItem value="Rabat">Rabat</SelectItem>
-                <SelectItem value="Marrakech">Marrakech</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select 
-              value={filters.neighborhood} 
-              onValueChange={onFiltersChange.setNeighborhood}
-              disabled={!filters.city}
-            >
-              <SelectTrigger className="w-full bg-white">
-                <SelectValue placeholder="Quartier" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">Tous les quartiers</SelectItem>
-                {filters.city && neighborhoods[filters.city as keyof typeof neighborhoods]?.map((neighborhood) => (
-                  <SelectItem key={neighborhood} value={neighborhood}>
-                    {neighborhood}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <CityNeighborhoodFilter
+            city={filters.city}
+            neighborhood={filters.neighborhood}
+            setCity={onFiltersChange.setCity}
+            setNeighborhood={onFiltersChange.setNeighborhood}
+          />
 
           <div className="flex items-center gap-4">
-            <Select value={filters.propertyType} onValueChange={onFiltersChange.setPropertyType}>
-              <SelectTrigger className="w-[180px] bg-white">
-                <SelectValue placeholder="Type de bien" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tous les types</SelectItem>
-                <SelectItem value="Villa">Villa</SelectItem>
-                <SelectItem value="Appartement">Appartement</SelectItem>
-                <SelectItem value="Bureau">Bureau</SelectItem>
-                <SelectItem value="Riad">Riad</SelectItem>
-                <SelectItem value="Hôtel">Hôtel</SelectItem>
-                <SelectItem value="Commerce">Commerce</SelectItem>
-                <SelectItem value="Industriel">Industriel</SelectItem>
-                <SelectItem value="Terrain">Terrain</SelectItem>
-              </SelectContent>
-            </Select>
+            <PropertyTypeFilter 
+              value={filters.propertyType}
+              onChange={onFiltersChange.setPropertyType}
+            />
             <div className="flex items-center gap-2">
               <Checkbox
                 id="live"
                 checked={filters.showLiveOnly}
-                onCheckedChange={(checked) => onFiltersChange.setShowLiveOnly(checked as boolean)}
+                onCheckedChange={(checked) => 
+                  onFiltersChange.setShowLiveOnly(checked as boolean)
+                }
               />
               <label htmlFor="live" className="text-sm">
                 Live uniquement

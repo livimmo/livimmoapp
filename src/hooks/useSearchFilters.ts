@@ -9,8 +9,8 @@ export const useSearchFilters = () => {
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [transactionType, setTransactionType] = useState("buy");
-  const [city, setCity] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
+  const [city, setCity] = useState("all");
+  const [neighborhood, setNeighborhood] = useState("all");
 
   const filters: SearchFilters = {
     searchTerm,
