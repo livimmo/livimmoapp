@@ -6,6 +6,8 @@ import { type Property } from "@/types/property";
 import { type ViewMode } from "@/types/search";
 import { useSearchFilters } from "@/hooks/useSearchFilters";
 import { mockProperties } from "@/data/mockProperties";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { Header } from "@/components/layout/Header";
 
 const Search = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
@@ -48,35 +50,38 @@ const Search = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background">
-      <SearchFilters
-        filters={filters}
-        showFilters={showFilters}
-        onFiltersChange={{
-          setSearchTerm,
-          setPropertyType,
-          setPriceRange,
-          setSurfaceRange,
-          setShowLiveOnly,
-          setTransactionType,
-          setCity,
-          setNeighborhood,
-        }}
-        setShowFilters={setShowFilters}
-      />
+    <AuthProvider>
+      <div className="min-h-screen bg-background">
+        <Header />
+        <SearchFilters
+          filters={filters}
+          showFilters={showFilters}
+          onFiltersChange={{
+            setSearchTerm,
+            setPropertyType,
+            setPriceRange,
+            setSurfaceRange,
+            setShowLiveOnly,
+            setTransactionType,
+            setCity,
+            setNeighborhood,
+          }}
+          setShowFilters={setShowFilters}
+        />
 
-      <div className="pt-[60px] px-3">
-        <SearchHeader 
-          viewMode={viewMode} 
-          setViewMode={setViewMode}
-          resultsCount={filteredProperties.length}
-        />
-        <SearchContent
-          filteredProperties={filteredProperties}
-          viewMode={viewMode}
-        />
+        <div className="pt-[60px] px-3">
+          <SearchHeader 
+            viewMode={viewMode} 
+            setViewMode={setViewMode}
+            resultsCount={filteredProperties.length}
+          />
+          <SearchContent
+            filteredProperties={filteredProperties}
+            viewMode={viewMode}
+          />
+        </div>
       </div>
-    </div>
+    </AuthProvider>
   );
 };
 
