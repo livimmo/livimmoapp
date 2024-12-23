@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { PropertyList } from "@/components/properties/PropertyList";
-import { addCoordinatesToProperties } from "@/data/mockProperties";
 import { ViewType } from "@/types/search";
+import { useProperties } from "@/hooks/use-properties";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 const Index = () => {
   const [viewType, setViewType] = useState<ViewType>("all");
@@ -12,59 +15,33 @@ const Index = () => {
   const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
-  const mockProperties = addCoordinatesToProperties([
-    {
-      id: 1,
-      title: "Villa moderne avec piscine",
-      type: "Villa",
-      price: 2500000,
-      location: "Marrakech",
-      surface: 250,
-      rooms: 4,
-      bathrooms: 3,
-      description: "Magnifique villa moderne avec piscine",
-      features: ["Piscine", "Jardin", "Garage"],
-      images: [
-        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-      ],
-      hasLive: true,
-      liveDate: new Date("2024-03-20"),
-      agent: {
-        name: "Sarah Martin",
-        image: "https://i.pravatar.cc/150?u=sarah",
-        phone: "+212 6 12 34 56 78",
-        email: "sarah.martin@example.com",
-      },
-      transactionType: "Vente" as const,
-    },
-    {
-      id: 2,
-      title: "Appartement vue mer",
-      type: "Appartement",
-      price: 1800000,
-      location: "Tanger",
-      surface: 120,
-      rooms: 3,
-      bathrooms: 2,
-      description: "Superbe appartement avec vue sur mer",
-      features: ["Vue mer", "Terrasse", "Parking"],
-      images: [
-        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-        "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
-      ],
-      hasLive: false,
-      agent: {
-        name: "Mohammed Alami",
-        image: "https://i.pravatar.cc/150?u=mohammed",
-        phone: "+212 6 23 45 67 89",
-        email: "mohammed.alami@example.com",
-      },
-      transactionType: "Location" as const,
-    },
-  ]);
+  const { properties, isLoading, error } = useProperties();
 
-  const filteredProperties = mockProperties.filter((property) => {
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-12 w-full" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-[300px] w-full" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertDescription>
+          Une erreur est survenue lors du chargement des propriétés.
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  const filteredProperties = properties?.filter((property) => {
     const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       property.location.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = !propertyType || property.type === propertyType;
@@ -79,7 +56,7 @@ const Index = () => {
 
     return matchesSearch && matchesType && matchesPriceRange && 
            matchesSurfaceRange && matchesTransactionType && matchesViewType;
-  });
+  }) ?? [];
 
   return (
     <div>
