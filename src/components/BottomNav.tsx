@@ -14,7 +14,8 @@ export const BottomNav = () => {
     return location.pathname === path;
   };
 
-  const isPropertyManager = user?.role === "agent" || user?.role === "promoter" || user?.role === "owner";
+  // Only show "Mes Biens" for agents and promoters, not for owners
+  const isPropertyManager = user?.role === "agent" || user?.role === "promoter";
   const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
   const favoritesCount = mockFavoritesData.length;
 
