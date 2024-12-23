@@ -1,3 +1,5 @@
+import { type Profile } from "./profile";
+
 export interface Property {
   id: string;
   title: string;

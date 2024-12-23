@@ -1,5 +1,4 @@
 import { type PropertyWithAgent } from "@/types/database";
-import { addDays } from "date-fns";
 
 const cities = [
   { name: "Marrakech", lat: 31.6295, lng: -7.9811 },
@@ -8,14 +7,6 @@ const cities = [
   { name: "Tanger", lat: 35.7595, lng: -5.8340 },
   { name: "Agadir", lat: 30.4278, lng: -9.5981 },
   { name: "Fès", lat: 34.0181, lng: -5.0078 },
-];
-
-const images = [
-  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
-  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-  "https://images.unsplash.com/photo-1613977257363-707ba9348227",
-  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-  "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
 ];
 
 export const mockProperties: PropertyWithAgent[] = [
@@ -37,7 +28,7 @@ export const mockProperties: PropertyWithAgent[] = [
     has_live: true,
     is_replay: false,
     has_scheduled_live: true,
-    live_date: addDays(new Date(), 7).toISOString(),
+    live_date: new Date("2024-03-15").toISOString(),
     is_live_now: false,
     remaining_seats: 15,
     viewers: 0,
@@ -68,70 +59,11 @@ export const mockProperties: PropertyWithAgent[] = [
       verified: true,
       rating: 4.8,
       specialties: ["Luxury", "Villas"],
-      description: "Luxury real estate specialist",
+      description: "Expert en immobilier de luxe",
       location: "Marrakech",
       social_links: {
         facebook: "https://facebook.com/sarahmartin",
         instagram: "https://instagram.com/sarahmartin"
-      },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }
-  },
-  {
-    id: "2",
-    title: "Appartement Vue Mer",
-    price: 1800000,
-    location: "Tanger",
-    type: "Appartement",
-    surface: 120,
-    rooms: 3,
-    bathrooms: 2,
-    description: "Superbe appartement avec vue panoramique sur la mer",
-    features: ["Vue mer", "Terrasse", "Parking"],
-    images: [
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
-    ],
-    has_live: false,
-    is_replay: false,
-    has_scheduled_live: false,
-    live_date: null,
-    is_live_now: false,
-    remaining_seats: null,
-    viewers: 0,
-    coordinates: {
-      lat: 35.7595,
-      lng: -5.8340
-    },
-    transaction_type: "Location",
-    virtual_tour: {
-      enabled: true,
-      url: "SxQL3iGyvQk",
-      platform: "matterport",
-      type: "360"
-    },
-    private_notes: null,
-    agent_id: "2",
-    status: "available",
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    tags: ["Vue Mer", "Moderne"],
-    agent: {
-      id: "2",
-      full_name: "Mohammed Alami",
-      avatar_url: "https://i.pravatar.cc/150?u=mohammed",
-      phone: "+212 6 23 45 67 89",
-      company: "Coastal Properties",
-      role: "agent",
-      verified: true,
-      rating: 4.6,
-      specialties: ["Appartements", "Vue Mer"],
-      description: "Spécialiste de l'immobilier côtier",
-      location: "Tanger",
-      social_links: {
-        facebook: "https://facebook.com/mohammedalami",
-        instagram: "https://instagram.com/mohammedalami"
       },
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()

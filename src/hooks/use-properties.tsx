@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { type Property, type Profile, type PropertyWithAgent } from "@/types/database";
+import { type Property, type PropertyWithAgent } from "@/types/database";
 import { mockProperties } from "@/data/mockProperties";
 
 export const useProperties = () => {
