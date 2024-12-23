@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { User, UserRole } from '@/types/user';
+import { User, UserRole, AccountType } from '@/types/user';
 
 interface AuthContextType {
   user: User | null;
@@ -21,13 +21,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (email: string, password: string, role?: UserRole) => {
     try {
-      // TODO: Implement real authentication logic here
       setUser({
         id: '1',
         email,
         firstName: 'John',
         lastName: 'Doe',
         role: role || 'buyer',
+        accountType: 'user',
       });
       
       toast({
@@ -53,6 +53,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         firstName,
         lastName,
         role,
+        accountType: 'user',
       });
       
       toast({
@@ -72,7 +73,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const switchRole = (newRole: UserRole) => {
     if (user) {
-      setUser({ ...user, role: newRole });
+      setUser({ 
+        ...user, 
+        role: newRole,
+        accountType: newRole === 'buyer' || newRole === 'owner' || newRole === 'tenant' ? 'user' : newRole as AccountType
+      });
       toast({
         title: "Rôle mis à jour",
         description: `Vous êtes maintenant en mode ${newRole}`,
