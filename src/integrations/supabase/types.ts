@@ -9,6 +9,74 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      admin_audit_logs: {
+        Row: {
+          action: string
+          admin_id: string | null
+          created_at: string | null
+          details: Json | null
+          entity_id: string | null
+          entity_type: string
+          id: string
+        }
+        Insert: {
+          action: string
+          admin_id?: string | null
+          created_at?: string | null
+          details?: Json | null
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+        }
+        Update: {
+          action?: string
+          admin_id?: string | null
+          created_at?: string | null
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_audit_logs_admin_id_fkey"
+            columns: ["admin_id"]
+            isOneToOne: false
+            referencedRelation: "admin_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_profiles: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_login: string | null
+          permissions: Json | null
+          role: Database["public"]["Enums"]["admin_role"]
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id: string
+          last_login?: string | null
+          permissions?: Json | null
+          role?: Database["public"]["Enums"]["admin_role"]
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_login?: string | null
+          permissions?: Json | null
+          role?: Database["public"]["Enums"]["admin_role"]
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       properties: {
         Row: {
           agent_id: string | null
@@ -104,10 +172,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_admin_role: {
+        Args: {
+          user_id: string
+        }
+        Returns: Database["public"]["Enums"]["admin_role"]
+      }
+      is_admin: {
+        Args: {
+          user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      admin_role: "super_admin" | "admin" | "moderator"
     }
     CompositeTypes: {
       [_ in never]: never

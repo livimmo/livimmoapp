@@ -21,6 +21,13 @@ import DeveloperDetail from "./pages/DeveloperDetail";
 import AgentDetail from "./pages/AgentDetail";
 import PropertyManagement from "./pages/PropertyManagement";
 import OwnerDashboard from "./pages/OwnerDashboard";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProperties from "./pages/admin/AdminProperties";
+import AdminAgents from "./pages/admin/AdminAgents";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminSettings from "./pages/admin/AdminSettings";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./components/admin/AdminLayout";
 
 function App() {
   return (
@@ -46,6 +53,16 @@ function App() {
               <Route path="/agent/:id" element={<AgentDetail />} />
               <Route path="/my-properties" element={<PropertyManagement />} />
               <Route path="/owner-dashboard" element={<OwnerDashboard />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="properties" element={<AdminProperties />} />
+                <Route path="agents" element={<AdminAgents />} />
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="settings" element={<AdminSettings />} />
+              </Route>
             </Routes>
           </div>
           <BottomNav />
