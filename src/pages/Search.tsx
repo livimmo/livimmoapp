@@ -4,6 +4,7 @@ import { ViewControls } from "@/components/search/ViewControls";
 import { SearchContent } from "@/components/search/SearchContent";
 import { type Property } from "@/types/property";
 import { addCoordinatesToProperties } from "@/data/mockProperties";
+import { useToast } from "@/components/ui/use-toast";
 
 const placeholderImages = [
   "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
@@ -20,7 +21,7 @@ const placeholderImages = [
 
 const mockProperties: Property[] = addCoordinatesToProperties([
   {
-    id: 1,
+    id: "1",
     images: [placeholderImages[Math.floor(Math.random() * placeholderImages.length)]],
     title: "Villa moderne à Marrakech",
     price: 2500000,
@@ -39,7 +40,7 @@ const mockProperties: Property[] = addCoordinatesToProperties([
       phone: "+212 6 12 34 56 78",
       email: "sarah.martin@example.com",
     },
-    transactionType: "Vente" as const,
+    transactionType: "Vente",
   },
   {
     id: 2,
@@ -134,6 +135,7 @@ const mockProperties: Property[] = addCoordinatesToProperties([
 type ViewMode = "grid" | "list";
 
 const Search = () => {
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
@@ -141,6 +143,7 @@ const Search = () => {
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [transactionType, setTransactionType] = useState<"buy" | "rent">("buy");
 
   const filteredProperties = mockProperties.filter((property) => {
     const matchesSearch =
@@ -152,15 +155,28 @@ const Search = () => {
     const matchesSurface =
       property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
     const matchesLive = !showLiveOnly || property.hasLive;
+    const matchesTransactionType = 
+      (transactionType === "buy" && property.transactionType === "Vente") ||
+      (transactionType === "rent" && property.transactionType === "Location");
 
     return (
       matchesSearch &&
       matchesType &&
       matchesPrice &&
       matchesSurface &&
-      matchesLive
+      matchesLive &&
+      matchesTransactionType
     );
   });
+
+  // Show toast when no results are found
+  if (filteredProperties.length === 0 && searchTerm !== "") {
+    toast({
+      title: "Aucun résultat",
+      description: "Aucun bien ne correspond à vos critères. Essayez de modifier vos filtres.",
+      variant: "destructive",
+    });
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -177,13 +193,20 @@ const Search = () => {
         setShowLiveOnly={setShowLiveOnly}
         showFilters={showFilters}
         setShowFilters={setShowFilters}
+        transactionType={transactionType}
+        setTransactionType={setTransactionType}
       />
 
-      <div className="pt-[60px] px-3">
-        <ViewControls 
-          viewMode={viewMode} 
-          setViewMode={setViewMode} 
-        />
+      <div className="pt-[180px] px-3">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold">
+            {filteredProperties.length > 0
+              ? `${filteredProperties.length} biens trouvés`
+              : "Aucun bien trouvé"}
+          </h2>
+          <ViewControls viewMode={viewMode} setViewMode={setViewMode} />
+        </div>
+        
         <SearchContent
           filteredProperties={filteredProperties}
           viewMode={viewMode}
