@@ -3,12 +3,9 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/layout/Header";
 import { BottomNav } from "@/components/BottomNav";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { Routes } from "./Routes";
 
 function App() {
-  const isMobile = useIsMobile();
-
   return (
     <Router>
       <AuthProvider>
