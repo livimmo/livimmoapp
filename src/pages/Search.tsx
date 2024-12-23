@@ -137,10 +137,11 @@ const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
-  const [surfaceRange, setSurfaceRange] = useState([0, 500]);
+  const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
   const [showLiveOnly, setShowLiveOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [transactionType, setTransactionType] = useState("buy");
 
   const filteredProperties = mockProperties.filter((property) => {
     const matchesSearch =
@@ -152,13 +153,17 @@ const Search = () => {
     const matchesSurface =
       property.surface >= surfaceRange[0] && property.surface <= surfaceRange[1];
     const matchesLive = !showLiveOnly || property.hasLive;
+    const matchesTransactionType = 
+      (transactionType === "buy" && property.transactionType === "Vente") ||
+      (transactionType === "rent" && property.transactionType === "Location");
 
     return (
       matchesSearch &&
       matchesType &&
       matchesPrice &&
       matchesSurface &&
-      matchesLive
+      matchesLive &&
+      matchesTransactionType
     );
   });
 
@@ -177,6 +182,8 @@ const Search = () => {
         setShowLiveOnly={setShowLiveOnly}
         showFilters={showFilters}
         setShowFilters={setShowFilters}
+        transactionType={transactionType}
+        setTransactionType={setTransactionType}
       />
 
       <div className="pt-[60px] px-3">

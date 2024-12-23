@@ -10,6 +10,7 @@ import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SlidersHorizontal } from "lucide-react";
 import { SmartSearchBar } from "./SmartSearchBar";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface SearchFiltersProps {
   searchTerm: string;
@@ -24,6 +25,8 @@ interface SearchFiltersProps {
   setShowLiveOnly: (value: boolean) => void;
   showFilters: boolean;
   setShowFilters: (value: boolean) => void;
+  transactionType: string;
+  setTransactionType: (value: string) => void;
 }
 
 export const SearchFilters = ({
@@ -39,6 +42,8 @@ export const SearchFilters = ({
   setShowLiveOnly,
   showFilters,
   setShowFilters,
+  transactionType,
+  setTransactionType,
 }: SearchFiltersProps) => {
   const suggestions = [
     "Casablanca",
@@ -74,6 +79,22 @@ export const SearchFilters = ({
 
       {showFilters && (
         <div className="space-y-3">
+          <ToggleGroup
+            type="single"
+            value={transactionType}
+            onValueChange={(value) => {
+              if (value) setTransactionType(value);
+            }}
+            className="justify-start"
+          >
+            <ToggleGroupItem value="buy" aria-label="Toggle buy">
+              🏠 Achat
+            </ToggleGroupItem>
+            <ToggleGroupItem value="rent" aria-label="Toggle rent">
+              📅 Location
+            </ToggleGroupItem>
+          </ToggleGroup>
+
           <div className="flex items-center gap-4">
             <Select value={propertyType} onValueChange={setPropertyType}>
               <SelectTrigger className="w-[180px] bg-white">
@@ -118,7 +139,7 @@ export const SearchFilters = ({
             </label>
             <Slider
               min={0}
-              max={100000}
+              max={1000}
               step={10}
               value={surfaceRange}
               onValueChange={setSurfaceRange}
