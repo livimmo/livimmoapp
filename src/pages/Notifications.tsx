@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NotificationItem } from "@/components/notifications/NotificationItem";
 import { NotificationSettings } from "@/components/notifications/NotificationSettings";
+import { VisitsCalendarSection } from "@/components/notifications/VisitsCalendarSection";
 import { Badge } from "@/components/ui/badge";
 
 // Types de notifications
@@ -108,59 +109,63 @@ const Notifications = () => {
         </div>
       </div>
 
-      <Tabs defaultValue="all" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5 mb-4">
-          <TabsTrigger value="all">
-            Tout
-            {unreadCount > 0 && (
-              <Badge variant="secondary" className="ml-2">
-                {unreadCount}
-              </Badge>
-            )}
-          </TabsTrigger>
-          <TabsTrigger value="live">
-            Lives
-            {unreadLiveCount > 0 && (
-              <Badge variant="secondary" className="ml-2">
-                {unreadLiveCount}
-              </Badge>
-            )}
-          </TabsTrigger>
-          <TabsTrigger value="favorite">Favoris</TabsTrigger>
-          <TabsTrigger value="offer">Offres</TabsTrigger>
-          <TabsTrigger value="settings">Paramètres</TabsTrigger>
-        </TabsList>
+      <div className="space-y-6">
+        <VisitsCalendarSection />
 
-        {["all", "live", "favorite", "offer"].map((tab) => (
-          <TabsContent key={tab} value={tab}>
-            <ScrollArea className="h-[calc(100vh-200px)]">
-              {getFilteredNotifications(tab).length > 0 ? (
-                getFilteredNotifications(tab).map((notification) => (
-                  <NotificationItem
-                    key={notification.id}
-                    notification={notification}
-                    onMarkAsRead={() => {
-                      setNotifications(
-                        notifications.map((n) =>
-                          n.id === notification.id ? { ...n, read: true } : n
-                        )
-                      );
-                    }}
-                  />
-                ))
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  Aucune notification
-                </div>
+        <Tabs defaultValue="all" className="w-full" value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-5 mb-4">
+            <TabsTrigger value="all">
+              Tout
+              {unreadCount > 0 && (
+                <Badge variant="secondary" className="ml-2">
+                  {unreadCount}
+                </Badge>
               )}
-            </ScrollArea>
-          </TabsContent>
-        ))}
+            </TabsTrigger>
+            <TabsTrigger value="live">
+              Lives
+              {unreadLiveCount > 0 && (
+                <Badge variant="secondary" className="ml-2">
+                  {unreadLiveCount}
+                </Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="favorite">Favoris</TabsTrigger>
+            <TabsTrigger value="offer">Offres</TabsTrigger>
+            <TabsTrigger value="settings">Paramètres</TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="settings">
-          <NotificationSettings />
-        </TabsContent>
-      </Tabs>
+          {["all", "live", "favorite", "offer"].map((tab) => (
+            <TabsContent key={tab} value={tab}>
+              <ScrollArea className="h-[calc(100vh-200px)]">
+                {getFilteredNotifications(tab).length > 0 ? (
+                  getFilteredNotifications(tab).map((notification) => (
+                    <NotificationItem
+                      key={notification.id}
+                      notification={notification}
+                      onMarkAsRead={() => {
+                        setNotifications(
+                          notifications.map((n) =>
+                            n.id === notification.id ? { ...n, read: true } : n
+                          )
+                        );
+                      }}
+                    />
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    Aucune notification
+                  </div>
+                )}
+              </ScrollArea>
+            </TabsContent>
+          ))}
+
+          <TabsContent value="settings">
+            <NotificationSettings />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };
