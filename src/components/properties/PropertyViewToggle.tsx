@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { List, Map } from "lucide-react";
+import { Grid, Map } from "lucide-react";
 
 interface PropertyViewToggleProps {
   view: "list" | "map";
@@ -14,7 +14,7 @@ export const PropertyViewToggle = ({ view, onViewChange }: PropertyViewTogglePro
         size="sm"
         onClick={() => onViewChange("list")}
       >
-        <List className="h-4 w-4 mr-2" />
+        <Grid className="h-4 w-4 mr-2" />
         Liste
       </Button>
       <Button

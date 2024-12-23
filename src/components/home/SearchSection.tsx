@@ -3,7 +3,7 @@ import { PropertyList } from "@/components/properties/PropertyList";
 import { type Property } from "@/types/property";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
-import { PropertyMapView } from "@/components/map/PropertyMapView";
+import { HomePropertyMapView } from "./HomePropertyMapView";
 
 interface SearchSectionProps {
   filteredProperties: Property[];
@@ -37,7 +37,7 @@ export const SearchSection = ({
         <PropertyList properties={displayProperties} />
       ) : (
         <div className="h-[600px] rounded-lg overflow-hidden">
-          <PropertyMapView properties={displayProperties} />
+          <HomePropertyMapView properties={displayProperties} />
         </div>
       )}
     </section>
