@@ -1,27 +1,7 @@
-export interface Agent {
-  id: string;
-  name: string;
-  avatar: string;
-  image: string;
-  phone: string;
-  email: string;
-  location: string;
-  type: string;
-  description?: string;
-  company?: string;
-  verified?: boolean;
-  rating?: number;
-  contact?: {
-    phone: string;
-    email: string;
-    social?: {
-      facebook?: string;
-      instagram?: string;
-      linkedin?: string;
-    }
-  };
-  specialties?: string[];
-}
+import { Agent } from "./agent";
+
+export type PropertyStatus = "available" | "pending" | "sold" | "rented";
+export type TransactionType = "Vente" | "Location";
 
 export interface Property {
   id: string;
@@ -35,61 +15,43 @@ export interface Property {
   description: string;
   features: string[];
   images: string[];
-  hasLive?: boolean;
-  isLiveNow?: boolean;
-  isReplay?: boolean;
-  liveDate?: Date;
-  viewers?: number;
-  remainingSeats?: number;
-  agent: Agent;
   coordinates: {
     lat: number;
     lng: number;
   };
-  transactionType: "Vente" | "Location";
-  status?: "available" | "pending" | "sold" | "rented";
-  privateNotes?: string;
-  createdAt?: Date;
+  agent: Agent;
+  hasLive: boolean;
+  liveDate?: Date;
   virtualTour?: {
     enabled: boolean;
     type: "360" | "video";
     url?: string;
-    floorPlan?: string;
     statistics?: {
       views: number;
       likes: number;
       shares: number;
+      totalVisits?: number;
+      averageTime?: number;
+      popularRooms?: string[];
+      lastVisits?: Date[];
     };
   };
-  tags?: string[];
-}
-
-export interface Visit {
-  id: string;
-  propertyId: string;
-  propertyTitle: string;
-  propertyImage: string;
-  propertyLocation: string;
-  date: Date;
-  time: string;
-  status: string;
-  type: string;
-  agent: {
-    name: string;
-    image: string;
-    phone: string;
-    email: string;
-    avatar?: string;
-    contact?: {
-      phone: string;
-      email: string;
-    };
+  transactionType: TransactionType;
+  status?: PropertyStatus;
+  createdAt?: Date;
+  updatedAt?: Date;
+  ownerId?: string;
+  privateNotes?: string;
+  floorPlan?: {
+    url: string;
+    rooms: {
+      id: string;
+      name: string;
+      area: number;
+      coordinates: {
+        x: number;
+        y: number;
+      };
+    }[];
   };
-  visitor: {
-    name: string;
-    email: string;
-    phone: string;
-  };
-  isLive?: boolean;
-  liveUrl?: string;
 }

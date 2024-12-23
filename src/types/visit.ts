@@ -8,15 +8,22 @@ export interface Visit {
   time: string;
   status: string;
   type: string;
+  isLive?: boolean;
+  liveUrl?: string;
   agent: {
     name: string;
     image: string;
     phone: string;
     email: string;
+    avatar?: string;
+    contact?: {
+      phone: string;
+      email: string;
+    };
   };
   visitor: {
     name: string;
-    email: string;
     phone: string;
+    email: string;
   };
 }

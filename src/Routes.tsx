@@ -11,7 +11,7 @@ import Lives from "@/pages/Lives";
 import JoinLive from "@/pages/JoinLive";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
-import Profile from "@/pages/Profile";
+import { Profile } from "@/pages/Profile";
 import Favorites from "@/pages/Favorites";
 import PropertyManagement from "@/pages/PropertyManagement";
 import OwnerDashboard from "@/pages/OwnerDashboard";

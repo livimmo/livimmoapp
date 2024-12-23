@@ -1,27 +1,28 @@
 export interface Agent {
-  id: number;
+  id: string;
   name: string;
+  email: string;
+  phone: string;
   avatar: string;
-  company?: string;
-  companyLogo?: string;
+  image: string;
   location: string;
-  type: "agent" | "promoter";
-  rating: number;
-  totalReviews: number;
-  activeProperties: number;
-  completedLives: number;
-  scheduledLives?: number;
-  soldProperties?: number;
+  type: string;
+  company?: string;
+  verified?: boolean;
+  rating?: number;
+  totalReviews?: number;
+  description?: string;
   specialties?: string[];
-  verified: boolean;
-  contact: {
-    phone: string;
-    email: string;
-    social?: {
-      linkedin?: string;
-      instagram?: string;
-      facebook?: string;
-    };
+  languages?: string[];
+  certifications?: string[];
+  availability?: {
+    start: string;
+    end: string;
   };
-  description: string;
+  socialMedia?: {
+    facebook?: string;
+    twitter?: string;
+    linkedin?: string;
+    instagram?: string;
+  };
 }
