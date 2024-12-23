@@ -13,13 +13,13 @@ export const PropertyCardAgent = ({ agent, district }: PropertyCardAgentProps) =
 
   const initials = agent.full_name
     ? agent.full_name.split(" ").map(n => n[0]).join("")
-    : "A";
+    : "";
 
   return (
     <div className="p-4 border-t flex items-center justify-between">
       <div className="flex items-center gap-2">
         <Avatar className="h-8 w-8">
-          <AvatarImage src={agent.avatar_url || ""} alt={agent.full_name || ""} />
+          <AvatarImage src={agent.avatar_url || ""} alt={agent.full_name} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
