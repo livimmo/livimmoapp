@@ -1,5 +1,6 @@
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PROPERTY_TYPES } from "@/constants/propertyTypes";
 import { Home, MapPin, Banknote, Square, Video, Calendar, Eye, EyeOff } from "lucide-react";
@@ -40,24 +41,69 @@ export const BasicDetailsSection = ({
 }: BasicDetailsSectionProps) => {
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="title">Titre*</Label>
-        <Input
-          id="title"
-          value={title}
-          onChange={(e) => onTitleChange(e.target.value)}
-          placeholder="Ex: Villa contemporaine à Marrakech"
-          required
-        />
-      </div>
+      <div className="space-y-4">
+        <div className="grid gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="title">Titre</Label>
+            <div className="relative">
+              <Home className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                id="title"
+                placeholder="Titre du bien"
+                value={title}
+                onChange={(e) => onTitleChange(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+          </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="propertyType">Type de bien*</Label>
-        <div className="relative">
-          <Home className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Select value={propertyType} onValueChange={onPropertyTypeChange} required>
-            <SelectTrigger className="pl-8">
-              <SelectValue placeholder="Sélectionner le type" />
+          <div className="space-y-2">
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              placeholder="Description détaillée du bien"
+              value={description}
+              onChange={(e) => onDescriptionChange(e.target.value)}
+              className="min-h-[100px]"
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="price">Prix</Label>
+            <div className="relative">
+              <Banknote className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                id="price"
+                placeholder="Prix"
+                value={price}
+                onChange={(e) => onPriceChange(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="surface">Surface</Label>
+            <div className="relative">
+              <Square className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                id="surface"
+                placeholder="Surface en m²"
+                value={surface}
+                onChange={(e) => onSurfaceChange(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="propertyType">Type de bien</Label>
+          <Select value={propertyType} onValueChange={onPropertyTypeChange}>
+            <SelectTrigger id="propertyType">
+              <SelectValue placeholder="Sélectionnez le type de bien" />
             </SelectTrigger>
             <SelectContent>
               {PROPERTY_TYPES.map((type) => (
@@ -68,107 +114,61 @@ export const BasicDetailsSection = ({
             </SelectContent>
           </Select>
         </div>
-      </div>
 
-      <div className="space-y-2">
-        <Label>Statut du bien*</Label>
-        <Select value={status} onValueChange={onStatusChange} required>
-          <SelectTrigger>
-            <SelectValue placeholder="Sélectionner le statut" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="available">
-              <div className="flex items-center gap-2">
+        <div className="space-y-2">
+          <Label>Statut</Label>
+          <RadioGroup
+            value={status}
+            onValueChange={onStatusChange}
+            className="flex flex-col space-y-1"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="available" id="available" />
+              <Label htmlFor="available" className="flex items-center gap-2">
                 <Eye className="h-4 w-4" />
-                <span>Disponible</span>
-              </div>
-            </SelectItem>
-            <SelectItem value="hidden">
-              <div className="flex items-center gap-2">
+                Disponible
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="hidden" id="hidden" />
+              <Label htmlFor="hidden" className="flex items-center gap-2">
                 <EyeOff className="h-4 w-4" />
-                <span>Caché</span>
-              </div>
-            </SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="space-y-2">
-        <Label>Type de visite*</Label>
-        <RadioGroup value={visitType} onValueChange={onVisitTypeChange} className="grid grid-cols-2 gap-4">
-          <div className="flex items-center space-x-2 rounded-lg border p-4">
-            <RadioGroupItem value="live" id="live" />
-            <Label htmlFor="live" className="flex items-center gap-2">
-              <Video className="h-4 w-4 text-red-500" />
-              Live
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2 rounded-lg border p-4">
-            <RadioGroupItem value="scheduled" id="scheduled" />
-            <Label htmlFor="scheduled" className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-blue-500" />
-              Visite programmée
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2 rounded-lg border p-4">
-            <RadioGroupItem value="virtual" id="virtual" />
-            <Label htmlFor="virtual" className="flex items-center gap-2">
-              <Eye className="h-4 w-4 text-purple-500" />
-              Visite virtuelle
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2 rounded-lg border p-4">
-            <RadioGroupItem value="replay" id="replay" />
-            <Label htmlFor="replay" className="flex items-center gap-2">
-              <Video className="h-4 w-4 text-emerald-500" />
-              Replay
-            </Label>
-          </div>
-        </RadioGroup>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="price">Prix*</Label>
-          <div className="relative">
-            <Banknote className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              id="price"
-              type="number"
-              value={price}
-              onChange={(e) => onPriceChange(e.target.value)}
-              placeholder="Prix en MAD"
-              required
-              className="pl-8"
-            />
-          </div>
+                Caché
+              </Label>
+            </div>
+          </RadioGroup>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="surface">Surface*</Label>
-          <div className="relative">
-            <Square className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              id="surface"
-              type="number"
-              value={surface}
-              onChange={(e) => onSurfaceChange(e.target.value)}
-              placeholder="Surface en m²"
-              required
-              className="pl-8"
-            />
-          </div>
+          <Label>Type de visite</Label>
+          <RadioGroup
+            value={visitType}
+            onValueChange={onVisitTypeChange}
+            className="flex flex-col space-y-1"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="live" id="live" />
+              <Label htmlFor="live" className="flex items-center gap-2">
+                <Video className="h-4 w-4" />
+                Live
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="scheduled" id="scheduled" />
+              <Label htmlFor="scheduled" className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                Visite programmée
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="virtual" id="virtual" />
+              <Label htmlFor="virtual" className="flex items-center gap-2">
+                <MapPin className="h-4 w-4" />
+                Visite virtuelle
+              </Label>
+            </div>
+          </RadioGroup>
         </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
-        <Input
-          id="description"
-          value={description}
-          onChange={(e) => onDescriptionChange(e.target.value)}
-          placeholder="Description détaillée du bien"
-        />
       </div>
     </div>
   );
