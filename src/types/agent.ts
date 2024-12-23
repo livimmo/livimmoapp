@@ -4,6 +4,7 @@ export interface Agent {
   email: string;
   phone: string;
   avatar: string;
+  image?: string; // Adding for backward compatibility
   location: string;
   type: "agent" | "promoter";
   company?: string;
@@ -14,9 +15,12 @@ export interface Agent {
   totalReviews?: number;
   activeProperties?: number;
   completedLives?: number;
+  scheduledLives?: number;
   soldProperties?: number;
-  contact?: {
-    email: string;
-    phone: string;
+  specialties?: string[];
+  social?: {
+    facebook?: string;
+    instagram?: string;
+    linkedin?: string;
   };
 }

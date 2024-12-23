@@ -1,13 +1,15 @@
 import { Property } from "@/types/property";
 import { mockAgents } from "./mockAgents";
 
+export const generateMockCoordinates = () => ({
+  lat: 31.7917 + (Math.random() - 0.5) * 2,
+  lng: -7.0926 + (Math.random() - 0.5) * 2,
+});
+
 export const addCoordinatesToProperties = (properties: Omit<Property, "coordinates">[]) => {
   return properties.map(property => ({
     ...property,
-    coordinates: {
-      lat: 31.7917 + (Math.random() - 0.5) * 2, // Random coordinates around Morocco
-      lng: -7.0926 + (Math.random() - 0.5) * 2,
-    }
+    coordinates: generateMockCoordinates(),
   }));
 };
 
@@ -33,7 +35,8 @@ export const mockProperties: Property[] = [
       name: mockAgents[0].name,
       email: mockAgents[0].email,
       phone: mockAgents[0].phone,
-      avatar: mockAgents[0].image,
+      avatar: mockAgents[0].avatar,
+      image: mockAgents[0].avatar, // For backward compatibility
       location: "Casablanca",
       type: "agent"
     },
@@ -126,8 +129,3 @@ export const mockProperties: Property[] = [
     status: "available"
   }
 ];
-
-export const generateMockCoordinates = () => ({
-  lat: 31.7917 + (Math.random() - 0.5) * 2,
-  lng: -7.0926 + (Math.random() - 0.5) * 2,
-});

@@ -7,6 +7,7 @@ export const mockAgents: Agent[] = [
     email: "john@example.com",
     phone: "+212 6XX XXX XXX",
     avatar: "/placeholder.svg",
+    image: "/placeholder.svg",
     location: "Casablanca",
     type: "agent",
     company: "Immobilier Premium",
@@ -15,7 +16,14 @@ export const mockAgents: Agent[] = [
     totalReviews: 124,
     activeProperties: 15,
     completedLives: 45,
-    soldProperties: 89
+    scheduledLives: 10,
+    soldProperties: 89,
+    specialties: ["Villas", "Appartements de luxe", "Riads"],
+    social: {
+      facebook: "https://facebook.com/johndoe",
+      instagram: "https://instagram.com/johndoe",
+      linkedin: "https://linkedin.com/in/johndoe"
+    }
   },
   {
     id: "2",
