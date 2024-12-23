@@ -56,10 +56,16 @@ export const LocationSection = ({
 
       <div className="space-y-2">
         <Label>Sélectionner sur la carte</Label>
-        <GoogleMapInput
-          onLocationSelect={handleLocationSelect}
-          value={`${district}, ${city}`}
-        />
+        <div className="h-[300px] w-full">
+          <GoogleMapInput
+            onLocationSelect={handleLocationSelect}
+            value={`${district}, ${city}`}
+            required
+          />
+        </div>
+        <p className="text-sm text-muted-foreground">
+          Cliquez sur la carte pour sélectionner l'emplacement exact de votre bien
+        </p>
       </div>
     </div>
   );
