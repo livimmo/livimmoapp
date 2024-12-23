@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { type Property } from "@/types/property";
-import { ViewType } from "@/types/search";
 
 interface HomeFiltersProps {
   properties: Property[];
@@ -13,7 +12,7 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
   const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
-  const [viewType, setViewType] = useState<ViewType>("all");
+  const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
   const suggestions = [
@@ -63,10 +62,6 @@ export const HomeFilters = ({ properties, onFiltersChange }: HomeFiltersProps) =
       filtered = filtered.filter((property) => property.hasLive && !property.isReplay);
     } else if (viewType === "replay") {
       filtered = filtered.filter((property) => property.hasLive && property.isReplay);
-    } else if (viewType === "scheduled") {
-      filtered = filtered.filter((property) => property.hasScheduledLive);
-    } else if (viewType === "virtual") {
-      filtered = filtered.filter((property) => property.hasVirtualTour);
     }
 
     onFiltersChange(filtered);
