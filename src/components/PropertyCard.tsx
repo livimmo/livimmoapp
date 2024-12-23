@@ -1,27 +1,30 @@
-import { Property } from "@/types/property";
+import { type Property, type PropertyCardProps } from "@/types/property";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-export const PropertyCard = ({ property }: { property: Property }) => {
-  // Convert string IDs to numbers where needed
-  const numericId = parseInt(property.id, 10);
-  const numericPrice = typeof property.price === 'string' ? parseInt(property.price, 10) : property.price;
-  const numericSurface = typeof property.surface === 'string' ? parseInt(property.surface, 10) : property.surface;
+export const PropertyCard = ({ property }: PropertyCardProps) => {
+  const navigate = useNavigate();
 
   return (
-    <div className="property-card" key={numericId}>
-      <h2 className="text-lg font-bold">{property.title}</h2>
-      <p className="text-gray-600">Price: {numericPrice} €</p>
-      <p className="text-gray-600">Location: {property.location}</p>
-      <p className="text-gray-600">Surface: {numericSurface} m²</p>
-      <p className="text-gray-600">Rooms: {property.rooms}</p>
-      <p className="text-gray-600">Bathrooms: {property.bathrooms}</p>
-      <p className="text-gray-600">Description: {property.description}</p>
-      <div className="property-images">
-        {property.images.map((image, index) => (
-          <img key={index} src={image} alt={property.title} className="property-image" />
-        ))}
+    <div className="border rounded-lg overflow-hidden shadow-md">
+      <img src={property.images[0]} alt={property.title} className="w-full h-48 object-cover" />
+      <div className="p-4">
+        <h3 className="text-lg font-semibold">{property.title}</h3>
+        <p className="text-gray-500">{property.location}</p>
+        <p className="text-xl font-bold">{property.price.toLocaleString()} DH</p>
+        <div className="flex gap-2 mt-2">
+          {property.features.map((feature) => (
+            <Badge key={feature} variant="secondary">{feature}</Badge>
+          ))}
+        </div>
+        <div className="mt-4">
+          <Button onClick={() => navigate(`/property/${property.id}`)} className="w-full">
+            Voir les détails
+          </Button>
+        </div>
       </div>
-      <p className="text-gray-600">Features: {property.features.join(", ")}</p>
-      <p className="text-gray-600">Agent: {property.agent.name}</p>
     </div>
   );
 };

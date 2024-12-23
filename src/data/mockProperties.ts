@@ -6,8 +6,25 @@ export const generateMockCoordinates = () => ({
   lng: -7.0926 + (Math.random() - 0.5) * 2,
 });
 
+const baseMockProperty: Omit<Property, 'id' | 'coordinates' | 'agent'> = {
+  title: "",
+  price: 0,
+  location: "",
+  type: "",
+  surface: 0,
+  rooms: 0,
+  bathrooms: 0,
+  description: "",
+  features: [],
+  images: ["/placeholder.svg"],
+  hasLive: false,
+  transactionType: "Vente",
+  status: "available",
+};
+
 export const mockProperties: Property[] = [
   {
+    ...baseMockProperty,
     id: "1",
     title: "Villa moderne avec piscine",
     price: 2500000,
@@ -18,7 +35,6 @@ export const mockProperties: Property[] = [
     bathrooms: 3,
     description: "Magnifique villa moderne avec piscine et jardin",
     features: ["Piscine", "Jardin", "Garage"],
-    images: ["/placeholder.svg"],
     coordinates: {
       lat: 33.5731,
       lng: -7.6298
@@ -26,7 +42,6 @@ export const mockProperties: Property[] = [
     agent: mockAgents[0],
     hasLive: true,
     ownerId: "owner1",
-    transactionType: "Vente",
     status: "available",
     virtualTour: {
       enabled: true,
