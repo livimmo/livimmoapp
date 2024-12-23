@@ -17,13 +17,13 @@ export const HomeFilters = ({ properties, onFilterChange }: HomeFiltersProps) =>
   const filterByViewType = (property: Property) => {
     switch (viewType) {
       case "live":
-        return property.hasLive && !property.isReplay;
+        return property.has_live && !property.is_replay;
       case "replay":
-        return property.isReplay;
+        return property.is_replay;
       case "scheduled":
-        return property.hasScheduledLive;
+        return property.has_scheduled_live;
       case "virtual":
-        return property.virtualTour?.enabled;
+        return property.virtual_tour?.enabled;
       default:
         return true;
     }

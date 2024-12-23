@@ -41,9 +41,8 @@ export const FeaturedSection = ({ properties }: FeaturedSectionProps) => {
           {sortedProperties.map((property) => (
             <CarouselItem key={property.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
               <PropertyCard 
-                key={property.id} 
                 {...property} 
-                offers={!property.hasLive ? Math.floor(Math.random() * 20) : undefined}
+                offers={!property.has_live ? Math.floor(Math.random() * 20) : undefined}
               />
             </CarouselItem>
           ))}

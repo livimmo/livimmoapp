@@ -10,13 +10,14 @@ export const useProfile = (userId: string | undefined) => {
     queryFn: async () => {
       if (!userId) return null;
       
-      const { data, error } = await supabase
+      const { data: profile, error } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", userId)
         .maybeSingle();
 
       if (error) {
+        console.error("Error fetching profile:", error);
         toast({
           title: "Error loading profile",
           description: "Please try again later",
@@ -26,7 +27,7 @@ export const useProfile = (userId: string | undefined) => {
       }
 
       // If no profile exists, create one
-      if (!data) {
+      if (!profile) {
         const { data: auth } = await supabase.auth.getUser();
         if (!auth.user) return null;
 
@@ -43,6 +44,7 @@ export const useProfile = (userId: string | undefined) => {
           .single();
 
         if (createError) {
+          console.error("Error creating profile:", createError);
           toast({
             title: "Error creating profile",
             description: "Please try again later",
@@ -54,7 +56,7 @@ export const useProfile = (userId: string | undefined) => {
         return createdProfile;
       }
 
-      return data;
+      return profile;
     },
     enabled: !!userId,
   });
