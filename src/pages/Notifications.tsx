@@ -1,25 +1,7 @@
 import { useState } from "react";
-import { Bell, Home, MessageCircle, Calendar, DollarSign } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { NotificationItem } from "@/components/notifications/NotificationItem";
-import { NotificationSettings } from "@/components/notifications/NotificationSettings";
-import { VisitsCalendarSection } from "@/components/notifications/VisitsCalendarSection";
-import { Badge } from "@/components/ui/badge";
-
-// Types de notifications
-type NotificationType = "live" | "favorite" | "offer" | "general";
-
-interface Notification {
-  id: string;
-  type: NotificationType;
-  title: string;
-  message: string;
-  date: Date;
-  read: boolean;
-  actionUrl?: string;
-}
+import { NotificationHeader } from "@/components/notifications/NotificationHeader";
+import { NotificationTabs } from "@/components/notifications/NotificationTabs";
+import { Notification } from "@/types/notification";
 
 // Données de démonstration
 const mockNotifications: Notification[] = [
@@ -130,86 +112,33 @@ const Notifications = () => {
     setNotifications([]);
   };
 
-  const getFilteredNotifications = (tab: string) => {
-    if (tab === "all") return notifications;
-    return notifications.filter(n => n.type === tab);
+  const handleMarkAsRead = (notification: Notification) => {
+    setNotifications(
+      notifications.map((n) =>
+        n.id === notification.id ? { ...n, read: true } : n
+      )
+    );
   };
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold">Notifications</h1>
-          {unreadCount > 0 && (
-            <Badge variant="destructive">{unreadCount}</Badge>
-          )}
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={markAllAsRead}>
-            Tout marquer comme lu
-          </Button>
-          <Button variant="outline" size="sm" onClick={clearAll}>
-            Tout effacer
-          </Button>
-        </div>
-      </div>
+      <NotificationHeader
+        unreadCount={unreadCount}
+        onMarkAllAsRead={markAllAsRead}
+        onClearAll={clearAll}
+      />
 
       <div className="space-y-6">
         <VisitsCalendarSection />
 
-        <Tabs defaultValue="all" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-5 mb-4">
-            <TabsTrigger value="all">
-              Tout
-              {unreadCount > 0 && (
-                <Badge variant="secondary" className="ml-2">
-                  {unreadCount}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="live">
-              Lives
-              {unreadLiveCount > 0 && (
-                <Badge variant="secondary" className="ml-2">
-                  {unreadLiveCount}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="favorite">Favoris</TabsTrigger>
-            <TabsTrigger value="offer">Offres</TabsTrigger>
-            <TabsTrigger value="settings">Paramètres</TabsTrigger>
-          </TabsList>
-
-          {["all", "live", "favorite", "offer"].map((tab) => (
-            <TabsContent key={tab} value={tab}>
-              <ScrollArea className="h-[calc(100vh-200px)]">
-                {getFilteredNotifications(tab).length > 0 ? (
-                  getFilteredNotifications(tab).map((notification) => (
-                    <NotificationItem
-                      key={notification.id}
-                      notification={notification}
-                      onMarkAsRead={() => {
-                        setNotifications(
-                          notifications.map((n) =>
-                            n.id === notification.id ? { ...n, read: true } : n
-                          )
-                        );
-                      }}
-                    />
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    Aucune notification
-                  </div>
-                )}
-              </ScrollArea>
-            </TabsContent>
-          ))}
-
-          <TabsContent value="settings">
-            <NotificationSettings />
-          </TabsContent>
-        </Tabs>
+        <NotificationTabs
+          notifications={notifications}
+          unreadCount={unreadCount}
+          unreadLiveCount={unreadLiveCount}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          onMarkAsRead={handleMarkAsRead}
+        />
       </div>
     </div>
   );
