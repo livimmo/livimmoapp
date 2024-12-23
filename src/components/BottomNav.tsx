@@ -1,23 +1,26 @@
 import { Home, Search, Video, Heart, User, Building2 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { liveStreams } from "@/data/mockLives";
-import { mockFavoritesData } from "@/data/mockFavorites";
+import { useLives } from "@/hooks/use-lives";
+import { useFavorites } from "@/hooks/use-favorites";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export const BottomNav = () => {
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
   const isMobile = useIsMobile();
+  const { lives } = useLives();
+  const { favorites } = useFavorites();
 
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
+  const activeLivesCount = lives.filter(live => live.status === "live").length;
+  const favoritesCount = favorites.length;
+
   // Only show "Mes Biens" for agents and promoters, not for owners
   const isPropertyManager = user?.role === "agent" || user?.role === "promoter";
-  const activeLivesCount = liveStreams.filter(live => live.status === "live").length;
-  const favoritesCount = mockFavoritesData.length;
 
   const navItems = [
     { icon: Home, label: "Accueil", path: "/" },
