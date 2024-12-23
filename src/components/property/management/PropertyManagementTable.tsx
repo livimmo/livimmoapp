@@ -32,7 +32,7 @@ interface PropertyManagementTableProps {
   onEdit: (property: Property) => void;
   onDelete: (propertyId: number) => void;
   onStatusChange: (propertyId: number, status: PropertyStatus) => void;
-  onNotesChange: (propertyId: number, notes: any) => void;
+  onNotesChange: (propertyId: number, notes: string) => void;
 }
 
 export const PropertyManagementTable = ({

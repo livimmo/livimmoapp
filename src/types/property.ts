@@ -11,13 +11,13 @@ export interface Property {
   features: string[];
   images: string[];
   hasLive?: boolean;
+  isLiveNow?: boolean;
+  isReplay?: boolean;
   liveDate?: Date;
   agent: {
     id?: number;
     name: string;
     image: string;
-    phone: string;
-    email: string;
     company?: string;
     verified?: boolean;
   };
@@ -25,7 +25,6 @@ export interface Property {
     lat: number;
     lng: number;
   };
-  isLiveNow?: boolean;
   viewers?: number;
   remainingSeats?: number;
   transactionType: string;
@@ -62,6 +61,6 @@ export interface Property {
   };
   privateNotes?: string;
   tags?: string[];
-  status?: string;
+  status?: "available" | "pending" | "sold" | "rented";
   createdAt?: Date;
 }
