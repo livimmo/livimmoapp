@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import { Property } from "@/types/property";
+import { LiveStream, ScheduledLive } from "@/types/live";
 
 interface GoogleMapContainerProps {
   properties: Property[];
-  selectedPropertyId: string | null;
-  onPropertySelect: (propertyId: string) => void;
+  selectedLive: LiveStream | ScheduledLive | null;
+  onMarkerClick: (live: LiveStream | ScheduledLive | null) => void;
 }
 
-const GoogleMapContainer = ({ properties, selectedPropertyId, onPropertySelect }: GoogleMapContainerProps) => {
+export const GoogleMapContainer = ({ properties, selectedLive, onMarkerClick }: GoogleMapContainerProps) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   const center = {
     lat: 31.6295,
@@ -18,18 +18,9 @@ const GoogleMapContainer = ({ properties, selectedPropertyId, onPropertySelect }
   };
 
   const handleMarkerClick = (property: Property) => {
-    setSelectedProperty(property);
-    onPropertySelect(property.id);
+    const live = properties.find(p => p.id === property.id);
+    onMarkerClick(live || null);
   };
-
-  useEffect(() => {
-    if (selectedPropertyId) {
-      const property = properties.find(p => p.id === selectedPropertyId);
-      setSelectedProperty(property || null);
-    } else {
-      setSelectedProperty(null);
-    }
-  }, [selectedPropertyId, properties]);
 
   return (
     <GoogleMap
@@ -46,19 +37,17 @@ const GoogleMapContainer = ({ properties, selectedPropertyId, onPropertySelect }
         />
       ))}
 
-      {selectedProperty && (
+      {selectedLive && (
         <InfoWindow
-          position={selectedProperty.coordinates}
-          onCloseClick={() => setSelectedProperty(null)}
+          position={properties.find(p => p.id === selectedLive.id)?.coordinates || center}
+          onCloseClick={() => onMarkerClick(null)}
         >
           <div>
-            <h3>{selectedProperty.title}</h3>
-            <p>{selectedProperty.location}</p>
+            <h3 className="font-semibold">{selectedLive.title}</h3>
+            <p className="text-sm text-gray-600">{selectedLive.location}</p>
           </div>
         </InfoWindow>
       )}
     </GoogleMap>
   );
 };
-
-export default GoogleMapContainer;
