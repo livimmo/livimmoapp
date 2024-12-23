@@ -10,6 +10,7 @@ export interface Agent {
   location: string;
   type: AgentType;
   company?: string;
+  companyLogo?: string;
   verified?: boolean;
   rating?: number;
   totalReviews?: number;
@@ -17,6 +18,7 @@ export interface Agent {
   completedLives?: number;
   scheduledLives?: number;
   soldProperties?: number;
+  description?: string;
   specialties?: string[];
   social?: {
     facebook?: string;

@@ -11,6 +11,7 @@ export const mockAgents: Agent[] = [
     location: "Casablanca",
     type: "agent",
     company: "Immobilier Premium",
+    companyLogo: "/placeholder.svg",
     verified: true,
     rating: 4.8,
     totalReviews: 124,
@@ -18,6 +19,7 @@ export const mockAgents: Agent[] = [
     completedLives: 45,
     scheduledLives: 10,
     soldProperties: 89,
+    description: "Expert en immobilier de luxe",
     specialties: ["Villas", "Appartements de luxe", "Riads"],
     social: {
       facebook: "https://facebook.com/johndoe",
