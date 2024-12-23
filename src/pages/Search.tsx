@@ -2,19 +2,20 @@ import { useState } from "react";
 import { SearchFilters } from "@/components/search/SearchFilters";
 import { SearchContent } from "@/components/search/SearchContent";
 import { SearchHeader } from "@/components/search/SearchHeader";
-import { type Property } from "@/types/property";
 import { type ViewMode } from "@/types/search";
 import { useSearchFilters } from "@/hooks/useSearchFilters";
-import { mockProperties } from "@/data/mockProperties";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Header } from "@/components/layout/Header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PropertyMapView } from "@/components/map/PropertyMapView";
 import { PropertyList } from "@/components/properties/PropertyList";
+import { useProperties } from "@/hooks/use-properties";
 
 const Search = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [hoveredProperty, setHoveredProperty] = useState<Property | null>(null);
+  const { properties, isLoading, error } = useProperties();
+  
   const {
     filters,
     showFilters,
@@ -29,7 +30,15 @@ const Search = () => {
     setNeighborhood,
   } = useSearchFilters();
 
-  const filteredProperties = mockProperties.filter((property) => {
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading properties</div>;
+  }
+
+  const filteredProperties = properties.filter((property) => {
     const matchesSearch =
       property.location.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
       property.title.toLowerCase().includes(filters.searchTerm.toLowerCase());
@@ -38,10 +47,10 @@ const Search = () => {
       property.price >= filters.priceRange[0] && property.price <= filters.priceRange[1];
     const matchesSurface =
       property.surface >= filters.surfaceRange[0] && property.surface <= filters.surfaceRange[1];
-    const matchesLive = !filters.showLiveOnly || property.hasLive;
+    const matchesLive = !filters.showLiveOnly || property.has_live;
     const matchesTransactionType = 
-      (filters.transactionType === "buy" && property.transactionType === "Vente") ||
-      (filters.transactionType === "rent" && property.transactionType === "Location");
+      (filters.transactionType === "buy" && property.transaction_type === "Vente") ||
+      (filters.transactionType === "rent" && property.transaction_type === "Location");
 
     return (
       matchesSearch &&
