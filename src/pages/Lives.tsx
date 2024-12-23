@@ -10,131 +10,27 @@ import { scheduledLives, liveStreams, replayLives } from "@/data/mockLives";
 import { type Property } from "@/types/property";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { HeroBanner } from "@/components/home/HeroBanner";
+import { LiveSearchBar } from "@/components/live/search/LiveSearchBar";
 
 const Lives = () => {
   const [currentLivesViewMode, setCurrentLivesViewMode] = useState<"list" | "map">("list");
   const [scheduledViewMode, setScheduledViewMode] = useState<"list" | "map">("list");
   const [replayViewMode, setReplayViewMode] = useState<"list" | "map">("list");
-  
-  // Filter states
   const [searchTerm, setSearchTerm] = useState("");
-  const [propertyType, setPropertyType] = useState("all");
-  const [priceRange, setPriceRange] = useState([0, 5000000]);
-  const [surfaceRange, setSurfaceRange] = useState([0, 1000]);
-  const [viewType, setViewType] = useState<"all" | "live" | "replay">("all");
-  const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
 
   // Filter function for both current and scheduled lives
   const filterLives = (lives: any[]) => {
     return lives.filter((live) => {
       const matchesSearch = live.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          live.location.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesType = propertyType === "all" || live.type === propertyType;
-      const price = typeof live.price === 'string' 
-        ? parseInt(live.price.replace(/[^\d]/g, ""))
-        : live.price;
-      const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
-      
-      return matchesSearch && matchesType && matchesPrice;
+                          live.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          live.agent.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesSearch;
     });
   };
 
   const filteredCurrentLives = filterLives(liveStreams);
   const filteredScheduledLives = filterLives(scheduledLives);
   const filteredReplayLives = filterLives(replayLives);
-
-  // Convert current lives to Property format for the map
-  const currentLiveProperties: Property[] = filteredCurrentLives.map((live) => ({
-    id: live.id,
-    title: live.title,
-    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
-    location: live.location,
-    type: live.type,
-    surface: 0,
-    rooms: 0,
-    bathrooms: 0,
-    description: live.description || "",
-    features: [],
-    images: [live.thumbnail],
-    hasLive: true,
-    liveDate: live.date,
-    agent: {
-      name: live.agent,
-      image: "",
-      phone: "",
-      email: "",
-    },
-    coordinates: {
-      lat: 31.7917 + Math.random() * 2 - 1,
-      lng: -7.0926 + Math.random() * 2 - 1,
-    },
-    isLiveNow: true,
-    viewers: live.viewers,
-    remainingSeats: live.availableSeats,
-    transactionType: Math.random() > 0.5 ? "Vente" : "Location"
-  }));
-
-  // Convert scheduled lives to Property format for the map
-  const scheduledLiveProperties: Property[] = filteredScheduledLives.map((live) => ({
-    id: live.id,
-    title: live.title,
-    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
-    location: live.location,
-    type: live.type,
-    surface: 0,
-    rooms: 0,
-    bathrooms: 0,
-    description: "",
-    features: [],
-    images: [live.thumbnail],
-    hasLive: true,
-    liveDate: live.date,
-    agent: {
-      name: live.agent,
-      image: "",
-      phone: "",
-      email: "",
-    },
-    coordinates: {
-      lat: 31.7917 + Math.random() * 2 - 1,
-      lng: -7.0926 + Math.random() * 2 - 1,
-    },
-    isLiveNow: false,
-    viewers: 0,
-    remainingSeats: live.availableSeats,
-    transactionType: "Vente"
-  }));
-
-  // Convert replay lives to Property format for the map
-  const replayLiveProperties: Property[] = filteredReplayLives.map((live) => ({
-    id: live.id,
-    title: live.title,
-    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
-    location: live.location,
-    type: live.type,
-    surface: 0,
-    rooms: 0,
-    bathrooms: 0,
-    description: live.description || "",
-    features: [],
-    images: [live.thumbnail],
-    hasLive: true,
-    liveDate: live.date,
-    agent: {
-      name: live.agent,
-      image: "",
-      phone: "",
-      email: "",
-    },
-    coordinates: {
-      lat: 31.7917 + Math.random() * 2 - 1,
-      lng: -7.0926 + Math.random() * 2 - 1,
-    },
-    isLiveNow: false,
-    viewers: live.viewers,
-    remainingSeats: live.availableSeats,
-    transactionType: "Vente"
-  }));
 
   // Suggestions based on available locations and types
   const suggestions = Array.from(new Set([
@@ -144,27 +40,53 @@ const Lives = () => {
     ...scheduledLives.map(live => live.type),
     ...replayLives.map(live => live.location),
     ...replayLives.map(live => live.type),
-  ]));
+  ])).filter(suggestion => 
+    suggestion.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Convert current lives to Property format for the map
+  const currentLiveProperties: Property[] = filteredCurrentLives.map((live) => ({
+    id: live.id.toString(),
+    title: live.title,
+    price: typeof live.price === 'string' ? parseInt(live.price.replace(/[^\d]/g, "")) : live.price,
+    location: live.location,
+    type: live.type,
+    surface: 0,
+    rooms: 0,
+    bathrooms: 0,
+    description: live.description || "",
+    features: [],
+    images: [live.thumbnail],
+    hasLive: true,
+    liveDate: live.date,
+    agent: {
+      id: "1",
+      name: live.agent,
+      avatar: "",
+      image: "",
+      phone: "",
+      email: "",
+      location: live.location,
+      type: "agent",
+    },
+    coordinates: {
+      lat: 31.7917 + Math.random() * 2 - 1,
+      lng: -7.0926 + Math.random() * 2 - 1,
+    },
+    isLiveNow: true,
+    viewers: live.viewers,
+    remainingSeats: live.availableSeats,
+    transactionType: "Vente"
+  }));
 
   return (
     <div className="container mx-auto px-4 py-8 mt-12 space-y-8">
-      {/* Hero Banner */}
       <HeroBanner properties={currentLiveProperties} />
-
-      <PropertyFilters
+      
+      <LiveSearchBar
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
-        propertyType={propertyType}
-        setPropertyType={setPropertyType}
-        priceRange={priceRange}
-        setPriceRange={setPriceRange}
-        surfaceRange={surfaceRange}
-        setSurfaceRange={setSurfaceRange}
-        viewType={viewType}
-        setViewType={setViewType}
         suggestions={suggestions}
-        transactionType={transactionType}
-        setTransactionType={setTransactionType}
       />
 
       {/* Section des lives en cours */}
@@ -249,7 +171,7 @@ const Lives = () => {
           <ScheduledLivesList lives={filteredScheduledLives} />
         ) : (
           <div className="h-[500px] rounded-lg overflow-hidden">
-            <LiveGoogleMap properties={scheduledLiveProperties} />
+            <LiveGoogleMap properties={filteredScheduledLives} />
           </div>
         )}
       </section>
@@ -291,7 +213,7 @@ const Lives = () => {
           </div>
         ) : (
           <div className="h-[500px] rounded-lg overflow-hidden">
-            <LiveGoogleMap properties={replayLiveProperties} />
+            <LiveGoogleMap properties={filteredReplayLives} />
           </div>
         )}
       </section>
