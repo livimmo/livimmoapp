@@ -6,6 +6,7 @@ export const useProperties = () => {
   const { data: properties, isLoading, error } = useQuery({
     queryKey: ["properties"],
     queryFn: async () => {
+      console.log("Fetching properties from Supabase...");
       const { data, error } = await supabase
         .from("properties")
         .select(`
@@ -13,8 +14,13 @@ export const useProperties = () => {
           agent:profiles(*)
         `);
 
-      if (error) throw error;
-      return data as unknown as PropertyWithAgent[];
+      if (error) {
+        console.error("Error fetching properties:", error);
+        throw error;
+      }
+
+      console.log("Properties fetched:", data);
+      return data as PropertyWithAgent[];
     },
   });
 

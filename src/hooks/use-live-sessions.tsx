@@ -6,6 +6,7 @@ export const useLiveSessions = () => {
   const { data: liveSessions, isLoading, error } = useQuery({
     queryKey: ["live-sessions"],
     queryFn: async () => {
+      console.log("Fetching live sessions from Supabase...");
       const { data, error } = await supabase
         .from("live_sessions")
         .select(`
@@ -14,7 +15,12 @@ export const useLiveSessions = () => {
           agent:profiles(*)
         `);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching live sessions:", error);
+        throw error;
+      }
+
+      console.log("Live sessions fetched:", data);
       return data as LiveEvent[];
     },
   });
