@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Home, Building2, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -21,14 +21,35 @@ export const SubmitPropertyButton = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isAgent = user?.role === "agent" || user?.role === "promoter";
+  const isAgent = user?.role === "agent";
+  const isPromoter = user?.role === "promoter";
   const isOwner = user?.role === "owner";
-  const showButton = isAgent || isOwner;
+  const showButton = isAgent || isOwner || isPromoter;
 
-  // Si l'utilisateur n'est pas un agent, propriétaire ou promoteur, on ne montre pas le bouton
   if (!showButton) {
     return null;
   }
+
+  const getButtonText = () => {
+    if (isOwner) return "Déposer mon Bien";
+    if (isAgent) return "Ajouter un Bien";
+    if (isPromoter) return "Déposer un Projet";
+    return "Déposer un Bien";
+  };
+
+  const getButtonIcon = () => {
+    if (isOwner) return Home;
+    if (isAgent) return Building2;
+    if (isPromoter) return Building;
+    return Plus;
+  };
+
+  const getDialogTitle = () => {
+    if (isOwner) return "Déposer mon bien";
+    if (isAgent) return "Ajouter un bien";
+    if (isPromoter) return "Déposer un projet";
+    return "Déposer un bien";
+  };
 
   const handleClick = () => {
     if (!isAuthenticated) {
@@ -48,9 +69,13 @@ export const SubmitPropertyButton = () => {
       // TODO: Implement API call to submit property
       console.log("Property submission data:", data);
       
+      const successMessage = isOwner 
+        ? "Notre équipe prendra contact avec vous sous 24 heures."
+        : "Votre bien a été publié avec succès.";
+
       toast({
         title: "Bien soumis avec succès",
-        description: "Notre équipe prendra contact avec vous sous 24 heures.",
+        description: successMessage,
       });
       setIsDialogOpen(false);
     } catch (error) {
@@ -68,6 +93,8 @@ export const SubmitPropertyButton = () => {
     return null; // Le bouton est géré par la BottomNav sur mobile
   }
 
+  const Icon = getButtonIcon();
+
   return (
     <>
       <Button
@@ -76,20 +103,21 @@ export const SubmitPropertyButton = () => {
         size="sm"
         className="hidden md:flex items-center gap-2"
       >
-        <Plus className="h-4 w-4" />
-        Déposer Votre Bien
+        <Icon className="h-4 w-4" />
+        {getButtonText()}
       </Button>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh]">
           <DialogHeader>
-            <DialogTitle>Déposer votre bien</DialogTitle>
+            <DialogTitle>{getDialogTitle()}</DialogTitle>
           </DialogHeader>
           
           <div className="overflow-y-auto max-h-[calc(90vh-8rem)]">
             <PropertySubmissionForm 
               onSubmit={handleSubmit} 
-              isSubmitting={isSubmitting} 
+              isSubmitting={isSubmitting}
+              userRole={user?.role}
             />
           </div>
         </DialogContent>

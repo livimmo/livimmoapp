@@ -13,10 +13,14 @@ export interface Visit {
     image: string;
     phone: string;
     email: string;
+    contact?: string;
+    avatar?: string;
   };
   visitor: {
     name: string;
     email: string;
     phone: string;
   };
+  isLive?: boolean;
+  liveUrl?: string;
 }

@@ -24,6 +24,13 @@ export const BottomNav = () => {
     (isOwner && property.ownerId === user?.id)
   ).length;
 
+  const getSubmitButtonLabel = () => {
+    if (isOwner) return "Déposer";
+    if (user?.role === "agent") return "Ajouter";
+    if (user?.role === "promoter") return "Projet";
+    return "Déposer";
+  };
+
   const navItems = [
     { icon: Home, label: "Accueil", path: "/" },
     { icon: Search, label: "Recherche", path: "/search" },
@@ -47,7 +54,7 @@ export const BottomNav = () => {
     }] : []),
     ...(isAgent || isOwner ? [{
       icon: Plus,
-      label: "Déposer",
+      label: getSubmitButtonLabel(),
       path: "/submit-property"
     }] : [])
   ];
