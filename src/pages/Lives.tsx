@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { PropertyList } from "@/components/properties/PropertyList";
 import { mockProperties } from "@/data/mockProperties";
-import { ViewType } from "@/types/search";
+import { ViewType, Property } from "@/types/search";
 import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PropertyMapView } from "@/components/map/PropertyMapView";
@@ -15,6 +15,7 @@ const Lives = () => {
   const [priceRange, setPriceRange] = useState([0, 5000000]);
   const [surfaceRange, setSurfaceRange] = useState([0, 100000]);
   const [transactionType, setTransactionType] = useState<string[]>(["Vente"]);
+  const [hoveredProperty, setHoveredProperty] = useState<Property | null>(null);
 
   const filteredProperties = mockProperties.filter((property) => {
     const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -58,6 +59,7 @@ const Lives = () => {
           <div className="relative h-[400px] lg:h-full rounded-lg overflow-hidden">
             <PropertyMapView 
               properties={filteredProperties}
+              hoveredProperty={hoveredProperty}
             />
           </div>
           <ScrollArea className="h-[400px] lg:h-full bg-white rounded-lg shadow-lg p-4">
@@ -66,6 +68,8 @@ const Lives = () => {
                 <div
                   key={property.id}
                   className="cursor-pointer transition-all hover:ring-2 hover:ring-primary rounded-lg"
+                  onMouseEnter={() => setHoveredProperty(property)}
+                  onMouseLeave={() => setHoveredProperty(null)}
                 >
                   <PropertyList properties={[property]} viewMode="list" />
                 </div>
