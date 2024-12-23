@@ -28,11 +28,13 @@ export const PropertyInfo = ({
   surface,
   rooms,
   has_live,
+  live_date,
   onJoinLive,
   isLiveNow,
+  remainingSeats,
   isUserRegistered,
 }: PropertyInfoProps) => {
-  // Extraire le quartier de la localisation
+  // Extract city and district from location
   const [city, district] = location.split(", ");
 
   return (

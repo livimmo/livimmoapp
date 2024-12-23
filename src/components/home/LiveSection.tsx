@@ -10,11 +10,11 @@ import { PropertyListView } from "@/components/properties/PropertyListView";
 export const LiveSection = () => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
 
-  // Séparer les lives en cours des replays
+  // Separate current lives from replays
   const currentLives = liveStreams.filter(live => live.status === "live");
   const replayLives = liveStreams.filter(live => live.status === "replay");
 
-  // Convertir les lives en format Property pour la carte
+  // Convert lives to Property format for the map
   const convertToProperty = (live: any): Property => ({
     id: live.id,
     title: live.title,
@@ -27,22 +27,25 @@ export const LiveSection = () => {
     description: live.description || "",
     features: [],
     images: [live.thumbnail],
-    hasLive: true,
-    liveDate: live.date,
-    agent: {
-      name: live.agent,
-      image: "",
-      phone: "",
-      email: "",
-    },
+    has_live: true,
+    live_date: live.date,
+    agent_id: "",
     coordinates: {
       lat: 31.7917 + Math.random() * 2 - 1,
       lng: -7.0926 + Math.random() * 2 - 1,
     },
-    isLiveNow: live.status === "live",
+    is_live_now: live.status === "live",
     viewers: live.viewers,
-    remainingSeats: live.availableSeats,
-    transactionType: Math.random() > 0.5 ? "Vente" : "Location",
+    remaining_seats: live.availableSeats,
+    transaction_type: Math.random() > 0.5 ? "Vente" : "Location",
+    is_replay: false,
+    has_scheduled_live: false,
+    virtual_tour: null,
+    private_notes: null,
+    status: "available",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    tags: [],
   });
 
   const properties = [...currentLives, ...replayLives].map(convertToProperty);
