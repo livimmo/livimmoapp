@@ -16,6 +16,7 @@ import Favorites from "@/pages/Favorites";
 import PropertyManagement from "@/pages/PropertyManagement";
 import OwnerDashboard from "@/pages/OwnerDashboard";
 import Notifications from "@/pages/Notifications";
+import DeveloperDashboard from "@/pages/DeveloperDashboard";
 
 export const Routes = () => {
   return (
@@ -28,6 +29,7 @@ export const Routes = () => {
       <Route path="/agents/:id" element={<AgentDetail />} />
       <Route path="/developers" element={<Developers />} />
       <Route path="/developers/:id" element={<DeveloperDetail />} />
+      <Route path="/developer-dashboard" element={<DeveloperDashboard />} />
       <Route path="/lives" element={<Lives />} />
       <Route path="/lives/:id" element={<JoinLive />} />
       <Route path="/login" element={<Login />} />

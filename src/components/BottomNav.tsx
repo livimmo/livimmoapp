@@ -1,4 +1,4 @@
-import { Home, Search, Video, Heart, Building2, Plus } from "lucide-react";
+import { Home, Search, Video, Heart, Building2, Plus, Building } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { liveStreams } from "@/data/mockLives";
@@ -46,7 +46,13 @@ export const BottomNav = () => {
       path: "/favorites",
       badge: isAuthenticated && favoritesCount > 0 ? favoritesCount : undefined
     },
-    ...(showMyProperties ? [{ 
+    ...(user?.role === "promoter" ? [{
+      icon: Building,
+      label: "Mes Projets",
+      path: "/developer-dashboard",
+      badge: myPropertiesCount > 0 ? myPropertiesCount : undefined
+    }] : []),
+    ...(showMyProperties && user?.role !== "promoter" ? [{ 
       icon: Building2, 
       label: "Mes Biens", 
       path: isOwner ? "/owner-dashboard" : "/my-properties",
