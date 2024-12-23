@@ -1,25 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { type PropertyWithAgent } from "@/types/property";
+import { type LiveEvent } from "@/types/live";
 
-export const useProperties = () => {
-  const { data: properties, isLoading, error } = useQuery({
-    queryKey: ["properties"],
+export const useLiveSessions = () => {
+  const { data: liveSessions, isLoading, error } = useQuery({
+    queryKey: ["live-sessions"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("properties")
+        .from("live_sessions")
         .select(`
           *,
+          property:properties(*),
           agent:profiles(*)
         `);
 
       if (error) throw error;
-      return data as PropertyWithAgent[];
+      return data as LiveEvent[];
     },
   });
 
   return {
-    properties: properties || [],
+    liveSessions: liveSessions || [],
     isLoading,
     error,
   };
