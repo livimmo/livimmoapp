@@ -32,13 +32,11 @@ export const Properties = () => {
       agent: {
         id: "1",
         name: "Sarah Martin",
+        email: "sarah.martin@example.com",
+        phone: "+212 6 12 34 56 78",
         avatar: "https://i.pravatar.cc/150?u=sarah",
         location: "Marrakech",
-        type: "agent",
-        contact: {
-          phone: "+212 6 12 34 56 78",
-          email: "sarah.martin@example.com"
-        }
+        type: "agent"
       },
       transactionType: "Vente",
       status: "available"
@@ -62,13 +60,11 @@ export const Properties = () => {
       agent: {
         id: "2",
         name: "Mohammed Alami",
+        email: "mohammed.alami@example.com",
+        phone: "+212 6 23 45 67 89",
         avatar: "https://i.pravatar.cc/150?u=mohammed",
         location: "Tanger",
-        type: "agent",
-        contact: {
-          phone: "+212 6 23 45 67 89",
-          email: "mohammed.alami@example.com"
-        }
+        type: "agent"
       },
       transactionType: "Location",
       status: "available"

@@ -31,13 +31,11 @@ export const mockProperties: Property[] = [
     agent: {
       id: "1",
       name: mockAgents[0].name,
+      email: mockAgents[0].email,
+      phone: mockAgents[0].phone,
       avatar: mockAgents[0].image,
       location: "Casablanca",
-      type: "agent",
-      contact: {
-        email: mockAgents[0].email,
-        phone: mockAgents[0].phone
-      }
+      type: "agent"
     },
     hasLive: true,
     transactionType: "Vente",
