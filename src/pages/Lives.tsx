@@ -2,7 +2,8 @@ import { useState } from "react";
 import { PropertyFilters } from "@/components/properties/PropertyFilters";
 import { PropertyList } from "@/components/properties/PropertyList";
 import { mockProperties } from "@/data/mockProperties";
-import { ViewType, Property } from "@/types/search";
+import { ViewType } from "@/types/search";
+import { Property } from "@/types/property"; // Fixed import path
 import { PropertyViewToggle } from "@/components/properties/PropertyViewToggle";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PropertyMapView } from "@/components/map/PropertyMapView";
