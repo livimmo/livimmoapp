@@ -19,8 +19,18 @@ export const useProperties = () => {
         throw error;
       }
 
-      console.log("Properties fetched:", data);
-      return data as PropertyWithAgent[];
+      // Transform coordinates from JSON to proper type
+      const transformedData = data?.map(property => ({
+        ...property,
+        coordinates: property.coordinates ? {
+          lat: property.coordinates.lat,
+          lng: property.coordinates.lng
+        } : null,
+        agent: property.agent as unknown as Profile
+      }));
+
+      console.log("Properties fetched:", transformedData);
+      return transformedData as PropertyWithAgent[];
     },
   });
 

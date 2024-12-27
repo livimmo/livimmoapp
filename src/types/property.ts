@@ -1,5 +1,4 @@
 import { type Profile } from "@/types/database/profile";
-import { Json } from "@/integrations/supabase/types";
 
 export interface Property {
   id: string;
@@ -30,6 +29,12 @@ export interface Property {
     url?: string;
     platform?: "matterport" | "klapty";
     type: "360" | "video" | "live";
+    statistics?: {
+      totalVisits: number;
+      averageTime: string;
+      popularRooms: Array<{ name: string; visits: number }>;
+      lastVisits: Array<{ date: string; duration: string }>;
+    };
   } | null;
   private_notes: {
     ownerName?: string;

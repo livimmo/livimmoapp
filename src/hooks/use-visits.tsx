@@ -20,8 +20,20 @@ export const useVisits = () => {
         throw error;
       }
 
-      console.log("Visits fetched:", data);
-      return data as Visit[];
+      // Transform property coordinates from JSON
+      const transformedData = data?.map(visit => ({
+        ...visit,
+        property: visit.property ? {
+          ...visit.property,
+          coordinates: visit.property.coordinates ? {
+            lat: visit.property.coordinates.lat,
+            lng: visit.property.coordinates.lng
+          } : null
+        } : undefined
+      }));
+
+      console.log("Visits fetched:", transformedData);
+      return transformedData as Visit[];
     },
   });
 
